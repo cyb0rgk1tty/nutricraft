@@ -1,0 +1,28 @@
+---
+export interface Props {
+  testimonial: {
+    name: string;
+    company: string;
+    role: string;
+    content: string;
+    rating: number;
+  };
+}
+
+const { testimonial } = Astro.props;
+---
+
+<div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+  <div class="flex items-center mb-4">
+    {[...Array(testimonial.rating)].map(() => (
+      <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+      </svg>
+    ))}
+  </div>
+  <p class="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
+  <div>
+    <p class="font-semibold text-gray-900">{testimonial.name}</p>
+    <p class="text-sm text-gray-500">{testimonial.role}, {testimonial.company}</p>
+  </div>
+</div>

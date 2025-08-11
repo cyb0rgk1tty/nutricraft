@@ -1,0 +1,74 @@
+/* Global styles for Nutricraft Labs */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.header {
+  background-color: #f0fef4;
+  padding: 1rem 0;
+}
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1rem;
+}
+.header ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+.header a {
+  text-decoration: none;
+  color: #333;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6fff0;
+  padding: 3rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+.hero-text h2 {
+  font-size: 2rem;
+}
+.btn-primary {
+  background-color: #00c16e;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.services, .about, .contact {
+  padding: 3rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+.service-cards {
+  display: flex;
+  gap: 1rem;
+}
+.card {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.footer {
+  background-color: #f0fef4;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}

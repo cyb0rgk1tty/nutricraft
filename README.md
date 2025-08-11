@@ -1,43 +1,189 @@
-# Astro Starter Kit: Minimal
+# Nutricraft Labs - Landing Page
 
-```sh
-npm create astro@latest -- --template minimal
+A modern, high-performance landing page for Nutricraft Labs - a premium supplement manufacturing and private label solutions provider.
+
+## 🚀 Features
+
+- **Modern Design**: Clean, professional design with mint green theme
+- **Fully Responsive**: Mobile-first approach with responsive design for all devices
+- **SEO Optimized**: Built-in SEO with meta tags, structured data, and sitemap
+- **Interactive Tools**: MOQ calculator, lead time estimator, and cost savings calculator
+- **Performance Optimized**: Fast loading with Astro.js and optimized assets
+- **Accessibility**: WCAG compliant with semantic HTML and proper ARIA labels
+
+## 📋 Sections
+
+1. **Hero Section** - Eye-catching introduction with trust badges
+2. **Services** - Comprehensive list of 8 core services
+3. **Manufacturing Capabilities** - Product formats, MOQs, and facility info
+4. **Product Showcase** - Animated product demonstration
+5. **Certifications** - Display of all compliance and quality certifications
+6. **About Us** - Company story and statistics
+7. **Why Choose Us** - Key differentiators and benefits
+8. **Testimonials** - Client success stories
+9. **Interactive Tools** - Calculators for business planning
+10. **Contact Form** - Lead generation form
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Astro.js](https://astro.build) v5.12.9
+- **Styling**: [Tailwind CSS](https://tailwindcss.com) v3.4.0
+- **SEO**: astro-seo v0.8.4
+- **Language**: TypeScript
+- **Deployment**: Cloudflare Pages ready
+
+## 📦 Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
 ├── public/
+│   ├── favicon.svg
+│   ├── robots.txt
+│   └── images/          # Public images
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/      # Reusable components
+│   │   ├── Header.astro
+│   │   ├── Footer.astro
+│   │   ├── ServiceCard.astro
+│   │   ├── TestimonialCard.astro
+│   │   ├── MOQCalculator.astro
+│   │   ├── LeadTimeEstimator.astro
+│   │   ├── CostSavingsCalculator.astro
+│   │   └── ProductShowcase.astro
+│   ├── data/           # Data files
+│   │   ├── services.js
+│   │   ├── certifications.js
+│   │   ├── manufacturing.js
+│   │   └── testimonials.js
+│   ├── layouts/        # Page layouts
+│   │   └── BaseLayout.astro
+│   ├── pages/          # Route pages
+│   │   ├── index.astro
+│   │   └── sitemap.xml.js
+│   └── styles/         # Global styles
+│       ├── global.css
+│       └── tailwind.css
+├── astro.config.mjs    # Astro configuration
+├── tailwind.config.mjs # Tailwind configuration
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🚀 Getting Started
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Prerequisites
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Node.js 18+ and npm
 
-## 🧞 Commands
+### Installation
 
-All commands are run from the root of the project, from a terminal:
+1. Clone the repository:
+```bash
+git clone https://github.com/your-repo/nutricraft-labs.git
+cd nutricraft-labs
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. Install dependencies:
+```bash
+npm install
+```
 
-## 👀 Want to learn more?
+3. Start the development server:
+```bash
+npm run dev
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+4. Open [http://localhost:4321](http://localhost:4321) in your browser
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## 🎨 Customization
+
+### Colors
+
+The color scheme is defined in `tailwind.config.mjs`. Main colors:
+- Primary: Mint green (#00c16e)
+- Mint shades: 50-900
+- Gray shades: 50-900
+
+### Content
+
+- **Services**: Edit `src/data/services.js`
+- **Certifications**: Edit `src/data/certifications.js`
+- **Manufacturing**: Edit `src/data/manufacturing.js`
+- **Testimonials**: Edit `src/data/testimonials.js`
+
+### Images
+
+Place images in:
+- `public/images/` for static images
+- `src/assets/` for images that need processing
+
+## 📱 Responsive Design
+
+The site is fully responsive with breakpoints:
+- Mobile: < 640px
+- Tablet: 640px - 1024px
+- Desktop: > 1024px
+
+## 🔍 SEO
+
+SEO features include:
+- Meta tags and Open Graph tags
+- Structured data (Schema.org)
+- XML sitemap at `/sitemap.xml`
+- Robots.txt configuration
+- Semantic HTML structure
+
+## 🚀 Deployment
+
+### Cloudflare Pages
+
+1. Build the project:
+```bash
+npm run build
+```
+
+2. Deploy the `dist/` directory to Cloudflare Pages
+
+3. Set the build command: `npm run build`
+4. Set the output directory: `dist`
+
+## 📝 Environment Variables
+
+Create a `.env` file for any environment-specific variables:
+
+```env
+PUBLIC_SITE_URL=https://nutricraftlabs.com
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is proprietary and confidential.
+
+## 📞 Support
+
+For support, email support@nutricraftlabs.com or visit our website.
+
+---
+
+Built with ❤️ using Astro.js and Tailwind CSS

@@ -1,0 +1,163 @@
+---
+export interface Props {
+  end: number;
+  duration?: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  className?: string;
+}
+
+const { 
+  end, 
+  duration = 2000, 
+  prefix = '', 
+  suffix = '', 
+  decimals = 0,
+  className = ''
+} = Astro.props;
+
+// Generate a unique ID for this instance
+const id = `countup-${Math.random().toString(36).substring(7)}`;
+---
+
+<span 
+  id={id}
+  class={`countup ${className}`}
+  data-end={end}
+  data-duration={duration}
+  data-prefix={prefix}
+  data-suffix={suffix}
+  data-decimals={decimals}
+>
+  {prefix}0{suffix}
+</span>
+
+<script>
+  // CountUp animation logic
+  class CountUpAnimation {
+    constructor(element: HTMLElement) {
+      this.element = element;
+      this.end = parseFloat(element.dataset.end || '0');
+      this.duration = parseInt(element.dataset.duration || '2000');
+      this.prefix = element.dataset.prefix || '';
+      this.suffix = element.dataset.suffix || '';
+      this.decimals = parseInt(element.dataset.decimals || '0');
+      this.start = 0;
+      this.current = 0;
+      this.startTime = null;
+      this.animationFrame = null;
+      this.hasAnimated = false;
+      
+      // Set up intersection observer
+      this.setupIntersectionObserver();
+    }
+    
+    element: HTMLElement;
+    end: number;
+    duration: number;
+    prefix: string;
+    suffix: string;
+    decimals: number;
+    start: number;
+    current: number;
+    startTime: number | null;
+    animationFrame: number | null;
+    hasAnimated: boolean;
+    
+    setupIntersectionObserver() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.hasAnimated) {
+              this.hasAnimated = true;
+              this.animate();
+            }
+          });
+        },
+        {
+          threshold: 0.1, // Start animation when 10% of element is visible
+          rootMargin: '0px'
+        }
+      );
+      
+      observer.observe(this.element);
+    }
+    
+    // Easing function for smooth animation
+    easeOutQuart(t: number): number {
+      return 1 - Math.pow(1 - t, 4);
+    }
+    
+    // Format number with commas and decimals
+    formatNumber(num: number): string {
+      const fixed = num.toFixed(this.decimals);
+      const parts = fixed.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return parts.join('.');
+    }
+    
+    animate() {
+      const step = (timestamp: number) => {
+        if (!this.startTime) {
+          this.startTime = timestamp;
+        }
+        
+        const progress = Math.min((timestamp - this.startTime) / this.duration, 1);
+        const easedProgress = this.easeOutQuart(progress);
+        
+        this.current = this.start + (this.end - this.start) * easedProgress;
+        
+        // Update the display
+        this.element.textContent = 
+          this.prefix + 
+          this.formatNumber(this.current) + 
+          this.suffix;
+        
+        if (progress < 1) {
+          this.animationFrame = requestAnimationFrame(step);
+        } else {
+          // Ensure final value is exact
+          this.element.textContent = 
+            this.prefix + 
+            this.formatNumber(this.end) + 
+            this.suffix;
+        }
+      };
+      
+      this.animationFrame = requestAnimationFrame(step);
+    }
+    
+    // Clean up animation frame if needed
+    destroy() {
+      if (this.animationFrame) {
+        cancelAnimationFrame(this.animationFrame);
+      }
+    }
+  }
+  
+  // Initialize all countup elements on the page
+  function initializeCountUps() {
+    const elements = document.querySelectorAll('.countup');
+    elements.forEach((element) => {
+      if (element instanceof HTMLElement && !element.dataset.initialized) {
+        new CountUpAnimation(element);
+        element.dataset.initialized = 'true';
+      }
+    });
+  }
+  
+  // Run on initial load
+  document.addEventListener('DOMContentLoaded', initializeCountUps);
+  
+  // Also run after view transitions (for Astro page navigation)
+  document.addEventListener('astro:after-swap', initializeCountUps);
+</script>
+
+<style>
+  .countup {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    /* Ensures numbers don't jump around during animation */
+  }
+</style>

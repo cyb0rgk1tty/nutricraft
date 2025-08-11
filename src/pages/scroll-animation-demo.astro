@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScrollAnimation from '../components/ScrollAnimation.astro';
+---
+
+<BaseLayout title="Scroll Animation Demo">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-12">Scroll Animation Demo</h1>
+    
+    <div class="space-y-32">
+      <!-- Fade in from bottom -->
+      <ScrollAnimation animation="animate-fade-up" delay={0}>
+        <div class="bg-blue-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Fade Up Animation</h2>
+          <p>This element fades in from the bottom when scrolled into view.</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Fade in from left with delay -->
+      <ScrollAnimation animation="animate-fade-left" delay={200}>
+        <div class="bg-green-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Fade Left Animation (200ms delay)</h2>
+          <p>This element slides in from the left with a 200ms delay.</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Fade in from right -->
+      <ScrollAnimation animation="animate-fade-right" delay={100}>
+        <div class="bg-purple-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Fade Right Animation</h2>
+          <p>This element slides in from the right with a 100ms delay.</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Scale animation with custom threshold -->
+      <ScrollAnimation animation="animate-scale" threshold={0.5}>
+        <div class="bg-red-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Scale Animation</h2>
+          <p>This element scales up when 50% of it is visible (threshold: 0.5).</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Fade in animation that doesn't trigger once (repeats) -->
+      <ScrollAnimation animation="animate-fade" triggerOnce={false}>
+        <div class="bg-yellow-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Repeating Fade Animation</h2>
+          <p>This animation triggers every time you scroll in/out of view (triggerOnce: false).</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Multiple animations combined -->
+      <ScrollAnimation animation="animate-fade-up animate-scale" delay={300}>
+        <div class="bg-indigo-500 text-white p-8 rounded-lg">
+          <h2 class="text-2xl font-bold mb-4">Combined Animations</h2>
+          <p>This element uses multiple animation classes: fade up + scale.</p>
+        </div>
+      </ScrollAnimation>
+      
+      <!-- Grid of items with staggered delays -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[0, 1, 2].map((index) => (
+          <ScrollAnimation animation="animate-fade-up" delay={index * 100}>
+            <div class="bg-gray-700 text-white p-6 rounded-lg">
+              <h3 class="text-xl font-bold mb-2">Card {index + 1}</h3>
+              <p>Staggered animation with {index * 100}ms delay</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* Define custom animations */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fade-left {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fade-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes scale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Animation classes */
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-left {
+    animation: fade-left 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-right {
+    animation: fade-right 0.6s ease-out forwards;
+  }
+  
+  .animate-scale {
+    animation: scale 0.6s ease-out forwards;
+  }
+  
+  .animate-fade {
+    animation: fade 0.6s ease-out forwards;
+  }
+  
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-fade-left,
+    .animate-fade-right,
+    .animate-scale,
+    .animate-fade {
+      animation: none;
+    }
+  }
+</style>

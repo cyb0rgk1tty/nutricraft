@@ -1,0 +1,136 @@
+---
+// Product Showcase Component with scroll animation placeholder
+---
+
+<div class="relative h-[600px] flex items-center justify-center">
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-mint-50/20 to-transparent"></div>
+  
+  <!-- Placeholder for 3D bottle animation -->
+  <div id="bottle-container" class="relative z-10">
+    <div class="text-center">
+      <!-- Bottle SVG Placeholder -->
+      <svg 
+        class="w-64 h-80 mx-auto transform transition-all duration-1000"
+        id="bottle-svg"
+        viewBox="0 0 200 300" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <!-- Bottle Cap -->
+        <rect x="70" y="20" width="60" height="30" rx="5" fill="#4b5563" class="bottle-cap"/>
+        
+        <!-- Bottle Neck -->
+        <path d="M 80 50 L 80 80 L 70 100 L 70 250 Q 70 270 90 270 L 110 270 Q 130 270 130 250 L 130 100 L 120 80 L 120 50 Z" 
+              fill="#e5e7eb" 
+              stroke="#d1d5db" 
+              stroke-width="2"/>
+        
+        <!-- Bottle Body -->
+        <rect x="70" y="100" width="60" height="150" rx="10" fill="#10b981" opacity="0.9"/>
+        
+        <!-- Label -->
+        <rect x="75" y="140" width="50" height="80" rx="5" fill="white" opacity="0.95"/>
+        <text x="100" y="170" text-anchor="middle" font-size="12" font-weight="bold" fill="#10b981">
+          NUTRICRAFT
+        </text>
+        <text x="100" y="185" text-anchor="middle" font-size="8" fill="#6b7280">
+          Premium
+        </text>
+        <text x="100" y="195" text-anchor="middle" font-size="8" fill="#6b7280">
+          Supplements
+        </text>
+        
+        <!-- Pills (hidden initially) -->
+        <g id="pills" opacity="0">
+          <circle cx="85" cy="280" r="8" fill="#f59e0b" class="pill"/>
+          <circle cx="100" cy="285" r="8" fill="#ef4444" class="pill"/>
+          <circle cx="115" cy="280" r="8" fill="#3b82f6" class="pill"/>
+        </g>
+      </svg>
+      
+      <p class="mt-8 text-gray-600 text-lg">
+        Scroll to see our manufacturing process in action
+      </p>
+    </div>
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+  @keyframes pillFall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100px) rotate(360deg);
+      opacity: 0.8;
+    }
+  }
+  
+  .pill {
+    animation: pillFall 2s ease-in-out infinite;
+  }
+  
+  .pill:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  
+  .pill:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+</style>
+
+<script>
+  // Simple scroll-based animation
+  const bottleContainer = document.getElementById('bottle-container');
+  const bottleSvg = document.getElementById('bottle-svg');
+  const bottleCap = document.querySelector('.bottle-cap');
+  const pills = document.getElementById('pills');
+  
+  let hasAnimated = false;
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !hasAnimated) {
+        hasAnimated = true;
+        
+        // Animate bottle rotation
+        bottleSvg?.classList.add('rotate-12');
+        
+        // Animate cap opening after delay
+        setTimeout(() => {
+          if (bottleCap) {
+            bottleCap.style.transform = 'translateY(-20px) rotate(-15deg)';
+            bottleCap.style.transition = 'all 0.5s ease-out';
+          }
+          
+          // Show pills
+          if (pills) {
+            pills.style.opacity = '1';
+            pills.style.transition = 'opacity 0.5s ease-in';
+          }
+        }, 500);
+      }
+    });
+  }, observerOptions);
+  
+  if (bottleContainer) {
+    observer.observe(bottleContainer);
+  }
+</script>

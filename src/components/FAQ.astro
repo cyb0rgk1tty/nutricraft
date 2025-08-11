@@ -1,0 +1,169 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const faqs = [
+  {
+    question: "What certifications do you hold?",
+    answer: "We maintain the highest industry standards with certifications including Health Canada Site License, GMP (Good Manufacturing Practices) certification, and FDA facility registration. Our facility is also certified for organic production and undergoes regular third-party audits to ensure compliance with all regulatory requirements."
+  },
+  {
+    question: "What are your minimum order quantities?",
+    answer: "Our minimum order quantities vary depending on the product type and packaging requirements. Generally, we require a minimum of 1,000 units for bottled supplements and 5,000 units for blister packs. For custom formulations, minimums may be higher. Contact our sales team for specific MOQ information for your project."
+  },
+  {
+    question: "How long does the manufacturing process take?",
+    answer: "Standard production timelines range from 8-12 weeks from approved artwork and formula. This includes raw material procurement, manufacturing, quality testing, and packaging. Rush orders may be accommodated depending on current capacity. Custom formulations typically require an additional 2-4 weeks for development and stability testing."
+  },
+  {
+    question: "Can you help with custom formulations?",
+    answer: "Absolutely! Our experienced R&D team specializes in developing custom formulations tailored to your specific requirements. We work closely with you to create unique supplements that meet your target market's needs while ensuring regulatory compliance, stability, and efficacy. We can also help optimize existing formulations for better bioavailability or cost-effectiveness."
+  },
+  {
+    question: "Do you offer packaging services?",
+    answer: "Yes, we provide comprehensive packaging solutions including bottling, blister packaging, sachet filling, and custom packaging options. We can source containers, design labels, and handle all aspects of packaging to deliver market-ready products. Our packaging lines are equipped to handle various formats and sizes to meet your brand requirements."
+  },
+  {
+    question: "What quality control measures do you have?",
+    answer: "Quality is our top priority. We implement rigorous quality control measures including raw material testing, in-process quality checks, and finished product testing. Our in-house laboratory conducts microbiological, heavy metal, and potency testing. We also maintain comprehensive documentation and batch records for complete traceability. All products undergo stability testing to ensure shelf life claims."
+  },
+  {
+    question: "Can you manufacture organic supplements?",
+    answer: "Yes, we are certified to manufacture organic supplements. Our facility has dedicated organic production areas to prevent cross-contamination. We source certified organic raw materials and follow strict protocols to maintain organic integrity throughout the manufacturing process. We can help you develop and manufacture certified organic products that meet all regulatory requirements."
+  },
+  {
+    question: "Do you ship internationally?",
+    answer: "We ship to countries worldwide and have extensive experience with international logistics and regulatory requirements. Our team can assist with export documentation, customs clearance, and ensuring your products meet the regulatory requirements of your target markets. We work with reliable shipping partners to ensure timely and secure delivery of your products globally."
+  }
+];
+---
+
+<div class={`faq-container ${className || ''}`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="space-y-4">
+      {faqs.map((faq, index) => (
+        <div class="faq-item border border-mint-200 rounded-lg overflow-hidden">
+          <button
+            class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between hover:bg-mint-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-mint-500 focus:ring-inset"
+            aria-expanded="false"
+            aria-controls={`faq-answer-${index}`}
+            data-faq-index={index}
+          >
+            <span class="text-lg font-medium text-gray-900 pr-8">{faq.question}</span>
+            <span class="faq-icon flex-shrink-0 ml-2" aria-hidden="true">
+              <svg class="chevron-down w-5 h-5 text-mint-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+              <svg class="chevron-up w-5 h-5 text-mint-600 transition-transform duration-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
+            </span>
+          </button>
+          <div
+            id={`faq-answer-${index}`}
+            class="faq-answer"
+            aria-hidden="true"
+          >
+            <div class="px-6 py-4 text-gray-600 leading-relaxed">
+              {faq.answer}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .faq-answer[aria-hidden="false"] {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
+  }
+
+  .faq-trigger[aria-expanded="true"] .chevron-down {
+    transform: rotate(180deg);
+  }
+
+  .faq-trigger:hover {
+    background-color: rgba(167, 243, 208, 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-answer {
+      transition: none;
+    }
+    
+    .chevron-down,
+    .chevron-up {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqTriggers = document.querySelectorAll('.faq-trigger');
+    
+    faqTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const index = trigger.dataset.faqIndex;
+        const answer = document.getElementById(`faq-answer-${index}`);
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        
+        // Close all other FAQs
+        faqTriggers.forEach(otherTrigger => {
+          if (otherTrigger !== trigger) {
+            const otherIndex = otherTrigger.dataset.faqIndex;
+            const otherAnswer = document.getElementById(`faq-answer-${otherIndex}`);
+            otherTrigger.setAttribute('aria-expanded', 'false');
+            otherAnswer.setAttribute('aria-hidden', 'true');
+          }
+        });
+        
+        // Toggle current FAQ
+        trigger.setAttribute('aria-expanded', !isExpanded);
+        answer.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+    
+    // Keyboard navigation
+    faqTriggers.forEach((trigger, index) => {
+      trigger.addEventListener('keydown', (e) => {
+        const isFirst = index === 0;
+        const isLast = index === faqTriggers.length - 1;
+        
+        switch(e.key) {
+          case 'ArrowUp':
+            if (!isFirst) {
+              e.preventDefault();
+              faqTriggers[index - 1].focus();
+            }
+            break;
+          case 'ArrowDown':
+            if (!isLast) {
+              e.preventDefault();
+              faqTriggers[index + 1].focus();
+            }
+            break;
+          case 'Home':
+            e.preventDefault();
+            faqTriggers[0].focus();
+            break;
+          case 'End':
+            e.preventDefault();
+            faqTriggers[faqTriggers.length - 1].focus();
+            break;
+        }
+      });
+    });
+  });
+</script>

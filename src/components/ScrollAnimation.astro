@@ -1,0 +1,233 @@
+---
+export interface Props {
+  animation: string;
+  delay?: number;
+  threshold?: number;
+  triggerOnce?: boolean;
+  class?: string;
+}
+
+const { 
+  animation, 
+  delay = 0, 
+  threshold = 0.1, 
+  triggerOnce = true,
+  class: className = ''
+} = Astro.props;
+
+// Generate a unique ID for this instance
+const id = `scroll-animation-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  id={id}
+  class={`scroll-animation-wrapper ${className}`}
+  data-animation={animation}
+  data-delay={delay}
+  data-threshold={threshold}
+  data-trigger-once={triggerOnce}
+>
+  <slot />
+</div>
+
+<script>
+  class ScrollAnimationObserver {
+    private observer: IntersectionObserver | null = null;
+    private animatedElements = new Set<Element>();
+    
+    constructor() {
+      this.init();
+    }
+    
+    init() {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      if (prefersReducedMotion) {
+        // If user prefers reduced motion, show elements without animation
+        document.querySelectorAll('.scroll-animation-wrapper').forEach((element) => {
+          element.classList.add('opacity-100');
+        });
+        return;
+      }
+      
+      // Create intersection observer
+      this.createObserver();
+      
+      // Observe all scroll animation elements
+      this.observeElements();
+      
+      // Re-observe elements when new ones are added (useful for dynamic content)
+      this.setupMutationObserver();
+    }
+    
+    createObserver() {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+            const element = entry.target as HTMLElement;
+            const animation = element.dataset.animation;
+            const delay = parseInt(element.dataset.delay || '0');
+            const triggerOnce = element.dataset.triggerOnce === 'true';
+            
+            // Apply animation after delay
+            setTimeout(() => {
+              if (animation) {
+                // Remove any existing animation classes and add new ones
+                element.classList.add(...animation.split(' '));
+                element.classList.add('opacity-100');
+                element.classList.remove('opacity-0');
+              }
+              
+              if (triggerOnce) {
+                this.animatedElements.add(element);
+                this.observer?.unobserve(element);
+              }
+            }, delay);
+          } else if (!entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+            // Reset animation if element leaves viewport and triggerOnce is false
+            const element = entry.target as HTMLElement;
+            const triggerOnce = element.dataset.triggerOnce === 'true';
+            
+            if (!triggerOnce) {
+              const animation = element.dataset.animation;
+              if (animation) {
+                element.classList.remove(...animation.split(' '));
+                element.classList.remove('opacity-100');
+                element.classList.add('opacity-0');
+              }
+            }
+          }
+        });
+      }, {
+        threshold: 0.1, // Default threshold, will be overridden per element
+        rootMargin: '50px' // Trigger slightly before element enters viewport
+      });
+    }
+    
+    observeElements() {
+      document.querySelectorAll('.scroll-animation-wrapper').forEach((element) => {
+        const htmlElement = element as HTMLElement;
+        const threshold = parseFloat(htmlElement.dataset.threshold || '0.1');
+        
+        // Initially hide elements that will be animated
+        htmlElement.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        
+        // Create a new observer with custom threshold if needed
+        if (threshold !== 0.1) {
+          const customObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+                this.handleIntersection(entry.target as HTMLElement);
+              } else if (!entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+                this.handleOutOfView(entry.target as HTMLElement);
+              }
+            });
+          }, {
+            threshold: threshold,
+            rootMargin: '50px'
+          });
+          
+          customObserver.observe(element);
+        } else {
+          this.observer?.observe(element);
+        }
+      });
+    }
+    
+    handleIntersection(element: HTMLElement) {
+      const animation = element.dataset.animation;
+      const delay = parseInt(element.dataset.delay || '0');
+      const triggerOnce = element.dataset.triggerOnce === 'true';
+      
+      setTimeout(() => {
+        if (animation) {
+          element.classList.add(...animation.split(' '));
+          element.classList.add('opacity-100');
+          element.classList.remove('opacity-0');
+        }
+        
+        if (triggerOnce) {
+          this.animatedElements.add(element);
+        }
+      }, delay);
+    }
+    
+    handleOutOfView(element: HTMLElement) {
+      const triggerOnce = element.dataset.triggerOnce === 'true';
+      
+      if (!triggerOnce) {
+        const animation = element.dataset.animation;
+        if (animation) {
+          element.classList.remove(...animation.split(' '));
+          element.classList.remove('opacity-100');
+          element.classList.add('opacity-0');
+        }
+      }
+    }
+    
+    setupMutationObserver() {
+      const mutationObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              const scrollElements = node.querySelectorAll('.scroll-animation-wrapper');
+              scrollElements.forEach((element) => {
+                const htmlElement = element as HTMLElement;
+                const threshold = parseFloat(htmlElement.dataset.threshold || '0.1');
+                
+                // Initially hide new elements
+                htmlElement.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                
+                if (threshold !== 0.1) {
+                  // Create custom observer for this element
+                  const customObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                      if (entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+                        this.handleIntersection(entry.target as HTMLElement);
+                      } else if (!entry.isIntersecting && !this.animatedElements.has(entry.target)) {
+                        this.handleOutOfView(entry.target as HTMLElement);
+                      }
+                    });
+                  }, {
+                    threshold: threshold,
+                    rootMargin: '50px'
+                  });
+                  
+                  customObserver.observe(element);
+                } else {
+                  this.observer?.observe(element);
+                }
+              });
+            }
+          });
+        });
+      });
+      
+      mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+    
+    disconnect() {
+      this.observer?.disconnect();
+    }
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new ScrollAnimationObserver();
+    });
+  } else {
+    new ScrollAnimationObserver();
+  }
+</script>
+
+<style>
+  /* Ensure smooth transitions */
+  .scroll-animation-wrapper {
+    will-change: transform, opacity;
+  }
+</style>

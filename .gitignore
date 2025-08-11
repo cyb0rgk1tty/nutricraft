@@ -1,5 +1,7 @@
 # build output
 dist/
+.output/
+
 # generated types
 .astro/
 
@@ -11,14 +13,37 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
+lerna-debug.log*
 
 # environment variables
 .env
 .env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# macOS-specific files
+# OS-specific files
 .DS_Store
+Thumbs.db
 
-# jetbrains setting folder
+# Editor directories and files
+.vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Package manager lock files (optional - remove if you want to commit these)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

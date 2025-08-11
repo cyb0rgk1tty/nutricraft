@@ -1,0 +1,22 @@
+---
+export interface Props {
+  service: {
+    id: string;
+    title: string;
+    description: string;
+    features: string[];
+    icon: string;
+  };
+}
+
+const { service } = Astro.props;
+---
+
+<div class="card group hover:scale-105 transition-all duration-300 h-full flex flex-col">
+  <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+    {service.title}
+  </h3>
+  <p class="text-gray-600 flex-grow">
+    {service.description}
+  </p>
+</div>

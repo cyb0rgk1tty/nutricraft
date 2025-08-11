@@ -1,0 +1,100 @@
+---
+import { SEO } from 'astro-seo';
+import ChatSupport from '../components/ChatSupport.astro';
+import '../styles/tailwind.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { 
+  title = 'Nutricraft Labs | Premium Supplement Manufacturing & Private Label Solutions',
+  description = 'Your trusted partner for supplement manufacturing, private labeling, NPN applications, and compliance. GMP-certified facility with low MOQs and fast turnaround.',
+  image = '/images/og-image.jpg'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <SEO
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title,
+          type: "website",
+          image,
+          url: canonicalURL.href
+        },
+        optional: {
+          description,
+          siteName: "Nutricraft Labs"
+        }
+      }}
+      twitter={{
+        creator: "@nutricraftlabs",
+        site: "@nutricraftlabs",
+        card: "summary_large_image"
+      }}
+      extend={{
+        link: [
+          { rel: "canonical", href: canonicalURL.href },
+          { rel: "sitemap", href: "/sitemap-index.xml" },
+          { 
+            rel: "preconnect", 
+            href: "https://fonts.googleapis.com" 
+          },
+          { 
+            rel: "preconnect", 
+            href: "https://fonts.gstatic.com",
+            crossorigin: true
+          },
+          {
+            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            rel: "stylesheet"
+          }
+        ],
+        meta: [
+          { name: "robots", content: "index, follow" },
+          { name: "googlebot", content: "index, follow" },
+          { property: "og:locale", content: "en_US" }
+        ]
+      }}
+    />
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Nutricraft Labs",
+        "description": "Premium supplement manufacturing and private label solutions provider",
+        "url": "https://nutricraftlabs.com",
+        "logo": "https://nutricraftlabs.com/images/logo.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-XXX-XXX-XXXX",
+          "contactType": "sales",
+          "availableLanguage": "English"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/company/nutricraft-labs",
+          "https://twitter.com/nutricraftlabs"
+        ]
+      }
+    </script>
+  </head>
+  <body class="bg-white text-gray-900">
+    <slot />
+    <ChatSupport />
+  </body>
+</html>

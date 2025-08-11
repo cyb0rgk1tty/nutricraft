@@ -1,16 +1,659 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import MOQCalculator from '../components/MOQCalculator.astro';
+import LeadTimeEstimator from '../components/LeadTimeEstimator.astro';
+import CostSavingsCalculator from '../components/CostSavingsCalculator.astro';
+import ProductShowcase from '../components/ProductShowcase.astro';
+import ScrollAnimation from '../components/ScrollAnimation.astro';
+import CountUp from '../components/CountUp.astro';
+import FAQ from '../components/FAQ.astro';
+import { services } from '../data/services.js';
+import { testimonials } from '../data/testimonials.js';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <Header />
+  
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Hero Text -->
+        <div class="space-y-6">
+          <ScrollAnimation animation="fade-up" delay={100}>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 leading-tight">
+              Your Partner in Premium Supplement Manufacturing
+            </h1>
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={200}>
+            <p class="text-xl text-dark-600 leading-relaxed">
+              From concept to market, we streamline every step of your supplement journey. 
+              Expert sourcing, compliant formulation, and scalable manufacturing solutions.
+            </p>
+          </ScrollAnimation>
+          
+          <!-- CTA Buttons -->
+          <ScrollAnimation animation="fade-up" delay={400}>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300">
+                Start Your Project
+                <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+              <a href="#services" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300">
+                Explore Services
+              </a>
+            </div>
+          </ScrollAnimation>
+          
+          <!-- Trust Badges -->
+          <div class="flex flex-wrap gap-6 pt-6">
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium">GMP Certified Partners</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium">FDA Compliant</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium">Health Canada Licensed</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hero Image/Animation Placeholder -->
+        <div class="relative">
+          <div class="rounded-3xl p-8 md:p-12">
+            <div class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center bg-white">
+              <img src="/images/nutricraftlabs_supplement.png" alt="NutriCraft Labs Supplement Product" class="w-full h-full object-contain" />
+            </div>
+          </div>
+          <!-- Decorative elements -->
+          <div class="absolute -top-4 -right-4 w-24 h-24 bg-mint-200 rounded-full opacity-20"></div>
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-mint-300 rounded-full opacity-20"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Comprehensive Supplement Solutions
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            End-to-end services to transform your supplement ideas into market-ready products
+          </p>
+        </div>
+      </ScrollAnimation>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        {services.map((service, index) => (
+          <ScrollAnimation animation="fade-up" delay={index * 100} key={service.title}>
+            <ServiceCard service={service} />
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Manufacturing Capabilities Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+            World-Class Manufacturing Capabilities
+          </h2>
+          <p class="text-lg text-dark-600 mb-8">
+            Partner with industry-leading facilities equipped with cutting-edge technology and stringent quality controls.
+          </p>
+          
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">Diverse Product Formats</h3>
+                <p class="text-dark-600">Capsules, tablets, powders, liquids, gummies, and more. Any format you need, we can produce.</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">Scalable Production</h3>
+                <p class="text-dark-600">From small pilot runs to large-scale production, we scale with your business growth.</p>
+              </div>
+            </div>
+            
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">Fast Turnaround</h3>
+                <p class="text-dark-600">Efficient processes and strategic partnerships ensure your products reach market quickly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6">
+          <ScrollAnimation animation="fade-up" delay={100}>
+            <div class="bg-mint-50 rounded-xl p-6 text-center">
+              <div class="text-4xl font-bold text-mint-600 mb-2">
+                <CountUp end={500} suffix="K+" duration={2} />
+              </div>
+              <p class="text-dark-700 font-medium">Units/Day Capacity</p>
+            </div>
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={200}>
+            <div class="bg-mint-50 rounded-xl p-6 text-center">
+              <div class="text-4xl font-bold text-mint-600 mb-2">
+                <CountUp end={15} suffix="+" duration={2} />
+              </div>
+              <p class="text-dark-700 font-medium">Product Formats</p>
+            </div>
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={300}>
+            <div class="bg-mint-50 rounded-xl p-6 text-center">
+              <div class="text-4xl font-bold text-mint-600 mb-2">
+                <CountUp end={99.9} suffix="%" decimals={1} duration={2} />
+              </div>
+              <p class="text-dark-700 font-medium">Quality Rate</p>
+            </div>
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={400}>
+            <div class="bg-mint-50 rounded-xl p-6 text-center">
+              <div class="text-4xl font-bold text-mint-600 mb-2">
+                <CountUp end={30} suffix="+" duration={2} />
+              </div>
+              <p class="text-dark-700 font-medium">Countries Served</p>
+            </div>
+          </ScrollAnimation>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Certifications Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Certified Excellence
+          </h2>
+          <p class="text-xl text-dark-600">
+            Our manufacturing partners maintain the highest industry certifications
+          </p>
+        </div>
+      </ScrollAnimation>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <ScrollAnimation animation="scale-in" delay={100}>
+          <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300">
+            <div class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">GMP</span>
+            </div>
+            <h3 class="font-semibold text-dark-900">GMP Certified</h3>
+            <p class="text-sm text-dark-600 mt-2">Good Manufacturing Practices</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="scale-in" delay={200}>
+          <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300">
+            <div class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">FDA</span>
+            </div>
+            <h3 class="font-semibold text-dark-900">FDA Registered</h3>
+            <p class="text-sm text-dark-600 mt-2">US FDA Compliance</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="scale-in" delay={300}>
+          <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300">
+            <div class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">ISO</span>
+            </div>
+            <h3 class="font-semibold text-dark-900">ISO 9001:2015</h3>
+            <p class="text-sm text-dark-600 mt-2">Quality Management</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="scale-in" delay={400}>
+          <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300">
+            <div class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">NSF</span>
+            </div>
+            <h3 class="font-semibold text-dark-900">NSF Certified</h3>
+            <p class="text-sm text-dark-600 mt-2">Third-Party Verified</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+            Empowering Supplement Brands Since 2015
+          </h2>
+          <div class="space-y-4 text-lg text-dark-600">
+            <p>
+              Nutricraft Labs was founded with a simple mission: to make premium supplement manufacturing 
+              accessible to brands of all sizes. We've built our reputation on transparency, quality, 
+              and unwavering support for our clients' success.
+            </p>
+            <p>
+              Our team combines decades of industry experience with innovative approaches to product 
+              development. We've helped launch hundreds of successful supplement brands, from startups 
+              to established companies expanding their product lines.
+            </p>
+            <p>
+              What sets us apart is our commitment to your success. We're not just a service provider – 
+              we're your strategic partner in the nutraceutical industry.
+            </p>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-6 mt-8">
+            <ScrollAnimation animation="fade-up" delay={100}>
+              <div>
+                <div class="text-3xl font-bold text-mint-600">
+                  <CountUp end={8} suffix="+" duration={2} />
+                </div>
+                <p class="text-dark-700 font-medium">Years Experience</p>
+              </div>
+            </ScrollAnimation>
+            <ScrollAnimation animation="fade-up" delay={200}>
+              <div>
+                <div class="text-3xl font-bold text-mint-600">
+                  <CountUp end={500} suffix="+" duration={2} />
+                </div>
+                <p class="text-dark-700 font-medium">Brands Launched</p>
+              </div>
+            </ScrollAnimation>
+            <ScrollAnimation animation="fade-up" delay={300}>
+              <div>
+                <div class="text-3xl font-bold text-mint-600">
+                  <CountUp end={50} suffix="M+" duration={2} />
+                </div>
+                <p class="text-dark-700 font-medium">Units Produced</p>
+              </div>
+            </ScrollAnimation>
+          </div>
+        </div>
+        
+        <div class="bg-mint-100 rounded-3xl p-8 lg:p-12">
+          <div class="aspect-square bg-gradient-to-br from-mint-200 to-mint-300 rounded-2xl flex items-center justify-center">
+            <p class="text-mint-700 text-lg font-medium">Team Photo Placeholder</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Nutricraft Labs Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-12">
+          Why Industry Leaders Choose Nutricraft Labs
+        </h2>
+      </ScrollAnimation>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <ScrollAnimation animation="fade-left" delay={100}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Transparent Pricing</h3>
+            <p class="text-dark-600">No hidden fees or surprises. Get clear, competitive quotes with detailed breakdowns for every aspect of your project.</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-up" delay={200}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Speed to Market</h3>
+            <p class="text-dark-600">Launch faster with streamlined processes. From formulation to fulfillment, we optimize every step to get your products to market quickly.</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-right" delay={300}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Dedicated Support</h3>
+            <p class="text-dark-600">Your success is our priority. Get personalized guidance from industry experts who understand your business goals.</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 mt-12">
+        <ScrollAnimation animation="fade-right" delay={100}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Global Network</h3>
+            <p class="text-dark-600">Access our worldwide network of suppliers and manufacturers to find the perfect solutions for your specific needs.</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-up" delay={200}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Quality Guarantee</h3>
+            <p class="text-dark-600">Every product undergoes rigorous testing and quality control. We stand behind our work with comprehensive guarantees.</p>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-left" delay={300}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Scalable Solutions</h3>
+            <p class="text-dark-600">Start small and grow big. Our flexible manufacturing options scale seamlessly with your business growth.</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-12">
+          What Our Clients Say
+        </h2>
+      </ScrollAnimation>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        {testimonials.map((testimonial, index) => (
+          <ScrollAnimation animation="fade-up" delay={index * 100} key={testimonial.author}>
+            <TestimonialCard testimonial={testimonial} />
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-xl text-dark-600">
+            Get answers to common questions about our supplement manufacturing services
+          </p>
+        </div>
+      </ScrollAnimation>
+      
+      <ScrollAnimation animation="fade-up" delay={200}>
+        <FAQ />
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Interactive Tools Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-12">
+          Interactive Tools & Resources
+        </h2>
+      </ScrollAnimation>
+      
+      <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <ScrollAnimation animation="fade-up" delay={100}>
+          <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl p-8 hover:shadow-xl transition-shadow duration-300">
+            <svg class="w-12 h-12 text-mint-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Cost Calculator</h3>
+            <p class="text-dark-600 mb-4">Get instant estimates for your supplement manufacturing project.</p>
+            <button class="text-mint-600 font-semibold hover:text-mint-700 transition-colors duration-300">
+              Calculate Now →
+            </button>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-up" delay={200}>
+          <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl p-8 hover:shadow-xl transition-shadow duration-300">
+            <svg class="w-12 h-12 text-mint-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Product Configurator</h3>
+            <p class="text-dark-600 mb-4">Design your custom supplement with our interactive tool.</p>
+            <button class="text-mint-600 font-semibold hover:text-mint-700 transition-colors duration-300">
+              Start Designing →
+            </button>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation animation="fade-up" delay={300}>
+          <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl p-8 hover:shadow-xl transition-shadow duration-300">
+            <svg class="w-12 h-12 text-mint-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">Resource Library</h3>
+            <p class="text-dark-600 mb-4">Access guides, templates, and industry insights.</p>
+            <button class="text-mint-600 font-semibold hover:text-mint-700 transition-colors duration-300">
+              Browse Resources →
+            </button>
+          </div>
+        </ScrollAnimation>
+      </div>
+      
+      <!-- Interactive Calculators -->
+      <div class="mt-16">
+        <ScrollAnimation animation="fade-up">
+          <h3 class="text-2xl font-bold text-dark-900 text-center mb-8">
+            Try Our Interactive Calculators
+          </h3>
+        </ScrollAnimation>
+        <div class="grid md:grid-cols-3 gap-8 items-stretch">
+          <ScrollAnimation animation="fade-up" delay={100}>
+            <MOQCalculator />
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={200}>
+            <LeadTimeEstimator />
+          </ScrollAnimation>
+          <ScrollAnimation animation="fade-up" delay={300}>
+            <CostSavingsCalculator />
+          </ScrollAnimation>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section id="contact" class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Start Your Supplement Journey Today
+          </h2>
+          <p class="text-xl text-dark-600">
+            Tell us about your project and let's create something exceptional together
+          </p>
+        </div>
+      </ScrollAnimation>
+      
+      <ScrollAnimation animation="fade-in" delay={200}>
+        <form class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-sm font-semibold text-dark-900 mb-2">Full Name *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required 
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+              placeholder="John Doe"
+            />
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-semibold text-dark-900 mb-2">Email Address *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+              placeholder="john@example.com"
+            />
+          </div>
+          
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-dark-900 mb-2">Phone Number</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+              placeholder="+1 (555) 123-4567"
+            />
+          </div>
+          
+          <div>
+            <label for="company" class="block text-sm font-semibold text-dark-900 mb-2">Company Name</label>
+            <input 
+              type="text" 
+              id="company" 
+              name="company" 
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+              placeholder="Your Company"
+            />
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <label for="project-type" class="block text-sm font-semibold text-dark-900 mb-2">Project Type *</label>
+          <select 
+            id="project-type" 
+            name="project-type" 
+            required 
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+          >
+            <option value="">Select a project type</option>
+            <option value="new-brand">New Brand Launch</option>
+            <option value="private-label">Private Label</option>
+            <option value="custom-formulation">Custom Formulation</option>
+            <option value="manufacturing">Manufacturing Only</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        
+        <div class="mt-6">
+          <label for="message" class="block text-sm font-semibold text-dark-900 mb-2">Project Details *</label>
+          <textarea 
+            id="message" 
+            name="message" 
+            rows="4" 
+            required 
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+            placeholder="Tell us about your supplement project, including product types, quantities, and timeline..."
+          ></textarea>
+        </div>
+        
+        <div class="mt-6">
+          <label class="flex items-start gap-3">
+            <input 
+              type="checkbox" 
+              name="newsletter" 
+              class="mt-1 w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
+            />
+            <span class="text-sm text-dark-600">
+              I'd like to receive updates about industry trends, new regulations, and exclusive offers from Nutricraft Labs.
+            </span>
+          </label>
+        </div>
+        
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <button 
+            type="submit" 
+            class="flex-1 bg-mint-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Submit Inquiry
+          </button>
+          <button 
+            type="button" 
+            class="sm:w-auto bg-white text-mint-600 font-semibold py-4 px-8 rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+          >
+            Schedule a Call
+          </button>
+        </div>
+        </form>
+      </ScrollAnimation>
+      
+      <div class="mt-8 text-center">
+        <p class="text-dark-600">
+          Prefer to talk? Call us at 
+          <a href="tel:+1234567890" class="text-mint-600 font-semibold hover:text-mint-700">
+            +1 (234) 567-890
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <Footer />
+</BaseLayout>
