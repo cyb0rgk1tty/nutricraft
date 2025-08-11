@@ -5,5 +5,5 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://nutricraftlabs.com' // Update this with your actual domain
+  site: 'https://nutricraft.tanglewebservices.com' // Demo deployment domain
 });
