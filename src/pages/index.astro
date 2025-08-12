@@ -197,8 +197,9 @@ import { testimonials } from "../data/testimonials.js";
             Access to World-Class Manufacturing
           </h2>
           <p class="text-lg text-dark-600 mb-8">
-            We connect you with industry-leading facilities equipped with
-            cutting-edge technology and stringent quality controls.
+            Partner with the same trusted manufacturers used by leading supplement brands. 
+            We connect you with industry-certified facilities that produce for major 
+            retail chains and established brands.
           </p>
 
           <div class="space-y-6">
@@ -291,40 +292,6 @@ import { testimonials } from "../data/testimonials.js";
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6">
-          <ScrollAnimation animation="fade-up" delay={100}>
-            <div class="bg-mint-50 rounded-xl p-6 text-center">
-              <div class="text-4xl font-bold text-mint-600 mb-2">
-                <CountUp end={500} suffix="K+" duration={2} />
-              </div>
-              <p class="text-dark-700 font-medium">Units/Day Capacity</p>
-            </div>
-          </ScrollAnimation>
-          <ScrollAnimation animation="fade-up" delay={200}>
-            <div class="bg-mint-50 rounded-xl p-6 text-center">
-              <div class="text-4xl font-bold text-mint-600 mb-2">
-                <CountUp end={15} suffix="+" duration={2} />
-              </div>
-              <p class="text-dark-700 font-medium">Product Formats</p>
-            </div>
-          </ScrollAnimation>
-          <ScrollAnimation animation="fade-up" delay={300}>
-            <div class="bg-mint-50 rounded-xl p-6 text-center">
-              <div class="text-4xl font-bold text-mint-600 mb-2">
-                <CountUp end={99.9} suffix="%" decimals={1} duration={2} />
-              </div>
-              <p class="text-dark-700 font-medium">Quality Rate</p>
-            </div>
-          </ScrollAnimation>
-          <ScrollAnimation animation="fade-up" delay={400}>
-            <div class="bg-mint-50 rounded-xl p-6 text-center">
-              <div class="text-4xl font-bold text-mint-600 mb-2">
-                <CountUp end={30} suffix="+" duration={2} />
-              </div>
-              <p class="text-dark-700 font-medium">Countries Served</p>
-            </div>
-          </ScrollAnimation>
-        </div>
       </div>
     </div>
   </section>
@@ -433,29 +400,21 @@ import { testimonials } from "../data/testimonials.js";
             </p>
           </div>
 
-          <div class="grid grid-cols-3 gap-6 mt-8">
+          <div class="grid grid-cols-2 gap-6 mt-8">
             <ScrollAnimation animation="fade-up" delay={100}>
               <div>
                 <div class="text-3xl font-bold text-mint-600">
-                  <CountUp end={8} suffix="+" duration={2} />
+                  <CountUp end={15} suffix="+" duration={2} />
                 </div>
-                <p class="text-dark-700 font-medium">Years Experience</p>
+                <p class="text-dark-700 font-medium">Combined Years of Experience</p>
               </div>
             </ScrollAnimation>
             <ScrollAnimation animation="fade-up" delay={200}>
               <div>
                 <div class="text-3xl font-bold text-mint-600">
-                  <CountUp end={500} suffix="+" duration={2} />
+                  <CountUp end={20} suffix="+" duration={2} />
                 </div>
                 <p class="text-dark-700 font-medium">Brands Launched</p>
-              </div>
-            </ScrollAnimation>
-            <ScrollAnimation animation="fade-up" delay={300}>
-              <div>
-                <div class="text-3xl font-bold text-mint-600">
-                  <CountUp end={50} suffix="M+" duration={2} />
-                </div>
-                <p class="text-dark-700 font-medium">Units Produced</p>
               </div>
             </ScrollAnimation>
           </div>
@@ -683,7 +642,7 @@ import { testimonials } from "../data/testimonials.js";
         </h2>
       </ScrollAnimation>
 
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-3 gap-8 items-stretch">
         {
           testimonials.map((testimonial, index) => (
             <ScrollAnimation
