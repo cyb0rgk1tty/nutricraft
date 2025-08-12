@@ -30,6 +30,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    
     <SEO
       title={title}
       description={description}
@@ -162,6 +167,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     </noscript>
+    
+    <!-- Critical CSS for above-the-fold content -->
+    <style>
+      /* Critical CSS for faster initial paint */
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .bg-gradient-to-b { background: linear-gradient(to bottom, var(--tw-gradient-from), var(--tw-gradient-to)); }
+      .from-mint-50 { --tw-gradient-from: #f0fdf6; }
+      .to-white { --tw-gradient-to: #ffffff; }
+      .text-dark-900 { color: #111827; }
+      .max-w-7xl { max-width: 80rem; }
+      .mx-auto { margin-left: auto; margin-right: auto; }
+      @media (min-width: 768px) {
+        .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+    </style>
   </head>
   <body class="bg-white text-gray-900">
     <slot />
