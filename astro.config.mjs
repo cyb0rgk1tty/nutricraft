@@ -8,7 +8,8 @@ export default defineConfig({
   site: 'https://thewellnessdrop.com',
   compressHTML: true,
   build: {
-    inlineStylesheets: 'auto'
+    inlineStylesheets: 'always',
+    format: 'directory'
   },
   vite: {
     build: {

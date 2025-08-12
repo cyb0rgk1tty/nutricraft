@@ -17,9 +17,9 @@ import { testimonials } from "../data/testimonials.js";
 
 <BaseLayout>
   <Fragment slot="head">
-    <!-- Preload hero image for better LCP -->
-    <link rel="preload" as="image" href="/images/thewellnessdropbottle-500.webp" type="image/webp" />
-    <link rel="preload" as="image" href="/images/thewellnessdropbottle-500.png" type="image/png" />
+    <!-- Preload hero image for better LCP (mobile only to save bandwidth) -->
+    <link rel="preload" as="image" href="/images/thewellnessdropbottle-500.webp" type="image/webp" media="(max-width: 768px)" />
+    <link rel="preload" as="image" href="/images/thewellnessdropbottle-500.webp" type="image/webp" media="(min-width: 769px)" />
   </Fragment>
   
   <Header />
@@ -132,13 +132,26 @@ import { testimonials } from "../data/testimonials.js";
               class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center"
             >
               <picture>
+                <!-- Mobile: Use 500px image only -->
                 <source
+                  media="(max-width: 768px)"
+                  srcset="/images/thewellnessdropbottle-500.webp"
+                  type="image/webp"
+                />
+                <source
+                  media="(max-width: 768px)"
+                  srcset="/images/thewellnessdropbottle-500.png"
+                  type="image/png"
+                />
+                <!-- Desktop: Use responsive images -->
+                <source
+                  media="(min-width: 769px)"
                   srcset="/images/thewellnessdropbottle-500.webp 1x, /images/thewellnessdropbottle-1000.webp 2x"
                   type="image/webp"
                 />
                 <img
                   src="/images/thewellnessdropbottle-500.png"
-                  srcset="/images/thewellnessdropbottle-500.png 1x, /images/thewellnessdropbottle-1000.png 2x"
+                  srcset="/images/thewellnessdropbottle-500.png"
                   alt="The Wellness Drop Supplement Bottle"
                   class="w-full h-full object-contain"
                   loading="eager"

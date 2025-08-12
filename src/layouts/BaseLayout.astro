@@ -171,15 +171,42 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <!-- Critical CSS for above-the-fold content -->
     <style>
       /* Critical CSS for faster initial paint */
+      * { box-sizing: border-box; }
       body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      img { max-width: 100%; height: auto; }
       .bg-gradient-to-b { background: linear-gradient(to bottom, var(--tw-gradient-from), var(--tw-gradient-to)); }
       .from-mint-50 { --tw-gradient-from: #f0fdf6; }
       .to-white { --tw-gradient-to: #ffffff; }
       .text-dark-900 { color: #111827; }
+      .text-dark-600 { color: #4b5563; }
       .max-w-7xl { max-width: 80rem; }
       .mx-auto { margin-left: auto; margin-right: auto; }
+      .px-4 { padding-left: 1rem; padding-right: 1rem; }
+      .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+      .grid { display: grid; }
+      .gap-12 { gap: 3rem; }
+      .space-y-6 > * + * { margin-top: 1.5rem; }
+      .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+      .font-bold { font-weight: 700; }
+      .leading-tight { line-height: 1.25; }
+      .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+      .leading-relaxed { line-height: 1.625; }
+      .bg-mint-600 { background-color: #00c896; }
+      .text-white { color: #ffffff; }
+      .rounded-lg { border-radius: 0.5rem; }
+      .inline-flex { display: inline-flex; }
+      .items-center { align-items: center; }
+      .justify-center { justify-content: center; }
+      .px-8 { padding-left: 2rem; padding-right: 2rem; }
+      .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
       @media (min-width: 768px) {
         .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        .md\\:text-5xl { font-size: 3rem; line-height: 1; }
+      }
+      @media (min-width: 1024px) {
+        .lg\\:text-6xl { font-size: 3.75rem; line-height: 1; }
+        .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
       }
     </style>
   </head>
