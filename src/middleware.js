@@ -1,6 +1,6 @@
-export function onRequest({ request, url }, next) {
+export async function onRequest({ request, url }, next) {
   // Get the response
-  const response = next();
+  const response = await next();
   
   // Add security headers
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
