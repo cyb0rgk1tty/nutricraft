@@ -129,18 +129,25 @@ import { testimonials } from "../data/testimonials.js";
         <div class="relative">
           <div class="rounded-3xl p-8 md:p-12">
             <div
-              class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center bg-white"
+              class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center"
             >
-              <img
-                src="/images/thewellnessdropbottle.png"
-                alt="The Wellness Drop Supplement Bottle"
-                class="w-full h-full object-contain"
-                loading="eager"
-                width="500"
-                height="500"
-                fetchpriority="high"
-                decoding="sync"
-              />
+              <picture>
+                <source
+                  srcset="/images/thewellnessdropbottle-500.webp 1x, /images/thewellnessdropbottle-1000.webp 2x"
+                  type="image/webp"
+                />
+                <img
+                  src="/images/thewellnessdropbottle-500.png"
+                  srcset="/images/thewellnessdropbottle-500.png 1x, /images/thewellnessdropbottle-1000.png 2x"
+                  alt="The Wellness Drop Supplement Bottle"
+                  class="w-full h-full object-contain"
+                  loading="eager"
+                  width="500"
+                  height="500"
+                  fetchpriority="high"
+                  decoding="sync"
+                />
+              </picture>
             </div>
           </div>
           <!-- Decorative elements -->
@@ -286,6 +293,93 @@ import { testimonials } from "../data/testimonials.js";
                 <p class="text-dark-600">
                   Our efficient partner network and streamlined processes ensure
                   your products reach market quickly.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-mint-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4M7 12l2 2 4-4m0 0l2 2 4-4M5 10l2 2 4-4 4 4 2-2"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">
+                  Trusted by Major Brands
+                </h3>
+                <p class="text-dark-600">
+                  Work with the exact same manufacturers that produce supplements for 
+                  recognized brands in major retail chains like Walmart, CVS, and GNC.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-mint-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">
+                  Rigorous Quality Control
+                </h3>
+                <p class="text-dark-600">
+                  Multi-stage testing protocols, batch certifications, and third-party 
+                  verification ensure consistent quality that meets or exceeds industry standards.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-mint-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-dark-900 mb-2">
+                  State-of-the-Art Facilities
+                </h3>
+                <p class="text-dark-600">
+                  Access climate-controlled environments, advanced encapsulation technology, 
+                  and automated packaging lines that ensure precision and efficiency.
                 </p>
               </div>
             </div>
