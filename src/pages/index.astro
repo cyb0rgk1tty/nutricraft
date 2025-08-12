@@ -45,7 +45,7 @@ import { testimonials } from "../data/testimonials.js";
           <ScrollAnimation animation="fade-up" delay={400}>
             <div class="flex flex-col sm:flex-row gap-4">
               <a
-                href="#contact"
+                href="/contact"
                 class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
                 aria-label="Start your supplement project with The Wellness Drop"
               >
@@ -854,176 +854,46 @@ import { testimonials } from "../data/testimonials.js";
     </div>
   </section>
 
-  <!-- Contact Form Section -->
-  <section id="contact" class="py-20 bg-gradient-to-b from-mint-50 to-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <ScrollAnimation animation="fade-up">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-            Start Your Supplement Journey Today
-          </h2>
-          <p class="text-xl text-dark-600">
-            Tell us about your project and let's create something exceptional
-            together
-          </p>
-        </div>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Launch Your Supplement Brand?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Let's discuss your project and find the perfect manufacturing partner for your needs.
+        </p>
       </ScrollAnimation>
-
-      <ScrollAnimation animation="fade-in" delay={200}>
-        <form class="bg-white rounded-2xl shadow-xl p-8 md:p-12" aria-label="Contact form for supplement project inquiry">
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <label
-                for="name"
-                class="block text-sm font-semibold text-dark-900 mb-2"
-                >Full Name *</label
-              >
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                autocomplete="name"
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-                placeholder="John Doe"
-              />
-            </div>
-
-            <div>
-              <label
-                for="email"
-                class="block text-sm font-semibold text-dark-900 mb-2"
-                >Email Address *</label
-              >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                autocomplete="email"
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-                placeholder="john@example.com"
-              />
-            </div>
-
-            <div>
-              <label
-                for="phone"
-                class="block text-sm font-semibold text-dark-900 mb-2"
-                >Phone Number</label
-              >
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                autocomplete="tel"
-                inputmode="tel"
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-
-            <div>
-              <label
-                for="company"
-                class="block text-sm font-semibold text-dark-900 mb-2"
-                >Company Name</label
-              >
-              <input
-                type="text"
-                id="company"
-                name="company"
-                autocomplete="organization"
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-                placeholder="Your Company"
-              />
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <label
-              for="project-type"
-              class="block text-sm font-semibold text-dark-900 mb-2"
-              >Project Type *</label
+      
+      <ScrollAnimation animation="fade-up" delay={200}>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Get Started
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-            <select
-              id="project-type"
-              name="project-type"
-              required
-              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-            >
-              <option value="">Select a project type</option>
-              <option value="new-brand">New Brand Launch</option>
-              <option value="private-label">Private Label</option>
-              <option value="custom-formulation">Custom Formulation</option>
-              <option value="manufacturing">Manufacturing Only</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="mt-6">
-            <label
-              for="message"
-              class="block text-sm font-semibold text-dark-900 mb-2"
-              >Project Details *</label
-            >
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-              placeholder="Tell us about your supplement project, including product types, quantities, and timeline..."
-            ></textarea>
-          </div>
-
-          <div class="mt-6">
-            <label class="flex items-start gap-3">
-              <input
-                type="checkbox"
-                id="newsletter"
-                name="newsletter"
-                class="mt-1 w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
-                aria-describedby="newsletter-description"
-              />
-              <span class="text-sm text-dark-600" id="newsletter-description">
-                I'd like to receive updates about industry trends, new
-                regulations, and exclusive offers from The Wellness Drop.
-              </span>
-            </label>
-          </div>
-
-          <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <button
-              type="submit"
-              class="flex-1 bg-mint-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-mint-700 transition-colors duration-300"
-              aria-label="Submit your supplement project inquiry"
-            >
-              Submit Inquiry
-            </button>
-            <button
-              type="button"
-              class="sm:w-auto bg-white text-mint-600 font-semibold py-4 px-8 rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
-              aria-label="Schedule a consultation call"
-            >
-              Schedule a Call
-            </button>
-          </div>
-        </form>
-      </ScrollAnimation>
-
-      <div class="mt-8 text-center">
-        <p class="text-dark-600">
-          Prefer to email? Contact us at
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
           <a
             href="mailto:hello@thewellnessdrop.com"
-            class="text-mint-600 font-semibold hover:text-mint-700"
-            aria-label="Email The Wellness Drop at hello@thewellnessdrop.com"
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
           >
-            hello@thewellnessdrop.com
+            Email Us Directly
           </a>
-        </p>
-      </div>
+        </div>
+      </ScrollAnimation>
     </div>
   </section>
 
