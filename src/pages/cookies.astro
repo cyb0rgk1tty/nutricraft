@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Cookie Policy | The Wellness Drop"
+  description="Cookie policy for The Wellness Drop. Learn how we use cookies and similar technologies on our website."
+>
+  <Header />
+  
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold text-dark-900 mb-8">Cookie Policy</h1>
+      
+      <div class="prose prose-lg max-w-none text-dark-600">
+        <p class="text-sm text-gray-600 mb-6">Last Updated: {new Date().toLocaleDateString()}</p>
+        
+        <p>The Wellness Drop ("we," "our," or "us") uses cookies and similar tracking technologies on our website. This Cookie Policy explains what cookies are, how we use them, and your choices regarding cookies.</p>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">What Are Cookies?</h2>
+        <p>Cookies are small text files that are placed on your device when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.</p>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">How We Use Cookies</h2>
+        <p>We use cookies for the following purposes:</p>
+        
+        <h3 class="text-xl font-semibold text-dark-900 mt-6 mb-3">Essential Cookies</h3>
+        <p>These cookies are necessary for the website to function properly. They enable basic functions like page navigation and access to secure areas of the website.</p>
+        
+        <h3 class="text-xl font-semibold text-dark-900 mt-6 mb-3">Analytics Cookies</h3>
+        <p>We use analytics cookies to understand how visitors interact with our website. This helps us improve our website's functionality and content. We may use services like Google Analytics for this purpose.</p>
+        
+        <h3 class="text-xl font-semibold text-dark-900 mt-6 mb-3">Marketing Cookies</h3>
+        <p>These cookies track your online activity to help us deliver more relevant advertising or limit how many times you see an ad. These cookies may share information with other organizations or advertisers.</p>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Types of Cookies We Use</h2>
+        
+        <div class="overflow-x-auto mb-6">
+          <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cookie Type</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Session Cookies</td>
+                <td class="px-6 py-4 text-sm">Enable website functionality</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Until browser is closed</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Analytics Cookies</td>
+                <td class="px-6 py-4 text-sm">Track website usage and performance</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Up to 2 years</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Preference Cookies</td>
+                <td class="px-6 py-4 text-sm">Remember your settings and preferences</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">Up to 1 year</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Third-Party Cookies</h2>
+        <p>Some cookies on our website are placed by third-party services that appear on our pages. These may include:</p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>Google Analytics for website analytics</li>
+          <li>Calendly for appointment scheduling</li>
+          <li>Social media platforms for content sharing</li>
+        </ul>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Your Cookie Choices</h2>
+        <p>You have several options for managing cookies:</p>
+        
+        <h3 class="text-xl font-semibold text-dark-900 mt-6 mb-3">Browser Settings</h3>
+        <p>Most web browsers allow you to control cookies through their settings. You can:</p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>View what cookies are stored on your device</li>
+          <li>Delete some or all cookies</li>
+          <li>Block all cookies or certain types of cookies</li>
+          <li>Set preferences for certain websites</li>
+        </ul>
+        
+        <h3 class="text-xl font-semibold text-dark-900 mt-6 mb-3">Opt-Out Links</h3>
+        <p>You can opt out of certain third-party cookies:</p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>Google Analytics: <a href="https://tools.google.com/dlpage/gaoptout" class="text-mint-600 hover:text-mint-700" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a></li>
+          <li>General advertising: <a href="https://optout.aboutads.info/" class="text-mint-600 hover:text-mint-700" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance Opt-Out</a></li>
+        </ul>
+        
+        <div class="bg-mint-50 border border-mint-200 rounded-lg p-4 my-6">
+          <p class="text-sm"><strong>Note:</strong> Blocking or deleting cookies may impact your experience on our website and limit certain functionality.</p>
+        </div>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Do Not Track</h2>
+        <p>Some browsers include a "Do Not Track" (DNT) feature that signals to websites that you do not want to be tracked. We currently do not respond to DNT signals.</p>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Updates to This Policy</h2>
+        <p>We may update this Cookie Policy from time to time to reflect changes in our practices or for legal, operational, or regulatory reasons. Please check this page periodically for updates.</p>
+        
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">Contact Us</h2>
+        <p>If you have questions about our use of cookies, please contact us at:</p>
+        <p class="mt-4">
+          <strong>The Wellness Drop</strong><br>
+          Email: <a href="mailto:hello@thewellnessdrop.com" class="text-mint-600 hover:text-mint-700">hello@thewellnessdrop.com</a>
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <Footer />
+</BaseLayout>

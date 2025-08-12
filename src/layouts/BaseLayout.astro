@@ -10,8 +10,8 @@ export interface Props {
 }
 
 const { 
-  title = 'Nutricraft Labs | Premium Supplement Manufacturing & Private Label Solutions',
-  description = 'Your trusted partner for supplement manufacturing, private labeling, NPN applications, and compliance. GMP-certified facility with low MOQs and fast turnaround.',
+  title = 'The Wellness Drop | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)',
+  description = 'Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging.',
   image = '/images/og-image.jpg'
 } = Astro.props;
 
@@ -37,12 +37,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         },
         optional: {
           description,
-          siteName: "Nutricraft Labs"
+          siteName: "The Wellness Drop"
         }
       }}
       twitter={{
-        creator: "@nutricraftlabs",
-        site: "@nutricraftlabs",
+        creator: "@thewellnessdrop",
+        site: "@thewellnessdrop",
         card: "summary_large_image"
       }}
       extend={{
@@ -76,20 +76,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Nutricraft Labs",
-        "description": "Premium supplement manufacturing and private label solutions provider",
-        "url": "https://nutricraft.tanglewebservices.com",
-        "logo": "https://nutricraft.tanglewebservices.com/images/logo.png",
+        "name": "The Wellness Drop",
+        "description": "Private-label supplements and regulatory compliance services for North America",
+        "url": "https://thewellnessdrop.com",
+        "logo": "https://thewellnessdrop.com/images/logo.png",
         "contactPoint": {
           "@type": "ContactPoint",
-          "telephone": "+1-XXX-XXX-XXXX",
+          "email": "hello@thewellnessdrop.com",
           "contactType": "sales",
-          "availableLanguage": "English"
+          "availableLanguage": ["English", "French"]
         },
         "sameAs": [
-          "https://www.linkedin.com/company/nutricraft-labs",
-          "https://twitter.com/nutricraftlabs"
-        ]
+          "https://www.linkedin.com/company/thewellnessdrop",
+          "https://twitter.com/thewellnessdrop"
+        ],
+        "areaServed": ["CA", "US"],
+        "serviceArea": {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": "43.653226",
+            "longitude": "-79.3831843"
+          },
+          "geoRadius": "5000000"
+        }
       }
     </script>
   </head>
