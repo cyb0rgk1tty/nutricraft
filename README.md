@@ -165,7 +165,7 @@ npm run build
 Create a `.env` file for any environment-specific variables:
 
 ```env
-PUBLIC_SITE_URL=https://nutricraftlabs.com
+PUBLIC_SITE_URL=https://thewellnessdrop.com
 ```
 
 ## 🤝 Contributing
@@ -182,7 +182,7 @@ This project is proprietary and confidential.
 
 ## 📞 Support
 
-For support, email support@nutricraftlabs.com or visit our website.
+For support, email hello@thewellnessdrop.com or visit our website.
 
 ---
 
