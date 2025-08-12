@@ -1,0 +1,41 @@
+Open Graph Image Design Instructions for The Wellness Drop
+=========================================================
+
+Recommended Specifications:
+- Dimensions: 1200x630px (Facebook/LinkedIn optimal)
+- File format: JPG or PNG
+- File size: Under 1MB for optimal loading
+- File name: og-image.jpg
+
+Design Requirements:
+- Background: Mint green gradient (#A8E6CF as primary color)
+- Include The Wellness Drop logo/branding
+- Main heading text: "Your Partner for Private-Label Supplements & Compliance"
+- Sub-text (optional): "NPN Registration • GMP Manufacturing • Regulatory Expertise"
+- Visual elements: Consider including subtle supplement/wellness icons or patterns
+
+Color Palette:
+- Primary: #A8E6CF (Mint green)
+- Secondary: #00c16e (Brand green)
+- Text: #1f2937 (Dark gray for contrast)
+- White space: Use generously for clean, professional look
+
+Typography:
+- Use Inter font family for consistency with website
+- Main heading: Bold/700 weight, large size
+- Sub-text: Regular/400 weight, smaller size
+
+Additional Notes:
+- Ensure text is readable when image is scaled down
+- Keep design clean and professional
+- Test appearance on various social media platforms
+- Consider creating variations for different pages/services
+
+Tools for Creation:
+- Canva (easiest option with templates)
+- Figma (for more control)
+- Adobe Creative Suite
+- Online OG image generators
+
+Once created, save the image as:
+/var/www/nutricraft/public/images/og-image.jpg

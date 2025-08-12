@@ -1,0 +1,59 @@
+---
+const { GA_MEASUREMENT_ID } = import.meta.env;
+const isProd = import.meta.env.PROD;
+---
+
+{isProd && GA_MEASUREMENT_ID && (
+  <>
+    <!-- Google Analytics -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{GA_MEASUREMENT_ID}', {
+        page_path: window.location.pathname,
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+      
+      // Track form submissions
+      document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.querySelector('#contact form');
+        if (contactForm) {
+          contactForm.addEventListener('submit', function(e) {
+            gtag('event', 'form_submit', {
+              event_category: 'engagement',
+              event_label: 'contact_form'
+            });
+          });
+        }
+        
+        // Track calculator interactions
+        const calculators = ['moq-calculator', 'lead-time-calculator', 'cost-calculator'];
+        calculators.forEach(id => {
+          const form = document.getElementById(id);
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              gtag('event', 'calculator_use', {
+                event_category: 'engagement',
+                event_label: id
+              });
+            });
+          }
+        });
+        
+        // Track outbound links
+        const links = document.querySelectorAll('a[href^="http"]:not([href*="thewellnessdrop.com"])');
+        links.forEach(link => {
+          link.addEventListener('click', function() {
+            gtag('event', 'click', {
+              event_category: 'outbound',
+              event_label: this.href
+            });
+          });
+        });
+      });
+    </script>
+  </>
+)}

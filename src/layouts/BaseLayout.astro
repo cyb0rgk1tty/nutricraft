@@ -1,6 +1,7 @@
 ---
 import { SEO } from 'astro-seo';
 import ChatSupport from '../components/ChatSupport.astro';
+import Analytics from '../components/Analytics.astro';
 import '../styles/tailwind.css';
 
 export interface Props {
@@ -11,8 +12,9 @@ export interface Props {
 
 const { 
   title = 'The Wellness Drop | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)',
-  description = 'Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging.',
-  image = '/images/og-image.jpg'
+  description = 'Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging. Free consultation.',
+  image = '/images/og-image.jpg',
+  noindex = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -23,7 +25,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     
     <SEO
       title={title}
@@ -48,7 +53,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       extend={{
         link: [
           { rel: "canonical", href: canonicalURL.href },
-          { rel: "sitemap", href: "/sitemap-index.xml" },
+          { rel: "sitemap", href: "/sitemap.xml" },
+          { rel: "alternate", hreflang: "en-CA", href: canonicalURL.href },
+          { rel: "alternate", hreflang: "fr-CA", href: canonicalURL.href.replace('.com', '.com/fr') },
+          { rel: "alternate", hreflang: "x-default", href: canonicalURL.href },
           { 
             rel: "preconnect", 
             href: "https://fonts.googleapis.com" 
@@ -59,14 +67,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             crossorigin: true
           },
           {
-            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
-            rel: "stylesheet"
+            rel: "preload",
+            as: "style",
+            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+          },
+          {
+            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
+            rel: "stylesheet",
+            media: "print",
+            onload: "this.media='all'"
+          },
+          {
+            rel: "dns-prefetch",
+            href: "https://schema.org"
           }
         ],
         meta: [
-          { name: "robots", content: "index, follow" },
-          { name: "googlebot", content: "index, follow" },
-          { property: "og:locale", content: "en_US" }
+          { name: "robots", content: noindex ? "noindex, nofollow" : "index, follow" },
+          { name: "googlebot", content: noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large" },
+          { property: "og:locale", content: "en_US" },
+          { property: "og:locale:alternate", content: "fr_CA" },
+          { name: "author", content: "The Wellness Drop" },
+          { name: "theme-color", content: "#A8E6CF" },
+          { name: "format-detection", content: "telephone=no" }
         ]
       }}
     />
@@ -99,12 +122,50 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             "longitude": "-79.3831843"
           },
           "geoRadius": "5000000"
+        },
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "CAD",
+          "lowPrice": "500",
+          "offerCount": "8"
         }
       }
     </script>
+    
+    <!-- LocalBusiness Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "The Wellness Drop",
+        "description": "Private-label supplement manufacturing matchmaking and regulatory compliance services",
+        "url": "https://thewellnessdrop.com",
+        "telephone": "",
+        "email": "hello@thewellnessdrop.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Toronto",
+          "addressRegion": "ON",
+          "addressCountry": "CA"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "43.653226",
+          "longitude": "-79.3831843"
+        },
+        "openingHours": "Mo-Fr 09:00-17:00",
+        "priceRange": "$$$"
+      }
+    </script>
+    
+    <!-- Fallback for browsers with JavaScript disabled -->
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    </noscript>
   </head>
   <body class="bg-white text-gray-900">
     <slot />
     <ChatSupport />
+    <Analytics />
   </body>
 </html>
