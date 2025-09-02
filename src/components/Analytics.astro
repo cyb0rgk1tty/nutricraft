@@ -29,19 +29,19 @@ const isProd = import.meta.env.PROD;
           });
         }
         
-        // Track calculator interactions
-        const calculators = ['moq-calculator', 'lead-time-calculator', 'cost-calculator'];
-        calculators.forEach(id => {
-          const form = document.getElementById(id);
-          if (form) {
-            form.addEventListener('submit', function(e) {
-              gtag('event', 'calculator_use', {
-                event_category: 'engagement',
-                event_label: id
-              });
-            });
-          }
-        });
+        // Calculator tracking disabled - calculators coming soon
+        // const calculators = ['moq-calculator', 'lead-time-calculator', 'cost-calculator'];
+        // calculators.forEach(id => {
+        //   const form = document.getElementById(id);
+        //   if (form) {
+        //     form.addEventListener('submit', function(e) {
+        //       gtag('event', 'calculator_use', {
+        //         event_category: 'engagement',
+        //         event_label: id
+        //       });
+        //     });
+        //   }
+        // });
         
         // Track outbound links
         const links = document.querySelectorAll('a[href^="http"]:not([href*="nutricraftlabs.com"])');
