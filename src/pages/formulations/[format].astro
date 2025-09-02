@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FormulationImage from "../../components/FormulationImage.astro";
 import { formulations, getFormulationBySlug, formulationComparison } from "../../data/formulations.js";
 
 export async function getStaticPaths() {
@@ -32,13 +33,12 @@ const description = formulation.shortDescription;
       <div class="text-center">
         <ScrollAnimation animation="fade-up">
           <div class="relative w-full max-w-2xl mx-auto h-64 md:h-80 mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-mint-100 to-mint-200">
-            <img
-              src={formulation.image}
-              alt={formulation.imageAlt}
+            <FormulationImage
+              formulation={formulation}
               class="w-full h-full object-cover"
               loading="eager"
-              width="800"
-              height="400"
+              priority={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1536px) 66vw, 800px"
             />
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">

@@ -12,6 +12,7 @@ import ProductShowcase from "../components/ProductShowcase.astro";
 import ScrollAnimation from "../components/ScrollAnimation.astro";
 import CountUp from "../components/CountUp.astro";
 import FAQ from "../components/FAQ.astro";
+import FormulationImage from "../components/FormulationImage.astro";
 import { services } from "../data/services.js";
 import { testimonials } from "../data/testimonials.js";
 import { formulations } from "../data/formulations.js";
@@ -205,13 +206,11 @@ import { formulations } from "../data/formulations.js";
               >
                 <!-- Image Container - Edge to Edge -->
                 <div class="relative w-full h-48 overflow-hidden bg-gradient-to-br from-mint-100 to-mint-200">
-                  <img
-                    src={formulation.image}
-                    alt={formulation.imageAlt}
+                  <FormulationImage
+                    formulation={formulation}
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
-                    width="400"
-                    height="250"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 
@@ -258,23 +257,35 @@ import { formulations } from "../data/formulations.js";
         }
       </div>
 
-      <!-- Additional Info -->
+      <!-- CTA Section -->
       <ScrollAnimation animation="fade-up" delay={600}>
-        <div class="mt-16 bg-white rounded-2xl p-8 shadow-lg">
-          <div class="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div class="text-4xl font-bold text-mint-600 mb-2">6+</div>
-              <p class="text-dark-600">Delivery Formats</p>
-            </div>
-            <div>
-              <div class="text-4xl font-bold text-mint-600 mb-2">98%</div>
-              <p class="text-dark-600">Max Absorption Rate</p>
-            </div>
-            <div>
-              <div class="text-4xl font-bold text-mint-600 mb-2">500+</div>
-              <p class="text-dark-600">Low MOQs Available</p>
-            </div>
-          </div>
+        <div class="mt-16 bg-white rounded-2xl p-12 shadow-lg text-center">
+          <h3 class="text-2xl md:text-3xl font-bold text-dark-900 mb-4">
+            Need Something Specific?
+          </h3>
+          <p class="text-lg text-dark-600 mb-8 max-w-2xl mx-auto">
+            Our team specializes in custom formulations and unique delivery methods. 
+            Let's discuss how we can bring your vision to life.
+          </p>
+          <a
+            href="/contact"
+            class="inline-flex items-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-200"
+          >
+            Get Custom Solutions
+            <svg
+              class="w-5 h-5 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
         </div>
       </ScrollAnimation>
     </div>
@@ -468,229 +479,6 @@ import { formulations } from "../data/formulations.js";
     </div>
   </section>
 
-  <!-- Manufacturing Capabilities Section -->
-  <section class="py-20 bg-gradient-to-b from-white to-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Centered Header -->
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-          Access to World-Class Manufacturing
-        </h2>
-        <p class="text-xl text-dark-600 max-w-3xl mx-auto">
-          Partner with the same trusted manufacturers used by leading supplement brands. 
-          We connect you with industry-certified facilities that produce for major 
-          retail chains and established brands worldwide.
-        </p>
-      </div>
-
-      <!-- 4-Card Grid Layout -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Diverse Product Formats -->
-        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div class="w-14 h-14 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
-            <svg
-              class="w-7 h-7 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-3">
-            Diverse Product Formats
-          </h3>
-          <p class="text-dark-600">
-            Capsules, tablets, powders, liquids, gummies, and more. Our
-            partner network can produce any format you need.
-          </p>
-        </div>
-
-        <!-- Scalable Production -->
-        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div class="w-14 h-14 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
-            <svg
-              class="w-7 h-7 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-3">
-            Scalable Production
-          </h3>
-          <p class="text-dark-600">
-            From small pilot runs to large-scale production, our partners
-            scale with your business growth.
-          </p>
-        </div>
-
-        <!-- Fast Turnaround -->
-        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div class="w-14 h-14 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
-            <svg
-              class="w-7 h-7 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-3">
-            Fast Turnaround
-          </h3>
-          <p class="text-dark-600">
-            Our efficient partner network and streamlined processes ensure
-            your products reach market quickly.
-          </p>
-        </div>
-
-        <!-- Trusted Partners -->
-        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div class="w-14 h-14 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
-            <svg
-              class="w-7 h-7 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4M7 12l2 2 4-4m0 0l2 2 4-4M5 10l2 2 4-4 4 4 2-2"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-3">
-            Trusted Partners
-          </h3>
-          <p class="text-dark-600">
-            Work with the same manufacturers that produce supplements for 
-            recognized brands in major retail chains.
-          </p>
-        </div>
-      </div>
-
-      <!-- CTA Section -->
-      <div class="text-center mt-12">
-        <a
-          href="/contact"
-          class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
-        >
-          Explore Manufacturing Options
-          <svg
-            class="ml-2 w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Certifications Section -->
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-            Partner Certifications
-          </h2>
-          <p class="text-xl text-dark-600">
-            Held by select partners, verified during vendor onboarding
-          </p>
-        </div>
-      </ScrollAnimation>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <ScrollAnimation animation="scale-in" delay={100}>
-          <div
-            class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300"
-          >
-            <div
-              class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-2xl font-bold text-mint-600">GMP</span>
-            </div>
-            <h3 class="font-semibold text-dark-900">GMP Certified</h3>
-            <p class="text-sm text-dark-600 mt-2">
-              Good Manufacturing Practices
-            </p>
-          </div>
-        </ScrollAnimation>
-
-        <ScrollAnimation animation="scale-in" delay={200}>
-          <div
-            class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300"
-          >
-            <div
-              class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-2xl font-bold text-mint-600">FDA</span>
-            </div>
-            <h3 class="font-semibold text-dark-900">FDA Registered</h3>
-            <p class="text-sm text-dark-600 mt-2">US FDA Compliance</p>
-          </div>
-        </ScrollAnimation>
-
-        <ScrollAnimation animation="scale-in" delay={300}>
-          <div
-            class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300"
-          >
-            <div
-              class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-2xl font-bold text-mint-600">ISO</span>
-            </div>
-            <h3 class="font-semibold text-dark-900">ISO 9001:2015</h3>
-            <p class="text-sm text-dark-600 mt-2">Quality Management</p>
-          </div>
-        </ScrollAnimation>
-
-        <ScrollAnimation animation="scale-in" delay={400}>
-          <div
-            class="bg-gray-50 rounded-xl p-6 text-center hover:bg-mint-50 transition-colors duration-300"
-          >
-            <div
-              class="w-20 h-20 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="text-2xl font-bold text-mint-600">NSF</span>
-            </div>
-            <h3 class="font-semibold text-dark-900">NSF Certified</h3>
-            <p class="text-sm text-dark-600 mt-2">Third-Party Verified</p>
-          </div>
-        </ScrollAnimation>
-      </div>
-    </div>
-  </section>
-
   <!-- About Us Section -->
   <section id="about" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -739,15 +527,41 @@ import { formulations } from "../data/formulations.js";
           </div>
         </div>
 
-        <div class="bg-mint-100 rounded-3xl p-8 lg:p-12">
-          <div
-            class="aspect-square bg-gradient-to-br from-mint-200 to-mint-300 rounded-2xl flex items-center justify-center"
-          >
-            <!-- Replace with actual image: <img src="/images/team-photo.jpg" alt="Nutricraft Labs team" loading="lazy" width="600" height="600" class="w-full h-full object-cover rounded-2xl" /> -->
-            <p class="text-mint-700 text-lg font-medium">
-              Team Photo Placeholder
-            </p>
-          </div>
+        <div class="rounded-3xl p-8 lg:p-12">
+          <picture class="block aspect-square">
+            <!-- WebP sources for modern browsers -->
+            <source
+              type="image/webp"
+              srcset="/images/team-400.webp 400w,
+                      /images/team-400@2x.webp 800w,
+                      /images/team-800.webp 800w,
+                      /images/team-1200.webp 1200w"
+              sizes="(max-width: 640px) 100vw,
+                     (max-width: 1024px) 50vw,
+                     600px"
+            />
+            <!-- JPEG fallback -->
+            <source
+              type="image/jpeg"
+              srcset="/images/team-400.jpg 400w,
+                      /images/team-400@2x.jpg 800w,
+                      /images/team-800.jpg 800w,
+                      /images/team-1200.jpg 1200w"
+              sizes="(max-width: 640px) 100vw,
+                     (max-width: 1024px) 50vw,
+                     600px"
+            />
+            <!-- Fallback img tag -->
+            <img
+              src="/images/team-800.jpg"
+              alt="Nutricraft Labs team - Expert supplement manufacturers and regulatory specialists"
+              loading="lazy"
+              width="800"
+              height="800"
+              class="w-full h-full object-cover rounded-2xl"
+              decoding="async"
+            />
+          </picture>
         </div>
       </div>
     </div>

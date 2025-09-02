@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FormulationImage from "../../components/FormulationImage.astro";
 import { formulations, formulationComparison } from "../../data/formulations.js";
 ---
 
@@ -42,13 +43,11 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
               >
                 <!-- Image Container - Edge to Edge -->
                 <div class="relative w-full h-56 overflow-hidden bg-gradient-to-br from-mint-100 to-mint-200">
-                  <img
-                    src={formulation.image}
-                    alt={formulation.imageAlt}
+                  <FormulationImage
+                    formulation={formulation}
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
-                    width="400"
-                    height="300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 

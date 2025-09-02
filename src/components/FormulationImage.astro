@@ -1,0 +1,68 @@
+---
+interface Props {
+  formulation: any;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+  priority?: boolean;
+}
+
+const { 
+  formulation, 
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+  loading = 'lazy',
+  class: className = '',
+  priority = false
+} = Astro.props;
+
+const defaultWidth = 800;
+const defaultHeight = 800;
+---
+
+<picture>
+  <!-- WebP sources for different screen sizes -->
+  <source
+    media="(max-width: 640px)"
+    srcset={formulation.responsiveImages?.smallWebp || formulation.image}
+    type="image/webp"
+  />
+  <source
+    media="(max-width: 1024px)"
+    srcset={formulation.responsiveImages?.mediumWebp || formulation.image}
+    type="image/webp"
+  />
+  <source
+    srcset={`${formulation.responsiveImages?.mediumWebp || formulation.image} 1x, ${formulation.responsiveImages?.largeWebp || formulation.image} 2x`}
+    type="image/webp"
+  />
+  
+  <!-- PNG sources for different screen sizes -->
+  <source
+    media="(max-width: 640px)"
+    srcset={formulation.responsiveImages?.small || formulation.image}
+    type="image/png"
+  />
+  <source
+    media="(max-width: 1024px)"
+    srcset={formulation.responsiveImages?.medium || formulation.image}
+    type="image/png"
+  />
+  
+  <!-- Fallback img tag -->
+  <img
+    src={formulation.responsiveImages?.medium || formulation.image}
+    srcset={`${formulation.responsiveImages?.medium || formulation.image} 1x, ${formulation.responsiveImages?.large || formulation.image} 2x`}
+    alt={formulation.imageAlt}
+    class={className}
+    loading={loading}
+    width={defaultWidth}
+    height={defaultHeight}
+    sizes={sizes}
+    decoding="async"
+  />
+</picture>
+
+{priority && (
+  <link rel="preload" as="image" href={formulation.responsiveImages?.mediumWebp || formulation.image} type="image/webp" />
+  <link rel="preload" as="image" href={formulation.responsiveImages?.medium || formulation.image} type="image/png" />
+)}

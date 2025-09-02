@@ -5,8 +5,16 @@ export const formulations = [
     slug: 'tablets',
     tagline: 'Cost-effective, long shelf life, high potency',
     shortDescription: 'The most economical choice with excellent stability and precise dosing.',
-    image: '/images/formulations/tablets-placeholder.jpg',
-    imageAlt: 'Supplement tablets in various shapes and sizes',
+    image: '/images/formulations/whitetabs-800.png',
+    responsiveImages: {
+      small: '/images/formulations/whitetabs-400.png',
+      medium: '/images/formulations/whitetabs-800.png',
+      large: '/images/formulations/whitetabs-1200.png',
+      smallWebp: '/images/formulations/whitetabs-400.webp',
+      mediumWebp: '/images/formulations/whitetabs-800.webp',
+      largeWebp: '/images/formulations/whitetabs-1200.webp'
+    },
+    imageAlt: 'White supplement tablets',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
     </svg>`,
@@ -50,8 +58,16 @@ export const formulations = [
     slug: 'capsules',
     tagline: 'Fast-dissolving, no taste, easy to swallow',
     shortDescription: 'Versatile delivery system ideal for powder-based formulations with rapid absorption.',
-    image: '/images/formulations/capsules-placeholder.jpg',
-    imageAlt: 'Various capsule supplements in different colors',
+    image: '/images/formulations/whitecaps-800.png',
+    responsiveImages: {
+      small: '/images/formulations/whitecaps-400.png',
+      medium: '/images/formulations/whitecaps-800.png',
+      large: '/images/formulations/whitecaps-1200.png',
+      smallWebp: '/images/formulations/whitecaps-400.webp',
+      mediumWebp: '/images/formulations/whitecaps-800.webp',
+      largeWebp: '/images/formulations/whitecaps-1200.webp'
+    },
+    imageAlt: 'White supplement capsules',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
     </svg>`,
@@ -95,7 +111,15 @@ export const formulations = [
     slug: 'softgels',
     tagline: 'Superior absorption for oil-based nutrients',
     shortDescription: 'Premium delivery system for fat-soluble vitamins and oils with enhanced bioavailability.',
-    image: '/images/formulations/softgels-placeholder.jpg',
+    image: '/images/formulations/softgels-800.png',
+    responsiveImages: {
+      small: '/images/formulations/softgels-400.png',
+      medium: '/images/formulations/softgels-800.png',
+      large: '/images/formulations/softgels-1200.png',
+      smallWebp: '/images/formulations/softgels-400.webp',
+      mediumWebp: '/images/formulations/softgels-800.webp',
+      largeWebp: '/images/formulations/softgels-1200.webp'
+    },
     imageAlt: 'Golden softgel supplements',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
@@ -140,7 +164,15 @@ export const formulations = [
     slug: 'gummies',
     tagline: 'Great taste, perfect for all ages',
     shortDescription: 'Enjoyable supplement format that combines nutrition with a pleasant taste experience.',
-    image: '/images/formulations/gummies-placeholder.jpg',
+    image: '/images/formulations/gummies-800.png',
+    responsiveImages: {
+      small: '/images/formulations/gummies-400.png',
+      medium: '/images/formulations/gummies-800.png',
+      large: '/images/formulations/gummies-1200.png',
+      smallWebp: '/images/formulations/gummies-400.webp',
+      mediumWebp: '/images/formulations/gummies-800.webp',
+      largeWebp: '/images/formulations/gummies-1200.webp'
+    },
     imageAlt: 'Colorful gummy vitamin supplements',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
@@ -186,7 +218,15 @@ export const formulations = [
     slug: 'powders',
     tagline: 'Flexible dosing, fast absorption, mixable',
     shortDescription: 'Versatile format offering customizable dosing and rapid nutrient delivery.',
-    image: '/images/formulations/powders-placeholder.jpg',
+    image: '/images/formulations/powder-800.png',
+    responsiveImages: {
+      small: '/images/formulations/powder-400.png',
+      medium: '/images/formulations/powder-800.png',
+      large: '/images/formulations/powder-1200.png',
+      smallWebp: '/images/formulations/powder-400.webp',
+      mediumWebp: '/images/formulations/powder-800.webp',
+      largeWebp: '/images/formulations/powder-1200.webp'
+    },
     imageAlt: 'Supplement powder with scoop',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
@@ -232,8 +272,16 @@ export const formulations = [
     slug: 'liquids',
     tagline: 'Fastest absorption, easy dosing',
     shortDescription: 'Premium liquid formulations offering maximum bioavailability and convenience.',
-    image: '/images/formulations/liquids-placeholder.jpg',
-    imageAlt: 'Liquid supplement bottles with dropper',
+    image: '/images/formulations/liquid-800.png',
+    responsiveImages: {
+      small: '/images/formulations/liquid-400.png',
+      medium: '/images/formulations/liquid-800.png',
+      large: '/images/formulations/liquid-1200.png',
+      smallWebp: '/images/formulations/liquid-400.webp',
+      mediumWebp: '/images/formulations/liquid-800.webp',
+      largeWebp: '/images/formulations/liquid-1200.webp'
+    },
+    imageAlt: 'Liquid supplement bottles',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
     </svg>`,
