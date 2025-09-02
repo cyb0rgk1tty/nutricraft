@@ -44,7 +44,7 @@ const isProd = import.meta.env.PROD;
         });
         
         // Track outbound links
-        const links = document.querySelectorAll('a[href^="http"]:not([href*="thewellnessdrop.com"])');
+        const links = document.querySelectorAll('a[href^="http"]:not([href*="nutricraftlabs.com"])');
         links.forEach(link => {
           link.addEventListener('click', function() {
             gtag('event', 'click', {

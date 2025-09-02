@@ -1,0 +1,73 @@
+
+> nutricraft-labs@0.0.1 dev
+> astro dev --host 0.0.0.0
+
+23:51:17 [types] Generated 0ms
+23:51:17 [content] Syncing content
+23:51:17 [content] Synced content
+
+ astro  v5.12.9 ready in 293 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  http://192.168.50.5:4321/
+
+23:51:17 watching for file changes...
+23:51:18 [200] / 430ms
+23:51:46 [200] / 17ms
+23:58:50 Configuration file updated. Restarting...
+23:58:50 [vite] Re-optimizing dependencies because vite config has changed
+23:58:50 [content] Syncing content
+23:58:50 [content] Astro config changed
+23:58:50 [content] Clearing content store
+23:58:50 [content] Synced content
+23:58:50 [types] Generated 83ms
+23:58:50 [vite] Re-optimizing dependencies because vite config has changed
+23:58:52 [200] / 189ms
+23:59:36 [watch] src/components/Header.astro
+23:59:36 [watch] src/components/Header.astro
+23:59:37 [200] / 59ms
+23:59:55 [watch] src/components/Footer.astro
+23:59:55 [watch] src/components/Footer.astro
+23:59:55 [200] / 59ms
+24:00:13 [watch] src/components/Analytics.astro
+24:00:13 [200] / 49ms
+24:00:44 [watch] src/layouts/BaseLayout.astro
+24:00:45 [200] / 57ms
+24:02:06 [WARN] Unsupported file type /var/www/nutricraft/src/pages/index.astro.tmp.191968.1756785726487 found. Prefix filename with an underscore (`_`) to ignore.
+24:02:06 [watch] src/pages/index.astro
+24:02:06 [watch] src/pages/index.astro
+24:02:06 [200] / 72ms
+24:02:07 [404] /images/nutricraftbottle-1000.webp 17ms
+24:02:07 [404] /images/nutricraftbottle-500.png 4ms
+24:02:51 [WARN] Unsupported file type /var/www/nutricraft/src/pages/privacy.astro.tmp.191968.1756785771355 found. Prefix filename with an underscore (`_`) to ignore.
+24:02:51 [watch] src/pages/privacy.astro
+24:02:51 [watch] src/pages/privacy.astro
+24:02:51 [200] / 62ms
+24:03:02 [WARN] Unsupported file type /var/www/nutricraft/src/pages/terms.astro.tmp.191968.1756785782250 found. Prefix filename with an underscore (`_`) to ignore.
+24:03:02 [watch] src/pages/terms.astro
+24:03:02 [watch] src/pages/terms.astro
+24:03:02 [200] / 54ms
+24:03:13 [WARN] Unsupported file type /var/www/nutricraft/src/pages/cookies.astro.tmp.191968.1756785793472 found. Prefix filename with an underscore (`_`) to ignore.
+24:03:13 [watch] src/pages/cookies.astro
+24:03:13 [watch] src/pages/cookies.astro
+24:03:13 [200] / 55ms
+24:03:50 [WARN] Unsupported file type /var/www/nutricraft/src/pages/contact.astro.tmp.191968.1756785830244 found. Prefix filename with an underscore (`_`) to ignore.
+24:03:50 [watch] src/pages/contact.astro
+24:03:50 [watch] src/pages/contact.astro
+24:03:50 [WARN] Unsupported file type /var/www/nutricraft/src/pages/404.astro.tmp.191968.1756785830281 found. Prefix filename with an underscore (`_`) to ignore.
+24:03:50 [watch] src/pages/404.astro
+24:03:50 [watch] src/pages/404.astro
+24:03:51 [200] / 63ms
+24:04:05 [WARN] Unsupported file type /var/www/nutricraft/src/pages/sitemap.xml.js.tmp.191968.1756785845057 found. Prefix filename with an underscore (`_`) to ignore.
+24:04:05 [watch] src/pages/sitemap.xml.js
+24:04:05 [watch] src/pages/sitemap.xml.js
+24:04:05 [200] / 64ms
+24:06:48 [WARN] Unsupported file type /var/www/nutricraft/src/pages/privacy.astro.tmp.191968.1756786008007 found. Prefix filename with an underscore (`_`) to ignore.
+24:06:48 [watch] src/pages/privacy.astro
+24:06:48 [watch] src/pages/privacy.astro
+24:06:48 [WARN] Unsupported file type /var/www/nutricraft/src/pages/cookies.astro.tmp.191968.1756786008049 found. Prefix filename with an underscore (`_`) to ignore.
+24:06:48 [watch] src/pages/cookies.astro
+24:06:48 [watch] src/pages/cookies.astro
+24:06:48 [watch] src/pages/terms.astro
+24:06:48 [watch] src/pages/terms.astro
+24:06:49 [200] / 94ms

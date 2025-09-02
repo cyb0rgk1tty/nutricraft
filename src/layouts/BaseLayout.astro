@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const { 
-  title = 'The Wellness Drop | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)',
+  title = 'Nutricraft Labs | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)',
   description = 'Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging. Free consultation.',
   image = '/images/og-image.jpg',
   noindex = false
@@ -47,12 +47,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         },
         optional: {
           description,
-          siteName: "The Wellness Drop"
+          siteName: "Nutricraft Labs"
         }
       }}
       twitter={{
-        creator: "@thewellnessdrop",
-        site: "@thewellnessdrop",
+        creator: "@nutricraftlabs",
+        site: "@nutricraftlabs",
         card: "summary_large_image"
       }}
       extend={{
@@ -92,7 +92,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           { name: "googlebot", content: noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large" },
           { property: "og:locale", content: "en_US" },
           { property: "og:locale:alternate", content: "fr_CA" },
-          { name: "author", content: "The Wellness Drop" },
+          { name: "author", content: "Nutricraft Labs" },
           { name: "theme-color", content: "#A8E6CF" },
           { name: "format-detection", content: "telephone=no" }
         ]
@@ -104,19 +104,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "The Wellness Drop",
+        "name": "Nutricraft Labs",
         "description": "Private-label supplements and regulatory compliance services for North America",
-        "url": "https://thewellnessdrop.com",
-        "logo": "https://thewellnessdrop.com/images/logo.png",
+        "url": "https://nutricraftlabs.com",
+        "logo": "https://nutricraftlabs.com/images/logo.png",
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "hello@thewellnessdrop.com",
+          "email": "hello@nutricraftlabs.com",
           "contactType": "sales",
           "availableLanguage": ["English", "French"]
         },
         "sameAs": [
-          "https://www.linkedin.com/company/thewellnessdrop",
-          "https://twitter.com/thewellnessdrop"
+          "https://www.linkedin.com/company/nutricraftlabs",
+          "https://twitter.com/nutricraftlabs"
         ],
         "areaServed": ["CA", "US"],
         "serviceArea": {
@@ -142,9 +142,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "name": "The Wellness Drop",
+        "name": "Nutricraft Labs",
         "description": "Private-label supplement manufacturing matchmaking and regulatory compliance services",
-        "url": "https://thewellnessdrop.com",
+        "url": "https://nutricraftlabs.com",
         "telephone": "",
         "email": "hello@thewellnessdrop.com",
         "address": {

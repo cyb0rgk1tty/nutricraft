@@ -1,6 +1,6 @@
 /* TEAM */
-Company: The Wellness Drop
-Contact: hello@thewellnessdrop.com
+Company: Nutricraft Labs
+Contact: hello@nutricraftlabs.com
 Location: Toronto, Canada
 
 /* THANKS */

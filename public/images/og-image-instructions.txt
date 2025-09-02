@@ -1,4 +1,4 @@
-Open Graph Image Design Instructions for The Wellness Drop
+Open Graph Image Design Instructions for Nutricraft Labs
 =========================================================
 
 Recommended Specifications:
@@ -9,7 +9,7 @@ Recommended Specifications:
 
 Design Requirements:
 - Background: Mint green gradient (#A8E6CF as primary color)
-- Include The Wellness Drop logo/branding
+- Include Nutricraft Labs logo/branding
 - Main heading text: "Your Partner for Private-Label Supplements & Compliance"
 - Sub-text (optional): "NPN Registration • GMP Manufacturing • Regulatory Expertise"
 - Visual elements: Consider including subtle supplement/wellness icons or patterns

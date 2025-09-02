@@ -1,4 +1,4 @@
-# Production Deployment Checklist for The Wellness Drop
+# Production Deployment Checklist for Nutricraft Labs
 
 ## ✅ SEO Optimizations Completed
 
@@ -77,7 +77,7 @@
    ```
 
 3. **DNS Configuration**
-   - Point thewellnessdrop.com to hosting
+   - Point nutricraftlabs.com to hosting
    - Configure www redirect
    - Set up email records (MX, SPF, DKIM)
 
@@ -131,10 +131,10 @@
 
 ## 📝 Notes
 
-- All "Nutricraft Labs" references have been updated to "The Wellness Drop"
+- All branding references have been updated to "Nutricraft Labs"
 - Agency model positioning is consistent throughout
 - Bilingual support structure is in place for future French translation
-- Contact email: hello@thewellnessdrop.com
+- Contact email: hello@nutricraftlabs.com
 - FAQ section has been updated with agency-focused questions
 
 ---

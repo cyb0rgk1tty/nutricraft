@@ -182,7 +182,7 @@ This project is proprietary and confidential.
 
 ## 📞 Support
 
-For support, email hello@thewellnessdrop.com or visit our website.
+For support, email hello@nutricraftlabs.com or visit our website.
 
 ---
 
