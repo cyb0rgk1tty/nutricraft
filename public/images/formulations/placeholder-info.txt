@@ -1,0 +1,19 @@
+Placeholder Images for Formulations
+===================================
+
+This directory should contain the following placeholder images:
+
+1. tablets-placeholder.jpg - Image showing various tablet supplements
+2. capsules-placeholder.jpg - Image showing colorful capsules
+3. softgels-placeholder.jpg - Image showing golden softgel supplements
+4. gummies-placeholder.jpg - Image showing colorful gummy vitamins
+5. powders-placeholder.jpg - Image showing supplement powder with scoop
+6. liquids-placeholder.jpg - Image showing liquid supplement bottles
+
+Recommended specifications:
+- Dimensions: 800x500px (16:10 aspect ratio)
+- Format: JPEG or WebP
+- File size: Under 200KB each
+- Style: Professional product photography on light background
+
+For now, the system will show a gradient placeholder background if images are not found.

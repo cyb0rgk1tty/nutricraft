@@ -1,0 +1,205 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import { formulations, formulationComparison } from "../../data/formulations.js";
+---
+
+<BaseLayout 
+  title="Supplement Formulation Types - Nutricraft Labs" 
+  description="Compare tablets, capsules, softgels, gummies, powders, and liquid supplement manufacturing options. Find the perfect format for your product."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <ScrollAnimation animation="fade-up">
+          <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
+            Supplement Formulation Types
+          </h1>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Choose the perfect delivery format for your supplements. Each formulation 
+            type offers unique benefits for different nutrients and target markets.
+          </p>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulations Grid -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          formulations.map((formulation, index) => (
+            <ScrollAnimation animation="fade-up" delay={index * 100}>
+              <a
+                href={`/formulations/${formulation.slug}`}
+                class="group relative bg-gray-50 rounded-xl hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1 overflow-hidden"
+              >
+                <!-- Image Container - Edge to Edge -->
+                <div class="relative w-full h-56 overflow-hidden bg-gradient-to-br from-mint-100 to-mint-200">
+                  <img
+                    src={formulation.image}
+                    alt={formulation.imageAlt}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                  />
+                </div>
+                
+                <!-- Content Container with Padding -->
+                <div class="p-8 flex flex-col flex-grow">
+                  <!-- Content -->
+                  <h2 class="text-2xl font-semibold text-dark-900 mb-3 group-hover:text-mint-600 transition-colors duration-300">
+                    {formulation.name}
+                  </h2>
+                  <p class="text-dark-600 mb-4 flex-grow">
+                    {formulation.shortDescription}
+                  </p>
+                  
+                  <!-- Best For Pills -->
+                  <div class="mb-4">
+                    <p class="text-sm font-semibold text-dark-700 mb-2">Best for:</p>
+                    <div class="flex flex-wrap gap-2">
+                      {formulation.bestFor.slice(0, 3).map((item) => (
+                        <span class="text-xs bg-white text-gray-700 px-3 py-1 rounded-full border border-gray-200">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <!-- Learn More Link -->
+                  <div class="flex items-center text-mint-600 font-medium group-hover:text-mint-700 mt-auto">
+                    <span>View details</span>
+                    <svg
+                      class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </ScrollAnimation>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+          Formulation Comparison Guide
+        </h2>
+      </ScrollAnimation>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <!-- Absorption Rates -->
+        <ScrollAnimation animation="fade-right">
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-semibold text-dark-900 mb-6">
+              {formulationComparison.absorptionRates.title}
+            </h3>
+            <p class="text-dark-600 mb-6">
+              {formulationComparison.absorptionRates.description}
+            </p>
+            <div class="space-y-4">
+              {formulationComparison.absorptionRates.data.map((item) => (
+                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                  <div>
+                    <span class="font-medium text-dark-800">{item.format}</span>
+                    <span class="text-sm text-gray-600 ml-2">({item.time})</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                      <div 
+                        class="bg-mint-600 h-2 rounded-full transition-all duration-1000"
+                        style={`width: ${item.rate}`}
+                      ></div>
+                    </div>
+                    <span class="text-sm font-medium text-dark-700 w-12">{item.rate}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        <!-- Cost Comparison -->
+        <ScrollAnimation animation="fade-left">
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-semibold text-dark-900 mb-6">
+              {formulationComparison.costComparison.title}
+            </h3>
+            <p class="text-dark-600 mb-6">
+              {formulationComparison.costComparison.description}
+            </p>
+            <div class="space-y-4">
+              {formulationComparison.costComparison.data.map((item) => (
+                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span class="font-medium text-dark-800">{item.format}</span>
+                  <div class="flex items-center">
+                    <span class="text-2xl text-mint-600 mr-3">{item.relativeCost}</span>
+                    <span class="text-sm text-gray-600">{item.note}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+          Need Help Choosing the Right Format?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Our formulation experts will help you select the perfect delivery system 
+          for your supplement based on your ingredients, target market, and budget.
+        </p>
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+        >
+          Get Expert Advice
+          <svg
+            class="ml-2 w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            ></path>
+          </svg>
+        </a>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

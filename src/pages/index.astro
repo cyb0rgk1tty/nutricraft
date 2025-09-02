@@ -4,15 +4,17 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ServiceCard from "../components/ServiceCard.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
-import MOQCalculator from "../components/MOQCalculator.astro";
-import LeadTimeEstimator from "../components/LeadTimeEstimator.astro";
-import CostSavingsCalculator from "../components/CostSavingsCalculator.astro";
+// Calculator components temporarily disabled
+// import MOQCalculator from "../components/MOQCalculator.astro";
+// import LeadTimeEstimator from "../components/LeadTimeEstimator.astro";
+// import CostSavingsCalculator from "../components/CostSavingsCalculator.astro";
 import ProductShowcase from "../components/ProductShowcase.astro";
 import ScrollAnimation from "../components/ScrollAnimation.astro";
 import CountUp from "../components/CountUp.astro";
 import FAQ from "../components/FAQ.astro";
 import { services } from "../data/services.js";
 import { testimonials } from "../data/testimonials.js";
+import { formulations } from "../data/formulations.js";
 ---
 
 <BaseLayout>
@@ -174,6 +176,265 @@ import { testimonials } from "../data/testimonials.js";
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Formulations We Manufacture Section -->
+  <section class="py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Formulations We Manufacture
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Choose from six premium delivery formats, each optimized for specific nutrients 
+            and consumer preferences. Click any format to learn more.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <!-- Formulation Cards Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          formulations.map((formulation, index) => (
+            <ScrollAnimation animation="fade-up" delay={index * 100}>
+              <a
+                href={`/formulations/${formulation.slug}`}
+                class="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1 overflow-hidden"
+              >
+                <!-- Image Container - Edge to Edge -->
+                <div class="relative w-full h-48 overflow-hidden bg-gradient-to-br from-mint-100 to-mint-200">
+                  <img
+                    src={formulation.image}
+                    alt={formulation.imageAlt}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                    width="400"
+                    height="250"
+                  />
+                </div>
+                
+                <!-- Content Container with Padding -->
+                <div class="p-8 flex flex-col flex-grow">
+                  <!-- Content -->
+                  <h3 class="text-2xl font-semibold text-dark-900 mb-3 group-hover:text-mint-600 transition-colors duration-300">
+                    {formulation.name}
+                  </h3>
+                  <p class="text-dark-600 mb-4 flex-grow">
+                    {formulation.tagline}
+                  </p>
+                  
+                  <!-- Best For Pills -->
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {formulation.bestFor.slice(0, 3).map((item) => (
+                      <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <!-- Learn More Link -->
+                  <div class="flex items-center text-mint-600 font-medium group-hover:text-mint-700">
+                    <span>Learn more</span>
+                    <svg
+                      class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </ScrollAnimation>
+          ))
+        }
+      </div>
+
+      <!-- Additional Info -->
+      <ScrollAnimation animation="fade-up" delay={600}>
+        <div class="mt-16 bg-white rounded-2xl p-8 shadow-lg">
+          <div class="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div class="text-4xl font-bold text-mint-600 mb-2">6+</div>
+              <p class="text-dark-600">Delivery Formats</p>
+            </div>
+            <div>
+              <div class="text-4xl font-bold text-mint-600 mb-2">98%</div>
+              <p class="text-dark-600">Max Absorption Rate</p>
+            </div>
+            <div>
+              <div class="text-4xl font-bold text-mint-600 mb-2">500+</div>
+              <p class="text-dark-600">Low MOQs Available</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Ordering Process Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Our Simple Ordering Process
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Getting started with your private label supplements is easy. 
+            We guide you through every step of the journey.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <!-- 3-Step Process Grid -->
+      <div class="grid md:grid-cols-3 gap-8 items-stretch">
+        <!-- Step 1: Understanding your needs -->
+        <ScrollAnimation animation="fade-up" delay={0}>
+          <div class="relative bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <!-- Step Number -->
+            <div class="absolute -top-4 -left-4 w-12 h-12 bg-mint-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+              1
+            </div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-mint-100 rounded-lg flex items-center justify-center mb-6 mt-2">
+              <svg
+                class="w-8 h-8 text-mint-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                ></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-semibold text-dark-900 mb-4">
+              Understanding Your Needs
+            </h3>
+            <p class="text-dark-600 leading-relaxed">
+              We begin with a detailed consultation to understand your vision, 
+              target market, and specific requirements. Our experts help refine 
+              your concept and identify the best formulation approach.
+            </p>
+          </div>
+        </ScrollAnimation>
+
+        <!-- Step 2: Demo Order -->
+        <ScrollAnimation animation="fade-up" delay={100}>
+          <div class="relative bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <!-- Step Number -->
+            <div class="absolute -top-4 -left-4 w-12 h-12 bg-mint-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+              2
+            </div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-mint-100 rounded-lg flex items-center justify-center mb-6 mt-2">
+              <svg
+                class="w-8 h-8 text-mint-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                ></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-semibold text-dark-900 mb-4">
+              Demo Order
+            </h3>
+            <p class="text-dark-600 leading-relaxed">
+              Start with a small batch to test your product. This allows you 
+              to evaluate quality, gather feedback, and make adjustments before 
+              scaling up production.
+            </p>
+          </div>
+        </ScrollAnimation>
+
+        <!-- Step 3: Complete Full Order -->
+        <ScrollAnimation animation="fade-up" delay={200}>
+          <div class="relative bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+            <!-- Step Number -->
+            <div class="absolute -top-4 -left-4 w-12 h-12 bg-mint-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+              3
+            </div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-mint-100 rounded-lg flex items-center justify-center mb-6 mt-2">
+              <svg
+                class="w-8 h-8 text-mint-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                ></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-semibold text-dark-900 mb-4">
+              Complete Full Order
+            </h3>
+            <p class="text-dark-600 leading-relaxed">
+              Once you're satisfied with the demo, we move to full-scale 
+              production. We handle everything from manufacturing to packaging, 
+              ensuring your products meet all regulatory requirements.
+            </p>
+          </div>
+        </ScrollAnimation>
+      </div>
+
+      <!-- CTA Button -->
+      <ScrollAnimation animation="fade-up" delay={300}>
+        <div class="text-center mt-12">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+            aria-label="Start your supplement ordering process"
+          >
+            Get Started Today
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
     </div>
   </section>
 
@@ -772,12 +1033,9 @@ import { testimonials } from "../data/testimonials.js";
             <p class="text-dark-600 mb-4">
               Get example estimates for your supplement manufacturing project.
             </p>
-            <button
-              class="text-mint-600 font-semibold hover:text-mint-700 transition-colors duration-300"
-              aria-label="Open cost calculator tool"
-            >
-              Calculate Now →
-            </button>
+            <span class="text-gray-500 font-semibold">
+              Coming Soon
+            </span>
           </div>
         </ScrollAnimation>
 
@@ -805,12 +1063,9 @@ import { testimonials } from "../data/testimonials.js";
             <p class="text-dark-600 mb-4">
               Design your custom supplement with our interactive tool.
             </p>
-            <button
-              class="text-mint-600 font-semibold hover:text-mint-700 transition-colors duration-300"
-              aria-label="Open product configurator tool"
-            >
-              Start Designing →
-            </button>
+            <span class="text-gray-500 font-semibold">
+              Coming Soon
+            </span>
           </div>
         </ScrollAnimation>
 
@@ -848,24 +1103,17 @@ import { testimonials } from "../data/testimonials.js";
         </ScrollAnimation>
       </div>
 
-      <!-- Interactive Calculators -->
+      <!-- Interactive Calculators - Coming Soon -->
       <div class="mt-16">
         <ScrollAnimation animation="fade-up">
           <h3 class="text-2xl font-bold text-dark-900 text-center mb-8">
-            Try Our Interactive Calculators
+            Interactive Calculators Coming Soon
           </h3>
+          <p class="text-center text-dark-600 max-w-2xl mx-auto">
+            We're developing advanced calculators to help you estimate MOQs, lead times, and potential cost savings. 
+            Check back soon or contact us directly for personalized estimates.
+          </p>
         </ScrollAnimation>
-        <div class="grid md:grid-cols-3 gap-8 items-stretch">
-          <ScrollAnimation animation="fade-up" delay={100}>
-            <MOQCalculator />
-          </ScrollAnimation>
-          <ScrollAnimation animation="fade-up" delay={200}>
-            <LeadTimeEstimator />
-          </ScrollAnimation>
-          <ScrollAnimation animation="fade-up" delay={300}>
-            <CostSavingsCalculator />
-          </ScrollAnimation>
-        </div>
       </div>
     </div>
   </section>
