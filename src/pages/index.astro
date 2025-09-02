@@ -38,22 +38,40 @@ import { formulations } from "../data/formulations.js";
           <h1
             class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 leading-tight"
           >
-            Your Partner for Private-Label Supplements & Compliance in North
-            America
+            Launch Your Supplement Brand <span class="text-mint-600">3x Faster</span> & Save 40% on Costs
           </h1>
+          
+          <!-- Trust Indicators moved up -->
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium text-sm">GMP Certified Partners</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium text-sm">FDA & Health Canada Compliant</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-dark-700 font-bold text-lg">20+ Brands Launched</span>
+            </div>
+          </div>
+          
           <p class="text-xl text-dark-600 leading-relaxed">
-            From concept to compliant label, we manage sourcing, formulation,
-            and manufacturing through our vetted GMP partners.
+            Skip the complexity of finding reliable manufacturers. We connect you with pre-vetted GMP partners and handle all compliance—from formulation to market-ready products.
           </p>
 
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4">
             <a
               href="/contact"
-              class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
-              aria-label="Start your supplement project with Nutricraft Labs"
+              class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              aria-label="Get started with free consultation"
             >
-              Start Your Project
+              Get Started Free
               <svg
                 class="ml-2 w-5 h-5"
                 fill="none"
@@ -69,62 +87,21 @@ import { formulations } from "../data/formulations.js";
               </svg>
             </a>
             <a
-              href="#services"
+              href="#formulations"
               class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
-              aria-label="Explore our supplement manufacturing services"
+              aria-label="Explore supplement solutions"
             >
-              Explore Services
+              Explore Solutions
             </a>
           </div>
 
-          <!-- Trust Badges -->
-          <div class="flex flex-wrap gap-6 pt-6">
-            <div class="flex items-center gap-2">
-              <svg
-                class="w-6 h-6 text-mint-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-dark-700 font-medium">GMP Partner Network</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <svg
-                class="w-6 h-6 text-mint-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-dark-700 font-medium"
-                >FDA Registered Partners</span
-              >
-            </div>
-            <div class="flex items-center gap-2">
-              <svg
-                class="w-6 h-6 text-mint-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-dark-700 font-medium"
-                >Health Canada Compliant</span
-              >
-            </div>
+          <!-- Additional Trust Elements -->
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-sm text-dark-600">
+              <span class="font-semibold">✓ No upfront fees</span> • 
+              <span class="font-semibold">✓ Free consultations</span> • 
+              <span class="font-semibold">✓ Response within 24 hours</span>
+            </p>
           </div>
         </div>
 
@@ -166,22 +143,142 @@ import { formulations } from "../data/formulations.js";
               </picture>
             </div>
           </div>
-          <!-- Decorative elements -->
-          <div
-            class="absolute -top-4 -right-4 w-24 h-24 bg-mint-200 rounded-full opacity-20"
-          >
-          </div>
-          <div
-            class="absolute -bottom-6 -left-6 w-32 h-32 bg-mint-300 rounded-full opacity-20"
-          >
-          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Trust Bar Section -->
+  <section class="py-12 bg-white border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+        <div class="text-center">
+          <p class="text-3xl font-bold text-mint-600"><CountUp end={20} suffix="+" duration={2} /></p>
+          <p class="text-sm text-dark-600 font-medium">Brands Launched</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-bold text-mint-600"><CountUp end={15} suffix="+" duration={2} /></p>
+          <p class="text-sm text-dark-600 font-medium">GMP Partners</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-bold text-mint-600"><CountUp end={100} suffix="%" duration={2} /></p>
+          <p class="text-sm text-dark-600 font-medium">Satisfaction Rate</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pain Points & Solutions Section -->
+  <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Stop Struggling with Supplement Manufacturing
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            We solve the biggest challenges brands face when launching supplements
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <ScrollAnimation animation="fade-up" delay={100}>
+          <div class="bg-white rounded-xl p-8 shadow-lg">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">
+              Finding Reliable Manufacturers
+            </h3>
+            <p class="text-dark-600 mb-4">
+              Hours wasted vetting manufacturers, only to discover hidden fees, quality issues, or compliance problems.
+            </p>
+            <div class="flex items-center text-mint-600 font-medium">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              We pre-vet all partners for you
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation animation="fade-up" delay={200}>
+          <div class="bg-white rounded-xl p-8 shadow-lg">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">
+              Regulatory Compliance
+            </h3>
+            <p class="text-dark-600 mb-4">
+              Complex FDA and Health Canada regulations that can delay launches or result in costly penalties.
+            </p>
+            <div class="flex items-center text-mint-600 font-medium">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              100% compliant from day one
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation animation="fade-up" delay={300}>
+          <div class="bg-white rounded-xl p-8 shadow-lg">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">
+              Hidden Costs & Delays
+            </h3>
+            <p class="text-dark-600 mb-4">
+              Unexpected fees, minimum order changes, and production delays that destroy budgets and timelines.
+            </p>
+            <div class="flex items-center text-mint-600 font-medium">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              Transparent pricing, no surprises
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+
+      <!-- CTA after pain points -->
+      <ScrollAnimation animation="fade-up" delay={400}>
+        <div class="text-center mt-12">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105"
+          >
+            Get Started
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
   <!-- Popular Supplement Formulations Section -->
-  <section class="py-20 bg-gradient-to-b from-white to-mint-50">
+  <section id="formulations" class="py-20 bg-gradient-to-b from-white to-mint-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
         <div class="text-center mb-16">
@@ -271,7 +368,7 @@ import { formulations } from "../data/formulations.js";
             href="/contact"
             class="inline-flex items-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-200"
           >
-            Get Custom Solutions
+            Request Quote
             <svg
               class="w-5 h-5 ml-2"
               fill="none"
@@ -428,7 +525,7 @@ import { formulations } from "../data/formulations.js";
             class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
             aria-label="Start your supplement ordering process"
           >
-            Get Started Today
+            Get Started
             <svg
               class="ml-2 w-5 h-5"
               fill="none"
@@ -791,7 +888,7 @@ import { formulations } from "../data/formulations.js";
   </section>
 
   <!-- FAQ Section -->
-  <section class="py-20 bg-white">
+  <section id="faq" class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
         <div class="text-center mb-12">
@@ -816,22 +913,44 @@ import { formulations } from "../data/formulations.js";
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-          Ready to Launch Your Supplement Brand?
+          Ready to Launch Your Supplement Brand in 2025?
         </h2>
-        <p class="text-xl text-dark-600 mb-8">
-          Let's discuss your project and find the perfect manufacturing partner for your needs.
+        <p class="text-xl text-dark-600 mb-8 max-w-2xl mx-auto">
+          Join 20+ successful brands who've transformed their supplement ideas into thriving businesses with our expert guidance.
         </p>
+        
+        <!-- Trust Elements -->
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700">Free Consultation</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700">No Upfront Fees</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700">Quick Response</span>
+          </div>
+        </div>
       </ScrollAnimation>
       
       <ScrollAnimation animation="fade-up" delay={200}>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <div class="flex justify-center mb-6">
           <a
             href="/contact"
-            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+            class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
           >
-            Get Started
+            Get Your Free Manufacturing Quote
             <svg
-              class="ml-2 w-5 h-5"
+              class="ml-2 w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -843,13 +962,11 @@ import { formulations } from "../data/formulations.js";
                 d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
-          <a
-            href="mailto:hello@nutricraftlabs.com"
-            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
-          >
-            Email Us Directly
-          </a>
         </div>
+        
+        <p class="text-sm text-dark-600">
+          <strong>100% Confidential</strong> • We'll never share your ideas or information
+        </p>
       </ScrollAnimation>
     </div>
   </section>
@@ -857,7 +974,7 @@ import { formulations } from "../data/formulations.js";
   <Footer />
 
   <!-- FAQPage Schema -->
-  <script type="application/ld+json">
+  <script type="application/ld+json" is:inline>
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",

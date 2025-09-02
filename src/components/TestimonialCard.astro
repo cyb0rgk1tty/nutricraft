@@ -6,13 +6,19 @@ export interface Props {
     role: string;
     content: string;
     rating: number;
+    metric?: string;
   };
 }
 
 const { testimonial } = Astro.props;
 ---
 
-<div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col min-h-[280px]">
+<div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col min-h-[320px]">
+  {testimonial.metric && (
+    <div class="bg-mint-50 text-mint-700 px-4 py-2 rounded-lg text-center mb-4">
+      <p class="font-bold text-lg">{testimonial.metric}</p>
+    </div>
+  )}
   <div class="flex items-center mb-4">
     {[...Array(testimonial.rating)].map(() => (
       <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
