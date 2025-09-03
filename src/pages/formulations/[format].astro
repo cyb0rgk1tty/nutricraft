@@ -25,6 +25,65 @@ const description = formulation.shortDescription;
 ---
 
 <BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://nutricraftlabs.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Formulations",
+            "item": "https://nutricraftlabs.com/formulations"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": formulation.name,
+            "item": `https://nutricraftlabs.com/formulations/${formulation.slug}`
+          }
+        ]
+      }
+    </script>
+    
+    <!-- Product Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": `${formulation.name} Manufacturing`,
+        "description": formulation.shortDescription,
+        "category": "Supplement Manufacturing Services",
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "priceCurrency": "CAD",
+          "priceSpecification": {
+            "@type": "PriceSpecification",
+            "price": "Contact for quote",
+            "minPrice": formulation.moq ? formulation.moq.toString() : "500"
+          }
+        },
+        "brand": {
+          "@type": "Brand",
+          "name": "Nutricraft Labs"
+        },
+        "manufacturer": {
+          "@type": "Organization",
+          "name": "Nutricraft Labs Partner Network"
+        }
+      }
+    </script>
+  </Fragment>
+  
   <Header />
 
   <!-- Hero Section -->

@@ -1,19 +1,57 @@
 ---
-// Chatwoot Live Chat Integration
+// Chatwoot Live Chat Integration - Optimized for performance
 ---
 
 <script>
-  (function(d,t) {
-    var BASE_URL="https://chat.tangleapps.vip";
-    var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=BASE_URL+"/packs/js/sdk.js";
-    g.async = true;
-    s.parentNode.insertBefore(g,s);
-    g.onload=function(){
-      window.chatwootSDK.run({
-        websiteToken: 'kZ6MVSqzFdTixasHXKbRmJRZ',
-        baseUrl: BASE_URL
-      })
+  // Defer chat widget loading until after page is interactive
+  function loadChatWidget() {
+    const BASE_URL = "https://chat.tangleapps.vip";
+    const script = document.createElement('script');
+    script.src = BASE_URL + "/packs/js/sdk.js";
+    script.async = true;
+    script.defer = true;
+    
+    script.onload = function() {
+      if (window.chatwootSDK) {
+        window.chatwootSDK.run({
+          websiteToken: 'kZ6MVSqzFdTixasHXKbRmJRZ',
+          baseUrl: BASE_URL
+        });
+      }
+    };
+    
+    document.body.appendChild(script);
+  }
+
+  // Strategy 1: Load after page becomes idle
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      loadChatWidget();
+    }, { timeout: 3000 }); // Fallback to 3 seconds
+  } else {
+    // Fallback for browsers without requestIdleCallback
+    window.addEventListener('load', () => {
+      setTimeout(loadChatWidget, 2000); // Wait 2 seconds after page load
+    });
+  }
+
+  // Strategy 2: Also load on user interaction (whichever comes first)
+  let widgetLoaded = false;
+  const interactionEvents = ['scroll', 'mousemove', 'touchstart', 'click'];
+  
+  function handleInteraction() {
+    if (!widgetLoaded) {
+      widgetLoaded = true;
+      loadChatWidget();
+      // Remove all listeners once loaded
+      interactionEvents.forEach(event => {
+        window.removeEventListener(event, handleInteraction, { passive: true });
+      });
     }
-  })(document,"script");
+  }
+
+  // Add passive listeners for better performance
+  interactionEvents.forEach(event => {
+    window.addEventListener(event, handleInteraction, { passive: true, once: true });
+  });
 </script>
