@@ -55,7 +55,7 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
             </div>
             <h3 class="text-xl font-semibold text-dark-900 mb-2">Chat</h3>
             <button 
-              onclick="if(window.$crisp){window.$crisp.push(['do','chat:open'])}else{alert('Chat is loading, please try again in a moment')}"
+              onclick="if(window.$chatwoot && window.$chatwoot.toggle){window.$chatwoot.toggle()}else if(window.chatwootSDK){window.chatwootSDK.toggle()}else{alert('Chat is loading, please try again in a moment')}"
               class="text-mint-600 hover:text-mint-700 transition-colors font-medium">
               Start Live Chat
             </button>
