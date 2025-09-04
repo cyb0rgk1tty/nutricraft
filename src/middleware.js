@@ -3,7 +3,7 @@ export async function onRequest({ request, url }, next) {
   const response = await next();
   
   // Add security headers
-  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  // Removed X-Frame-Options to rely on CSP frame-ancestors instead
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
@@ -11,7 +11,7 @@ export async function onRequest({ request, url }, next) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
@@ -19,7 +19,7 @@ export async function onRequest({ request, url }, next) {
     "frame-src 'self' https://calendly.com https://chat.tangleapps.vip",
     "base-uri 'self'",
     "form-action 'self'",
-    "frame-ancestors 'none'"
+    "frame-ancestors 'self' https://nutricraftlabs.com"
   ].join('; ');
   
   response.headers.set('Content-Security-Policy', csp);
