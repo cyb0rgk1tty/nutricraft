@@ -55,7 +55,7 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
             </div>
             <h3 class="text-xl font-semibold text-dark-900 mb-2">Chat</h3>
             <button 
-              onclick="if(window.$crisp){window.$crisp.push(['do','chat:open'])}else{alert('Chat is loading, please try again in a moment')}"
+              onclick="window.openChatwootChat()"
               class="text-mint-600 hover:text-mint-700 transition-colors font-medium">
               Start Live Chat
             </button>
@@ -200,4 +200,34 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
   </section>
 
   <Footer />
+  
+  <script>
+    // Handle Chatwoot chat button
+    let chatwootReady = false;
+    
+    // Listen for Chatwoot ready event
+    window.addEventListener('chatwoot:ready', function() {
+      chatwootReady = true;
+    });
+    
+    // Function to open chat
+    window.openChatwootChat = function() {
+      if (chatwootReady && window.$chatwoot) {
+        window.$chatwoot.toggle('open');
+      } else {
+        // Try to wait a bit and retry
+        let retries = 0;
+        const checkInterval = setInterval(function() {
+          retries++;
+          if (window.$chatwoot) {
+            clearInterval(checkInterval);
+            window.$chatwoot.toggle('open');
+          } else if (retries > 10) {
+            clearInterval(checkInterval);
+            alert('Chat is still loading. Please try again in a moment.');
+          }
+        }, 300);
+      }
+    };
+  </script>
 </BaseLayout>
