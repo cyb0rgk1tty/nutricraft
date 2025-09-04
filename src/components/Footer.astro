@@ -43,7 +43,17 @@ const footerLinks = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
       <!-- Company Info -->
       <div class="lg:col-span-2">
-        <h3 class="text-2xl font-bold text-primary mb-4">Nutricraft Labs</h3>
+        <picture class="inline-block mb-4">
+          <source srcset="/images/logo-header-mobile.webp" type="image/webp">
+          <img 
+            src="/images/logo-header-mobile.jpg" 
+            alt="Nutricraft Labs" 
+            class="h-5 w-auto opacity-90 hover:opacity-100 transition-opacity"
+            width="200"
+            height="20"
+            loading="lazy"
+          />
+        </picture>
         <p class="text-gray-600 mb-4">
           Your trusted partner for private-label supplements and compliance in
           North America. We connect you with vetted GMP manufacturers and handle
