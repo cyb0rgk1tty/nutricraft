@@ -15,8 +15,8 @@ export async function onRequest({ request, url }, next) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://www.google-analytics.com",
-    "frame-src 'self' https://calendly.com",
+    "connect-src 'self' https://www.google-analytics.com https://chat.tangleapps.vip",
+    "frame-src 'self' https://calendly.com https://chat.tangleapps.vip",
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'"
