@@ -12,6 +12,7 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
 import CountUp from "../components/CountUp.astro";
 import FAQ from "../components/FAQ.astro";
 import FormulationImage from "../components/FormulationImage.astro";
+import TextRotator from "../components/TextRotator.astro";
 import { services } from "../data/services.js";
 import { testimonials } from "../data/testimonials.js";
 import { formulations } from "../data/formulations.js";
@@ -37,7 +38,7 @@ import { formulations } from "../data/formulations.js";
           <h1
             class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 leading-tight"
           >
-            Launch Your Supplement Brand <span class="text-mint-600">3x Faster</span> & Save 40% on Costs
+            <TextRotator words={["Launch", "Grow", "Expand"]} class="text-mint-600" /> Your Supplement Brand <span class="text-mint-600">3x Faster</span> & Save 40% on Costs
           </h1>
           
           <!-- Trust Indicators moved up -->

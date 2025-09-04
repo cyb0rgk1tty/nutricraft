@@ -1,0 +1,65 @@
+---
+export interface Props {
+  words: string[];
+  class?: string;
+}
+
+const { words, class: className = '' } = Astro.props;
+---
+
+<span class={`text-rotator ${className}`}>
+  {words.map((word, index) => (
+    <span 
+      class="text-rotator-word" 
+      data-index={index}
+      style={`animation-delay: ${index * 3}s`}
+    >
+      {word}
+    </span>
+  ))}
+</span>
+
+<style>
+  .text-rotator {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    overflow: hidden;
+    height: 1.2em;
+  }
+  
+  .text-rotator-word {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: rotateWord 9s linear infinite;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  
+  .text-rotator-word:first-child {
+    animation-delay: 0s;
+  }
+  
+  .text-rotator-word:nth-child(2) {
+    animation-delay: 3s;
+  }
+  
+  .text-rotator-word:nth-child(3) {
+    animation-delay: 6s;
+  }
+  
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .text-rotator-word {
+      animation: none;
+      opacity: 0;
+    }
+    
+    .text-rotator-word:first-child {
+      opacity: 1;
+      position: relative;
+    }
+  }
+</style>
