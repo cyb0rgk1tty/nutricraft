@@ -5,27 +5,51 @@ export interface Props {
 }
 
 const { words, class: className = '' } = Astro.props;
+const animationDuration = words.length * 3; // 3 seconds per word
+// Find the longest word to set appropriate width
+const longestWord = words.reduce((a, b) => a.length > b.length ? a : b);
 ---
 
-<span class={`text-rotator ${className}`}>
+<span class={`text-rotator ${className}`} data-longest={longestWord}>
   {words.map((word, index) => (
     <span 
       class="text-rotator-word" 
       data-index={index}
-      style={`animation-delay: ${index * 3}s`}
+      style={`animation-delay: ${index * 3}s; animation-duration: ${animationDuration}s;`}
     >
       {word}
     </span>
   ))}
+  <!-- Hidden span to maintain width -->
+  <span class="text-rotator-spacer" aria-hidden="true">{longestWord}</span>
 </span>
 
 <style>
+  @keyframes rotateWord {
+    0% {
+      opacity: 0;
+      transform: translateY(0.5em);
+    }
+    2%, 31% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    33%, 100% {
+      opacity: 0;
+      transform: translateY(-0.5em);
+    }
+  }
+  
   .text-rotator {
     position: relative;
     display: inline-block;
     vertical-align: bottom;
-    overflow: hidden;
-    height: 1.2em;
+    line-height: inherit;
+  }
+  
+  .text-rotator-spacer {
+    visibility: hidden;
+    display: inline-block;
   }
   
   .text-rotator-word {
@@ -33,21 +57,12 @@ const { words, class: className = '' } = Astro.props;
     top: 0;
     left: 0;
     opacity: 0;
-    animation: rotateWord 9s linear infinite;
+    animation-name: rotateWord;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
     display: inline-block;
     white-space: nowrap;
-  }
-  
-  .text-rotator-word:first-child {
-    animation-delay: 0s;
-  }
-  
-  .text-rotator-word:nth-child(2) {
-    animation-delay: 3s;
-  }
-  
-  .text-rotator-word:nth-child(3) {
-    animation-delay: 6s;
+    line-height: inherit;
   }
   
   /* Respect reduced motion preference */
@@ -60,6 +75,10 @@ const { words, class: className = '' } = Astro.props;
     .text-rotator-word:first-child {
       opacity: 1;
       position: relative;
+    }
+    
+    .text-rotator-spacer {
+      display: none;
     }
   }
 </style>
