@@ -261,9 +261,40 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           };
       })(window, "https://cal.tangleapps.vip/embed/embed.js", "init");
       
-      Cal("init", {
-        origin: "https://cal.tangleapps.vip"
-      });
+      // Initialize Cal.com when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          Cal("init", {
+            origin: "https://cal.tangleapps.vip"
+          });
+          
+          // Initialize UI for handling button clicks
+          Cal("ui", {
+            styles: {
+              branding: {
+                brandColor: "#00c896"
+              }
+            },
+            hideEventTypeDetails: false,
+            layout: "month_view"
+          });
+        });
+      } else {
+        // DOM already loaded
+        Cal("init", {
+          origin: "https://cal.tangleapps.vip"
+        });
+        
+        Cal("ui", {
+          styles: {
+            branding: {
+              brandColor: "#00c896"
+            }
+          },
+          hideEventTypeDetails: false,
+          layout: "month_view"
+        });
+      }
     </script>
   </body>
 </html>
