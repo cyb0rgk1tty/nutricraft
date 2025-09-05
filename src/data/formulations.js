@@ -162,7 +162,7 @@ export const formulations = [
     id: 'gummies',
     name: 'Gummies',
     slug: 'gummies',
-    tagline: 'Great taste, perfect for all ages, no water required',
+    tagline: 'Great taste, no water required, great for all ages',
     shortDescription: 'Enjoyable supplement format that combines nutrition with a pleasant taste experience.',
     image: '/images/formulations/gummies-800.png',
     responsiveImages: {
