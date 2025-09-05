@@ -11,12 +11,12 @@ export async function onRequest({ request, url }, next) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip https://cal.tangleapps.vip https://app.cal.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://www.google-analytics.com https://chat.tangleapps.vip",
-    "frame-src 'self' https://calendly.com https://chat.tangleapps.vip",
+    "connect-src 'self' https://www.google-analytics.com https://chat.tangleapps.vip https://cal.tangleapps.vip https://app.cal.com",
+    "frame-src 'self' https://calendly.com https://chat.tangleapps.vip https://cal.tangleapps.vip",
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'"
