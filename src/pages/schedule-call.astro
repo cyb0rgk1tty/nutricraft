@@ -145,23 +145,38 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
   
   <!-- Initialize Cal.com Inline Embed -->
   <script>
-    Cal("inline", {
-      elementOrSelector: "#cal-inline-embed",
-      calLink: "team/nutricraftlabs/discovery",
-      config: {
-        theme: "light",
-        hideEventTypeDetails: false,
-        layout: "month_view"
+    // Wait for Cal to be available
+    function initializeCalEmbed() {
+      if (typeof Cal !== 'undefined') {
+        Cal("inline", {
+          elementOrSelector: "#cal-inline-embed",
+          calLink: "team/nutricraftlabs/discovery",
+          config: {
+            theme: "light",
+            hideEventTypeDetails: false,
+            layout: "month_view"
+          }
+        });
+        
+        // Listen for booking success
+        Cal("on", {
+          action: "bookingSuccessful",
+          callback: (e) => {
+            // Track conversion if you have analytics
+            console.log("Booking successful:", e.detail);
+          }
+        });
+      } else {
+        // If Cal isn't ready yet, wait and try again
+        setTimeout(initializeCalEmbed, 100);
       }
-    });
+    }
     
-    // Listen for booking success
-    Cal("on", {
-      action: "bookingSuccessful",
-      callback: (e) => {
-        // Track conversion if you have analytics
-        console.log("Booking successful:", e.detail);
-      }
-    });
+    // Start initialization when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeCalEmbed);
+    } else {
+      initializeCalEmbed();
+    }
   </script>
 </BaseLayout>

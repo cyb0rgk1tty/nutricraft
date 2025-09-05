@@ -270,9 +270,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           
           // Initialize UI for handling button clicks
           Cal("ui", {
-            styles: {
-              branding: {
-                brandColor: "#00c896"
+            cssVarsPerTheme: {
+              light: {
+                "cal-brand": "#00c896"
               }
             },
             hideEventTypeDetails: false,
@@ -286,9 +286,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         });
         
         Cal("ui", {
-          styles: {
-            branding: {
-              brandColor: "#00c896"
+          cssVarsPerTheme: {
+            light: {
+              "cal-brand": "#00c896"
             }
           },
           hideEventTypeDetails: false,
