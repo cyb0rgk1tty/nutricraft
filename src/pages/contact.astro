@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import ScrollAnimation from "../components/ScrollAnimation.astro";
 ---
 
 <BaseLayout 
@@ -14,16 +13,12 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
   <section class="relative bg-gradient-to-b from-mint-50 to-white overflow-hidden py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <ScrollAnimation animation="fade-up" delay={100}>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
-            Get in Touch
-          </h1>
-        </ScrollAnimation>
-        <ScrollAnimation animation="fade-up" delay={200}>
-          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
-            Ready to launch your supplement brand? Our team is here to guide you through every step of the sourcing and manufacturing process.
-          </p>
-        </ScrollAnimation>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+          Get in Touch
+        </h1>
+        <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+          Ready to launch your supplement brand? Our team is here to guide you through every step of the sourcing and manufacturing process.
+        </p>
       </div>
     </div>
   </section>
@@ -32,48 +27,42 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
   <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-3 gap-8 mb-16">
-        <ScrollAnimation animation="fade-up" delay={100}>
-          <div class="text-center">
-            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-dark-900 mb-2">Email</h3>
-            <a href="mailto:hello@nutricraftlabs.com" class="text-mint-600 hover:text-mint-700 transition-colors">
-              hello@nutricraftlabs.com
-            </a>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
           </div>
-        </ScrollAnimation>
+          <h3 class="text-xl font-semibold text-dark-900 mb-2">Email</h3>
+          <a href="mailto:hello@nutricraftlabs.com" class="text-mint-600 hover:text-mint-700 transition-colors">
+            hello@nutricraftlabs.com
+          </a>
+        </div>
 
-        <ScrollAnimation animation="fade-up" delay={200}>
-          <div class="text-center">
-            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-dark-900 mb-2">Chat</h3>
-            <button 
-              onclick="window.openChatwootChat()"
-              class="text-mint-600 hover:text-mint-700 transition-colors font-medium">
-              Start Live Chat
-            </button>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
           </div>
-        </ScrollAnimation>
+          <h3 class="text-xl font-semibold text-dark-900 mb-2">Chat</h3>
+          <button 
+            onclick="window.openChatwootChat()"
+            class="text-mint-600 hover:text-mint-700 transition-colors font-medium">
+            Start Live Chat
+          </button>
+        </div>
 
-        <ScrollAnimation animation="fade-up" delay={300}>
-          <div class="text-center">
-            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-dark-900 mb-2">Location</h3>
-            <p class="text-dark-600">Toronto, Canada</p>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
           </div>
-        </ScrollAnimation>
+          <h3 class="text-xl font-semibold text-dark-900 mb-2">Location</h3>
+          <p class="text-dark-600">Toronto, Canada</p>
+        </div>
       </div>
     </div>
   </section>
@@ -81,19 +70,16 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
   <!-- Contact Form Section -->
   <section id="contact" class="py-20 bg-gradient-to-b from-white to-mint-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-            Start Your Supplement Journey Today
-          </h2>
-          <p class="text-xl text-dark-600">
-            Tell us about your project and let's create something exceptional together
-          </p>
-        </div>
-      </ScrollAnimation>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Start Your Supplement Journey Today
+        </h2>
+        <p class="text-xl text-dark-600">
+          Tell us about your project and let's create something exceptional together
+        </p>
+      </div>
 
-      <ScrollAnimation animation="fade-in" delay={200}>
-        <form class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+      <form class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           <div class="grid md:grid-cols-2 gap-6">
             <div>
               <label for="name" class="block text-sm font-semibold text-dark-900 mb-2">Full Name *</label>
@@ -188,7 +174,6 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
             </button>
           </div>
         </form>
-      </ScrollAnimation>
 
     </div>
   </section>
