@@ -79,7 +79,7 @@ import Footer from "../components/Footer.astro";
         </p>
       </div>
 
-      <form class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+      <form id="contact-form" class="bg-white rounded-2xl shadow-xl p-8 md:p-12" method="POST" action="/api/contact">
           <div class="grid md:grid-cols-2 gap-6">
             <div>
               <label for="name" class="block text-sm font-semibold text-dark-900 mb-2">Full Name *</label>
@@ -179,6 +179,79 @@ import Footer from "../components/Footer.astro";
   </section>
 
   <Footer />
+  
+  <script>
+    // Google Ads Conversion Tracking Function
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17548601361/0UvVCKjSmpgbEJHQ6a9B',
+          'value': 1.0,
+          'currency': 'CAD',
+          'event_callback': callback
+      });
+      return false;
+    }
+
+    // Form submission handling
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+          const formData = new FormData(this);
+          
+          // Send form data to API
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Track conversion
+            if (typeof gtag !== 'undefined') {
+              gtag_report_conversion();
+            }
+            
+            // Show success message
+            this.innerHTML = `
+              <div class="text-center py-12">
+                <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-dark-900 mb-2">Thank You!</h3>
+                <p class="text-dark-600">${result.message}</p>
+              </div>
+            `;
+          } else {
+            // Show error
+            alert(result.error || 'Something went wrong. Please try again.');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
+        } catch (error) {
+          console.error('Form submission error:', error);
+          alert('Failed to send message. Please try again later.');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  </script>
   
   <script>
     // Handle Chatwoot chat button
