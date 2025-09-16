@@ -1,22 +1,18 @@
-export async function onRequestPost(context) {
-  const {
-    request, // same as existing Worker API
-    env, // same as existing Worker API
-    params, // if filename includes [id] or [[path]]
-    waitUntil, // same as ctx.waitUntil in existing Worker API
-    next, // used for middleware or to fetch assets
-    data, // arbitrary space for passing data between middlewares
-  } = context;
+export const prerender = false;
 
+import type { APIRoute } from 'astro';
+import nodemailer from 'nodemailer';
+
+export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse form data
-    const formData = await request.formData();
-    const name = formData.get('name') || '';
-    const email = formData.get('email') || '';
-    const phone = formData.get('phone') || '';
-    const company = formData.get('company') || '';
-    const projectType = formData.get('project-type') || '';
-    const message = formData.get('message') || '';
+    const data = await request.formData();
+    const name = data.get('name')?.toString() || '';
+    const email = data.get('email')?.toString() || '';
+    const phone = data.get('phone')?.toString() || '';
+    const company = data.get('company')?.toString() || '';
+    const projectType = data.get('project-type')?.toString() || '';
+    const message = data.get('message')?.toString() || '';
 
     // Basic validation
     if (!name || !email || !projectType || !message) {
@@ -41,17 +37,14 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Import nodemailer dynamically
-    const nodemailer = await import('nodemailer');
-
     // Create transporter
     const transporter = nodemailer.createTransport({
-      host: env.SMTP_HOST,
-      port: parseInt(env.SMTP_PORT || '587'),
-      secure: env.SMTP_PORT === '465', // true for 465, false for other ports
+      host: process.env.SMTP_HOST || import.meta.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || import.meta.env.SMTP_PORT || '587'),
+      secure: (process.env.SMTP_PORT || import.meta.env.SMTP_PORT) === '465',
       auth: {
-        user: env.SMTP_USER,
-        pass: env.SMTP_PASS,
+        user: process.env.SMTP_USER || import.meta.env.SMTP_USER,
+        pass: process.env.SMTP_PASS || import.meta.env.SMTP_PASS,
       },
     });
 
@@ -82,8 +75,8 @@ ${message}
 
     // Send email
     await transporter.sendMail({
-      from: `"${name}" <${env.SMTP_USER}>`,
-      to: env.EMAIL_TO || 'hello@nutricraftlabs.com',
+      from: `"${name}" <${process.env.SMTP_USER || import.meta.env.SMTP_USER}>`,
+      to: process.env.EMAIL_TO || import.meta.env.EMAIL_TO || 'hello@nutricraftlabs.com',
       replyTo: email,
       subject: `Contact Form: ${projectType} - ${name}`,
       text: textContent,
@@ -108,4 +101,4 @@ ${message}
       headers: { 'Content-Type': 'application/json' }
     });
   }
-}
+};
