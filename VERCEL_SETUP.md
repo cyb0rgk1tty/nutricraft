@@ -18,6 +18,13 @@ Add the following environment variables in your Vercel project dashboard:
 2. Navigate to Settings → Environment Variables
 3. Add these variables:
 
+### Google Analytics & Ads (Client-side)
+```
+PUBLIC_GA_MEASUREMENT_ID=G-Z04Y8KJRTW
+PUBLIC_GOOGLE_ADS_ID=AW-17548601361
+```
+
+### SMTP Configuration (Server-side)
 ```
 SMTP_HOST=your-smtp-host.com
 SMTP_PORT=587
@@ -25,6 +32,9 @@ SMTP_USER=your-smtp-username
 SMTP_PASS=your-smtp-password
 EMAIL_TO=your-email@example.com
 ```
+
+**Note**: Variables with `PUBLIC_` prefix are exposed to client-side code.
+Variables without prefix are server-side only (more secure for sensitive data).
 
 ## Features
 
