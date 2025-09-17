@@ -8,71 +8,103 @@ const { class: className } = Astro.props;
 const faqs = [
   {
     question: "How do you select and vet manufacturing partners?",
-    answer: "We maintain a rigorous vetting process for all manufacturing partners in our network. This includes verifying certifications (GMP, FDA registration, Health Canada licenses), conducting facility audits, reviewing quality systems, analyzing production capabilities, and checking references from other brands. We only work with partners who meet our strict standards for quality, reliability, and regulatory compliance."
+    answer:
+      "We maintain a rigorous vetting process for all manufacturing partners in our network. This includes verifying certifications (GMP, FDA registration, Health Canada licenses), conducting facility audits, reviewing quality systems, analyzing production capabilities, and checking references from other brands. We only work with partners who meet our strict standards for quality, reliability, and regulatory compliance.",
   },
   {
     question: "What is your fee structure?",
-    answer: "We offer transparent pricing with several options: project-based fees for one-time sourcing, monthly retainers for ongoing support, or success-based pricing tied to your production volumes. Our fees are always clearly outlined upfront, and we work independently from manufacturers to ensure you get unbiased recommendations and the best possible pricing."
+    answer:
+      "Our pricing mainly depends on your order quantity and supplement formulation. We work with you and our manufacturers to make sure we stay within your budget with no extra fees. Everything is transparaent and explained prior to starting. Typical fee structures are per-order or retainers.",
   },
   {
     question: "How do you negotiate on behalf of clients?",
-    answer: "As your advocate, we leverage our industry relationships and volume across multiple clients to negotiate better terms than you could achieve independently. This includes pricing, payment terms, MOQs, lead times, and quality guarantees. We handle all vendor negotiations while keeping your business objectives and budget as our priority."
+    answer:
+      "As your advocate, we leverage our industry relationships and volume across multiple clients to negotiate better terms than you could achieve independently. This includes pricing, payment terms, MOQs, lead times, and quality guarantees. We handle all vendor negotiations while keeping your business objectives and budget as our priority.",
   },
   {
     question: "What is your sourcing process?",
-    answer: "Our sourcing process begins with understanding your specific requirements, budget, and timeline. We then identify 3-5 pre-vetted manufacturers that match your needs, coordinate sample production, facilitate facility tours (virtual or in-person), and provide detailed comparative analyses. You make the final decision with our expert guidance throughout."
+    answer:
+      "Our sourcing process begins with understanding your specific requirements, budget, and timeline. We then identify 3-5 pre-vetted manufacturers that match your needs, coordinate sample production, facilitate facility tours (virtual or in-person), and provide detailed comparative analyses. You make the final decision with our expert guidance throughout.",
   },
   {
     question: "Can you help with regulatory compliance?",
-    answer: "Yes, we coordinate all regulatory compliance requirements between you and the manufacturers. This includes FDA registration verification, Health Canada NPN applications, label compliance reviews, and documentation for international markets. While manufacturers handle the actual compliance, we ensure nothing falls through the cracks."
+    answer:
+      "Yes, we coordinate all regulatory compliance requirements between you and the manufacturers. This includes FDA registration verification, Health Canada NPN applications, label compliance reviews, and documentation for international markets. While manufacturers handle the actual compliance, we ensure nothing falls through the cracks.",
   },
   {
     question: "How do you protect our formulations and intellectual property?",
-    answer: "We implement strict NDAs with all manufacturing partners before sharing any proprietary information. We can also help structure manufacturing agreements that protect your formulations, establish clear IP ownership, and include non-compete clauses. Your business interests are always our top priority."
+    answer:
+      "We implement strict NDAs with all manufacturing partners before sharing any proprietary information. We can also help structure manufacturing agreements that protect your formulations, establish clear IP ownership, and include non-compete clauses. Your business interests are always our top priority.",
   },
   {
     question: "What happens after we select a manufacturer?",
-    answer: "We continue to support you throughout the entire production process. This includes coordinating sample approvals, managing production timelines, facilitating quality control communications, troubleshooting any issues, and ensuring smooth delivery. We remain your advocate and single point of contact throughout the relationship."
+    answer:
+      "We continue to support you throughout the entire production process. This includes coordinating sample approvals, managing production timelines, facilitating quality control communications, troubleshooting any issues, and ensuring smooth delivery. We remain your advocate and single point of contact throughout the relationship.",
   },
   {
     question: "Do you work with startups and established brands?",
-    answer: "Absolutely! We work with brands at every stage - from entrepreneurs launching their first product to established companies expanding their lines or switching manufacturers. Our partner network includes options for small pilot runs (as low as 500 units) up to large-scale production runs of millions of units."
-  }
+    answer:
+      "Absolutely! We work with brands at every stage - from entrepreneurs launching their first product to established companies expanding their lines or switching manufacturers. Our partner network includes options for small pilot runs (as low as 500 units) up to large-scale production runs of millions of units.",
+  },
 ];
 ---
 
-<div class={`faq-container ${className || ''}`}>
+<div class={`faq-container ${className || ""}`}>
   <div class="max-w-4xl mx-auto">
     <div class="space-y-4">
-      {faqs.map((faq, index) => (
-        <div class="faq-item border border-mint-200 rounded-lg overflow-hidden">
-          <button
-            class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between hover:bg-mint-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-mint-500 focus:ring-inset"
-            aria-expanded="false"
-            aria-controls={`faq-answer-${index}`}
-            data-faq-index={index}
-          >
-            <span class="text-lg font-medium text-gray-900 pr-8">{faq.question}</span>
-            <span class="faq-icon flex-shrink-0 ml-2" aria-hidden="true">
-              <svg class="chevron-down w-5 h-5 text-mint-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-              <svg class="chevron-up w-5 h-5 text-mint-600 transition-transform duration-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-              </svg>
-            </span>
-          </button>
-          <div
-            id={`faq-answer-${index}`}
-            class="faq-answer"
-            aria-hidden="true"
-          >
-            <div class="px-6 py-4 text-gray-600 leading-relaxed">
-              {faq.answer}
+      {
+        faqs.map((faq, index) => (
+          <div class="faq-item border border-mint-200 rounded-lg overflow-hidden">
+            <button
+              class="faq-trigger w-full px-6 py-4 text-left flex items-center justify-between hover:bg-mint-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-mint-500 focus:ring-inset"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${index}`}
+              data-faq-index={index}
+            >
+              <span class="text-lg font-medium text-gray-900 pr-8">
+                {faq.question}
+              </span>
+              <span class="faq-icon flex-shrink-0 ml-2" aria-hidden="true">
+                <svg
+                  class="chevron-down w-5 h-5 text-mint-600 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+                <svg
+                  class="chevron-up w-5 h-5 text-mint-600 transition-transform duration-300 hidden"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 15l7-7 7 7"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div
+              id={`faq-answer-${index}`}
+              class="faq-answer"
+              aria-hidden="true"
+            >
+              <div class="px-6 py-4 text-gray-600 leading-relaxed">
+                {faq.answer}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </div>
@@ -101,7 +133,7 @@ const faqs = [
     .faq-answer {
       transition: none;
     }
-    
+
     .chevron-down,
     .chevron-up {
       transition: none;
@@ -110,55 +142,57 @@ const faqs = [
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const faqTriggers = document.querySelectorAll('.faq-trigger');
-    
-    faqTriggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const faqTriggers = document.querySelectorAll(".faq-trigger");
+
+    faqTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
         const index = trigger.dataset.faqIndex;
         const answer = document.getElementById(`faq-answer-${index}`);
-        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-        
+        const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+
         // Close all other FAQs
-        faqTriggers.forEach(otherTrigger => {
+        faqTriggers.forEach((otherTrigger) => {
           if (otherTrigger !== trigger) {
             const otherIndex = otherTrigger.dataset.faqIndex;
-            const otherAnswer = document.getElementById(`faq-answer-${otherIndex}`);
-            otherTrigger.setAttribute('aria-expanded', 'false');
-            otherAnswer.setAttribute('aria-hidden', 'true');
+            const otherAnswer = document.getElementById(
+              `faq-answer-${otherIndex}`,
+            );
+            otherTrigger.setAttribute("aria-expanded", "false");
+            otherAnswer.setAttribute("aria-hidden", "true");
           }
         });
-        
+
         // Toggle current FAQ
-        trigger.setAttribute('aria-expanded', !isExpanded);
-        answer.setAttribute('aria-hidden', isExpanded);
+        trigger.setAttribute("aria-expanded", !isExpanded);
+        answer.setAttribute("aria-hidden", isExpanded);
       });
     });
-    
+
     // Keyboard navigation
     faqTriggers.forEach((trigger, index) => {
-      trigger.addEventListener('keydown', (e) => {
+      trigger.addEventListener("keydown", (e) => {
         const isFirst = index === 0;
         const isLast = index === faqTriggers.length - 1;
-        
-        switch(e.key) {
-          case 'ArrowUp':
+
+        switch (e.key) {
+          case "ArrowUp":
             if (!isFirst) {
               e.preventDefault();
               faqTriggers[index - 1].focus();
             }
             break;
-          case 'ArrowDown':
+          case "ArrowDown":
             if (!isLast) {
               e.preventDefault();
               faqTriggers[index + 1].focus();
             }
             break;
-          case 'Home':
+          case "Home":
             e.preventDefault();
             faqTriggers[0].focus();
             break;
-          case 'End':
+          case "End":
             e.preventDefault();
             faqTriggers[faqTriggers.length - 1].focus();
             break;

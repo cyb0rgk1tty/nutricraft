@@ -21,8 +21,8 @@ export const testimonials = [
     id: 3,
     name: "Emily Rodriguez",
     company: "NatureFit Brands",
-    role: "Operations Director",
-    content: "The team at Nutricraft Labs is exceptional. They guided us through Health Canada regulations and helped us achieve compliance in just 45 days. Their GMP facility and quality standards give us complete confidence.",
+    role: "Founder and CEO",
+    content: "Nutricraft Labs help me launch my passion project from start to finish in just 45 days! From manufacturing, formulation customization and even website design and marketing, they did it all to ensure I was sucessful.",
     rating: 5,
     metric: "45-Day Launch Time"
   }
