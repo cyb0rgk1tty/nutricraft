@@ -244,7 +244,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     
     <!-- Calendar Booking Conversion Tracking for GTM -->
     <script>
-      function gtag_report_conversion(url) {
+      window.gtag_report_conversion = function(url) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           'event': 'calendar_booking',
@@ -318,11 +318,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           Cal("on", {
             action: "bookingSuccessful",
             callback: (e) => {
-              // Track Google Ads conversion for calendar bookings
-              if (typeof gtag_report_conversion === 'function') {
-                gtag_report_conversion();
-              }
               console.log("Booking successful (popup):", e.detail);
+              // Track Google Ads conversion for calendar bookings
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                'event': 'calendar_booking',
+                'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
+                'value': 1.0,
+                'currency': 'CAD'
+              });
+              
+              // Also call the conversion function if it exists
+              if (typeof window.gtag_report_conversion === 'function') {
+                window.gtag_report_conversion();
+              }
             }
           });
         });
@@ -346,11 +355,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         Cal("on", {
           action: "bookingSuccessful",
           callback: (e) => {
-            // Track Google Ads conversion for calendar bookings
-            if (typeof gtag_report_conversion === 'function') {
-              gtag_report_conversion();
-            }
             console.log("Booking successful (popup):", e.detail);
+            // Track Google Ads conversion for calendar bookings
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              'event': 'calendar_booking',
+              'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
+              'value': 1.0,
+              'currency': 'CAD'
+            });
+            
+            // Also call the conversion function if it exists
+            if (typeof window.gtag_report_conversion === 'function') {
+              window.gtag_report_conversion();
+            }
           }
         });
       }
