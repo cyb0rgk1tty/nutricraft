@@ -320,15 +320,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             callback: (e) => {
               console.log("Booking successful (popup):", e.detail);
               // Track Google Ads conversion for calendar bookings
-              window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({
-                'event': 'calendar_booking',
-                'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
-                'value': 1.0,
-                'currency': 'CAD'
-              });
-              
-              // Also call the conversion function if it exists
               if (typeof window.gtag_report_conversion === 'function') {
                 window.gtag_report_conversion();
               }
@@ -357,15 +348,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           callback: (e) => {
             console.log("Booking successful (popup):", e.detail);
             // Track Google Ads conversion for calendar bookings
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-              'event': 'calendar_booking',
-              'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
-              'value': 1.0,
-              'currency': 'CAD'
-            });
-            
-            // Also call the conversion function if it exists
             if (typeof window.gtag_report_conversion === 'function') {
               window.gtag_report_conversion();
             }
