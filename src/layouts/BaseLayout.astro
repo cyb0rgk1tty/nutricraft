@@ -34,10 +34,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://chat.tangleapps.vip" />
-    <link rel="preconnect" href="https://cal.tangleapps.vip" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://chat.tangleapps.vip" />
-    <link rel="dns-prefetch" href="https://cal.tangleapps.vip" />
     
     <SEO
       title={title}
@@ -259,13 +257,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             }
             p(cal, ar);
           };
-      })(window, "https://cal.tangleapps.vip/embed/embed.js", "init");
+      })(window, "https://app.cal.com/embed/embed.js", "init");
       
       // Initialize Cal.com when DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           Cal("init", {
-            origin: "https://cal.tangleapps.vip"
+            origin: "https://app.cal.com"
           });
           
           // Initialize UI for handling button clicks
@@ -282,7 +280,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       } else {
         // DOM already loaded
         Cal("init", {
-          origin: "https://cal.tangleapps.vip"
+          origin: "https://app.cal.com"
         });
         
         Cal("ui", {
