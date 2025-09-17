@@ -162,8 +162,11 @@ import ScrollAnimation from "../components/ScrollAnimation.astro";
         Cal("on", {
           action: "bookingSuccessful",
           callback: (e) => {
-            // Track conversion if you have analytics
-            console.log("Booking successful:", e.detail);
+            // Track Google Ads conversion for calendar bookings
+            if (typeof gtag_report_conversion === 'function') {
+              gtag_report_conversion();
+            }
+            console.log("Booking successful (inline):", e.detail);
           }
         });
       } else {

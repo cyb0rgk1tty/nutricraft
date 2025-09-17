@@ -225,6 +225,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <ChatSupport />
     <Analytics />
     
+    <!-- Google Ads Calendar Booking Conversion Tracking -->
+    <script>
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'conversion', {
+            'send_to': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
+            'value': 1.0,
+            'currency': 'CAD',
+            'event_callback': callback
+          });
+        }
+        return false;
+      }
+    </script>
+    
     <!-- Cal.com Embed Script -->
     <script>
       (function (C, A, L) {
@@ -276,6 +296,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             hideEventTypeDetails: false,
             layout: "month_view"
           });
+          
+          // Listen for booking success from popup calendars
+          Cal("on", {
+            action: "bookingSuccessful",
+            callback: (e) => {
+              // Track Google Ads conversion for calendar bookings
+              if (typeof gtag_report_conversion === 'function') {
+                gtag_report_conversion();
+              }
+              console.log("Booking successful (popup):", e.detail);
+            }
+          });
         });
       } else {
         // DOM already loaded
@@ -291,6 +323,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           },
           hideEventTypeDetails: false,
           layout: "month_view"
+        });
+        
+        // Listen for booking success from popup calendars
+        Cal("on", {
+          action: "bookingSuccessful",
+          callback: (e) => {
+            // Track Google Ads conversion for calendar bookings
+            if (typeof gtag_report_conversion === 'function') {
+              gtag_report_conversion();
+            }
+            console.log("Booking successful (popup):", e.detail);
+          }
         });
       }
     </script>
