@@ -181,19 +181,21 @@ import Footer from "../components/Footer.astro";
   <Footer />
   
   <script>
-    // Google Ads Conversion Tracking Function
+    // Contact Form Conversion Tracking for GTM
     function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17548601361/0UvVCKjSmpgbEJHQ6a9B',
-          'value': 1.0,
-          'currency': 'CAD',
-          'event_callback': callback
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'contact_form_submission',
+        'conversion_id': 'AW-17548601361/0UvVCKjSmpgbEJHQ6a9B',
+        'value': 1.0,
+        'currency': 'CAD'
       });
+      
+      if (typeof(url) != 'undefined') {
+        setTimeout(function() {
+          window.location = url;
+        }, 100);
+      }
       return false;
     }
 
@@ -221,7 +223,7 @@ import Footer from "../components/Footer.astro";
           
           if (result.success) {
             // Track conversion
-            if (typeof gtag !== 'undefined') {
+            if (typeof gtag_report_conversion === 'function') {
               gtag_report_conversion();
             }
             

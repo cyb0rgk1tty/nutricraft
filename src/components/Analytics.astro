@@ -1,73 +1,38 @@
 ---
-const { PUBLIC_GA_MEASUREMENT_ID, PUBLIC_GOOGLE_ADS_ID } = import.meta.env;
 const isProd = import.meta.env.PROD;
 
-// Build the script content dynamically
+// Build the script content for dataLayer events
 let scriptContent = `
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', '${PUBLIC_GA_MEASUREMENT_ID}', {
-    page_path: window.location.pathname,
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure'
-  });`;
-
-// Add Google Ads config if ID is present
-if (PUBLIC_GOOGLE_ADS_ID) {
-  scriptContent += `
-  
-  // Google Ads Conversion Tracking
-  gtag('config', '${PUBLIC_GOOGLE_ADS_ID}', {
-    page_path: window.location.pathname
-  });`;
-}
-
-scriptContent += `
-  
   // Track form submissions
   document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.querySelector('#contact form');
     if (contactForm) {
       contactForm.addEventListener('submit', function(e) {
-        gtag('event', 'form_submit', {
-          event_category: 'engagement',
-          event_label: 'contact_form'
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'form_submit',
+          'event_category': 'engagement',
+          'event_label': 'contact_form'
         });
       });
     }
-    
-    // Calculator tracking disabled - calculators coming soon
-    // const calculators = ['moq-calculator', 'lead-time-calculator', 'cost-calculator'];
-    // calculators.forEach(id => {
-    //   const form = document.getElementById(id);
-    //   if (form) {
-    //     form.addEventListener('submit', function(e) {
-    //       gtag('event', 'calculator_use', {
-    //         event_category: 'engagement',
-    //         event_label: id
-    //       });
-    //     });
-    //   }
-    // });
     
     // Track outbound links
     const links = document.querySelectorAll('a[href^="http"]:not([href*="nutricraftlabs.com"])');
     links.forEach(link => {
       link.addEventListener('click', function() {
-        gtag('event', 'click', {
-          event_category: 'outbound',
-          event_label: this.href
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'outbound_click',
+          'event_category': 'outbound',
+          'event_label': this.href
         });
       });
     });
   });`;
 ---
 
-{isProd && PUBLIC_GA_MEASUREMENT_ID && (
-  <>
-    <!-- Google Analytics & Google Ads -->
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_MEASUREMENT_ID}`}></script>
-    <script is:inline set:html={scriptContent}></script>
-  </>
+{isProd && (
+  <!-- Event Tracking for GTM -->
+  <script is:inline set:html={scriptContent}></script>
 )}

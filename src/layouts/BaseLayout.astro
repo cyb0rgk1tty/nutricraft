@@ -30,6 +30,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     
+    <!-- Initialize dataLayer for GTM -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+    </script>
+    
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -237,21 +242,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <ChatSupport />
     <Analytics />
     
-    <!-- Google Ads Calendar Booking Conversion Tracking -->
+    <!-- Calendar Booking Conversion Tracking for GTM -->
     <script>
       function gtag_report_conversion(url) {
-        var callback = function () {
-          if (typeof(url) != 'undefined') {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'calendar_booking',
+          'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
+          'value': 1.0,
+          'currency': 'CAD'
+        });
+        
+        if (typeof(url) != 'undefined') {
+          setTimeout(function() {
             window.location = url;
-          }
-        };
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'conversion', {
-            'send_to': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
-            'value': 1.0,
-            'currency': 'CAD',
-            'event_callback': callback
-          });
+          }, 100);
         }
         return false;
       }
