@@ -56,18 +56,22 @@
 
 ## 📊 Analytics & Tracking
 
-- [x] Google Analytics 4 component created
-- [x] Form submission tracking
-- [x] Calculator usage tracking
-- [x] Outbound link tracking
-- [ ] TODO: Add GA_MEASUREMENT_ID to environment variables
+- [x] Google Tag Manager (GTM) implementation
+- [x] Form submission tracking via GTM
+- [x] Calendar booking tracking via GTM
+- [x] Outbound link tracking via GTM
+- [x] All tracking handled through GTM - no environment variables needed
 
 ## 🚀 Pre-Launch Tasks
 
 1. **Environment Variables**
    ```bash
-   # Add to .env file
-   PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+   # Add to .env file (only SMTP configuration needed)
+   SMTP_HOST=your-smtp-host.com
+   SMTP_PORT=587
+   SMTP_USER=your-smtp-username
+   SMTP_PASS=your-smtp-password
+   EMAIL_TO=your-email@example.com
    ```
 
 2. **Image Optimization**

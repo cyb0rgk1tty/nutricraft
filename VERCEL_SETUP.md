@@ -18,12 +18,6 @@ Add the following environment variables in your Vercel project dashboard:
 2. Navigate to Settings → Environment Variables
 3. Add these variables:
 
-### Google Analytics & Ads (Client-side)
-```
-PUBLIC_GA_MEASUREMENT_ID=G-Z04Y8KJRTW
-PUBLIC_GOOGLE_ADS_ID=AW-17548601361
-```
-
 ### SMTP Configuration (Server-side)
 ```
 SMTP_HOST=your-smtp-host.com
@@ -33,14 +27,13 @@ SMTP_PASS=your-smtp-password
 EMAIL_TO=your-email@example.com
 ```
 
-**Note**: Variables with `PUBLIC_` prefix are exposed to client-side code.
-Variables without prefix are server-side only (more secure for sensitive data).
+**Note**: All tracking (Google Analytics, Google Ads) is now handled through Google Tag Manager (GTM) and does not require environment variables. The GTM container ID is hardcoded in the application.
 
 ## Features
 
 - **Astro Hybrid Rendering**: Static pages with API routes for dynamic functionality
 - **Contact Form**: Server-side email sending via SMTP
-- **Google Ads Conversion Tracking**: Integrated tracking on form submission
+- **Google Tag Manager**: All tracking (Analytics, Ads conversions) handled through GTM
 - **Optimized Build**: Tailwind CSS with minimal bundle size
 
 ## Local Development
@@ -64,7 +57,7 @@ npm run preview
 - **API Endpoint**: `/api/contact`
 - **Email Service**: nodemailer with SMTP
 - **Validation**: Client and server-side
-- **Success Tracking**: Google Ads conversion event
+- **Success Tracking**: GTM event (`contact_form_submission`)
 
 ## Deployment
 

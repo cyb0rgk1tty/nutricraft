@@ -24,41 +24,40 @@ The following events are pushed to the dataLayer:
 1. **`contact_form_submission`**
    - Fired when contact form is successfully submitted
    - Contains: `conversion_id`, `value: 1.0`, `currency: CAD`
+   - Location: `/src/pages/contact.astro`
 
 2. **`calendar_booking`**
    - Fired when cal.com booking is confirmed
    - Contains: `conversion_id`, `value: 1.0`, `currency: CAD`
+   - Location: `/src/layouts/BaseLayout.astro`
 
-3. **`form_submit`**
-   - Generic form tracking for GA4
-   - Contains: `event_category: engagement`, `event_label: contact_form`
-
-4. **`outbound_click`**
+3. **`outbound_click`**
    - Tracks clicks on external links
    - Contains: `event_category: outbound`, `event_label: [URL]`
+   - Location: `/src/components/Analytics.astro`
+
+4. **`chat_opened`**
+   - Tracks when chat widget is opened
+   - Contains: `chat_method: button_click` or `widget_bubble`
+   - Locations: `/src/pages/contact.astro`, `/src/components/ChatSupport.astro`
 
 ### Contact Form Tracking
 
-**Location**: `/src/pages/contact.astro` (lines 185-198, 226-228)
+**Location**: `/src/pages/contact.astro`
 
 - Uses custom `gtag_report_conversion` function
 - Pushes `contact_form_submission` event to dataLayer
-- Only fires after successful API response
+- Only fires after successful API response (result.success === true)
+- Includes conversion ID and value for Google Ads tracking
 
 ### Calendar Booking Tracking
 
-**Locations**:
-1. **Global Function**: `/src/layouts/BaseLayout.astro` (lines 246-263)
-   - Defines the `gtag_report_conversion` function globally
-   - Pushes `calendar_booking` event to dataLayer
-   
-2. **Popup Calendar Tracking**: `/src/layouts/BaseLayout.astro`
-   - Tracks bookings from calendar buttons on index and contact pages
-   - Listens for `bookingSuccessful` event from cal.com popup embeds
+**Location**: `/src/layouts/BaseLayout.astro`
 
-3. **Inline Calendar Tracking**: `/src/pages/schedule-call.astro` (lines 161-171)
-   - Tracks bookings from the embedded calendar on the /schedule-call page
-   - Listens for `bookingSuccessful` event from cal.com inline embed
+- Global `window.gtag_report_conversion` function
+- Listens for Cal.com `bookingSuccessful` event
+- Works for both popup and inline calendar embeds
+- Pushes single event per booking
 
 ## GTM Configuration Required
 
@@ -72,13 +71,13 @@ The following events are pushed to the dataLayer:
    - Trigger Type: Custom Event
    - Event name: `calendar_booking`
 
-3. **Form Submit Trigger** (for GA4)
-   - Trigger Type: Custom Event
-   - Event name: `form_submit`
-
-4. **Outbound Click Trigger** (for GA4)
+3. **Outbound Click Trigger** (for GA4)
    - Trigger Type: Custom Event
    - Event name: `outbound_click`
+
+4. **Chat Opened Trigger** (optional)
+   - Trigger Type: Custom Event
+   - Event name: `chat_opened`
 
 ### Tags
 
@@ -86,30 +85,47 @@ The following events are pushed to the dataLayer:
    - Tag Type: Google Ads Conversion Tracking
    - Conversion ID: `AW-17548601361`
    - Conversion Label: `0UvVCKjSmpgbEJHQ6a9B`
+   - Conversion Value: 1.0
+   - Currency Code: CAD
    - Trigger: Contact Form Conversion Trigger
 
 2. **Google Ads Conversion - Calendar Booking**
    - Tag Type: Google Ads Conversion Tracking
    - Conversion ID: `AW-17548601361`
    - Conversion Label: `PLcGCKGKGboZwbEJHQ6a9B`
+   - Conversion Value: 1.0
+   - Currency Code: CAD
    - Trigger: Calendar Booking Trigger
 
 ## Testing
 
-To verify tracking is working:
-1. Open browser developer console
-2. Monitor Network tab for GTM requests
-3. Use GTM Preview mode to see events firing
-4. Check dataLayer in console: `console.log(dataLayer)`
+### Using Browser Console
 
-For conversions:
-- Contact form: Submit form and check for `contact_form_submission` event
-- Calendar: Complete booking and check for `calendar_booking` event
+```javascript
+// View all dataLayer events
+dataLayer.map(item => item.event).filter(Boolean)
+
+// Check specific conversion events
+dataLayer.filter(item => item.event === 'contact_form_submission')
+dataLayer.filter(item => item.event === 'calendar_booking')
+```
+
+### GTM Preview Mode
+1. Open GTM and click "Preview"
+2. Navigate to your site
+3. Perform actions (submit form, book calendar)
+4. Check that events appear in preview panel
+5. Verify tags fire correctly
+
+### Expected Results
+- Contact form submission: 1 `contact_form_submission` event
+- Calendar booking: 1 `calendar_booking` event
+- No duplicate events
 
 ## Notes
 
-- All tracking now goes through GTM (Container ID: `GTM-KDM7H2RL`)
+- All tracking flows through GTM (Container ID: `GTM-KDM7H2RL`)
 - No direct gtag.js implementation - everything uses dataLayer
-- Both conversions use the same currency (CAD) and value (1.0)
-- The tracking respects user privacy and only fires after explicit user action
-- No personal data is sent with the conversion events
+- Both conversions track with value 1.0 CAD
+- Events only fire after successful user actions
+- No personal data is sent with conversion events

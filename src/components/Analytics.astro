@@ -3,21 +3,8 @@ const isProd = import.meta.env.PROD;
 
 // Build the script content for dataLayer events
 let scriptContent = `
-  // Track form submissions
+  // Track outbound links
   document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.querySelector('#contact form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          'event': 'form_submit',
-          'event_category': 'engagement',
-          'event_label': 'contact_form'
-        });
-      });
-    }
-    
-    // Track outbound links
     const links = document.querySelectorAll('a[href^="http"]:not([href*="nutricraftlabs.com"])');
     links.forEach(link => {
       link.addEventListener('click', function() {

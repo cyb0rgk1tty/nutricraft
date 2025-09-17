@@ -10,26 +10,47 @@ This guide documents the Google Tag Manager (GTM) configuration for Nutricraft L
 ## Implementation
 
 GTM is implemented in `/src/layouts/BaseLayout.astro`:
-- GTM script in `<head>` (lines 34-42)
+- DataLayer initialization (line 35)
+- GTM script in `<head>` (lines 38-42)
 - GTM noscript in `<body>` (lines 237-240)
-- DataLayer initialization (lines 33-37)
+
+## Current Tracking Events
+
+The following events are pushed to dataLayer:
+
+1. **`contact_form_submission`** - Contact form conversions
+2. **`calendar_booking`** - Calendar appointment conversions  
+3. **`outbound_click`** - External link clicks
+4. **`chat_opened`** - Chat widget interactions
 
 ## Required GTM Configuration
 
 ### 1. Variables
 
-Enable these Built-in Variables:
+#### Built-in Variables to Enable:
 - ✅ Event
 - ✅ Page URL
-- ✅ Page Path
+- ✅ Page Path  
 - ✅ Click URL
 - ✅ Click Element
 
+#### Data Layer Variables to Create:
+
+**DLV - Chat Method**
+- Variable Type: Data Layer Variable
+- Data Layer Variable Name: `chat_method`
+
+**DLV - Event Category** 
+- Variable Type: Data Layer Variable
+- Data Layer Variable Name: `event_category`
+
+**DLV - Event Label**
+- Variable Type: Data Layer Variable  
+- Data Layer Variable Name: `event_label`
+
 ### 2. Triggers
 
-Create these custom event triggers:
-
-#### Contact Form Submission Trigger
+#### Contact Form Conversion Trigger
 - **Trigger Type**: Custom Event
 - **Event name**: `contact_form_submission`
 - **Use regex matching**: No
@@ -39,14 +60,14 @@ Create these custom event triggers:
 - **Event name**: `calendar_booking`
 - **Use regex matching**: No
 
-#### Form Submit Trigger (GA4)
-- **Trigger Type**: Custom Event
-- **Event name**: `form_submit`
-- **Use regex matching**: No
-
 #### Outbound Link Click Trigger
 - **Trigger Type**: Custom Event
 - **Event name**: `outbound_click`
+- **Use regex matching**: No
+
+#### Chat Opened Trigger (Optional)
+- **Trigger Type**: Custom Event
+- **Event name**: `chat_opened`
 - **Use regex matching**: No
 
 ### 3. Tags
@@ -56,23 +77,22 @@ Create these custom event triggers:
 - **Measurement ID**: `[Your GA4 Measurement ID]`
 - **Trigger**: All Pages
 
-#### GA4 Event - Form Submit
-- **Tag Type**: Google Analytics: GA4 Event
-- **Configuration Tag**: Select your GA4 Configuration tag
-- **Event Name**: `form_submit`
-- **Event Parameters**:
-  - `event_category`: `{{Data Layer Variable - event_category}}`
-  - `event_label`: `{{Data Layer Variable - event_label}}`
-- **Trigger**: Form Submit Trigger
-
 #### GA4 Event - Outbound Click
 - **Tag Type**: Google Analytics: GA4 Event
 - **Configuration Tag**: Select your GA4 Configuration tag
 - **Event Name**: `click`
 - **Event Parameters**:
-  - `event_category`: `{{Data Layer Variable - event_category}}`
-  - `event_label`: `{{Data Layer Variable - event_label}}`
+  - `event_category`: `{{DLV - Event Category}}`
+  - `event_label`: `{{DLV - Event Label}}`
 - **Trigger**: Outbound Link Click Trigger
+
+#### GA4 Event - Chat Interaction (Optional)
+- **Tag Type**: Google Analytics: GA4 Event
+- **Configuration Tag**: Select your GA4 Configuration tag
+- **Event Name**: `chat_open`
+- **Event Parameters**:
+  - `method`: `{{DLV - Chat Method}}`
+- **Trigger**: Chat Opened Trigger
 
 #### Google Ads Conversion - Contact Form
 - **Tag Type**: Google Ads Conversion Tracking
@@ -80,7 +100,7 @@ Create these custom event triggers:
 - **Conversion Label**: `0UvVCKjSmpgbEJHQ6a9B`
 - **Conversion Value**: `1.0`
 - **Conversion Currency**: `CAD`
-- **Trigger**: Contact Form Submission Trigger
+- **Trigger**: Contact Form Conversion Trigger
 
 #### Google Ads Conversion - Calendar Booking
 - **Tag Type**: Google Ads Conversion Tracking
@@ -90,81 +110,60 @@ Create these custom event triggers:
 - **Conversion Currency**: `CAD`
 - **Trigger**: Calendar Booking Trigger
 
-### 4. Data Layer Variables (Optional)
-
-If the event parameters aren't automatically available, create these Data Layer Variables:
-
-#### event_category Variable
-- **Variable Type**: Data Layer Variable
-- **Data Layer Variable Name**: `event_category`
-
-#### event_label Variable
-- **Variable Type**: Data Layer Variable
-- **Data Layer Variable Name**: `event_label`
-
-#### conversion_id Variable
-- **Variable Type**: Data Layer Variable
-- **Data Layer Variable Name**: `conversion_id`
-
 ## Testing
 
 ### Using GTM Preview Mode
 1. Click "Preview" in GTM
 2. Enter your website URL
-3. Navigate through the site and perform actions
-4. Check that events fire correctly in the preview panel
-
-### Testing Specific Events
-
-#### Contact Form Submission
-1. Fill out and submit the contact form
-2. Verify `contact_form_submission` event fires
-3. Check that Google Ads conversion tag fires
-
-#### Calendar Booking
-1. Book a calendar appointment
-2. Verify `calendar_booking` event fires
-3. Check that Google Ads conversion tag fires
-
-#### Form Tracking (GA4)
-1. Submit any form
-2. Verify `form_submit` event fires
-3. Check GA4 event tag fires
+3. Navigate through the site and perform actions:
+   - Submit contact form
+   - Book calendar appointment
+   - Click external links
+   - Open chat widget
+4. Verify events appear in preview panel
+5. Check that appropriate tags fire
 
 ### Console Testing
 ```javascript
 // View all dataLayer events
-console.log(dataLayer);
+dataLayer.map(item => item.event).filter(Boolean)
 
-// Test push an event manually
-dataLayer.push({
-  'event': 'test_event',
-  'test_parameter': 'test_value'
-});
+// Test specific events
+dataLayer.filter(item => item.event === 'contact_form_submission')
+dataLayer.filter(item => item.event === 'calendar_booking')
+dataLayer.filter(item => item.event === 'outbound_click')
+dataLayer.filter(item => item.event === 'chat_opened')
 ```
 
 ## Debugging Tips
 
-1. **Events not firing?**
-   - Check browser console for JavaScript errors
-   - Verify dataLayer is initialized before GTM
-   - Ensure events are pushed after DOM is ready
+### Events Not Firing?
+1. Check browser console for JavaScript errors
+2. Verify dataLayer exists: `typeof dataLayer`
+3. Ensure GTM container is loading (check Network tab)
+4. Clear cache and try incognito mode
 
-2. **Tags not firing?**
-   - Check trigger configuration matches event names exactly
-   - Verify no trigger exceptions are blocking
-   - Use GTM Preview mode to debug
+### Tags Not Firing?
+1. Check trigger configuration matches event names exactly
+2. Verify no trigger exceptions are set
+3. Use GTM Debug mode to see why tags aren't firing
+4. Check tag sequencing and dependencies
 
-3. **Missing data?**
-   - Create Data Layer Variables for custom parameters
-   - Check variable names match exactly
-   - Ensure data is pushed with the event
+### Conversions Not Tracking?
+1. Verify conversion IDs match your Google Ads account
+2. Check that conversion actions exist in Google Ads
+3. Allow 24-48 hours for data to appear
+4. Test with Google Ads Tag Assistant
 
-## Security Notes
+## Security Configuration
 
-- CSP headers are configured to allow GTM in:
-  - `/vercel.json`
-  - `/public/_headers`
-  - `/src/middleware.js`
-- GTM iframe is allowed in frame-src
-- Scripts from googletagmanager.com are allowed
+CSP headers are configured to allow GTM in:
+- `/vercel.json`
+- `/public/_headers`  
+- `/src/middleware.js`
+
+Required CSP allowances:
+- `script-src`: googletagmanager.com, google-analytics.com, googleadservices.com
+- `connect-src`: googletagmanager.com, google.com, google-analytics.com
+- `frame-src`: googletagmanager.com
+- `style-src`: googletagmanager.com
