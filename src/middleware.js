@@ -11,7 +11,7 @@ export async function onRequest({ request, url }, next) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com https://googleads.g.doubleclick.net https://*.googleadservices.com https://*.googlesyndication.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
