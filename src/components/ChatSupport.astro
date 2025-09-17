@@ -17,6 +17,15 @@
           websiteToken: 'kZ6MVSqzFdTixasHXKbRmJRZ',
           baseUrl: BASE_URL
         });
+        
+        // Track chat widget interactions
+        window.addEventListener('chatwoot:open', function() {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'chat_opened',
+            'chat_method': 'widget_bubble'
+          });
+        });
       }
     };
     

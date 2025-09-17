@@ -268,6 +268,12 @@ import Footer from "../components/Footer.astro";
     window.openChatwootChat = function() {
       if (chatwootReady && window.$chatwoot) {
         window.$chatwoot.toggle('open');
+        // Track chat open in GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'chat_opened',
+          'chat_method': 'button_click'
+        });
       } else {
         // Try to wait a bit and retry
         let retries = 0;
@@ -276,6 +282,12 @@ import Footer from "../components/Footer.astro";
           if (window.$chatwoot) {
             clearInterval(checkInterval);
             window.$chatwoot.toggle('open');
+            // Track chat open in GTM
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              'event': 'chat_opened',
+              'chat_method': 'button_click'
+            });
           } else if (retries > 10) {
             clearInterval(checkInterval);
             alert('Chat is still loading. Please try again in a moment.');
