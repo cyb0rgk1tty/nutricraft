@@ -333,8 +333,7 @@ import { formulations } from "../data/formulations.js";
         {
           formulations.map((formulation, index) => (
             <ScrollAnimation animation="fade-up" delay={index * 100}>
-              <a
-                href={`/formulations/${formulation.slug}`}
+              <div
                 class="group relative bg-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col overflow-hidden"
               >
                 <!-- Image Container - Edge to Edge -->
@@ -366,7 +365,7 @@ import { formulations } from "../data/formulations.js";
                     ))}
                   </div>
                 </div>
-              </a>
+              </div>
             </ScrollAnimation>
           ))
         }
