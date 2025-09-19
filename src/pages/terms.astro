@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <BaseLayout
@@ -9,80 +9,163 @@ import Footer from '../components/Footer.astro';
   description="Terms of Service for Nutricraft Labs. Read our terms and conditions for using our services."
 >
   <Header />
-  
+
   <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <h1 class="text-4xl font-bold text-dark-900 mb-8">Terms of Service</h1>
-      
+
       <div class="prose prose-lg max-w-none text-dark-600">
-        <p class="text-sm text-gray-600 mb-6">Last Updated: {new Date().toLocaleDateString()}</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">1. Acceptance of Terms</h2>
-        <p>By accessing or using Nutricraft Labs' services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">2. Services Description</h2>
-        <p>Nutricraft Labs provides consulting and matchmaking services for supplement manufacturing, including:</p>
+        <p class="text-sm text-gray-600 mb-6">
+          Last Updated: {new Date().toLocaleDateString()}
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          1. Acceptance of Terms
+        </h2>
+        <p>
+          By accessing or using Nutricraft Labs' services, you agree to be bound
+          by these Terms of Service and all applicable laws and regulations. If
+          you do not agree with any of these terms, you are prohibited from
+          using our services.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          2. Services Description
+        </h2>
+        <p>
+          Nutricraft Labs provides consulting and matchmaking services for
+          supplement manufacturing, including:
+        </p>
         <ul class="list-disc pl-6 mb-4">
           <li>Connecting clients with vetted GMP-certified manufacturers</li>
           <li>Facilitating private label and custom formulation projects</li>
           <li>Assisting with regulatory compliance and NPN applications</li>
           <li>Coordinating quality testing and fulfillment services</li>
         </ul>
-        <p>We act as an intermediary and do not directly manufacture products.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">3. Client Responsibilities</h2>
+        <p>
+          We act as an intermediary and do not directly manufacture products.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          3. Client Responsibilities
+        </h2>
         <p>As our client, you agree to:</p>
         <ul class="list-disc pl-6 mb-4">
-          <li>Provide accurate and complete information about your requirements</li>
+          <li>
+            Provide accurate and complete information about your requirements
+          </li>
           <li>Comply with all applicable laws and regulations</li>
           <li>Maintain confidentiality of proprietary information shared</li>
           <li>Make timely payments according to agreed terms</li>
         </ul>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">4. Limitations and Disclaimers</h2>
-        <p><strong>No Guarantees:</strong> While we strive to connect you with qualified partners, we cannot guarantee:</p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          4. Limitations and Disclaimers
+        </h2>
+        <p>
+          <strong>No Guarantees:</strong> While we strive to connect you with qualified
+          partners, we cannot guarantee:
+        </p>
         <ul class="list-disc pl-6 mb-4">
           <li>Specific manufacturing outcomes or product quality</li>
           <li>Regulatory approval (including NPN applications)</li>
           <li>Market success of your products</li>
           <li>Specific timelines or pricing from manufacturers</li>
         </ul>
-        
-        <p><strong>Third-Party Services:</strong> Manufacturing, testing, and fulfillment are performed by independent third parties. We are not responsible for their actions, omissions, or performance.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">5. Intellectual Property</h2>
-        <p>All content on our website, including text, graphics, logos, and software, is the property of Nutricraft Labs or its licensors and is protected by intellectual property laws.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">6. Confidentiality</h2>
-        <p>Both parties agree to maintain the confidentiality of any proprietary information shared during the course of business, including formulations, business strategies, and partner details.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">7. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, Nutricraft Labs shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">8. Indemnification</h2>
-        <p>You agree to indemnify and hold harmless Nutricraft Labs, its officers, directors, employees, and agents from any claims, damages, or expenses arising from your use of our services or violation of these terms.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">9. Payment Terms</h2>
-        <p>Payment terms will be specified in individual service agreements. Late payments may incur additional charges. We reserve the right to suspend services for non-payment.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">10. Termination</h2>
-        <p>Either party may terminate the service relationship with written notice. Upon termination, all outstanding payments become due, and confidentiality obligations survive.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">11. Governing Law</h2>
-        <p>These terms shall be governed by and construed in accordance with the laws of Ontario, Canada, without regard to conflict of law principles.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">12. Changes to Terms</h2>
-        <p>We reserve the right to modify these terms at any time. Changes will be effective upon posting to our website. Your continued use of our services constitutes acceptance of modified terms.</p>
-        
-        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">13. Contact Information</h2>
+
+        <p>
+          <strong>Third-Party Services:</strong> Manufacturing, testing, and fulfillment
+          are performed by independent third parties. We are not responsible for
+          their actions, omissions, or performance.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          5. Intellectual Property
+        </h2>
+        <p>
+          All content on our website, including text, graphics, logos, and
+          software, is the property of Nutricraft Labs or its licensors and is
+          protected by intellectual property laws.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          6. Confidentiality
+        </h2>
+        <p>
+          Both parties agree to maintain the confidentiality of any proprietary
+          information shared during the course of business, including
+          formulations, business strategies, and partner details.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          7. Limitation of Liability
+        </h2>
+        <p>
+          To the maximum extent permitted by law, Nutricraft Labs shall not be
+          liable for any indirect, incidental, special, consequential, or
+          punitive damages arising from your use of our services.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          8. Indemnification
+        </h2>
+        <p>
+          You agree to indemnify and hold harmless Nutricraft Labs, its
+          officers, directors, employees, and agents from any claims, damages,
+          or expenses arising from your use of our services or violation of
+          these terms.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          9. Payment Terms
+        </h2>
+        <p>
+          Payment terms will be specified in individual service agreements. Late
+          payments may incur additional charges. We reserve the right to suspend
+          services for non-payment.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          10. Termination
+        </h2>
+        <p>
+          Either party may terminate the service relationship with written
+          notice. Upon termination, all outstanding payments become due, and
+          confidentiality obligations survive.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          11. Governing Law
+        </h2>
+        <p>
+          These terms shall be governed by and construed in accordance with the
+          laws of Ontario, Canada, without regard to conflict of law principles.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          12. Changes to Terms
+        </h2>
+        <p>
+          We reserve the right to modify these terms at any time. Changes will
+          be effective upon posting to our website. Your continued use of our
+          services constitutes acceptance of modified terms.
+        </p>
+
+        <h2 class="text-2xl font-semibold text-dark-900 mt-8 mb-4">
+          13. Contact Information
+        </h2>
         <p>For questions about these Terms of Service, please contact us at:</p>
         <p class="mt-4">
-          <strong>Nutricraft Labs</strong><br>
-          Email: <a href="mailto:hello@nutricraftlabs.com" class="text-mint-600 hover:text-mint-700">hello@nutricraftlabs.com</a>
+          <strong>Nutricraft Labs</strong><br />
+          Email: <a
+            href="mailto:hello@nutricraftlabs.com"
+            class="text-mint-600 hover:text-mint-700"
+            >hello@nutricraftlabs.com</a
+          >
         </p>
       </div>
     </div>
   </section>
-  
+
   <Footer />
 </BaseLayout>

@@ -2,13 +2,15 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
+import sitemap from '@astrojs/sitemap';
+import robotsTxt from 'astro-robots-txt';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
+  integrations: [tailwind(), sitemap(), robotsTxt()],
   output: 'server',
   adapter: vercel(),
-  site: 'https://nutricraftlabs.com',
+  site: 'https://Nutricraftlabs.com',
   compressHTML: true,
   build: {
     inlineStylesheets: 'always',

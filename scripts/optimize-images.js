@@ -5,21 +5,21 @@ import imageminWebp from 'imagemin-webp';
 import path from 'path';
 import { promises as fs } from 'fs';
 
-const inputDir = '/var/www/nutricraft/public/images';
-const outputDir = '/var/www/nutricraft/public/images/formulations';
+const inputDir = '/var/www/Nutricraft/public/images';
+const outputDir = '/var/www/Nutricraft/public/images/formulations';
 
 const images = ['whitetabs', 'whitecaps', 'softgels', 'gummies', 'powder', 'liquid'];
 const sizes = [400, 800, 1200];
 
 async function processImage(imageName) {
   console.log(`Processing ${imageName}.png...`);
-  
+
   const inputPath = path.join(inputDir, `${imageName}.png`);
-  
+
   // Process each size
   for (const size of sizes) {
     const outputPath = path.join(outputDir, `${imageName}-${size}.png`);
-    
+
     try {
       // Resize image
       await sharp(inputPath)
@@ -29,17 +29,17 @@ async function processImage(imageName) {
         })
         .png()
         .toFile(outputPath);
-      
+
       console.log(`  Created ${imageName}-${size}.png`);
-      
+
       // Create WebP version
       const webpPath = path.join(outputDir, `${imageName}-${size}.webp`);
       await sharp(outputPath)
         .webp({ quality: 85 })
         .toFile(webpPath);
-      
+
       console.log(`  Created ${imageName}-${size}.webp`);
-      
+
       // Optimize PNG with pngquant
       const optimizedBuffer = await imagemin.buffer(
         await fs.readFile(outputPath),
@@ -51,29 +51,29 @@ async function processImage(imageName) {
           ]
         }
       );
-      
+
       await fs.writeFile(outputPath, optimizedBuffer);
       console.log(`  Optimized ${imageName}-${size}.png`);
-      
+
     } catch (error) {
       console.error(`Error processing ${imageName} at ${size}px:`, error.message);
     }
   }
-  
+
   console.log(`Completed ${imageName}\n`);
 }
 
 async function main() {
   // Ensure output directory exists
   await fs.mkdir(outputDir, { recursive: true });
-  
+
   // Process all images
   for (const image of images) {
     await processImage(image);
   }
-  
+
   console.log('All images processed successfully!');
-  
+
   // List files
   const files = await fs.readdir(outputDir);
   console.log('\nCreated files:');

@@ -16,9 +16,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Basic validation
     if (!name || !email || !projectType || !message) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'Please fill in all required fields' 
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Please fill in all required fields'
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -28,9 +28,9 @@ export const POST: APIRoute = async ({ request }) => {
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'Please provide a valid email address' 
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Please provide a valid email address'
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -83,9 +83,9 @@ ${message}
       html: htmlContent,
     });
 
-    return new Response(JSON.stringify({ 
-      success: true, 
-      message: 'Thank you for your inquiry! We\'ll be in touch within 24 hours.' 
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Thank you for your inquiry! We\'ll be in touch within 24 hours.'
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -93,9 +93,9 @@ ${message}
 
   } catch (error) {
     console.error('Email error:', error);
-    return new Response(JSON.stringify({ 
-      success: false, 
-      error: 'Failed to send email. Please try again later.' 
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Failed to send email. Please try again later.'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

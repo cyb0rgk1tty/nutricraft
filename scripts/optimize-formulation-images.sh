@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create directories if they don't exist
-cd /var/www/nutricraft/public/images
+cd /var/www/Nutricraft/public/images
 mkdir -p formulations
 
 # Array of image names to process
@@ -41,5 +41,5 @@ for img in "${images[@]}"; do
 done
 
 echo "All images processed successfully!"
-echo "Files created in /var/www/nutricraft/public/images/formulations/"
+echo "Files created in /var/www/Nutricraft/public/images/formulations/"
 ls -la formulations/

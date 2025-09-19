@@ -1,8 +1,8 @@
 ---
-import { SEO } from 'astro-seo';
-import ChatSupport from '../components/ChatSupport.astro';
-import Analytics from '../components/Analytics.astro';
-import '../styles/tailwind.css';
+import { SEO } from "astro-seo";
+import ChatSupport from "../components/ChatSupport.astro";
+import Analytics from "../components/Analytics.astro";
+import "../styles/tailwind.css";
 
 export interface Props {
   title?: string;
@@ -10,11 +10,11 @@ export interface Props {
   image?: string;
 }
 
-const { 
-  title = 'Nutricraft Labs | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)',
-  description = 'Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging. Free consultation.',
-  image = '/images/nutricraftbottle-optimized.png',
-  noindex = false
+const {
+  title = "Nutricraft Labs | Private-Label Supplements, NPN & GMP Partner Network (Canada/US)",
+  description = "Launch compliant supplements faster. We connect you with vetted GMP manufacturers and handle NPN, labels, and packaging. Free consultation.",
+  image = "/images/nutricraftbottle-optimized.png",
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -29,27 +29,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    
+
     <!-- Initialize dataLayer for GTM -->
     <script>
       window.dataLayer = window.dataLayer || [];
     </script>
-    
+
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KDM7H2RL');</script>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-KDM7H2RL");
+    </script>
     <!-- End Google Tag Manager -->
-    
+
     <!-- Preconnect to external domains for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://chat.tangleapps.vip" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://chat.tangleapps.vip" />
-    
+
     <SEO
       title={title}
       description={description}
@@ -58,62 +65,74 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           title,
           type: "website",
           image,
-          url: canonicalURL.href
+          url: canonicalURL.href,
         },
         optional: {
           description,
-          siteName: "Nutricraft Labs"
-        }
+          siteName: "Nutricraft Labs",
+        },
       }}
       twitter={{
-        creator: "@nutricraftlabs",
-        site: "@nutricraftlabs",
-        card: "summary_large_image"
+        creator: "@Nutricraftlabs",
+        site: "@Nutricraftlabs",
+        card: "summary_large_image",
       }}
       extend={{
         link: [
           { rel: "canonical", href: canonicalURL.href },
           { rel: "sitemap", href: "/sitemap.xml" },
           { rel: "alternate", hreflang: "en-CA", href: canonicalURL.href },
-          { rel: "alternate", hreflang: "fr-CA", href: canonicalURL.href.replace('.com', '.com/fr') },
-          { rel: "alternate", hreflang: "x-default", href: canonicalURL.href },
-          { 
-            rel: "preconnect", 
-            href: "https://fonts.googleapis.com" 
+          {
+            rel: "alternate",
+            hreflang: "fr-CA",
+            href: canonicalURL.href.replace(".com", ".com/fr"),
           },
-          { 
-            rel: "preconnect", 
+          { rel: "alternate", hreflang: "x-default", href: canonicalURL.href },
+          {
+            rel: "preconnect",
+            href: "https://fonts.googleapis.com",
+          },
+          {
+            rel: "preconnect",
             href: "https://fonts.gstatic.com",
-            crossorigin: true
+            crossorigin: true,
           },
           {
             rel: "preload",
             as: "style",
-            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+            href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
           },
           {
             href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
             rel: "stylesheet",
             media: "print",
-            onload: "this.media='all'; this.onload=null;"
+            onload: "this.media='all'; this.onload=null;",
           },
           {
             rel: "dns-prefetch",
-            href: "https://schema.org"
-          }
+            href: "https://schema.org",
+          },
         ],
         meta: [
-          { name: "robots", content: noindex ? "noindex, nofollow" : "index, follow" },
-          { name: "googlebot", content: noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large" },
+          {
+            name: "robots",
+            content: noindex ? "noindex, nofollow" : "index, follow",
+          },
+          {
+            name: "googlebot",
+            content: noindex
+              ? "noindex, nofollow"
+              : "index, follow, max-image-preview:large",
+          },
           { property: "og:locale", content: "en_US" },
           { property: "og:locale:alternate", content: "fr_CA" },
           { name: "author", content: "Nutricraft Labs" },
           { name: "theme-color", content: "#A8E6CF" },
-          { name: "format-detection", content: "telephone=no" }
-        ]
+          { name: "format-detection", content: "telephone=no" },
+        ],
       }}
     />
-    
+
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
       {
@@ -121,8 +140,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         "@type": "Organization",
         "name": "Nutricraft Labs",
         "description": "Private-label supplements and regulatory compliance services for North America",
-        "url": "https://nutricraftlabs.com",
-        "logo": "https://nutricraftlabs.com/images/logo-og.jpg",
+        "url": "https://Nutricraftlabs.com",
+        "logo": "https://Nutricraftlabs.com/images/logo-og.jpg",
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "hello@nutricraftlabs.com",
@@ -130,8 +149,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           "availableLanguage": ["English", "French"]
         },
         "sameAs": [
-          "https://www.linkedin.com/company/nutricraftlabs",
-          "https://twitter.com/nutricraftlabs"
+          "https://www.linkedin.com/company/Nutricraftlabs",
+          "https://twitter.com/Nutricraftlabs"
         ],
         "areaServed": ["CA", "US"],
         "serviceArea": {
@@ -151,7 +170,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         }
       }
     </script>
-    
+
     <!-- LocalBusiness Schema -->
     <script type="application/ld+json">
       {
@@ -159,7 +178,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         "@type": "LocalBusiness",
         "name": "Nutricraft Labs",
         "description": "Private-label supplement manufacturing matchmaking and regulatory compliance services",
-        "url": "https://nutricraftlabs.com",
+        "url": "https://Nutricraftlabs.com",
         "telephone": "",
         "email": "hello@nutricraftlabs.com",
         "address": {
@@ -177,91 +196,183 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         "priceRange": "$$$"
       }
     </script>
-    
+
     <!-- Fallback for browsers with JavaScript disabled -->
     <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet"
+      />
     </noscript>
-    
+
     <!-- Critical CSS for above-the-fold content -->
     <style>
       /* Critical CSS for faster initial paint */
-      * { box-sizing: border-box; }
-      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-      img { max-width: 100%; height: auto; }
-      
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
       /* Font display swap for web fonts */
       @font-face {
-        font-family: 'Inter';
+        font-family: "Inter";
         font-display: swap;
-        src: local('Inter');
+        src: local("Inter");
       }
-      
-      .bg-gradient-to-b { background: linear-gradient(to bottom, var(--tw-gradient-from), var(--tw-gradient-to)); }
-      .from-mint-50 { --tw-gradient-from: #f0fdf6; }
-      .to-white { --tw-gradient-to: #ffffff; }
-      .text-dark-900 { color: #111827; }
-      .text-dark-600 { color: #4b5563; }
-      .max-w-7xl { max-width: 80rem; }
-      .mx-auto { margin-left: auto; margin-right: auto; }
-      .px-4 { padding-left: 1rem; padding-right: 1rem; }
-      .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
-      .grid { display: grid; }
-      .gap-12 { gap: 3rem; }
-      .space-y-6 > * + * { margin-top: 1.5rem; }
-      .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-      .font-bold { font-weight: 700; }
-      .leading-tight { line-height: 1.25; }
-      .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-      .leading-relaxed { line-height: 1.625; }
-      .bg-mint-600 { background-color: #00c896; }
-      .text-white { color: #ffffff; }
-      .rounded-lg { border-radius: 0.5rem; }
-      .inline-flex { display: inline-flex; }
-      .items-center { align-items: center; }
-      .justify-center { justify-content: center; }
-      .px-8 { padding-left: 2rem; padding-right: 2rem; }
-      .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+
+      .bg-gradient-to-b {
+        background: linear-gradient(
+          to bottom,
+          var(--tw-gradient-from),
+          var(--tw-gradient-to)
+        );
+      }
+      .from-mint-50 {
+        --tw-gradient-from: #f0fdf6;
+      }
+      .to-white {
+        --tw-gradient-to: #ffffff;
+      }
+      .text-dark-900 {
+        color: #111827;
+      }
+      .text-dark-600 {
+        color: #4b5563;
+      }
+      .max-w-7xl {
+        max-width: 80rem;
+      }
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .py-16 {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+      }
+      .grid {
+        display: grid;
+      }
+      .gap-12 {
+        gap: 3rem;
+      }
+      .space-y-6 > * + * {
+        margin-top: 1.5rem;
+      }
+      .text-4xl {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+      }
+      .font-bold {
+        font-weight: 700;
+      }
+      .leading-tight {
+        line-height: 1.25;
+      }
+      .text-xl {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+      }
+      .leading-relaxed {
+        line-height: 1.625;
+      }
+      .bg-mint-600 {
+        background-color: #00c896;
+      }
+      .text-white {
+        color: #ffffff;
+      }
+      .rounded-lg {
+        border-radius: 0.5rem;
+      }
+      .inline-flex {
+        display: inline-flex;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .px-8 {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+      .py-4 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
       @media (min-width: 768px) {
-        .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
-        .md\\:text-5xl { font-size: 3rem; line-height: 1; }
+        .md\\:grid-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .md\\:py-24 {
+          padding-top: 6rem;
+          padding-bottom: 6rem;
+        }
+        .md\\:text-5xl {
+          font-size: 3rem;
+          line-height: 1;
+        }
       }
       @media (min-width: 1024px) {
-        .lg\\:text-6xl { font-size: 3.75rem; line-height: 1; }
-        .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .lg\\:text-6xl {
+          font-size: 3.75rem;
+          line-height: 1;
+        }
+        .lg\\:px-8 {
+          padding-left: 2rem;
+          padding-right: 2rem;
+        }
       }
     </style>
   </head>
   <body class="bg-white text-gray-900">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KDM7H2RL"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-KDM7H2RL"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
     <!-- End Google Tag Manager (noscript) -->
     <slot />
     <ChatSupport />
     <Analytics />
-    
+
     <!-- Calendar Booking Conversion Tracking for GTM -->
     <script>
-      window.gtag_report_conversion = function(url) {
+      window.gtag_report_conversion = function (url) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-          'event': 'calendar_booking',
-          'conversion_id': 'AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B',
-          'value': 1.0,
-          'currency': 'CAD'
+          event: "calendar_booking",
+          conversion_id: "AW-17548601361/PLcGCKGKGboZwbEJHQ6a9B",
+          value: 1.0,
+          currency: "CAD",
         });
-        
-        if (typeof(url) != 'undefined') {
-          setTimeout(function() {
+
+        if (typeof url != "undefined") {
+          setTimeout(function () {
             window.location = url;
           }, 100);
         }
         return false;
-      }
+      };
     </script>
-    
+
     <!-- Cal.com Embed Script -->
     <script>
       (function (C, A, L) {
@@ -295,63 +406,63 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             p(cal, ar);
           };
       })(window, "https://app.cal.com/embed/embed.js", "init");
-      
+
       // Initialize Cal.com when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
           Cal("init", {
-            origin: "https://app.cal.com"
+            origin: "https://app.cal.com",
           });
-          
+
           // Initialize UI for handling button clicks
           Cal("ui", {
             cssVarsPerTheme: {
               light: {
-                "cal-brand": "#00c896"
-              }
+                "cal-brand": "#00c896",
+              },
             },
             hideEventTypeDetails: false,
-            layout: "month_view"
+            layout: "month_view",
           });
-          
+
           // Listen for booking success from popup calendars
           Cal("on", {
             action: "bookingSuccessful",
             callback: (e) => {
               console.log("Booking successful (popup):", e.detail);
               // Track Google Ads conversion for calendar bookings
-              if (typeof window.gtag_report_conversion === 'function') {
+              if (typeof window.gtag_report_conversion === "function") {
                 window.gtag_report_conversion();
               }
-            }
+            },
           });
         });
       } else {
         // DOM already loaded
         Cal("init", {
-          origin: "https://app.cal.com"
+          origin: "https://app.cal.com",
         });
-        
+
         Cal("ui", {
           cssVarsPerTheme: {
             light: {
-              "cal-brand": "#00c896"
-            }
+              "cal-brand": "#00c896",
+            },
           },
           hideEventTypeDetails: false,
-          layout: "month_view"
+          layout: "month_view",
         });
-        
+
         // Listen for booking success from popup calendars
         Cal("on", {
           action: "bookingSuccessful",
           callback: (e) => {
             console.log("Booking successful (popup):", e.detail);
             // Track Google Ads conversion for calendar bookings
-            if (typeof window.gtag_report_conversion === 'function') {
+            if (typeof window.gtag_report_conversion === "function") {
               window.gtag_report_conversion();
             }
-          }
+          },
         });
       }
     </script>

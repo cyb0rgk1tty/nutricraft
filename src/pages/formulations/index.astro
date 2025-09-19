@@ -36,7 +36,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
           formulations.map((formulation, index) => (
-            <ScrollAnimation animation="fade-up" delay={index * 100}>
+            <ScrollAnimation animation="fade-up" delay={Math.floor(index / 3) * 150}>
               <a
                 href={`/formulations/${formulation.slug}`}
                 class="group relative bg-gray-50 rounded-xl hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1 overflow-hidden"

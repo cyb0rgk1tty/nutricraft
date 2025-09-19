@@ -36,16 +36,16 @@ const defaultHeight = 800;
     type="image/webp"
   />
   
-  <!-- PNG sources for different screen sizes -->
+  <!-- JPG sources for different screen sizes -->
   <source
     media="(max-width: 640px)"
     srcset={formulation.responsiveImages?.small || formulation.image}
-    type="image/png"
+    type="image/jpeg"
   />
   <source
     media="(max-width: 1024px)"
     srcset={formulation.responsiveImages?.medium || formulation.image}
-    type="image/png"
+    type="image/jpeg"
   />
   
   <!-- Fallback img tag -->
@@ -64,5 +64,5 @@ const defaultHeight = 800;
 
 {priority && (
   <link rel="preload" as="image" href={formulation.responsiveImages?.mediumWebp || formulation.image} type="image/webp" />
-  <link rel="preload" as="image" href={formulation.responsiveImages?.medium || formulation.image} type="image/png" />
+  <link rel="preload" as="image" href={formulation.responsiveImages?.medium || formulation.image} type="image/jpeg" />
 )}

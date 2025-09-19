@@ -78,8 +78,8 @@ A modern, high-performance landing page for Nutricraft Labs - a premium suppleme
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-repo/nutricraft-labs.git
-cd nutricraft-labs
+git clone https://github.com/your-repo/Nutricraft-labs.git
+cd Nutricraft-labs
 ```
 
 2. Install dependencies:

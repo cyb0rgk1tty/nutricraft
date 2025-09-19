@@ -21,8 +21,8 @@ import { formulations } from "../data/formulations.js";
 <BaseLayout>
   <Fragment slot="head">
     <!-- Preload hero image for better LCP (mobile only to save bandwidth) -->
-    <link rel="preload" as="image" href="/images/Nutricraftbottle-500.webp" type="image/webp" media="(max-width: 768px)" />
-    <link rel="preload" as="image" href="/images/Nutricraftbottle-500.webp" type="image/webp" media="(min-width: 769px)" />
+    <link rel="preload" as="image" href="/images/nutricraftbottle-500.webp" type="image/webp" media="(max-width: 768px)" />
+    <link rel="preload" as="image" href="/images/nutricraftbottle-500.webp" type="image/webp" media="(min-width: 769px)" />
   </Fragment>
   
   <Header />
@@ -129,23 +129,23 @@ import { formulations } from "../data/formulations.js";
                 <!-- Mobile: Use 500px image only -->
                 <source
                   media="(max-width: 768px)"
-                  srcset="/images/Nutricraftbottle-500.webp"
+                  srcset="/images/nutricraftbottle-500.webp"
                   type="image/webp"
                 />
                 <source
                   media="(max-width: 768px)"
-                  srcset="/images/Nutricraftbottle-500.png"
+                  srcset="/images/nutricraftbottle-500.png"
                   type="image/png"
                 />
                 <!-- Desktop: Use responsive images -->
                 <source
                   media="(min-width: 769px)"
-                  srcset="/images/Nutricraftbottle-500.webp 1x, /images/Nutricraftbottle-1000.webp 2x"
+                  srcset="/images/nutricraftbottle-500.webp 1x, /images/nutricraftbottle-1000.webp 2x"
                   type="image/webp"
                 />
                 <img
-                  src="/images/Nutricraftbottle-500.png"
-                  srcset="/images/Nutricraftbottle-500.png 1x, /images/Nutricraftbottle-1000.png 2x"
+                  src="/images/nutricraftbottle-500.png"
+                  srcset="/images/nutricraftbottle-500.png 1x, /images/nutricraftbottle-1000.png 2x"
                   alt="Nutricraft Labs Supplement Bottle"
                   class="w-full h-full object-contain"
                   loading="eager"
@@ -331,7 +331,7 @@ import { formulations } from "../data/formulations.js";
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
           formulations.slice(0, 6).map((formulation, index) => (
-            <ScrollAnimation animation="fade-up" delay={index * 100}>
+            <ScrollAnimation animation="fade-up" delay={Math.floor(index / 3) * 150}>
               <a
                 href={`/formulations/${formulation.slug}`}
                 class="group relative bg-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col overflow-hidden"

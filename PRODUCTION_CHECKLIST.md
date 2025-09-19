@@ -81,7 +81,7 @@
    ```
 
 3. **DNS Configuration**
-   - Point nutricraftlabs.com to hosting
+   - Point Nutricraftlabs.com to hosting
    - Configure www redirect
    - Set up email records (MX, SPF, DKIM)
 

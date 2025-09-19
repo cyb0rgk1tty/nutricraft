@@ -38,4 +38,4 @@ Tools for Creation:
 - Online OG image generators
 
 Once created, save the image as:
-/var/www/nutricraft/public/images/og-image.jpg
+/var/www/Nutricraft/public/images/og-image.jpg

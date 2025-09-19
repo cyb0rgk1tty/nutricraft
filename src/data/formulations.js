@@ -318,7 +318,7 @@ export const formulations = [
   },
   {
     id: 'odt',
-    name: 'ODT',
+    name: 'Orally Disintegrating Tablets (ODT)',
     slug: 'odt',
     tagline: 'Fast-dissolving, no water needed, convenient',
     shortDescription: 'Innovative tablets that dissolve rapidly in the mouth for fast absorption and ultimate convenience.',

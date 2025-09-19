@@ -2,7 +2,6 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import ScrollAnimation from "../../components/ScrollAnimation.astro";
 import FormulationImage from "../../components/FormulationImage.astro";
 import { formulations, getFormulationBySlug, formulationComparison } from "../../data/formulations.js";
 import { getEntry } from 'astro:content';
@@ -25,115 +24,18 @@ const article = await getEntry('formulations', formulation.slug);
 const { Content } = article ? await article.render() : { Content: null };
 
 // SEO metadata
-const title = `${formulation.name} Manufacturing - Nutricraft Labs`;
-const description = formulation.metaDescription || formulation.shortDescription;
+const pageTitle = `${formulation.name} Manufacturing - Nutricraft Labs`;
+const pageDescription = article?.data.metaDescription || formulation.metaDescription || formulation.shortDescription;
+const pageImage = formulation.articleImage 
+  ? `https://Nutricraftlabs.com${formulation.articleImage.large}` 
+  : `https://Nutricraftlabs.com/images/formulations/${formulation.image}`;
 ---
 
-<BaseLayout title={title} description={description}>
-  <Fragment slot="head">
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content={`https://Nutricraftlabs.com/formulations/${formulation.slug}`} />
-    {formulation.articleImage && (
-      <meta property="og:image" content={`https://Nutricraftlabs.com${formulation.articleImage.large}`} />
-      <meta property="og:image:alt" content={formulation.articleImage.alt} />
-    )}
-    
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    {formulation.articleImage && (
-      <meta name="twitter:image" content={`https://Nutricraftlabs.com${formulation.articleImage.large}`} />
-    )}
-    
-    <!-- Additional SEO -->
-    <link rel="canonical" href={`https://Nutricraftlabs.com/formulations/${formulation.slug}`} />
-    
-    <!-- Article Schema -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": article ? article.title : title,
-        "description": description,
-        "image": formulation.articleImage ? `https://Nutricraftlabs.com${formulation.articleImage.large}` : `https://Nutricraftlabs.com${formulation.image}`,
-        "datePublished": new Date().toISOString(),
-        "dateModified": new Date().toISOString(),
-        "author": {
-          "@type": "Organization",
-          "name": "Nutricraft Labs"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Nutricraft Labs",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://Nutricraftlabs.com/images/logo.png"
-          }
-        }
-      }
-    </script>
-    
-    <!-- Breadcrumb Schema -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://Nutricraftlabs.com/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Formulations",
-            "item": "https://Nutricraftlabs.com/formulations"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": formulation.name,
-            "item": `https://Nutricraftlabs.com/formulations/${formulation.slug}`
-          }
-        ]
-      }
-    </script>
-    
-    <!-- Product Schema -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": `${formulation.name} Manufacturing`,
-        "description": formulation.shortDescription,
-        "category": "Supplement Manufacturing Services",
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/InStock",
-          "priceCurrency": "CAD",
-          "priceSpecification": {
-            "@type": "PriceSpecification",
-            "price": "Contact for quote",
-            "minPrice": formulation.moq ? formulation.moq.toString() : "500"
-          }
-        },
-        "brand": {
-          "@type": "Brand",
-          "name": "Nutricraft Labs"
-        },
-        "manufacturer": {
-          "@type": "Organization",
-          "name": "Nutricraft Labs Partner Network"
-        }
-      }
-    </script>
-  </Fragment>
+<BaseLayout 
+  title={pageTitle} 
+  description={pageDescription}
+  image={pageImage}
+>
   
   <Header />
 
@@ -141,7 +43,6 @@ const description = formulation.metaDescription || formulation.shortDescription;
   <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <ScrollAnimation animation="fade-up">
           <div class="relative w-full max-w-2xl mx-auto h-64 md:h-80 mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-mint-100 to-mint-200">
             <FormulationImage
               formulation={formulation}
@@ -176,57 +77,18 @@ const description = formulation.metaDescription || formulation.shortDescription;
               ></path>
             </svg>
           </a>
-        </ScrollAnimation>
       </div>
     </div>
   </section>
 
   <!-- Article Content Section -->
   {article && (
-    <section class="py-16 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollAnimation animation="fade-up">
-          <!-- Article Image -->
-          {formulation.articleImage && (
-            <div class="relative w-full h-64 md:h-96 mb-12 overflow-hidden rounded-2xl">
-              <picture>
-                <source
-                  media="(max-width: 640px)"
-                  srcset={`${formulation.articleImage.smallWebp} 1x, ${formulation.articleImage.mediumWebp} 2x`}
-                  type="image/webp"
-                />
-                <source
-                  media="(max-width: 640px)"
-                  srcset={`${formulation.articleImage.small} 1x, ${formulation.articleImage.medium} 2x`}
-                />
-                <source
-                  media="(max-width: 1024px)"
-                  srcset={`${formulation.articleImage.mediumWebp} 1x, ${formulation.articleImage.largeWebp} 2x`}
-                  type="image/webp"
-                />
-                <source
-                  media="(max-width: 1024px)"
-                  srcset={`${formulation.articleImage.medium} 1x, ${formulation.articleImage.large} 2x`}
-                />
-                <source
-                  srcset={formulation.articleImage.largeWebp}
-                  type="image/webp"
-                />
-                <img
-                  src={formulation.articleImage.large}
-                  alt={formulation.articleImage.alt}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </picture>
-            </div>
-          )}
-          
+    <section class="pt-0 pb-16 bg-white">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Article Content -->
-          <div class="prose prose-lg max-w-none prose-p:mb-6 prose-headings:mt-8 prose-h2:mb-4 prose-h3:mb-3 prose-strong:font-semibold prose-ul:my-6 prose-li:my-2">
+          <div class="prose prose-lg prose-gray max-w-none">
             {Content && <Content />}
           </div>
-        </ScrollAnimation>
       </div>
     </section>
   )}
@@ -234,15 +96,12 @@ const description = formulation.metaDescription || formulation.shortDescription;
   <!-- Key Benefits Section -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
           Why Choose {formulation.name}?
         </h2>
-      </ScrollAnimation>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {formulation.benefits.map((benefit, index) => (
-          <ScrollAnimation animation="fade-up" delay={index * 100}>
             <div class="flex items-start">
               <div class="flex-shrink-0">
                 <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center">
@@ -261,7 +120,6 @@ const description = formulation.metaDescription || formulation.shortDescription;
               </div>
               <p class="ml-4 text-dark-600">{benefit}</p>
             </div>
-          </ScrollAnimation>
         ))}
       </div>
     </div>
@@ -270,187 +128,26 @@ const description = formulation.metaDescription || formulation.shortDescription;
   <!-- Best For Section -->
   <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
           Best For These Supplements
         </h2>
-      </ScrollAnimation>
       
       <div class="flex flex-wrap justify-center gap-4">
         {formulation.bestFor.map((item, index) => (
-          <ScrollAnimation animation="fade-up" delay={index * 50}>
             <span class="px-6 py-3 bg-white rounded-full text-dark-700 shadow-md text-lg">
               {item}
             </span>
-          </ScrollAnimation>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Technical Specifications -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12">
-        <!-- Manufacturing Details -->
-        <ScrollAnimation animation="fade-right">
-          <div class="bg-gray-50 rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-dark-900 mb-6">
-              Manufacturing Details
-            </h3>
-            <dl class="space-y-4">
-              <div>
-                <dt class="font-semibold text-dark-700">Process:</dt>
-                <dd class="text-dark-600">{formulation.manufacturingDetails.process}</dd>
-              </div>
-              <div>
-                <dt class="font-semibold text-dark-700">Minimum Order Quantity:</dt>
-                <dd class="text-dark-600">{formulation.manufacturingDetails.moq}</dd>
-              </div>
-              <div>
-                <dt class="font-semibold text-dark-700">Lead Time:</dt>
-                <dd class="text-dark-600">{formulation.manufacturingDetails.leadTime}</dd>
-              </div>
-              <div>
-                <dt class="font-semibold text-dark-700">Typical Shelf Life:</dt>
-                <dd class="text-dark-600">{formulation.manufacturingDetails.shelfLife}</dd>
-              </div>
-            </dl>
-          </div>
-        </ScrollAnimation>
 
-        <!-- Technical Specs -->
-        <ScrollAnimation animation="fade-left">
-          <div class="bg-gray-50 rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-dark-900 mb-6">
-              Technical Specifications
-            </h3>
-            <dl class="space-y-4">
-              <div>
-                <dt class="font-semibold text-dark-700">Bioavailability:</dt>
-                <dd class="text-dark-600">{formulation.technicalSpecs.bioavailability}</dd>
-              </div>
-              <div>
-                <dt class="font-semibold text-dark-700">
-                  {formulation.id === 'powders' || formulation.id === 'liquids' ? 'Absorption Time:' : 'Dissolution Time:'}
-                </dt>
-                <dd class="text-dark-600">
-                  {formulation.technicalSpecs.dissolutionTime || formulation.technicalSpecs.absorptionTime}
-                </dd>
-              </div>
-              <div>
-                <dt class="font-semibold text-dark-700">
-                  {formulation.id === 'liquids' || formulation.id === 'powders' ? 'Packaging Options:' : 'Available Sizes:'}
-                </dt>
-                <dd class="text-dark-600">
-                  {formulation.technicalSpecs.sizes || formulation.technicalSpecs.packaging?.join(', ')}
-                </dd>
-              </div>
-              {formulation.technicalSpecs.coatingOptions && (
-                <div>
-                  <dt class="font-semibold text-dark-700">Coating Options:</dt>
-                  <dd class="text-dark-600">{formulation.technicalSpecs.coatingOptions.join(', ')}</dd>
-                </div>
-              )}
-              {formulation.technicalSpecs.types && (
-                <div>
-                  <dt class="font-semibold text-dark-700">Types Available:</dt>
-                  <dd class="text-dark-600">{formulation.technicalSpecs.types.join(', ')}</dd>
-                </div>
-              )}
-              {formulation.technicalSpecs.shapes && (
-                <div>
-                  <dt class="font-semibold text-dark-700">Shape Options:</dt>
-                  <dd class="text-dark-600">{formulation.technicalSpecs.shapes.join(', ')}</dd>
-                </div>
-              )}
-              {formulation.technicalSpecs.bases && (
-                <div>
-                  <dt class="font-semibold text-dark-700">Base Options:</dt>
-                  <dd class="text-dark-600">{formulation.technicalSpecs.bases.join(', ')}</dd>
-                </div>
-              )}
-            </dl>
-          </div>
-        </ScrollAnimation>
-      </div>
-    </div>
-  </section>
 
-  <!-- Target Demographics -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
-        <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
-          Ideal For These Markets
-        </h2>
-      </ScrollAnimation>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {formulation.targetDemographics.map((demographic, index) => (
-          <ScrollAnimation animation="fade-up" delay={index * 100}>
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
-              <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  class="w-6 h-6 text-mint-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <p class="text-dark-700 font-medium">{demographic}</p>
-            </div>
-          </ScrollAnimation>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Considerations Section -->
-  {formulation.considerations && formulation.considerations.length > 0 && (
-    <section class="py-16 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollAnimation animation="fade-up">
-          <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
-            Important Considerations
-          </h2>
-        </ScrollAnimation>
-        
-        <div class="max-w-3xl mx-auto">
-          <div class="bg-amber-50 border border-amber-200 rounded-lg p-6">
-            <ul class="space-y-3">
-              {formulation.considerations.map((consideration, index) => (
-                <li class="flex items-start">
-                  <svg
-                    class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <span class="ml-3 text-dark-600">{consideration}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  )}
 
   <!-- CTA Section -->
   <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
           Ready to Manufacture {formulation.name}?
         </h2>
@@ -485,56 +182,10 @@ const description = formulation.metaDescription || formulation.shortDescription;
             View All Formats
           </a>
         </div>
-      </ScrollAnimation>
     </div>
   </section>
 
   <Footer />
 </BaseLayout>
 
-<style>
-  /* Custom prose overrides for better spacing */
-  .prose p {
-    margin-bottom: 1.5rem;
-    line-height: 1.75;
-  }
-  
-  .prose h2 {
-    margin-top: 2.5rem;
-    margin-bottom: 1.25rem;
-  }
-  
-  .prose h3 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .prose ul,
-  .prose ol {
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-  }
-  
-  .prose li {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .prose strong {
-    font-weight: 600;
-    color: #111827;
-  }
-  
-  /* Add visual separation for major sections */
-  .prose h2:not(:first-child) {
-    padding-top: 2rem;
-    border-top: 1px solid #e5e7eb;
-  }
-  
-  /* Ensure first paragraph after headings has appropriate spacing */
-  .prose h2 + p,
-  .prose h3 + p {
-    margin-top: 0.75rem;
-  }
-</style>
 
