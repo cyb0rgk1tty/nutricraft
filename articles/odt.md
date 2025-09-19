@@ -4,7 +4,7 @@ Orally disintegrating tablets (ODTs) represent a cutting-edge delivery format de
 
 ## What Are ODTs?
 
-ODTs are solid dosage forms engineered to disintegrate and dissolve within 30 seconds to 2 minutes upon contact with saliva. They leverage specialized excipients—superdisintegrants such as crospovidone or sodium starch glycolate—that promote rapid tablet break-up and create a smooth solution for optimal absorption.
+ODTs are solid dosage forms engineered to disintegrate and dissolve within 30 seconds to 2 minutes upon contact with saliva. They leverage specialized excipients—superdisintegrants such as crospovidone or sodium starch glycolate that promote rapid tablet break-up and create a smooth solution for optimal absorption.
 
 The manufacturing process involves direct compression with low compression force to maintain tablet porosity. Some formulations also use freeze-drying (lyophilization) or molding techniques to enhance disintegration speed and mouthfeel.
 
