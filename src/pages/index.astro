@@ -21,8 +21,8 @@ import { formulations } from "../data/formulations.js";
 <BaseLayout>
   <Fragment slot="head">
     <!-- Preload hero image for better LCP (mobile only to save bandwidth) -->
-    <link rel="preload" as="image" href="/images/nutricraftbottle-500.webp" type="image/webp" media="(max-width: 768px)" />
-    <link rel="preload" as="image" href="/images/nutricraftbottle-500.webp" type="image/webp" media="(min-width: 769px)" />
+    <link rel="preload" as="image" href="/images/Nutricraftbottle-500.webp" type="image/webp" media="(max-width: 768px)" />
+    <link rel="preload" as="image" href="/images/Nutricraftbottle-500.webp" type="image/webp" media="(min-width: 769px)" />
   </Fragment>
   
   <Header />
@@ -87,7 +87,7 @@ import { formulations } from "../data/formulations.js";
               </svg>
             </a>
             <button
-              data-cal-link="nutricraftlabs"
+              data-cal-link="Nutricraftlabs"
               data-cal-config='{"theme":"light"}'
               class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
               aria-label="Schedule discovery call"
@@ -129,23 +129,23 @@ import { formulations } from "../data/formulations.js";
                 <!-- Mobile: Use 500px image only -->
                 <source
                   media="(max-width: 768px)"
-                  srcset="/images/nutricraftbottle-500.webp"
+                  srcset="/images/Nutricraftbottle-500.webp"
                   type="image/webp"
                 />
                 <source
                   media="(max-width: 768px)"
-                  srcset="/images/nutricraftbottle-500.png"
+                  srcset="/images/Nutricraftbottle-500.png"
                   type="image/png"
                 />
                 <!-- Desktop: Use responsive images -->
                 <source
                   media="(min-width: 769px)"
-                  srcset="/images/nutricraftbottle-500.webp 1x, /images/nutricraftbottle-1000.webp 2x"
+                  srcset="/images/Nutricraftbottle-500.webp 1x, /images/Nutricraftbottle-1000.webp 2x"
                   type="image/webp"
                 />
                 <img
-                  src="/images/nutricraftbottle-500.png"
-                  srcset="/images/nutricraftbottle-500.png 1x, /images/nutricraftbottle-1000.png 2x"
+                  src="/images/Nutricraftbottle-500.png"
+                  srcset="/images/Nutricraftbottle-500.png 1x, /images/Nutricraftbottle-1000.png 2x"
                   alt="Nutricraft Labs Supplement Bottle"
                   class="w-full h-full object-contain"
                   loading="eager"
@@ -322,8 +322,7 @@ import { formulations } from "../data/formulations.js";
             Popular Supplement Formulations
           </h2>
           <p class="text-xl text-dark-600 max-w-3xl mx-auto">
-            Choose from six premium delivery formats, each optimized for specific nutrients 
-            and consumer preferences. Click any format to learn more.
+            Choose any dosage form you need and we'll work with you to make it into reality.
           </p>
         </div>
       </ScrollAnimation>
@@ -331,9 +330,10 @@ import { formulations } from "../data/formulations.js";
       <!-- Formulation Cards Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
-          formulations.map((formulation, index) => (
+          formulations.slice(0, 6).map((formulation, index) => (
             <ScrollAnimation animation="fade-up" delay={index * 100}>
-              <div
+              <a
+                href={`/formulations/${formulation.slug}`}
                 class="group relative bg-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col overflow-hidden"
               >
                 <!-- Image Container - Edge to Edge -->
@@ -364,12 +364,55 @@ import { formulations } from "../data/formulations.js";
                       </span>
                     ))}
                   </div>
+                  
+                  <!-- Learn More Link -->
+                  <div class="flex items-center text-mint-600 font-medium group-hover:text-mint-700">
+                    <span>Learn more</span>
+                    <svg
+                      class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      ></path>
+                    </svg>
+                  </div>
                 </div>
-              </div>
+              </a>
             </ScrollAnimation>
           ))
         }
       </div>
+
+      <!-- View All Formulations Button -->
+      <ScrollAnimation animation="fade-up" delay={400}>
+        <div class="mt-12 text-center">
+          <a
+            href="/formulations"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            View All Formulation Options
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
 
       <!-- CTA Section -->
       <ScrollAnimation animation="fade-up" delay={600}>

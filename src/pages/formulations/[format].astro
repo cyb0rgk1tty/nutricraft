@@ -5,6 +5,7 @@ import Footer from "../../components/Footer.astro";
 import ScrollAnimation from "../../components/ScrollAnimation.astro";
 import FormulationImage from "../../components/FormulationImage.astro";
 import { formulations, getFormulationBySlug, formulationComparison } from "../../data/formulations.js";
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   return formulations.map((formulation) => ({
@@ -19,13 +20,63 @@ if (!formulation) {
   return Astro.redirect('/404');
 }
 
+// Get article content from content collection
+const article = await getEntry('formulations', formulation.slug);
+const { Content } = article ? await article.render() : { Content: null };
+
 // SEO metadata
 const title = `${formulation.name} Manufacturing - Nutricraft Labs`;
-const description = formulation.shortDescription;
+const description = formulation.metaDescription || formulation.shortDescription;
 ---
 
 <BaseLayout title={title} description={description}>
   <Fragment slot="head">
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={`https://Nutricraftlabs.com/formulations/${formulation.slug}`} />
+    {formulation.articleImage && (
+      <meta property="og:image" content={`https://Nutricraftlabs.com${formulation.articleImage.large}`} />
+      <meta property="og:image:alt" content={formulation.articleImage.alt} />
+    )}
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {formulation.articleImage && (
+      <meta name="twitter:image" content={`https://Nutricraftlabs.com${formulation.articleImage.large}`} />
+    )}
+    
+    <!-- Additional SEO -->
+    <link rel="canonical" href={`https://Nutricraftlabs.com/formulations/${formulation.slug}`} />
+    
+    <!-- Article Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": article ? article.title : title,
+        "description": description,
+        "image": formulation.articleImage ? `https://Nutricraftlabs.com${formulation.articleImage.large}` : `https://Nutricraftlabs.com${formulation.image}`,
+        "datePublished": new Date().toISOString(),
+        "dateModified": new Date().toISOString(),
+        "author": {
+          "@type": "Organization",
+          "name": "Nutricraft Labs"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Nutricraft Labs",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://Nutricraftlabs.com/images/logo.png"
+          }
+        }
+      }
+    </script>
+    
     <!-- Breadcrumb Schema -->
     <script type="application/ld+json">
       {
@@ -36,19 +87,19 @@ const description = formulation.shortDescription;
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://nutricraftlabs.com/"
+            "item": "https://Nutricraftlabs.com/"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Formulations",
-            "item": "https://nutricraftlabs.com/formulations"
+            "item": "https://Nutricraftlabs.com/formulations"
           },
           {
             "@type": "ListItem",
             "position": 3,
             "name": formulation.name,
-            "item": `https://nutricraftlabs.com/formulations/${formulation.slug}`
+            "item": `https://Nutricraftlabs.com/formulations/${formulation.slug}`
           }
         ]
       }
@@ -129,6 +180,56 @@ const description = formulation.shortDescription;
       </div>
     </div>
   </section>
+
+  <!-- Article Content Section -->
+  {article && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollAnimation animation="fade-up">
+          <!-- Article Image -->
+          {formulation.articleImage && (
+            <div class="relative w-full h-64 md:h-96 mb-12 overflow-hidden rounded-2xl">
+              <picture>
+                <source
+                  media="(max-width: 640px)"
+                  srcset={`${formulation.articleImage.smallWebp} 1x, ${formulation.articleImage.mediumWebp} 2x`}
+                  type="image/webp"
+                />
+                <source
+                  media="(max-width: 640px)"
+                  srcset={`${formulation.articleImage.small} 1x, ${formulation.articleImage.medium} 2x`}
+                />
+                <source
+                  media="(max-width: 1024px)"
+                  srcset={`${formulation.articleImage.mediumWebp} 1x, ${formulation.articleImage.largeWebp} 2x`}
+                  type="image/webp"
+                />
+                <source
+                  media="(max-width: 1024px)"
+                  srcset={`${formulation.articleImage.medium} 1x, ${formulation.articleImage.large} 2x`}
+                />
+                <source
+                  srcset={formulation.articleImage.largeWebp}
+                  type="image/webp"
+                />
+                <img
+                  src={formulation.articleImage.large}
+                  alt={formulation.articleImage.alt}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </picture>
+            </div>
+          )}
+          
+          <!-- Article Content -->
+          <div class="prose prose-lg max-w-none prose-p:mb-6 prose-headings:mt-8 prose-h2:mb-4 prose-h3:mb-3 prose-strong:font-semibold prose-ul:my-6 prose-li:my-2">
+            {Content && <Content />}
+          </div>
+        </ScrollAnimation>
+      </div>
+    </section>
+  )}
 
   <!-- Key Benefits Section -->
   <section class="py-16 bg-white">
@@ -390,3 +491,50 @@ const description = formulation.shortDescription;
 
   <Footer />
 </BaseLayout>
+
+<style>
+  /* Custom prose overrides for better spacing */
+  .prose p {
+    margin-bottom: 1.5rem;
+    line-height: 1.75;
+  }
+  
+  .prose h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose ul,
+  .prose ol {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose strong {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  /* Add visual separation for major sections */
+  .prose h2:not(:first-child) {
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  /* Ensure first paragraph after headings has appropriate spacing */
+  .prose h2 + p,
+  .prose h3 + p {
+    margin-top: 0.75rem;
+  }
+</style>
+
