@@ -67,7 +67,7 @@ Nutricraft Labs is a professional sourcing and private label solutions provider 
      - Gummies
      - Liquids and tinctures
    - **Production Details**
-     - Minimum Order Quantities (MOQs): Starting at 500 units
+     - Minimum Order Quantities (MOQs): Starting at 1000 units
      - Lead times: 6-8 weeks for repeat orders, 8-10 weeks for new products
      - Rush production available
    - **Facility Information**
@@ -99,7 +99,7 @@ Nutricraft Labs is a professional sourcing and private label solutions provider 
 
 7. **Why Choose Nutricraft Labs**
    - No setup fees for private label manufacturing
-   - Low MOQs starting at 500 units
+   - Low MOQs starting at 1000 units
    - Fast turnaround times
    - One-stop shop from formulation to fulfillment
    - Dedicated project managers

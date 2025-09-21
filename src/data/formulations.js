@@ -45,7 +45,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Direct compression or wet granulation',
-      moq: '500 bottles (30,000-60,000 tablets)',
+      moq: '1000 bottles (60,000-120,000 tablets)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2-3 years typically'
     },
@@ -108,7 +108,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Encapsulation of powder or liquid fills',
-      moq: '500 bottles (30,000-60,000 capsules)',
+      moq: '1000 bottles (60,000-120,000 capsules)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2 years typically'
     },
@@ -172,7 +172,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Blending, granulation, or spray drying',
-      moq: '500 units (tubs or stick packs)',
+      moq: '1000 units (tubs or stick packs)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2 years in proper packaging'
     },
@@ -299,7 +299,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Direct compression with flavor systems',
-      moq: '500 bottles (30,000-60,000 tablets)',
+      moq: '1000 bottles (60,000-120,000 tablets)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2 years typically'
     },
@@ -545,7 +545,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Solution preparation and bottling',
-      moq: '500 bottles',
+      moq: '1000 bottles',
       leadTime: '8-10 weeks for first production',
       shelfLife: '12-18 months typically'
     },

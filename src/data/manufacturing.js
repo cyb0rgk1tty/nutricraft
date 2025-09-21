@@ -47,10 +47,10 @@ export const productionDetails = {
   moq: {
     title: 'Minimum Order Quantities',
     details: [
-      { format: 'Capsules & Tablets', quantity: '500 bottles' },
-      { format: 'Powders', quantity: '500 units' },
+      { format: 'Capsules & Tablets', quantity: '1000 bottles' },
+      { format: 'Powders', quantity: '1000 units' },
       { format: 'Gummies', quantity: '1,000 bottles' },
-      { format: 'Liquids', quantity: '500 bottles' },
+      { format: 'Liquids', quantity: '1000 bottles' },
       { format: 'Custom Formulations', quantity: 'Contact for details' }
     ]
   },

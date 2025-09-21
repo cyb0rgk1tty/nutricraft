@@ -79,7 +79,7 @@ export const whyChooseUs = [
   },
   {
     title: 'Low MOQs',
-    description: 'Minimum orders starting at just 500 units, perfect for testing the market.',
+    description: 'Minimum orders starting at just 1000 units, perfect for testing the market.',
     icon: '📊'
   },
   {
