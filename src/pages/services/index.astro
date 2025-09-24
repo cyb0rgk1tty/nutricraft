@@ -1,0 +1,435 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+
+const services = [
+  {
+    title: "Low MOQ Manufacturing",
+    description: "Start with just 1000 units - 3x lower than industry standard. Perfect for startups and testing new products.",
+    href: "/services/low-moq-manufacturing",
+    icon: "📊",
+    highlights: ["1000 unit minimum", "All formats available", "Same GMP quality"],
+    cta: "Learn About Low MOQs"
+  },
+  {
+    title: "White Label Canada",
+    description: "Launch supplements in Canada with 200+ ready-to-label formulas. Full Health Canada compliance included.",
+    href: "/services/white-label-canada",
+    icon: "🇨🇦",
+    highlights: ["NPN support", "Bilingual labels", "8-10 week launch"],
+    cta: "Explore Canadian Market"
+  },
+  {
+    title: "Custom Formulation",
+    description: "Create unique formulas with expert R&D teams. From concept to market-ready product in 12-16 weeks.",
+    href: "/services/custom-formulation",
+    icon: "🧪",
+    highlights: ["Expert R&D team", "Stability testing", "Ingredient sourcing"],
+    cta: "Start Formulating"
+  },
+  {
+    title: "GMP Partner Matching",
+    description: "Connect with pre-vetted GMP-certified manufacturers that match your specific needs and budget.",
+    href: "/contact",
+    icon: "🏭",
+    highlights: ["FDA registered", "cGMP certified", "Transparent pricing"],
+    cta: "Find Your Partner"
+  },
+  {
+    title: "Compliance & Labels",
+    description: "Ensure market compliance with bilingual labeling that meets all regulatory requirements.",
+    href: "/contact",
+    icon: "✅",
+    highlights: ["FDA compliant", "Health Canada", "Nutrition panels"],
+    cta: "Get Compliant"
+  },
+  {
+    title: "Quality Testing",
+    description: "Comprehensive third-party testing ensures product safety and quality at every stage.",
+    href: "/contact",
+    icon: "🔬",
+    highlights: ["COA management", "Microbial testing", "Heavy metals"],
+    cta: "Ensure Quality"
+  }
+];
+
+const processSteps = [
+  {
+    number: "01",
+    title: "Discovery Call",
+    description: "We understand your brand vision, target market, and specific requirements"
+  },
+  {
+    number: "02",
+    title: "Partner Matching",
+    description: "Connect you with pre-vetted manufacturers that fit your needs and budget"
+  },
+  {
+    number: "03",
+    title: "Formulation & Compliance",
+    description: "Develop formulas and ensure all regulatory requirements are met"
+  },
+  {
+    number: "04",
+    title: "Production & QC",
+    description: "Oversee manufacturing with rigorous quality control at every step"
+  },
+  {
+    number: "05",
+    title: "Launch & Scale",
+    description: "Get your products to market and support your growth journey"
+  }
+];
+
+const faqItems = [
+  {
+    question: "What makes NutriCraft different from going directly to manufacturers?",
+    answer: "We've pre-vetted all manufacturing partners for GMP compliance, quality standards, and reliability. Our expertise helps you avoid costly mistakes, navigate regulations efficiently, and launch 3x faster. Plus, our network gives you access to better pricing through aggregated volume."
+  },
+  {
+    question: "What are your minimum order quantities (MOQs)?",
+    answer: "We offer the industry's lowest MOQs starting at just 1000 units - that's 3-5x lower than most manufacturers who require 5000+ units. This allows you to test products, manage cash flow better, and scale gradually."
+  },
+  {
+    question: "How long does it take to launch a supplement brand?",
+    answer: "With stock formulas: 8-10 weeks from order to delivery. Custom formulations: 12-16 weeks including R&D and stability testing. We can expedite timelines for urgent projects with rush production options."
+  },
+  {
+    question: "Do you help with regulatory compliance?",
+    answer: "Yes! We handle FDA compliance for US markets and Health Canada NPN applications for Canadian markets. This includes label reviews, nutrition panels, and all required documentation."
+  },
+  {
+    question: "What types of supplements can you manufacture?",
+    answer: "We support all major formats: tablets, capsules, softgels, powders, gummies, liquids, effervescents, and more. Each format is produced in GMP-certified facilities with appropriate specialization."
+  },
+  {
+    question: "Can you help with packaging and label design?",
+    answer: "Absolutely. We provide complete packaging solutions including label design, regulatory compliance review, and bilingual labels for Canadian markets. We can match your brand aesthetic or help create one."
+  },
+  {
+    question: "What about quality testing and certifications?",
+    answer: "All products undergo third-party testing for potency, purity, and safety. This includes microbial testing, heavy metals screening, and identity testing. We provide Certificates of Analysis (COA) for every batch."
+  },
+  {
+    question: "Do you offer fulfillment services?",
+    answer: "Yes, through our trusted 3PL partners we offer warehousing, direct-to-consumer fulfillment, Amazon FBA prep, and subscription box services with temperature-controlled storage."
+  }
+];
+
+const metaTitle = "Supplement Manufacturing Services | End-to-End Solutions | NutriCraft";
+const metaDescription = "Complete supplement manufacturing services from formulation to fulfillment. Low MOQs starting at 1000 units, GMP partners, and full regulatory compliance. Get started today.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Supplement Manufacturing Services",
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "description": metaDescription,
+        "offers": services.map(s => ({
+          "@type": "Offer",
+          "name": s.title,
+          "description": s.description
+        }))
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-mint-50 via-white to-mint-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+          Complete Supplement Manufacturing Services
+        </h1>
+        <p class="text-xl md:text-2xl text-dark-600 mb-8">
+          From formulation to fulfillment, we handle every step of bringing your supplement brand to life.
+          Launch 3x faster with lower MOQs and guaranteed compliance.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+          <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700 font-medium">GMP Certified Partners</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700 font-medium">1000 Unit MOQ</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-dark-700 font-medium">FDA & Health Canada</span>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+            Start Your Brand
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <a href="/formulations" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors">
+            Explore Formulations
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Our Manufacturing Services
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Everything you need to launch and scale a successful supplement brand,
+            all managed by our expert team.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {services.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col">
+              <div class="p-8 flex-grow">
+                <div class="text-4xl mb-4">{service.icon}</div>
+                <h3 class="text-2xl font-bold text-dark-900 mb-3">{service.title}</h3>
+                <p class="text-dark-600 mb-4">{service.description}</p>
+                <ul class="space-y-2 mb-6">
+                  {service.highlights.map(highlight => (
+                    <li class="flex items-start gap-2">
+                      <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-dark-700">{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="px-8 pb-8">
+                <a href={service.href} class="inline-flex items-center text-mint-600 font-semibold hover:text-mint-700 transition-colors">
+                  {service.cta}
+                  <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Your Journey to Market
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our proven 5-step process takes you from idea to market-ready products
+            with expert guidance at every stage.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mt-12">
+        {processSteps.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="relative">
+              <div class="bg-white rounded-lg p-6 shadow-md h-full">
+                <div class="text-4xl font-bold text-mint-600 mb-3">{step.number}</div>
+                <h3 class="text-xl font-bold text-dark-900 mb-2">{step.title}</h3>
+                <p class="text-dark-600 text-sm">{step.description}</p>
+              </div>
+              {index < processSteps.length - 1 && (
+                <div class="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2">
+                  <svg class="w-6 h-6 text-mint-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              )}
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Why Brands Choose NutriCraft
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            We eliminate the complexity of supplement manufacturing while ensuring
+            quality, compliance, and cost-effectiveness.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <ScrollAnimation>
+          <div class="text-center">
+            <div class="bg-mint-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">3x</span>
+            </div>
+            <h3 class="text-xl font-bold text-dark-900 mb-2">Faster Launch</h3>
+            <p class="text-dark-600">Get to market in weeks, not months, with our streamlined process</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="text-center">
+            <div class="bg-mint-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">40%</span>
+            </div>
+            <h3 class="text-xl font-bold text-dark-900 mb-2">Cost Savings</h3>
+            <p class="text-dark-600">Better pricing through our network volume and efficiency</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={200}>
+          <div class="text-center">
+            <div class="bg-mint-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">100%</span>
+            </div>
+            <h3 class="text-xl font-bold text-dark-900 mb-2">Compliance</h3>
+            <p class="text-dark-600">Guaranteed FDA and Health Canada regulatory compliance</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={300}>
+          <div class="text-center">
+            <div class="bg-mint-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-mint-600">1K</span>
+            </div>
+            <h3 class="text-xl font-bold text-dark-900 mb-2">Low MOQ</h3>
+            <p class="text-dark-600">Start with just 1000 units vs industry standard 5000+</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-mint-600 to-mint-700">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Ready to Launch Your Supplement Brand?
+        </h2>
+        <p class="text-xl text-mint-50 mb-8">
+          Join 20+ successful brands who've launched with our expert guidance.
+          Get your free consultation and custom quote today.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-colors shadow-lg">
+            Get Free Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white hover:bg-white hover:text-mint-600 transition-colors"
+          >
+            Schedule Discovery Call
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-lg text-dark-600">
+            Get answers to common questions about our supplement manufacturing services
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

@@ -1,0 +1,699 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const formulationProcess = [
+  {
+    phase: "Discovery & Consultation",
+    timeline: "Week 1",
+    tasks: [
+      "Initial consultation to understand your vision",
+      "Target market and competitor analysis",
+      "Ingredient preferences and restrictions",
+      "Budget and timeline discussion"
+    ],
+    deliverable: "Project brief & feasibility report"
+  },
+  {
+    phase: "R&D & Formulation",
+    timeline: "Weeks 2-4",
+    tasks: [
+      "Ingredient sourcing and compatibility testing",
+      "Multiple prototype development",
+      "Dosage optimization",
+      "Cost analysis per serving"
+    ],
+    deliverable: "3-5 formula prototypes"
+  },
+  {
+    phase: "Testing & Refinement",
+    timeline: "Weeks 5-8",
+    tasks: [
+      "Stability testing (accelerated)",
+      "Microbial and potency testing",
+      "Taste and texture optimization",
+      "Shelf-life projections"
+    ],
+    deliverable: "Final formula with test results"
+  },
+  {
+    phase: "Regulatory & Documentation",
+    timeline: "Weeks 9-10",
+    tasks: [
+      "Regulatory compliance review",
+      "Label claim substantiation",
+      "Supplement facts panel creation",
+      "NPN/NDI preparation if needed"
+    ],
+    deliverable: "Complete compliance package"
+  },
+  {
+    phase: "Production & Launch",
+    timeline: "Weeks 11-16",
+    tasks: [
+      "Scale-up and pilot batch",
+      "Full production run",
+      "Quality control testing",
+      "Packaging and labeling"
+    ],
+    deliverable: "Market-ready products"
+  }
+];
+
+const expertiseAreas = [
+  {
+    category: "Sports Nutrition",
+    specialties: ["Pre-workouts", "Protein blends", "Recovery formulas", "Creatine complexes"],
+    trends: "Clean labels, plant-based proteins, nootropics for focus"
+  },
+  {
+    category: "Beauty & Wellness",
+    specialties: ["Collagen peptides", "Hair/skin/nails", "Anti-aging", "Beauty-from-within"],
+    trends: "Marine collagen, ceramides, astaxanthin, hyaluronic acid"
+  },
+  {
+    category: "Weight Management",
+    specialties: ["Thermogenics", "Appetite control", "Metabolism support", "Keto supplements"],
+    trends: "GLP-1 support, berberine, green coffee extract"
+  },
+  {
+    category: "Immune Support",
+    specialties: ["Vitamin complexes", "Mushroom blends", "Elderberry formulas", "Zinc combinations"],
+    trends: "Beta-glucans, quercetin, NAD+ precursors"
+  },
+  {
+    category: "Cognitive Health",
+    specialties: ["Nootropics", "Memory support", "Focus enhancers", "Stress adaptogens"],
+    trends: "Lion's mane, bacopa, phosphatidylserine, L-theanine"
+  },
+  {
+    category: "Gut Health",
+    specialties: ["Probiotics", "Prebiotics", "Digestive enzymes", "Gut-brain axis"],
+    trends: "Postbiotics, specific strains, synbiotics"
+  }
+];
+
+const customVsStock = [
+  {
+    aspect: "Development Time",
+    custom: "12-16 weeks",
+    stock: "8-10 weeks",
+    bestFor: "Custom if you have time for perfect formulation"
+  },
+  {
+    aspect: "Initial Investment",
+    custom: "$15,000-25,000",
+    stock: "$8,000-12,000",
+    bestFor: "Stock for quick market testing"
+  },
+  {
+    aspect: "Uniqueness",
+    custom: "100% unique formula",
+    stock: "Shared formula, unique brand",
+    bestFor: "Custom for differentiation"
+  },
+  {
+    aspect: "Market Testing",
+    custom: "Untested formula",
+    stock: "Proven sellers",
+    bestFor: "Stock for reduced risk"
+  },
+  {
+    aspect: "IP Ownership",
+    custom: "You own the formula",
+    stock: "Manufacturer owns formula",
+    bestFor: "Custom for long-term value"
+  },
+  {
+    aspect: "Minimum Orders",
+    custom: "Higher MOQs typical",
+    stock: "Lower MOQs available",
+    bestFor: "Stock for smaller budgets"
+  }
+];
+
+const ingredients = {
+  trending: [
+    { name: "NMN (NAD+ precursor)", benefit: "Anti-aging, cellular energy", growth: "+180%" },
+    { name: "Berberine", benefit: "Blood sugar, weight management", growth: "+156%" },
+    { name: "Lion's Mane", benefit: "Cognitive function, nerve health", growth: "+142%" },
+    { name: "Astaxanthin", benefit: "Powerful antioxidant, skin health", growth: "+128%" },
+    { name: "PQQ", benefit: "Mitochondrial support, energy", growth: "+115%" },
+    { name: "Spermidine", benefit: "Longevity, autophagy", growth: "+98%" }
+  ],
+  proven: [
+    "Vitamin D3", "Omega-3", "Probiotics", "Collagen", "Magnesium", "Ashwagandha",
+    "Turmeric", "CoQ10", "B-Complex", "Zinc", "Vitamin C", "Iron"
+  ]
+};
+
+const costBreakdown = [
+  { service: "Initial R&D & Prototyping", cost: "$3,000-5,000", included: "3-5 prototypes, basic testing" },
+  { service: "Advanced Testing & Stability", cost: "$2,000-4,000", included: "Comprehensive lab testing, shelf-life" },
+  { service: "Regulatory Documentation", cost: "$1,500-3,000", included: "Labels, compliance, claims review" },
+  { service: "First Production Run (1000 units)", cost: "$8,000-12,000", included: "Manufacturing, packaging, QC" },
+  { service: "Optional: Patent/IP Protection", cost: "$5,000+", included: "Formula protection, trademark" }
+];
+
+const faqItems = [
+  {
+    question: "How long does custom formulation take from concept to market?",
+    answer: "The complete process typically takes 12-16 weeks: 4 weeks for R&D and formulation, 4 weeks for testing and refinement, 2 weeks for regulatory documentation, and 6 weeks for production. Rush timelines of 10-12 weeks are possible for simpler formulations with expedited testing."
+  },
+  {
+    question: "What's the minimum investment for custom formulation?",
+    answer: "Custom formulation typically requires $15,000-25,000 total investment, including R&D ($3,000-5,000), testing ($2,000-4,000), and first production run ($8,000-12,000 for 1000 units). This is higher than stock formulas but gives you a unique, proprietary product."
+  },
+  {
+    question: "Do I own the formula once it's developed?",
+    answer: "Yes, with custom formulation you own the intellectual property rights to your formula. We can help you protect it through non-disclosure agreements during development and assist with trademark or patent applications if desired."
+  },
+  {
+    question: "Can you match or improve a competitor's formula?",
+    answer: "We can analyze competitor products and create similar but legally distinct formulations. However, we focus on creating superior formulas that differentiate your brand rather than exact copies. This approach provides better market positioning and avoids legal issues."
+  },
+  {
+    question: "What if my custom formula doesn't work as expected?",
+    answer: "Our iterative development process includes multiple prototypes and rounds of testing to ensure success. If issues arise during development, we'll work with you to adjust the formula. Our 92% first-batch approval rate reflects our thorough development process."
+  },
+  {
+    question: "How do you ensure my formula will be stable and effective?",
+    answer: "We conduct accelerated stability testing, potency verification, and compatibility studies during development. Real-time stability studies continue after launch. All ingredients are tested for interactions, and we use proven delivery systems to ensure bioavailability."
+  },
+  {
+    question: "Can you help with clinical studies or research?",
+    answer: "Yes, we can coordinate third-party clinical studies for claim substantiation, though this is an additional service. Many clients start with literature-based claims using clinically studied ingredients at proven dosages, which is more cost-effective."
+  },
+  {
+    question: "What's included in the custom formulation service?",
+    answer: "Our comprehensive service includes: initial consultation, R&D with 3-5 prototypes, stability and safety testing, regulatory compliance review, label development, production scaling, and ongoing technical support. Manufacturing is priced separately based on order quantity."
+  }
+];
+
+const metaTitle = "Custom Supplement Formulation Services | R&D Experts | NutriCraft";
+const metaDescription = "Create unique supplement formulas with expert R&D teams. From concept to market-ready product in 12-16 weeks. Full testing, compliance, and IP ownership. Free consultation.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/custom-formulation" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Custom Supplement Formulation",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "serviceType": "Research and Development",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "15000",
+          "highPrice": "25000",
+          "priceCurrency": "USD"
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-purple-50 via-white to-mint-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-4xl">🧪</span>
+            <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Expert R&D Team</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Custom Supplement Formulation
+            <span class="block text-purple-600 text-3xl md:text-4xl lg:text-5xl mt-2">Your Unique Formula, Perfected</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Transform your vision into a proprietary supplement formula. Our expert R&D team creates
+            unique, market-ready products tailored to your brand and target audience.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">100% unique formulas you own</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">12-16 weeks from concept to market</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Full testing and compliance included</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors shadow-lg">
+              Start Formulation Project
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg border-2 border-purple-600 hover:bg-purple-50 transition-colors">
+              View Process
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Why Custom Formulation?</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎯</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Perfect Product-Market Fit</p>
+                  <p class="text-sm text-dark-600">Tailored to your exact audience needs</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🔒</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Proprietary Ownership</p>
+                  <p class="text-sm text-dark-600">You own the formula IP forever</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🚀</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Competitive Advantage</p>
+                  <p class="text-sm text-dark-600">Unique formulas competitors can't copy</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">💰</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Higher Margins</p>
+                  <p class="text-sm text-dark-600">Premium pricing for unique products</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-purple-50 rounded-lg p-4">
+              <p class="text-center text-purple-700 font-semibold">
+                92% first-batch approval rate
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section id="process" class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            5-Phase Custom Formulation Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our proven process takes you from initial concept to market-ready products
+            with complete transparency at every step.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {formulationProcess.map((phase, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-r from-purple-50 to-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{phase.phase}</h3>
+                      <p class="text-purple-600 font-semibold">{phase.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-purple-100 rounded-lg px-4 py-2 inline-block">
+                    <p class="text-sm font-semibold text-purple-800">Deliverable:</p>
+                    <p class="text-sm text-purple-700">{phase.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">Key Activities:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {phase.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise Areas -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            R&D Expertise Areas
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our formulation scientists specialize in creating cutting-edge supplements
+            across all major categories.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {expertiseAreas.map((area, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-xl font-bold text-purple-600 mb-3">{area.category}</h3>
+              <div class="space-y-3">
+                <div>
+                  <p class="text-sm font-semibold text-dark-700 mb-2">Specialties:</p>
+                  <ul class="flex flex-wrap gap-2">
+                    {area.specialties.map(specialty => (
+                      <li class="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded">
+                        {specialty}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div class="pt-3 border-t border-gray-200">
+                  <p class="text-sm font-semibold text-dark-700 mb-1">Current Trends:</p>
+                  <p class="text-sm text-dark-600">{area.trends}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Ingredients -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Trending & Proven Ingredients
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Stay ahead with the latest ingredient innovations or build on proven winners.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <ScrollAnimation>
+          <div class="bg-gradient-to-br from-purple-50 to-white rounded-xl p-6">
+            <h3 class="text-2xl font-bold text-dark-900 mb-4 flex items-center gap-2">
+              <span class="text-3xl">🚀</span>
+              Trending Ingredients (2024)
+            </h3>
+            <div class="space-y-3">
+              {ingredients.trending.map(ing => (
+                <div class="bg-white rounded-lg p-4 shadow-sm">
+                  <div class="flex justify-between items-start mb-1">
+                    <h4 class="font-semibold text-dark-900">{ing.name}</h4>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-semibold">
+                      {ing.growth} YoY
+                    </span>
+                  </div>
+                  <p class="text-sm text-dark-600">{ing.benefit}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl p-6">
+            <h3 class="text-2xl font-bold text-dark-900 mb-4 flex items-center gap-2">
+              <span class="text-3xl">⭐</span>
+              Proven Bestsellers
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {ingredients.proven.map(ing => (
+                <span class="bg-white px-3 py-2 rounded-lg shadow-sm text-dark-700 font-medium">
+                  {ing}
+                </span>
+              ))}
+            </div>
+            <div class="mt-6 bg-mint-100 rounded-lg p-4">
+              <p class="text-sm text-mint-800">
+                <strong>Pro Tip:</strong> Combining trending ingredients with proven ones creates
+                innovative yet familiar formulas that consumers trust.
+              </p>
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom vs Stock Comparison -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Custom vs Stock Formulas
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Choose the right approach for your brand's goals and timeline.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation>
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-purple-600 text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left font-semibold">Aspect</th>
+                  <th class="px-6 py-4 text-left font-semibold">Custom Formulation</th>
+                  <th class="px-6 py-4 text-left font-semibold">Stock Formula</th>
+                  <th class="px-6 py-4 text-left font-semibold">Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                {customVsStock.map((row, index) => (
+                  <tr class={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                    <td class="px-6 py-4 font-semibold text-dark-900">{row.aspect}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.custom}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.stock}</td>
+                    <td class="px-6 py-4 text-dark-600 italic text-sm">{row.bestFor}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Investment Breakdown -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Investment Breakdown
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Transparent pricing for every stage of custom formulation.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        {costBreakdown.map((item, index) => (
+          <ScrollAnimation delay={index * 50}>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="flex justify-between items-start mb-3">
+                <h3 class="text-lg font-bold text-dark-900">{item.service}</h3>
+                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  {item.cost}
+                </span>
+              </div>
+              <p class="text-dark-600 text-sm">{item.included}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 bg-purple-50 rounded-xl p-6">
+          <p class="text-center text-purple-900 font-semibold text-lg">
+            Total Investment Range: $15,000 - $25,000
+          </p>
+          <p class="text-center text-purple-700 text-sm mt-2">
+            Includes everything from R&D to your first 1000 market-ready units
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-purple-600 to-purple-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            Custom Formulation Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={500} duration={2000} suffix="+" />
+              </div>
+              <p class="text-purple-100">Custom Formulas Created</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={92} duration={2000} suffix="%" />
+              </div>
+              <p class="text-purple-100">First-Batch Success Rate</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={28} duration={2000} suffix=" days" />
+              </div>
+              <p class="text-purple-100">Average R&D Time</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={3} duration={2000} suffix="x" />
+              </div>
+              <p class="text-purple-100">ROI Within 18 Months</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Create Your Unique Formula?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Schedule a free consultation with our R&D team to discuss your vision
+          and get a custom formulation proposal.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors shadow-lg">
+            Start Your Formula
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg border-2 border-purple-600 hover:bg-purple-50 transition-colors"
+          >
+            Schedule R&D Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Custom Formulation FAQs
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about our custom formulation services
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

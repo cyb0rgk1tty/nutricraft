@@ -1,16 +1,16 @@
 ---
 export interface Props {
-  animation: string;
+  animation?: string;
   delay?: number;
   threshold?: number;
   triggerOnce?: boolean;
   class?: string;
 }
 
-const { 
-  animation, 
-  delay = 0, 
-  threshold = 0.1, 
+const {
+  animation = 'animate-fade-up',
+  delay = 0,
+  threshold = 0.1,
   triggerOnce = true,
   class: className = ''
 } = Astro.props;

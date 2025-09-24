@@ -1,0 +1,615 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const stockFormulas = [
+  {
+    category: "Immune Support",
+    products: ["Vitamin C + Zinc", "Elderberry Complex", "Immune Boost Formula", "Vitamin D3 2000IU"],
+    npnReady: true
+  },
+  {
+    category: "Sports Nutrition",
+    products: ["Whey Protein Isolate", "BCAA Complex", "Pre-Workout Formula", "Creatine Monohydrate"],
+    npnReady: true
+  },
+  {
+    category: "Beauty & Wellness",
+    products: ["Collagen Peptides", "Biotin 10000mcg", "Hair, Skin & Nails", "Hyaluronic Acid"],
+    npnReady: true
+  },
+  {
+    category: "Weight Management",
+    products: ["Green Tea Extract", "CLA 1000mg", "Garcinia Cambogia", "Apple Cider Vinegar"],
+    npnReady: true
+  },
+  {
+    category: "General Health",
+    products: ["Multivitamin", "Omega-3 Fish Oil", "Probiotic 50 Billion", "Magnesium Citrate"],
+    npnReady: true
+  },
+  {
+    category: "Energy & Focus",
+    products: ["B-Complex", "CoQ10 100mg", "Ashwagandha", "Lion's Mane Mushroom"],
+    npnReady: true
+  }
+];
+
+const complianceFeatures = [
+  {
+    title: "Bilingual Labeling",
+    description: "Professional English/French labels that meet all Health Canada requirements",
+    icon: "🇨🇦"
+  },
+  {
+    title: "NPN Applications",
+    description: "Complete support for Natural Product Number applications and renewals",
+    icon: "📋"
+  },
+  {
+    title: "Dosage Compliance",
+    description: "All formulas meet Canadian maximum dosage limits and restrictions",
+    icon: "💊"
+  },
+  {
+    title: "Ingredient Review",
+    description: "Pre-approved ingredients that comply with NHPD monographs",
+    icon: "✅"
+  },
+  {
+    title: "GMP Certification",
+    description: "Manufacturing in Health Canada licensed facilities",
+    icon: "🏭"
+  },
+  {
+    title: "Documentation",
+    description: "Complete product license applications and technical documents",
+    icon: "📄"
+  }
+];
+
+const timeline = [
+  { phase: "Week 1-2", task: "Select formula & customize label design", status: "Quick Start" },
+  { phase: "Week 2-3", task: "NPN application submission (if needed)", status: "Compliance" },
+  { phase: "Week 3-4", task: "Label approval & production prep", status: "Preparation" },
+  { phase: "Week 5-7", task: "Manufacturing & quality testing", status: "Production" },
+  { phase: "Week 8-10", task: "Packaging, final QC & shipping", status: "Delivery" }
+];
+
+const canadaVsUs = [
+  {
+    aspect: "Regulatory Approval",
+    canada: "Pre-market NPN required",
+    us: "Post-market notification",
+    impact: "60-90 day approval process"
+  },
+  {
+    aspect: "Label Requirements",
+    canada: "Bilingual (English/French)",
+    us: "English only",
+    impact: "Specialized label design needed"
+  },
+  {
+    aspect: "Dosage Limits",
+    canada: "Strict maximum limits",
+    us: "More flexible dosing",
+    impact: "Formula adjustments may be needed"
+  },
+  {
+    aspect: "Health Claims",
+    canada: "Pre-approved claims only",
+    us: "Structure/function claims allowed",
+    impact: "Marketing copy restrictions"
+  },
+  {
+    aspect: "Market Size",
+    canada: "$5.7B CAD (2024)",
+    us: "$50B USD (2024)",
+    impact: "Less competition, growing market"
+  }
+];
+
+const benefits = [
+  {
+    title: "Fast Market Entry",
+    description: "Launch in 8-10 weeks with pre-approved formulas",
+    metric: "8-10 weeks"
+  },
+  {
+    title: "Lower Investment",
+    description: "No R&D costs with ready-to-label products",
+    metric: "Save $15-25K"
+  },
+  {
+    title: "Compliance Guaranteed",
+    description: "All regulatory requirements handled for you",
+    metric: "100% compliant"
+  },
+  {
+    title: "Proven Formulas",
+    description: "Market-tested products with established demand",
+    metric: "200+ options"
+  }
+];
+
+const faqItems = [
+  {
+    question: "What is white label vs private label supplement manufacturing?",
+    answer: "White label uses our pre-made formulas with your brand and label - ready in 8-10 weeks. Private label involves creating a custom formula specifically for you, taking 12-16 weeks. White label is perfect for quick market entry with proven products, while private label offers complete customization."
+  },
+  {
+    question: "Do I need an NPN to sell supplements in Canada?",
+    answer: "Yes, all supplements sold in Canada require a Natural Product Number (NPN) from Health Canada. Many of our white label formulas already have NPNs or are NPN-ready, significantly reducing your time to market. We handle the entire application process for formulas that need new NPNs."
+  },
+  {
+    question: "What are the bilingual labeling requirements?",
+    answer: "Health Canada requires all supplement labels to be in both English and French. This includes product name, directions for use, warnings, and all mandatory label information. We provide professional bilingual label design and translation services to ensure full compliance."
+  },
+  {
+    question: "How much does white label manufacturing cost in Canada?",
+    answer: "White label supplements typically start at $8-12 per unit for 1000 unit minimum orders, depending on the formula and packaging. This includes manufacturing, basic packaging, and quality testing. Custom label design and NPN applications are additional services we offer at competitive rates."
+  },
+  {
+    question: "Can I sell these products in both Canada and the US?",
+    answer: "Yes, but you'll need different labels for each market. US labels don't require French text and have different regulatory requirements. We can produce separate runs for each market or help you create dual-market compliant labels where possible."
+  },
+  {
+    question: "What white label formulas are most popular in Canada?",
+    answer: "Top sellers include Vitamin D3 (essential for Canadian winters), Omega-3, Probiotics, Multivitamins, and Immune Support formulas. Sports nutrition products like protein powders and pre-workouts also perform very well in the Canadian market."
+  },
+  {
+    question: "How long does the NPN application process take?",
+    answer: "For Class I products (lower risk), NPN applications typically take 60-90 days. Class II products may take longer. Many of our white label formulas already have NPNs or use pre-cleared ingredients that qualify for faster approval through monograph compliance."
+  },
+  {
+    question: "What's included in your white label service?",
+    answer: "Our complete white label service includes: formula selection, custom label design, bilingual translation, regulatory compliance review, NPN support, manufacturing in GMP facilities, quality testing with COAs, and packaging. Optional services include marketing materials and fulfillment."
+  }
+];
+
+const metaTitle = "White Label Supplements Canada | Private Label Manufacturing | NutriCraft";
+const metaDescription = "Launch white label supplements in Canada with 200+ Health Canada compliant formulas. Bilingual labels, NPN support, and 8-10 week delivery. Start your Canadian supplement brand today.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/white-label-canada" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "White Label Supplement Manufacturing Canada",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": "CA",
+        "serviceType": "White Label Supplement Manufacturing",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "8000",
+          "priceCurrency": "CAD",
+          "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "minValue": 1000,
+            "unitCode": "EA"
+          }
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-mint-50 via-white to-red-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-4xl">🇨🇦</span>
+            <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Canadian Market Specialist</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            White Label Supplements for the Canadian Market
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Launch your supplement brand in Canada in just <strong>8-10 weeks</strong> with our
+            200+ Health Canada compliant formulas. Full bilingual labeling and NPN support included.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">200+ ready-to-label formulas with NPN support</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Professional English/French bilingual labels</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Health Canada compliant manufacturing</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg">
+              Start Canadian Brand
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#formulas" class="inline-flex items-center justify-center px-8 py-4 bg-white text-red-600 font-semibold rounded-lg border-2 border-red-600 hover:bg-red-50 transition-colors">
+              View Stock Formulas
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Why Canadian Market?</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📈</span>
+                <div>
+                  <p class="font-semibold text-dark-900">$5.7 Billion Market</p>
+                  <p class="text-sm text-dark-600">Growing 7.2% annually</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">👥</span>
+                <div>
+                  <p class="font-semibold text-dark-900">71% of Canadians</p>
+                  <p class="text-sm text-dark-600">Use supplements regularly</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏪</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Less Competition</p>
+                  <p class="text-sm text-dark-600">Fewer brands than US market</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">💳</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Higher Spending</p>
+                  <p class="text-sm text-dark-600">$400+ annual per capita</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Grid -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            White Label Advantages
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Skip the complexity and cost of custom formulation. Launch proven products under your brand.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {benefits.map((benefit, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-white to-red-50 rounded-xl p-6 shadow-md text-center">
+              <div class="text-3xl font-bold text-red-600 mb-2">{benefit.metric}</div>
+              <h3 class="text-xl font-bold text-dark-900 mb-2">{benefit.title}</h3>
+              <p class="text-dark-600 text-sm">{benefit.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stock Formulas Section -->
+  <section id="formulas" class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            200+ Ready-to-Label Formulas
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Choose from our extensive catalog of Health Canada compliant formulas.
+            Many with existing NPNs for faster market entry.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stockFormulas.map((category, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-dark-900">{category.category}</h3>
+                {category.npnReady && (
+                  <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">
+                    NPN Ready
+                  </span>
+                )}
+              </div>
+              <ul class="space-y-2">
+                {category.products.map(product => (
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-dark-700 text-sm">{product}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 text-center">
+          <a href="/contact" class="inline-flex items-center text-mint-600 font-semibold hover:text-mint-700">
+            Request full formula catalog
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Compliance Features -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Full Health Canada Compliance
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Navigate Canadian regulations with confidence. We handle all compliance requirements.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {complianceFeatures.map((feature, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div class="text-3xl mb-3">{feature.icon}</div>
+              <h3 class="text-xl font-bold text-dark-900 mb-2">{feature.title}</h3>
+              <p class="text-dark-600">{feature.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Canada vs US Comparison -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-red-50 to-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Canada vs US Market Requirements
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Understanding the key differences helps you succeed in the Canadian market.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation>
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-red-600 text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left font-semibold">Aspect</th>
+                  <th class="px-6 py-4 text-left font-semibold">🇨🇦 Canada</th>
+                  <th class="px-6 py-4 text-left font-semibold">🇺🇸 United States</th>
+                  <th class="px-6 py-4 text-left font-semibold">Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                {canadaVsUs.map((row, index) => (
+                  <tr class={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                    <td class="px-6 py-4 font-semibold text-dark-900">{row.aspect}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.canada}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.us}</td>
+                    <td class="px-6 py-4 text-dark-600 italic">{row.impact}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            8-10 Week Launch Timeline
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From brand concept to market-ready products in under 3 months.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="relative">
+        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-mint-200"></div>
+        {timeline.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class={`relative flex items-center mb-8 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              <div class={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                  <div class="text-sm font-semibold text-mint-600 mb-1">{step.phase}</div>
+                  <h3 class="text-lg font-bold text-dark-900 mb-1">{step.task}</h3>
+                  <p class="text-sm text-dark-600">{step.status}</p>
+                </div>
+              </div>
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-mint-600 rounded-full border-4 border-white shadow"></div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-red-600 to-red-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            Canadian Market Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={200} duration={2000} suffix="+" />
+              </div>
+              <p class="text-red-100">Stock Formulas Available</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={8} duration={2000} suffix=" weeks" />
+              </div>
+              <p class="text-red-100">Average Time to Market</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={92} duration={2000} suffix="%" />
+              </div>
+              <p class="text-red-100">First-Time NPN Approval Rate</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={71} duration={2000} suffix="%" />
+              </div>
+              <p class="text-red-100">Canadian Supplement Users</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Enter the Canadian Market?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Join successful brands selling supplements across Canada.
+          Get your white label quote and launch timeline today.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg">
+            Get Canadian Market Quote
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-red-600 font-semibold rounded-lg border-2 border-red-600 hover:bg-red-50 transition-colors"
+          >
+            Schedule Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Canadian White Label FAQs
+          </h2>
+          <p class="text-lg text-dark-600">
+            Everything you need to know about white label supplements in Canada
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

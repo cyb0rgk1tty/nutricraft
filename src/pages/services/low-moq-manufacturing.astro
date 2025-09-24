@@ -1,0 +1,569 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const comparisonData = [
+  { units: 1000, upfrontCost: "$8,000", perUnit: "$8.00", riskLevel: "Low", testMarket: "Excellent", cashFlow: "Optimal" },
+  { units: 2500, upfrontCost: "$17,500", perUnit: "$7.00", riskLevel: "Medium", testMarket: "Good", cashFlow: "Moderate" },
+  { units: 5000, upfrontCost: "$30,000", perUnit: "$6.00", riskLevel: "High", testMarket: "Poor", cashFlow: "Challenging" },
+  { units: 10000, upfrontCost: "$50,000", perUnit: "$5.00", riskLevel: "Very High", testMarket: "Not Suitable", cashFlow: "Difficult" }
+];
+
+const benefits = [
+  {
+    title: "Test Market Viability",
+    description: "Launch new products with minimal risk. Test customer response and refine your offering before scaling.",
+    icon: "🎯"
+  },
+  {
+    title: "Better Cash Flow Management",
+    description: "Preserve working capital with 73% lower initial investment. Reinvest savings into marketing and growth.",
+    icon: "💰"
+  },
+  {
+    title: "Multiple Product Lines",
+    description: "Launch 3-5 different products for the same cost as one traditional production run.",
+    icon: "📦"
+  },
+  {
+    title: "Faster Inventory Turnover",
+    description: "Sell through inventory 5x faster with smaller batches. Reduce storage costs and expiration risk.",
+    icon: "⚡"
+  },
+  {
+    title: "Seasonal Flexibility",
+    description: "Easily adjust for seasonal demand without being stuck with excess inventory.",
+    icon: "📅"
+  },
+  {
+    title: "Quality Consistency",
+    description: "Same GMP standards and quality control regardless of order size. No compromise on excellence.",
+    icon: "✅"
+  }
+];
+
+const formats = [
+  { name: "Tablets", moq: "1000 bottles", units: "60,000-120,000 tablets" },
+  { name: "Capsules", moq: "1000 bottles", units: "60,000-120,000 capsules" },
+  { name: "Softgels", moq: "1000 bottles", units: "60,000-120,000 softgels" },
+  { name: "Powders", moq: "1000 tubs", units: "30-60kg total" },
+  { name: "Gummies", moq: "1000 bottles", units: "60,000-120,000 gummies" },
+  { name: "Liquids", moq: "1000 bottles", units: "8-16oz per bottle" }
+];
+
+const successStories = [
+  {
+    brand: "FitBoost Nutrition",
+    challenge: "Startup with $15K budget wanting to launch 3 products",
+    solution: "Launched pre-workout, protein, and vitamins with 1000 units each",
+    result: "Sold out in 3 months, scaled to 5000 units per product"
+  },
+  {
+    brand: "Pure Wellness Co",
+    challenge: "Testing new collagen formula without risking $50K",
+    solution: "Started with 1000 units to gauge market response",
+    result: "92% positive feedback, now ordering 10,000 units monthly"
+  },
+  {
+    brand: "VitaKids",
+    challenge: "Family brand wanting to test children's gummy vitamins",
+    solution: "Launched with 1000 bottles across 2 flavors",
+    result: "Expanded to 6 flavors, now in 200+ stores"
+  }
+];
+
+const faqItems = [
+  {
+    question: "How can you offer such low MOQs when others require 5000+ units?",
+    answer: "We've built strategic partnerships with manufacturers who understand the value of supporting growing brands. By aggregating orders across our client network, we can achieve production efficiencies that allow for lower minimums while maintaining quality and competitive pricing."
+  },
+  {
+    question: "Is the quality the same as larger production runs?",
+    answer: "Absolutely. All products are manufactured in the same GMP-certified facilities with identical quality control standards, regardless of order size. You receive the same certificates of analysis, testing protocols, and quality assurance as any large-scale production."
+  },
+  {
+    question: "What's the actual cost difference between 1000 and 5000 units?",
+    answer: "While per-unit costs are typically 20-30% higher at 1000 units, your total upfront investment is 73% lower. For example: 1000 units at $8/unit = $8,000 investment vs 5000 units at $6/unit = $30,000 investment. This preserves $22,000 in working capital for marketing and operations."
+  },
+  {
+    question: "Can I increase my order quantity later?",
+    answer: "Yes! Most brands start with 1000 units and scale up as demand grows. We offer graduated pricing tiers, so your per-unit costs decrease as you order larger quantities. Many clients move from 1000 to 2500 to 5000+ units within their first year."
+  },
+  {
+    question: "What products work best with low MOQs?",
+    answer: "Low MOQs are ideal for: new product launches, seasonal items, limited editions, test markets, startup brands, and products targeting niche audiences. They're also perfect for brands wanting to offer variety without massive inventory investment."
+  },
+  {
+    question: "How does the timeline compare to standard MOQ orders?",
+    answer: "Production timelines are similar: 8-10 weeks for stock formulas and 12-16 weeks for custom formulations. The smaller batch size can sometimes mean faster production slots are available."
+  },
+  {
+    question: "Are there any hidden fees with low MOQ orders?",
+    answer: "No hidden fees. Our pricing is transparent and includes manufacturing, basic packaging, and quality testing. Optional services like custom packaging design or expedited shipping are clearly priced separately."
+  },
+  {
+    question: "Can I mix different products to meet MOQ requirements?",
+    answer: "Each product type has its own MOQ of 1000 units. However, you can launch multiple products simultaneously - for example, 1000 units each of tablets, capsules, and gummies - allowing you to offer variety from day one."
+  }
+];
+
+const metaTitle = "Low MOQ Supplement Manufacturing | Start at 1000 Units | NutriCraft";
+const metaDescription = "Launch your supplement brand with just 1000 units minimum order. 5x lower than industry standard. Perfect for startups and testing new products. Same GMP quality. Get your quote today.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/low-moq-manufacturing" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Low MOQ Supplement Manufacturing",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "8000",
+          "priceCurrency": "USD",
+          "eligibleQuantity": {
+            "@type": "QuantitativeValue",
+            "minValue": 1000,
+            "unitCode": "EA"
+          }
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white overflow-hidden py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 leading-tight">
+            Low MOQ Supplement Manufacturing
+            <span class="block text-mint-600 text-3xl md:text-4xl lg:text-5xl mt-2">Start with Just 1000 Units</span>
+          </h1>
+
+          <!-- Trust Indicators -->
+          <div class="flex flex-wrap gap-4 items-center mb-6">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium text-sm">GMP Certified</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700 font-medium text-sm">73% Lower Investment</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-dark-700 font-bold text-lg">5x Lower MOQ</span>
+            </div>
+          </div>
+
+          <p class="text-xl text-dark-600 leading-relaxed mb-6">
+            Launch your supplement brand without the traditional $30,000+ investment.
+            Our revolutionary low MOQ program lets you start with just 1000 units -
+            that's <strong>73% less capital</strong> than industry standard.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Perfect for startups and new product testing</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Same GMP quality standards as large orders</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Available for all supplement formats</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              Get Low MOQ Quote
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#calculator" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors">
+              Calculate Savings
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-lg p-8 border border-mint-100">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Quick Comparison</h3>
+            <div class="space-y-6">
+              <div class="pb-4 border-b border-gray-200">
+                <div>
+                  <p class="font-semibold text-dark-900">Industry Standard MOQ</p>
+                  <p class="text-3xl font-bold text-red-600">5,000+ units</p>
+                  <p class="text-sm text-dark-600">$30,000+ investment</p>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <p class="font-semibold text-dark-900">NutriCraft MOQ</p>
+                  <p class="text-3xl font-bold text-mint-600">1,000 units</p>
+                  <p class="text-sm text-dark-600">$8,000 investment</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-mint-50 rounded-lg p-4">
+              <p class="text-center text-mint-700 font-semibold">
+                Save $22,000 on your first order!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Why Low MOQ Changes Everything
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Lower minimums aren't just about reducing costs - they're about giving you the
+            flexibility and freedom to build your brand strategically.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {benefits.map((benefit, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-mint-100 h-full flex flex-col">
+              <div class="text-3xl mb-4">{benefit.icon}</div>
+              <h3 class="text-xl font-bold text-dark-900 mb-3">{benefit.title}</h3>
+              <p class="text-dark-600 flex-grow">{benefit.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost Comparison Table -->
+  <section id="calculator" class="py-16 md:py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            MOQ Cost Comparison Calculator
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            See exactly how much you save with our low MOQ program compared to
+            traditional minimum orders.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-mint-100">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-mint-600 text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left font-semibold">Order Quantity</th>
+                  <th class="px-6 py-4 text-left font-semibold">Upfront Cost</th>
+                  <th class="px-6 py-4 text-left font-semibold">Per Unit Cost</th>
+                  <th class="px-6 py-4 text-left font-semibold">Risk Level</th>
+                  <th class="px-6 py-4 text-left font-semibold">Test Market</th>
+                  <th class="px-6 py-4 text-left font-semibold">Cash Flow</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, index) => (
+                  <tr class={`border-b ${index === 0 ? 'bg-mint-50' : 'hover:bg-gray-50'}`}>
+                    <td class="px-6 py-4 font-semibold text-dark-900">
+                      {row.units} units
+                      {index === 0 && <span class="ml-2 text-xs bg-mint-600 text-white px-2 py-1 rounded">RECOMMENDED</span>}
+                    </td>
+                    <td class="px-6 py-4 text-dark-700">{row.upfrontCost}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.perUnit}</td>
+                    <td class="px-6 py-4">
+                      <span class={`px-3 py-1 rounded-full text-sm font-medium ${
+                        row.riskLevel === 'Low' ? 'bg-green-100 text-green-800' :
+                        row.riskLevel === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                        row.riskLevel === 'High' ? 'bg-orange-100 text-orange-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {row.riskLevel}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-dark-700">{row.testMarket}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.cashFlow}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-mint-600 text-white p-6">
+            <p class="text-center text-lg">
+              <strong>Smart Strategy:</strong> Start with 1000 units to test the market,
+              then scale up as demand grows. This approach significantly reduces risk while preserving capital for marketing.
+            </p>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <div class="text-center mt-4">
+        <p class="text-sm text-dark-500 italic">
+          *Numbers shown are for demonstration purposes only. Actual costs vary by product type, packaging, and formulation complexity. Contact us for accurate pricing.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Available Formats -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Low MOQ Available for All Formats
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            No matter what supplement format you choose, our 1000-unit minimum applies across the board.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {formats.map((format, index) => (
+          <ScrollAnimation delay={index * 50}>
+            <div class="bg-white border-2 border-mint-200 rounded-lg p-6 hover:border-mint-600 transition-colors">
+              <h3 class="text-xl font-bold text-dark-900 mb-2">{format.name}</h3>
+              <p class="text-mint-600 font-semibold mb-1">MOQ: {format.moq}</p>
+              <p class="text-dark-600 text-sm">Approximately {format.units}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 text-center">
+          <a href="/formulations" class="inline-flex items-center text-mint-600 font-semibold hover:text-mint-700">
+            Explore all formulation options
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Success Stories - Hidden for now -->
+  {/* <section class="py-16 md:py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Brands That Started Small, Grew Big
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Real success stories from brands that leveraged our low MOQ program to build thriving businesses.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {successStories.map((story, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-xl font-bold text-mint-600 mb-3">{story.brand}</h3>
+              <div class="space-y-3">
+                <div>
+                  <p class="text-sm font-semibold text-dark-700 mb-1">Challenge:</p>
+                  <p class="text-dark-600">{story.challenge}</p>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-dark-700 mb-1">Solution:</p>
+                  <p class="text-dark-600">{story.solution}</p>
+                </div>
+                <div class="pt-3 border-t border-gray-200">
+                  <p class="text-sm font-semibold text-dark-700 mb-1">Result:</p>
+                  <p class="text-dark-600 font-medium">{story.result}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section> */}
+
+  <!-- Process Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            How Our Low MOQ Program Works
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Simple, transparent process from quote to delivery.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-4 gap-6">
+        <ScrollAnimation>
+          <div class="text-center">
+            <div class="bg-mint-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+            <h3 class="text-lg font-bold text-dark-900 mb-2">Submit Request</h3>
+            <p class="text-dark-600">Tell us your product needs and desired quantity</p>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={100}>
+          <div class="text-center">
+            <div class="bg-mint-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+            <h3 class="text-lg font-bold text-dark-900 mb-2">Receive Quote</h3>
+            <p class="text-dark-600">Get transparent pricing within 24-48 hours</p>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={200}>
+          <div class="text-center">
+            <div class="bg-mint-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+            <h3 class="text-lg font-bold text-dark-900 mb-2">Production Begins</h3>
+            <p class="text-dark-600">Same GMP facilities, same quality standards</p>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={300}>
+          <div class="text-center">
+            <div class="bg-mint-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
+            <h3 class="text-lg font-bold text-dark-900 mb-2">Receive Products</h3>
+            <p class="text-dark-600">8-10 weeks to market-ready products</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Start Small and Grow Big?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Join hundreds of successful brands that started with just 1000 units.
+          Get your custom low MOQ quote today.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            Get Your Low MOQ Quote
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
+          >
+            Schedule Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="mt-8">
+          <p class="text-dark-600 text-lg">
+            <CountUp end={73} duration={2000} prefix="" suffix="%" class="text-2xl font-bold text-mint-600" />
+            of brands that start with 1000 units scale to 5000+ within 12 months
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-white to-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Low MOQ Manufacturing FAQs
+          </h2>
+          <p class="text-lg text-dark-600">
+            Everything you need to know about our low minimum order program
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>
