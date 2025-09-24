@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/services/white-label-canada",
+      "destination": "/services/private-label-supplements",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

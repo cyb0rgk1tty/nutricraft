@@ -236,7 +236,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Blending, granulation, or spray drying',
-      moq: '500 units (tubs or stick packs)',
+      moq: '1000 units (tubs or stick packs)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2 years in proper packaging'
     },

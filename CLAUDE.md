@@ -1,0 +1,88 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+### Development
+```bash
+npm run dev          # Start Astro dev server (access at http://192.168.50.5:4321)
+npm run build        # Build production site to dist/
+npm run preview      # Preview production build locally
+npm run astro        # Access Astro CLI directly
+```
+
+**Important**: The dev server should always run on `0.0.0.0` to be accessible at `http://192.168.50.5:4321`. Use:
+```bash
+npm run dev -- --host 0.0.0.0
+```
+
+### Astro CLI Commands
+```bash
+npx astro add        # Add integrations
+npx astro check      # Check for TypeScript errors
+npx astro sync       # Generate TypeScript types for content collections
+```
+
+## Architecture
+
+### Tech Stack
+- **Framework**: Astro.js v5 with SSR enabled (Vercel adapter)
+- **Styling**: Tailwind CSS with custom mint green theme
+- **Email**: Nodemailer for contact form submissions
+- **Analytics**: Google Tag Manager integration
+- **TypeScript**: Strict mode enabled
+
+### Project Structure
+
+```
+src/
+├── pages/             # Routes - file-based routing
+│   ├── api/          # API endpoints (contact.ts for form handling)
+│   ├── formulations/ # Dynamic routes with [format].astro
+│   └── services/     # Service pages
+├── components/       # Reusable Astro components
+├── layouts/         # BaseLayout.astro wraps all pages
+└── data/           # JS data files (services, formulations, etc.)
+```
+
+### Key Patterns
+
+1. **Dynamic Routes**: The `[format].astro` pattern in formulations/ creates pages based on formulation data
+2. **Component Composition**: All pages use BaseLayout.astro with SEO metadata
+3. **Data Management**: Product data stored in src/data/ as JavaScript modules
+4. **Image Optimization**: Scripts in scripts/ folder for image processing with sharp-cli
+5. **Environment Variables**: SMTP configuration in .env for contact form
+
+### API Endpoints
+- `/api/contact` - Handles contact form submissions via Nodemailer
+
+### Deployment
+- Site deployed on Vercel (output: 'server', adapter: vercel())
+- Domain: https://nutricraftlabs.com
+- Sitemap includes dynamic formulation pages
+
+### Image Optimization
+Image optimization scripts available in scripts/ directory:
+- `optimize-formulation-images.sh` - Creates multiple sizes and WebP formats
+- `convert-png-to-jpg.sh` - Batch converts PNG to JPG
+- Various format-specific optimization scripts
+
+### Forms & Contact
+Contact form uses server-side processing with:
+- Validation on both client and server
+- Nodemailer for SMTP email sending
+- Environment variables for SMTP configuration
+
+### Analytics & Tracking
+- Google Tag Manager integration via Analytics.astro component
+- Conversion tracking documentation in CONVERSION_TRACKING.md
+- GTM setup guide in GTM_SETUP.md
+
+## Development Notes
+
+- TypeScript strict mode is enabled
+- No ESLint or Prettier configuration (consider adding for consistency)
+- Tests directory exists but is currently empty
+- Public images should be placed in public/images/ with WebP versions for performance
+- Dynamic formulation pages are pre-configured in sitemap via astro.config.mjs
