@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.nutricraftlabs.com"
+        }
+      ],
+      "destination": "https://nutricraftlabs.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/services/white-label-canada",
       "destination": "/services/private-label-supplements",
       "permanent": true
