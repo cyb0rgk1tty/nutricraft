@@ -1,11 +1,15 @@
 ---
 export interface Props {
   class?: string;
+  items?: Array<{
+    question: string;
+    answer: string;
+  }>;
 }
 
-const { class: className } = Astro.props;
+const { class: className, items } = Astro.props;
 
-const faqs = [
+const defaultFaqs = [
   {
     question: "How do you select and vet manufacturing partners?",
     answer:
@@ -47,6 +51,9 @@ const faqs = [
       "Absolutely! We work with brands at every stage - from entrepreneurs launching their first product to established companies expanding their lines or switching manufacturers. Our partner network includes options for small pilot runs (as low as 1000 units) up to large-scale production runs of millions of units.",
   },
 ];
+
+// Use passed items if provided, otherwise use default FAQs
+const faqs = items || defaultFaqs;
 ---
 
 <div class={`faq-container ${className || ""}`}>

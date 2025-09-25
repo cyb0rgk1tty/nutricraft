@@ -3,19 +3,28 @@ const currentYear = new Date().getFullYear();
 
 const footerLinks = [
   {
-    title: "Services",
+    title: "Manufacturing",
     links: [
-      { label: "GMP Manufacturer Matchmaking", href: "#services" },
-      { label: "Stock Formulas & White-Label", href: "#services" },
-      { label: "NPN Applications", href: "#services" },
-      { label: "Custom Formulation", href: "#services" },
+      { label: "Low MOQ Manufacturing", href: "/services/low-moq-manufacturing" },
+      { label: "Private Label", href: "/services/private-label-supplements" },
+      { label: "White Label Solutions", href: "/services/white-label-canada" },
+      { label: "Custom Formulation", href: "/services/custom-formulation" },
+    ],
+  },
+  {
+    title: "Go-to-Market",
+    links: [
+      { label: "NPN Applications", href: "/services/npn-applications" },
+      { label: "Compliance Labels", href: "/services/compliance-labels" },
+      { label: "Fulfillment", href: "/services/fulfillment" },
+      { label: "Marketing & Branding", href: "/services/marketing-brand-kit" },
     ],
   },
   {
     title: "Company",
     links: [
       { label: "About Us", href: "#about" },
-      { label: "Contact", href: "#contact" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
@@ -40,7 +49,7 @@ const footerLinks = [
 <footer class="bg-gray-50 border-t border-gray-200">
   <div class="section-container py-12">
     <!-- Footer Content -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
       <!-- Company Info -->
       <div class="lg:col-span-2">
         <picture class="inline-block mb-4">

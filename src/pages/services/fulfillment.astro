@@ -1,0 +1,900 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const fulfillmentServices = [
+  {
+    service: "3PL Partner Network",
+    description: "Connect with our vetted third-party logistics providers across North America",
+    features: [
+      "Pre-qualified fulfillment centers",
+      "Multiple location options for faster shipping",
+      "Scalable solutions from startup to enterprise",
+      "Integrated technology platforms"
+    ],
+    benefits: [
+      "No setup fees with partner facilities",
+      "Reduced shipping costs and delivery times",
+      "Professional warehouse management",
+      "Real-time inventory tracking"
+    ],
+    icon: "🏢"
+  },
+  {
+    service: "D2C Fulfillment Setup",
+    description: "Direct-to-consumer fulfillment solutions for online sales",
+    features: [
+      "E-commerce platform integration",
+      "Automated order processing",
+      "Multi-channel inventory sync",
+      "Customer service support"
+    ],
+    benefits: [
+      "Same-day order processing",
+      "99.5% order accuracy rate",
+      "Branded packaging options",
+      "Returns management included"
+    ],
+    icon: "📦"
+  },
+  {
+    service: "Amazon FBA Preparation",
+    description: "Complete Amazon FBA setup and compliance management",
+    features: [
+      "FBA account setup and optimization",
+      "Product listing creation",
+      "Inventory forecasting and management",
+      "Performance monitoring and reporting"
+    ],
+    benefits: [
+      "Prime eligibility for faster sales",
+      "Amazon handles customer service",
+      "Multi-marketplace expansion",
+      "Automated inventory replenishment"
+    ],
+    icon: "📱"
+  },
+  {
+    service: "Inventory Management",
+    description: "Smart inventory tracking and optimization systems",
+    features: [
+      "Real-time stock level monitoring",
+      "Automated reorder point alerts",
+      "Demand forecasting analytics",
+      "Multi-location inventory visibility"
+    ],
+    benefits: [
+      "Prevent stockouts and overstock",
+      "Optimize cash flow and storage costs",
+      "Data-driven purchasing decisions",
+      "Seamless scaling capabilities"
+    ],
+    icon: "📊"
+  }
+];
+
+const fulfillmentProcess = [
+  {
+    phase: "Assessment & Planning",
+    timeline: "Day 1-2",
+    tasks: [
+      "Analyze your product specifications and requirements",
+      "Review sales channels and volume projections",
+      "Identify optimal fulfillment strategy and partners",
+      "Create detailed implementation timeline"
+    ],
+    deliverable: "Customized fulfillment strategy and partner recommendations"
+  },
+  {
+    phase: "Partner Selection",
+    timeline: "Day 3-4",
+    tasks: [
+      "Connect with pre-qualified 3PL partners",
+      "Compare pricing, services, and capabilities",
+      "Negotiate terms and service agreements",
+      "Finalize contracts and onboarding schedules"
+    ],
+    deliverable: "Signed agreements with selected fulfillment partners"
+  },
+  {
+    phase: "System Integration",
+    timeline: "Day 5-6",
+    tasks: [
+      "Set up inventory management systems",
+      "Integrate e-commerce platforms and marketplaces",
+      "Configure automated order processing workflows",
+      "Test all systems and data connections"
+    ],
+    deliverable: "Fully integrated and tested fulfillment technology stack"
+  },
+  {
+    phase: "Launch & Optimization",
+    timeline: "Day 7",
+    tasks: [
+      "Begin live order processing",
+      "Monitor performance metrics and KPIs",
+      "Optimize workflows based on initial data",
+      "Provide training and ongoing support"
+    ],
+    deliverable: "Live fulfillment operations with performance monitoring"
+  }
+];
+
+const distributionChannels = [
+  {
+    channel: "Direct-to-Consumer (D2C)",
+    description: "Your own e-commerce website and online store",
+    advantages: [
+      "Higher profit margins",
+      "Direct customer relationships",
+      "Brand control and experience",
+      "Customer data ownership"
+    ],
+    fulfillmentOptions: ["In-house shipping", "3PL fulfillment", "Dropshipping"],
+    bestFor: "New brands building direct relationships",
+    averageMargin: "60-80%"
+  },
+  {
+    channel: "Amazon FBA",
+    description: "Fulfillment by Amazon for Prime customers",
+    advantages: [
+      "Access to Prime customer base",
+      "Amazon handles customer service",
+      "Trusted fulfillment network",
+      "Multi-marketplace opportunities"
+    ],
+    fulfillmentOptions: ["FBA warehousing", "Multi-channel fulfillment", "Amazon advertising"],
+    bestFor: "Scaling brands seeking maximum reach",
+    averageMargin: "40-60%"
+  },
+  {
+    channel: "Retail Partners",
+    description: "Health stores, pharmacies, and specialty retailers",
+    advantages: [
+      "Established customer traffic",
+      "Professional product placement",
+      "Local market expertise",
+      "Bulk order opportunities"
+    ],
+    fulfillmentOptions: ["Direct shipping", "Distributor networks", "Drop-ship programs"],
+    bestFor: "Established brands with proven products",
+    averageMargin: "30-50%"
+  },
+  {
+    channel: "Subscription Services",
+    description: "Monthly recurring revenue through subscription boxes",
+    advantages: [
+      "Predictable recurring revenue",
+      "Higher customer lifetime value",
+      "Automated reordering",
+      "Customer retention focus"
+    ],
+    fulfillmentOptions: ["Subscription-specific 3PL", "Custom packaging", "Personalization"],
+    bestFor: "Brands with consumable products",
+    averageMargin: "50-70%"
+  }
+];
+
+const warehouseOptions = [
+  {
+    type: "East Coast Fulfillment",
+    locations: ["New Jersey", "Virginia", "Georgia"],
+    coverage: "1-2 day delivery to 60% of US population",
+    specialties: ["High-volume processing", "Same-day shipping", "International export"],
+    pricing: "from $2.50 per order + storage"
+  },
+  {
+    type: "West Coast Fulfillment",
+    locations: ["California", "Nevada", "Oregon"],
+    coverage: "1-2 day delivery to Western US and Canada",
+    specialties: ["Technology integration", "Sustainable packaging", "Canadian shipping"],
+    pricing: "from $2.75 per order + storage"
+  },
+  {
+    type: "Central US Fulfillment",
+    locations: ["Texas", "Illinois", "Ohio"],
+    coverage: "2-3 day delivery nationwide",
+    specialties: ["Cost-effective shipping", "Large item handling", "B2B distribution"],
+    pricing: "from $2.25 per order + storage"
+  },
+  {
+    type: "Canadian Fulfillment",
+    locations: ["Toronto", "Vancouver", "Montreal"],
+    coverage: "Fast delivery across Canada",
+    specialties: ["Bilingual customer service", "Health Canada compliance", "Cross-border expertise"],
+    pricing: "from $3.25 CAD per order + storage"
+  }
+];
+
+const fulfillmentTech = [
+  {
+    technology: "Inventory Management System",
+    capabilities: [
+      "Real-time stock level tracking",
+      "Automated reorder alerts",
+      "Multi-location visibility",
+      "Demand forecasting"
+    ],
+    integration: ["Shopify", "WooCommerce", "BigCommerce", "Amazon Seller Central"]
+  },
+  {
+    technology: "Order Management Platform",
+    capabilities: [
+      "Multi-channel order routing",
+      "Automated processing rules",
+      "Exception handling",
+      "Performance analytics"
+    ],
+    integration: ["All major e-commerce platforms", "EDI systems", "ERP solutions", "Custom APIs"]
+  },
+  {
+    technology: "Shipping Optimization",
+    capabilities: [
+      "Multi-carrier rate comparison",
+      "Zone skipping optimization",
+      "Dimensional weight optimization",
+      "Delivery time prediction"
+    ],
+    integration: ["FedEx", "UPS", "USPS", "DHL", "Canada Post", "Regional carriers"]
+  },
+  {
+    technology: "Customer Communication",
+    capabilities: [
+      "Automated shipping notifications",
+      "Order status updates",
+      "Delivery confirmation",
+      "Return processing alerts"
+    ],
+    integration: ["Email platforms", "SMS services", "Customer service tools", "Help desk systems"]
+  }
+];
+
+const fulfillmentChallenges = [
+  {
+    challenge: "High Shipping Costs",
+    solution: "Multi-location fulfillment strategy and carrier optimization",
+    outcome: "Average 25% reduction in shipping costs"
+  },
+  {
+    challenge: "Inventory Stockouts",
+    solution: "Automated reorder systems and demand forecasting",
+    outcome: "98% order fill rate maintenance"
+  },
+  {
+    challenge: "Slow Order Processing",
+    solution: "Automated workflows and same-day processing",
+    outcome: "99% of orders ship within 24 hours"
+  },
+  {
+    challenge: "Returns Management",
+    solution: "Streamlined return processing and restocking",
+    outcome: "3-day average return processing time"
+  }
+];
+
+const faqItems = [
+  {
+    question: "How quickly can you set up fulfillment for my supplement business?",
+    answer: "We can typically have your fulfillment operations live within 1 week. This includes partner selection, system integration, and testing. The exact timeline depends on your product complexity and volume requirements, but our streamlined process ensures rapid deployment."
+  },
+  {
+    question: "What's the difference between 3PL fulfillment and Amazon FBA?",
+    answer: "3PL (third-party logistics) gives you more control over branding, packaging, and customer experience, while Amazon FBA provides access to Prime customers but limits customization. We often recommend a hybrid approach using both channels to maximize reach and maintain brand control."
+  },
+  {
+    question: "Can you handle both B2C and B2B fulfillment?",
+    answer: "Absolutely. Our partner network includes facilities that specialize in both consumer direct-shipping and business-to-business distribution. We can set up separate workflows for different order types and volume requirements."
+  },
+  {
+    question: "What are the typical costs for 3PL fulfillment?",
+    answer: "Costs vary by location and services, but typically range from $2.25-$3.25 per order plus monthly storage fees of $0.50-$1.00 per cubic foot. We negotiate competitive rates with our partner network and provide transparent pricing upfront with no hidden fees."
+  },
+  {
+    question: "How do you handle inventory tracking across multiple locations?",
+    answer: "We provide real-time inventory management systems that sync across all your fulfillment locations and sales channels. You'll have complete visibility into stock levels, automatic reorder alerts, and centralized reporting from one dashboard."
+  },
+  {
+    question: "Can you fulfill orders to both US and Canadian customers?",
+    answer: "Yes, we have fulfillment partners in both countries to provide fast, cost-effective shipping to North American customers. Our Canadian partners also handle bilingual customer service and Health Canada compliance requirements."
+  },
+  {
+    question: "What happens if there's a problem with order fulfillment?",
+    answer: "All our fulfillment partners provide insurance coverage for lost or damaged orders. We also have dedicated account management and 24/7 support to quickly resolve any issues. Our partners maintain 99.5%+ order accuracy rates."
+  },
+  {
+    question: "Do you integrate with my existing e-commerce platform?",
+    answer: "We integrate with all major platforms including Shopify, WooCommerce, BigCommerce, Amazon, and many others. Our technical team handles the integration setup to ensure seamless order flow from your store to fulfillment."
+  }
+];
+
+const metaTitle = "Fulfillment & Distribution Services | 3PL Partners & Amazon FBA | NutriCraft";
+const metaDescription = "Streamlined fulfillment and distribution solutions for supplement brands. 3PL partner network, D2C fulfillment, Amazon FBA setup, and inventory management. Setup in 1 week.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/fulfillment" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Fulfillment & Distribution Services",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "serviceType": "Logistics",
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "deliveryLeadTime": "P7D"
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-blue-50 via-white to-green-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-4xl">📦</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Streamlined Logistics</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Fulfillment & Distribution
+            <span class="block text-blue-600 text-3xl md:text-4xl lg:text-5xl mt-2">Scale Your Business</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Professional fulfillment solutions through our vetted 3PL partner network.
+            D2C fulfillment, Amazon FBA preparation, and inventory management systems.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Setup in 1 week with live operations</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">3PL partner network across North America</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Amazon FBA setup and optimization</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+              Start Fulfillment Setup
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors">
+              View Process
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Fulfillment Solutions</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏢</span>
+                <div>
+                  <p class="font-semibold text-dark-900">3PL Partner Network</p>
+                  <p class="text-sm text-dark-600">Vetted fulfillment centers nationwide</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🛒</span>
+                <div>
+                  <p class="font-semibold text-dark-900">D2C Fulfillment</p>
+                  <p class="text-sm text-dark-600">Direct-to-consumer order processing</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📱</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Amazon FBA Ready</p>
+                  <p class="text-sm text-dark-600">Complete FBA setup and optimization</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📊</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Inventory Management</p>
+                  <p class="text-sm text-dark-600">Real-time tracking and analytics</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-blue-50 rounded-lg p-4">
+              <p class="text-center text-blue-700 font-semibold">
+                99.5% order accuracy with 24-hour processing
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fulfillment Services -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Complete Fulfillment Solutions
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From order processing to customer delivery, we provide end-to-end
+            fulfillment solutions tailored to your business needs.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {fulfillmentServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-8">
+              <div class="flex items-start gap-4 mb-6">
+                <span class="text-4xl">{service.icon}</span>
+                <div>
+                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
+                  <p class="text-dark-600">{service.description}</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Key Features:</h4>
+                  <ul class="space-y-1">
+                    {service.features.map(feature => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Benefits:</h4>
+                  <ul class="space-y-1">
+                    {service.benefits.map(benefit => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Distribution Channels -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Distribution Channel Strategy
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Choose the right distribution mix to maximize your reach and profitability
+            across different customer segments and markets.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {distributionChannels.map((channel, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{channel.channel}</h3>
+              <p class="text-dark-600 mb-4">{channel.description}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Key Advantages:</h4>
+                  <ul class="space-y-1">
+                    {channel.advantages.map(advantage => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{advantage}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Fulfillment Options:</h4>
+                  <div class="flex flex-wrap gap-2">
+                    {channel.fulfillmentOptions.map(option => (
+                      <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                        {option}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-3">
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Best For</p>
+                    <p class="text-sm text-dark-600">{channel.bestFor}</p>
+                  </div>
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Avg. Margin</p>
+                    <p class="text-lg font-bold text-green-600">{channel.averageMargin}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Warehouse Network -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Strategic Warehouse Network
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Partner fulfillment centers strategically located across North America
+            for optimal shipping speed and cost efficiency.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {warehouseOptions.map((warehouse, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold text-dark-900 mb-3">{warehouse.type}</h3>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-1">Locations:</h4>
+                  <p class="text-dark-600 text-sm">{warehouse.locations.join(", ")}</p>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-1">Coverage:</h4>
+                  <p class="text-dark-600 text-sm">{warehouse.coverage}</p>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Specialties:</h4>
+                  <div class="flex flex-wrap gap-1">
+                    {warehouse.specialties.map(specialty => (
+                      <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-green-800">Pricing:</p>
+                  <p class="text-green-700 font-bold">{warehouse.pricing}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Integration -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Advanced Fulfillment Technology
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Cutting-edge technology stack for seamless order management,
+            inventory tracking, and customer communication.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {fulfillmentTech.map((tech, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-4">{tech.technology}</h3>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Core Capabilities:</h4>
+                  <ul class="space-y-1">
+                    {tech.capabilities.map(capability => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{capability}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Integrations:</h4>
+                  <div class="flex flex-wrap gap-1">
+                    {tech.integration.map(integration => (
+                      <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                        {integration}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Fulfillment Process -->
+  <section id="process" class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            4-Step Fulfillment Setup Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our proven process gets your fulfillment operations live in just one week
+            with optimized systems and partner integrations.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {fulfillmentProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{step.phase}</h3>
+                      <p class="text-blue-600 font-semibold">{step.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-blue-100 rounded-lg px-4 py-2">
+                    <p class="text-sm font-semibold text-blue-800">Deliverable:</p>
+                    <p class="text-sm text-blue-700">{step.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">Key Activities:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {step.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Fulfillment Challenges & Solutions -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Fulfillment Challenges We Solve
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Common logistics obstacles and how our expertise ensures smooth operations and customer satisfaction.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-6">
+        {fulfillmentChallenges.map((item, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-r from-blue-50 to-white rounded-xl shadow-lg p-6">
+              <div class="grid md:grid-cols-3 gap-6 items-center">
+                <div class="text-center md:text-left">
+                  <h3 class="text-lg font-bold text-red-600 mb-2">Challenge:</h3>
+                  <p class="text-dark-700">{item.challenge}</p>
+                </div>
+                <div class="text-center md:text-left">
+                  <h4 class="text-lg font-bold text-blue-600 mb-2">Our Solution:</h4>
+                  <p class="text-dark-700">{item.solution}</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-green-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-green-800">Result:</p>
+                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-blue-600 to-blue-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            Fulfillment Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={99.5} duration={2000} suffix="%" />
+              </div>
+              <p class="text-blue-100">Order Accuracy Rate</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={24} duration={2000} suffix=" hrs" />
+              </div>
+              <p class="text-blue-100">Average Processing Time</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={50} duration={2000} suffix="+" />
+              </div>
+              <p class="text-blue-100">3PL Partner Locations</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={25} duration={2000} suffix="%" />
+              </div>
+              <p class="text-blue-100">Average Shipping Cost Reduction</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Scale Your Fulfillment?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Get professional fulfillment solutions with our vetted 3PL partner network.
+          Setup completed in just one week with ongoing support.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+            Start Fulfillment Setup
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            Schedule Consultation
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Fulfillment & Distribution FAQ
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about supplement fulfillment and logistics solutions
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

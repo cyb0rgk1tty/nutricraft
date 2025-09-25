@@ -1,0 +1,793 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const npnProcess = [
+  {
+    phase: "Document Preparation",
+    timeline: "Weeks 1-2",
+    tasks: [
+      "Product formulation review and analysis",
+      "Ingredient safety documentation compilation",
+      "Label claim substantiation research",
+      "Dosage justification preparation"
+    ],
+    deliverable: "Complete NPN application package"
+  },
+  {
+    phase: "Application Submission",
+    timeline: "Week 3",
+    tasks: [
+      "Health Canada portal submission",
+      "Payment processing and confirmation",
+      "Application tracking setup",
+      "Initial review coordination"
+    ],
+    deliverable: "Submitted application with tracking number"
+  },
+  {
+    phase: "Health Canada Review",
+    timeline: "Weeks 4-16",
+    tasks: [
+      "Scientific evaluation by Health Canada",
+      "Safety and efficacy assessment",
+      "Label and claim verification",
+      "Regulatory compliance review"
+    ],
+    deliverable: "Health Canada assessment report"
+  },
+  {
+    phase: "Response Management",
+    timeline: "As Needed",
+    tasks: [
+      "Address Health Canada questions promptly",
+      "Provide additional documentation if requested",
+      "Coordinate follow-up submissions",
+      "Facilitate regulatory correspondence"
+    ],
+    deliverable: "Completed responses to regulatory queries"
+  },
+  {
+    phase: "Approval & Launch",
+    timeline: "Final Week",
+    tasks: [
+      "NPN certificate issuance",
+      "Product listing authorization",
+      "Label compliance final verification",
+      "Market launch preparation"
+    ],
+    deliverable: "Official NPN certificate and market clearance"
+  }
+];
+
+const npnServices = [
+  {
+    service: "Complete Document Preparation",
+    description: "Comprehensive preparation of all required application materials",
+    details: [
+      "Product formulation analysis",
+      "Ingredient safety documentation",
+      "Clinical evidence compilation",
+      "Dosage justification reports"
+    ],
+    icon: "📋"
+  },
+  {
+    service: "Submission Assistance",
+    description: "Expert guidance through the Health Canada submission process",
+    details: [
+      "Portal navigation support",
+      "Application form completion",
+      "Fee payment coordination",
+      "Submission timeline management"
+    ],
+    icon: "📤"
+  },
+  {
+    service: "Health Canada Liaison",
+    description: "Professional communication with regulatory authorities",
+    details: [
+      "Direct contact with Health Canada reviewers",
+      "Query response coordination",
+      "Timeline status updates",
+      "Regulatory correspondence management"
+    ],
+    icon: "🤝"
+  },
+  {
+    service: "Compliance Monitoring",
+    description: "Ongoing support to maintain regulatory compliance",
+    details: [
+      "Annual renewal assistance",
+      "Label change notifications",
+      "Adverse event reporting support",
+      "Regulatory update notifications"
+    ],
+    icon: "🔍"
+  }
+];
+
+const npnRequirements = [
+  {
+    category: "Product Information",
+    items: [
+      "Complete ingredient list with quantities",
+      "Manufacturing process details",
+      "Quality control specifications",
+      "Stability data and shelf-life information"
+    ]
+  },
+  {
+    category: "Safety Documentation",
+    items: [
+      "Ingredient safety monographs",
+      "Toxicological data where applicable",
+      "Drug interaction assessments",
+      "Contraindication documentation"
+    ]
+  },
+  {
+    category: "Efficacy Evidence",
+    items: [
+      "Clinical studies or literature reviews",
+      "Traditional use evidence",
+      "Mechanism of action documentation",
+      "Dosage rationale and justification"
+    ]
+  },
+  {
+    category: "Label & Claims",
+    items: [
+      "Proposed product labels (English/French)",
+      "Health claim substantiation",
+      "Directions for use documentation",
+      "Recommended use statements"
+    ]
+  }
+];
+
+const npnClassifications = [
+  {
+    class: "Class I - Lower Risk",
+    description: "Products with well-established safety profiles",
+    examples: ["Vitamins", "Minerals", "Essential fatty acids", "Probiotics"],
+    timeline: "3-12 months",
+    requirements: "Standard documentation package"
+  },
+  {
+    class: "Class II - Higher Risk",
+    description: "Products requiring more comprehensive review",
+    examples: ["Herbal medicines", "Homeopathics", "Traditional medicines", "Novel ingredients"],
+    timeline: "3-12 months",
+    requirements: "Enhanced safety and efficacy data"
+  }
+];
+
+const npnBenefits = [
+  {
+    benefit: "Legal Market Access",
+    description: "Required authorization to legally sell supplements in Canada",
+    impact: "Mandatory for compliance"
+  },
+  {
+    benefit: "Consumer Trust",
+    description: "NPN number demonstrates Health Canada approval",
+    impact: "Increased consumer confidence"
+  },
+  {
+    benefit: "Retailer Requirements",
+    description: "Major retailers require NPN for product acceptance",
+    impact: "Access to distribution channels"
+  },
+  {
+    benefit: "Marketing Claims",
+    description: "Approved health claims for marketing purposes",
+    impact: "Enhanced product positioning"
+  }
+];
+
+const commonChallenges = [
+  {
+    challenge: "Complex Documentation",
+    solution: "Our experts handle all technical documentation requirements",
+    outcome: "90% faster preparation time"
+  },
+  {
+    challenge: "Regulatory Delays",
+    solution: "Proactive communication and query response management",
+    outcome: "25% shorter approval timelines"
+  },
+  {
+    challenge: "Claim Substantiation",
+    solution: "Comprehensive literature review and evidence compilation",
+    outcome: "Higher approval success rate"
+  },
+  {
+    challenge: "Language Requirements",
+    solution: "Professional bilingual documentation and translation",
+    outcome: "100% compliance with language laws"
+  }
+];
+
+const faqItems = [
+  {
+    question: "What is an NPN and why do I need one?",
+    answer: "A Natural Product Number (NPN) is an 8-digit number issued by Health Canada that appears on the label of natural health products. It's legally required to sell supplements, vitamins, and natural health products in Canada. The NPN confirms that Health Canada has reviewed and approved the product's safety, efficacy, and quality."
+  },
+  {
+    question: "How long does the NPN application process take?",
+    answer: "The timeline varies by product classification. Class I products (lower risk like vitamins and minerals) typically take 3-12 months, while Class II products (higher risk like herbal medicines) can take 3-12 months as well. Our preparation process takes 2-3 weeks before submission, so the total timeline is usually 3-12 months for NPN approval."
+  },
+  {
+    question: "What documents do I need to provide for the NPN application?",
+    answer: "You'll need complete product formulation details, ingredient specifications, manufacturing information, proposed labels, safety data for all ingredients, efficacy evidence or literature, and quality control procedures. We help you compile and prepare all required documentation professionally."
+  },
+  {
+    question: "How much does an NPN application cost?",
+    answer: "Health Canada fees range from $585-$3,500 CAD depending on product class and submission type. Our professional services for document preparation, submission assistance, and liaison support typically range from $3,000-$8,000, depending on complexity. We provide transparent pricing upfront."
+  },
+  {
+    question: "Can I sell my product while the NPN application is pending?",
+    answer: "No, you cannot legally sell natural health products in Canada without an approved NPN. The product must wait for Health Canada approval and NPN issuance before it can be sold. However, you can prepare manufacturing, marketing materials, and distribution channels during the review period."
+  },
+  {
+    question: "What happens if Health Canada requests additional information?",
+    answer: "Health Canada may request additional documentation or clarifications during review. This is common and doesn't indicate rejection. We monitor your application status closely and respond to any queries promptly with the required information, helping prevent delays in the approval process."
+  },
+  {
+    question: "Do I need separate NPNs for different product sizes or flavors?",
+    answer: "Different sizes of the same formulation typically use the same NPN. However, different flavors, strengths, or formulations usually require separate NPNs. We evaluate your product line during consultation to determine the most efficient NPN strategy for your needs."
+  },
+  {
+    question: "Can you help with NPN renewals and ongoing compliance?",
+    answer: "Yes, we provide ongoing support including annual renewal assistance, label change notifications, adverse event reporting support, and regulatory update notifications. NPNs don't expire, but certain changes to products may require notifications or new applications."
+  }
+];
+
+const metaTitle = "NPN Applications Canada | Natural Product Number Services | NutriCraft";
+const metaDescription = "Expert NPN application services for Canadian supplement market. Document preparation, Health Canada liaison, and regulatory compliance support. 60-90 day processing with professional guidance.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/npn-applications" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "NPN Application Services",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": "CA",
+        "serviceType": "Regulatory Compliance",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "3000",
+          "highPrice": "8000",
+          "priceCurrency": "CAD"
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-mint-50 via-white to-green-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-mint-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Health Canada Approved</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            NPN Applications
+            <span class="block text-mint-600 text-3xl md:text-4xl lg:text-5xl mt-2">Canadian Market Access</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Navigate Health Canada's Natural Product Number application process with expert guidance.
+            We handle documentation, submission, and regulatory liaison for swift market approval.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">3-12 months typical processing time</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Complete documentation preparation</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Direct Health Canada liaison support</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+              Start NPN Application
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors">
+              View Process
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">What is an NPN?</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🇨🇦</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Health Canada Authorization</p>
+                  <p class="text-sm text-dark-600">8-digit number proving regulatory approval</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">⚖️</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Legal Requirement</p>
+                  <p class="text-sm text-dark-600">Mandatory for supplement sales in Canada</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🛡️</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Safety Verification</p>
+                  <p class="text-sm text-dark-600">Confirms safety, efficacy, and quality</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">✅</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Consumer Trust</p>
+                  <p class="text-sm text-dark-600">Builds credibility with retailers and customers</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-mint-50 rounded-lg p-4">
+              <p class="text-center text-mint-700 font-semibold">
+                Required for all natural health products in Canada
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why NPN is Required -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Why NPNs Are Essential for Canadian Market
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Health Canada's Natural Health Products Regulations require all supplements to have
+            pre-market authorization through the NPN system.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {npnBenefits.map((benefit, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-md p-6 text-center">
+              <h3 class="text-xl font-bold text-dark-900 mb-3">{benefit.benefit}</h3>
+              <p class="text-dark-600 mb-3">{benefit.description}</p>
+              <div class="bg-mint-100 rounded-lg px-3 py-1 inline-block">
+                <p class="text-sm font-semibold text-mint-800">{benefit.impact}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Services -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Complete NPN Application Services
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From initial documentation to final approval, we guide you through every step
+            of the NPN application process.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {npnServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <div class="flex items-start gap-4 mb-4">
+                <span class="text-4xl">{service.icon}</span>
+                <div>
+                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
+                  <p class="text-dark-600">{service.description}</p>
+                </div>
+              </div>
+              <ul class="space-y-2">
+                {service.details.map(detail => (
+                  <li class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-dark-700 text-sm">{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- NPN Process Timeline -->
+  <section id="process" class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            5-Step NPN Application Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our streamlined process ensures your application is complete, accurate,
+            and submitted efficiently for faster approval.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {npnProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-r from-mint-50 to-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-mint-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{step.phase}</h3>
+                      <p class="text-mint-600 font-semibold">{step.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-mint-100 rounded-lg px-4 py-2 inline-block">
+                    <p class="text-sm font-semibold text-mint-800">Deliverable:</p>
+                    <p class="text-sm text-mint-700">{step.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">Key Activities:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {step.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-12 bg-mint-600 text-white rounded-xl p-8 text-center">
+          <h3 class="text-2xl font-bold mb-4">Timeline Summary</h3>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div>
+              <div class="text-3xl font-bold mb-2">2-3 weeks</div>
+              <p class="text-mint-100">Document preparation</p>
+            </div>
+            <div>
+              <div class="text-3xl font-bold mb-2">3-12 months</div>
+              <p class="text-mint-100">Health Canada review</p>
+            </div>
+            <div>
+              <div class="text-3xl font-bold mb-2">3-12 months</div>
+              <p class="text-mint-100">Total time to approval</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Product Classifications -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            NPN Product Classifications
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Health Canada classifies natural health products into different risk categories,
+            each with specific requirements and timelines.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {npnClassifications.map((classification, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{classification.class}</h3>
+              <p class="text-dark-600 mb-4">{classification.description}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Typical Products:</h4>
+                  <div class="flex flex-wrap gap-2">
+                    {classification.examples.map(example => (
+                      <span class="bg-mint-50 text-mint-700 px-3 py-1 rounded-lg text-sm">
+                        {example}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Processing Time</p>
+                    <p class="text-lg font-bold text-mint-600">{classification.timeline}</p>
+                  </div>
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Documentation</p>
+                    <p class="text-sm text-dark-600">{classification.requirements}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements Checklist -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            NPN Application Requirements
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Comprehensive documentation requirements organized by category to ensure
+            your application is complete and accurate.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {npnRequirements.map((category, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg border-l-4 border-mint-600 p-6">
+              <h3 class="text-xl font-bold text-dark-900 mb-4">{category.category}</h3>
+              <ul class="space-y-3">
+                {category.items.map(item => (
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-dark-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 bg-mint-50 rounded-xl p-6">
+          <p class="text-center text-mint-900 font-semibold text-lg mb-2">
+            Don't worry about gathering all these documents yourself!
+          </p>
+          <p class="text-center text-mint-700">
+            Our experts help compile and prepare all required documentation according to Health Canada standards.
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Common Challenges & Solutions -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Overcoming NPN Application Challenges
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Common obstacles in the NPN process and how our expertise helps you avoid delays and denials.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-6">
+        {commonChallenges.map((item, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+              <div class="grid md:grid-cols-3 gap-6 items-center">
+                <div class="text-center md:text-left">
+                  <h3 class="text-lg font-bold text-red-600 mb-2">Challenge:</h3>
+                  <p class="text-dark-700">{item.challenge}</p>
+                </div>
+                <div class="text-center md:text-left">
+                  <h4 class="text-lg font-bold text-mint-600 mb-2">Our Solution:</h4>
+                  <p class="text-dark-700">{item.solution}</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-green-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-green-800">Result:</p>
+                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-mint-600 to-mint-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            NPN Application Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={10} duration={2000} suffix="+" />
+              </div>
+              <p class="text-mint-100">NPNs Successfully Obtained</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={96} duration={2000} suffix="%" />
+              </div>
+              <p class="text-mint-100">First-Submission Approval Rate</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={75} duration={2000} suffix=" days" />
+              </div>
+              <p class="text-mint-100">Average Processing Time</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={25} duration={2000} suffix="%" />
+              </div>
+              <p class="text-mint-100">Faster Than Industry Average</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Get Your NPN?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Let our regulatory experts guide you through the NPN application process
+          for faster approval and market access.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+            Start NPN Application
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
+          >
+            Schedule Consultation
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            NPN Applications FAQ
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about Natural Product Number applications in Canada
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

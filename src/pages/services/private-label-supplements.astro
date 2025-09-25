@@ -278,10 +278,6 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <div class="flex items-center gap-3 mb-4">
-            <span class="bg-mint-50 text-mint-700 px-4 py-1 rounded-full text-sm font-semibold">No Minimum Order Risk</span>
-            <span class="bg-mint-50 text-mint-700 px-3 py-1 rounded-full text-sm font-semibold">FDA Registered</span>
-          </div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
             Launch Your Supplement Brand <span class="text-mint-600">Risk-Free</span>
           </h1>
@@ -331,40 +327,113 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
             </a>
           </div>
         </div>
-        <!-- Hero Image -->
+        <!-- Hero Image Carousel -->
         <div class="relative">
           <div class="rounded-3xl p-8 md:p-12">
-            <div class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center">
-              <picture>
-                <!-- Mobile: Use 500px image only -->
-                <source
-                  media="(max-width: 768px)"
-                  srcset="/images/private-label-hero-500.webp"
-                  type="image/webp"
-                />
-                <source
-                  media="(max-width: 768px)"
-                  srcset="/images/private-label-hero-500.png"
-                  type="image/png"
-                />
-                <!-- Desktop: Use responsive images -->
-                <source
-                  media="(min-width: 769px)"
-                  srcset="/images/private-label-hero-500.webp 1x, /images/private-label-hero-1000.webp 2x"
-                  type="image/webp"
-                />
-                <img
-                  src="/images/private-label-hero-500.png"
-                  srcset="/images/private-label-hero-500.png 1x, /images/private-label-hero-1000.png 2x"
-                  alt="Private Label Supplement Manufacturing"
-                  class="w-full h-full object-contain"
-                  loading="eager"
-                  width="500"
-                  height="500"
-                  fetchpriority="high"
-                  decoding="sync"
-                />
-              </picture>
+            <div class="aspect-square rounded-2xl overflow-hidden flex items-center justify-center relative">
+              <!-- Image Carousel Container -->
+              <div class="carousel-container relative w-full h-full">
+                <!-- Image 1: Original Hero Image -->
+                <picture class="carousel-slide absolute inset-0 flex items-center justify-center" data-slide="1">
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-hero-500.webp"
+                    type="image/webp"
+                  />
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-hero-500.jpg"
+                    type="image/jpeg"
+                  />
+                  <source
+                    media="(min-width: 769px)"
+                    srcset="/images/private-label-hero-500.webp 500w, /images/private-label-hero-1000.webp 1000w, /images/private-label-hero-1500.webp 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    type="image/webp"
+                  />
+                  <img
+                    src="/images/private-label-hero-500.jpg"
+                    srcset="/images/private-label-hero-500.jpg 500w, /images/private-label-hero-1000.jpg 1000w, /images/private-label-hero-1500.jpg 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    alt="Private Label Supplement Manufacturing"
+                    class="w-full h-full object-contain"
+                    loading="eager"
+                    width="500"
+                    height="500"
+                    fetchpriority="high"
+                    decoding="sync"
+                  />
+                </picture>
+
+                <!-- Image 2: Bag Private Label -->
+                <picture class="carousel-slide absolute inset-0 flex items-center justify-center" data-slide="2">
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-bag-500.webp"
+                    type="image/webp"
+                  />
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-bag-500.jpg"
+                    type="image/jpeg"
+                  />
+                  <source
+                    media="(min-width: 769px)"
+                    srcset="/images/private-label-bag-500.webp 500w, /images/private-label-bag-1000.webp 1000w, /images/private-label-bag-1500.webp 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    type="image/webp"
+                  />
+                  <img
+                    src="/images/private-label-bag-500.jpg"
+                    srcset="/images/private-label-bag-500.jpg 500w, /images/private-label-bag-1000.jpg 1000w, /images/private-label-bag-1500.jpg 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    alt="Private Label Supplement Packaging"
+                    class="w-full h-full object-contain"
+                    loading="lazy"
+                    width="500"
+                    height="500"
+                    decoding="async"
+                  />
+                </picture>
+
+                <!-- Image 3: Protein Private Label -->
+                <picture class="carousel-slide absolute inset-0 flex items-center justify-center" data-slide="3">
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-protein-500.webp"
+                    type="image/webp"
+                  />
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="/images/private-label-protein-500.jpg"
+                    type="image/jpeg"
+                  />
+                  <source
+                    media="(min-width: 769px)"
+                    srcset="/images/private-label-protein-500.webp 500w, /images/private-label-protein-1000.webp 1000w, /images/private-label-protein-1500.webp 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    type="image/webp"
+                  />
+                  <img
+                    src="/images/private-label-protein-500.jpg"
+                    srcset="/images/private-label-protein-500.jpg 500w, /images/private-label-protein-1000.jpg 1000w, /images/private-label-protein-1500.jpg 1500w"
+                    sizes="(max-width: 768px) 500px, (max-width: 1024px) 1000px, 1500px"
+                    alt="Private Label Protein Powder"
+                    class="w-full h-full object-contain"
+                    loading="lazy"
+                    width="500"
+                    height="500"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+
+              <!-- Carousel Dots Indicator -->
+              <div class="carousel-dots absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+                <button class="carousel-dot w-2 h-2 rounded-full bg-white/50 transition-all duration-300" data-dot="1" aria-label="Show image 1"></button>
+                <button class="carousel-dot w-2 h-2 rounded-full bg-white/50 transition-all duration-300" data-dot="2" aria-label="Show image 2"></button>
+                <button class="carousel-dot w-2 h-2 rounded-full bg-white/50 transition-all duration-300" data-dot="3" aria-label="Show image 3"></button>
+              </div>
             </div>
           </div>
           <!-- Trust Badges Below Image -->
@@ -468,7 +537,7 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
 
       <ScrollAnimation>
         <div class="mt-8 grid md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-lg p-6 border-2 border-mint-600">
+          <div class="bg-white rounded-lg p-6 border-2 border-gray-200">
             <h3 class="text-xl font-bold text-dark-900 mb-3">Choose Private Label If You:</h3>
             <ul class="space-y-2">
               <li class="flex items-start gap-2">
@@ -491,7 +560,7 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
               </li>
             </ul>
           </div>
-          <div class="bg-white rounded-lg p-6 border-2 border-gray-300">
+          <div class="bg-white rounded-lg p-6 border-2 border-gray-200">
             <h3 class="text-xl font-bold text-dark-900 mb-3">Choose White Label If You:</h3>
             <ul class="space-y-2">
               <li class="flex items-start gap-2">
@@ -626,21 +695,23 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
       <div class="grid md:grid-cols-4 gap-6">
         {processSteps.map((step, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="relative">
+            <div class="relative h-full">
               {index < processSteps.length - 1 && (
                 <div class="hidden md:block absolute top-12 left-full w-full h-0.5 bg-mint-200 -translate-x-1/2"></div>
               )}
-              <div class="bg-white rounded-xl p-6 shadow-md text-center relative">
+              <div class="bg-white rounded-xl p-6 shadow-md text-center relative h-full min-h-[320px] flex flex-col">
                 <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-mint-600 text-white rounded-full flex items-center justify-center font-bold">
                   {step.step}
                 </div>
-                <h3 class="text-lg font-bold text-dark-900 mt-3 mb-2">{step.title}</h3>
-                <p class="text-sm text-dark-600 mb-3">{step.description}</p>
-                <div class="text-xs bg-gray-100 rounded px-2 py-1 inline-block">
-                  {step.timeline}
+                <h3 class="text-lg font-bold text-dark-900 mt-3 mb-3 min-h-[28px]">{step.title}</h3>
+                <p class="text-sm text-dark-600 mb-4 flex-1 min-h-[60px]">{step.description}</p>
+                <div class="mb-4">
+                  <div class="text-xs bg-gray-100 rounded px-3 py-1.5 w-full">
+                    {step.timeline}
+                  </div>
                 </div>
-                <div class="mt-3 pt-3 border-t">
-                  <p class="text-xs text-mint-600 font-semibold">{step.deliverable}</p>
+                <div class="pt-3 border-t mt-auto">
+                  <p class="text-xs text-mint-600 font-semibold min-h-[16px]">{step.deliverable}</p>
                 </div>
               </div>
             </div>
@@ -795,9 +866,6 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
             class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
           >
             Schedule Consultation
-            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-            </svg>
           </button>
         </div>
       </ScrollAnimation>
@@ -823,6 +891,163 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
   </section>
 
   <Footer />
+
+  <!-- Carousel Styles -->
+  <style>
+    @keyframes slideInFromRight {
+      0% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOutToLeft {
+      0% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+    }
+
+    .carousel-slide {
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      animation: slideInFromRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .carousel-slide.exiting {
+      animation: slideOutToLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .carousel-dot.active {
+      background-color: rgb(255 255 255 / 1);
+      width: 1.5rem;
+    }
+
+    /* Pause animation on hover */
+    .carousel-container:hover .carousel-slide {
+      animation-play-state: paused;
+    }
+  </style>
+
+  <!-- Carousel Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.carousel-slide');
+      const dots = document.querySelectorAll('.carousel-dot');
+      let currentSlide = 0;
+      let interval;
+
+      // Initialize first slide
+      function initCarousel() {
+        slides[0].classList.add('active');
+        dots[0].classList.add('active');
+
+        // Start with staggered animations for initial load
+        setTimeout(() => {
+          showSlide(1, false); // Show second image after delay
+          setTimeout(() => {
+            showSlide(2, false); // Show third image after delay
+            setTimeout(() => {
+              // After all slides shown, go back to first
+              showSlide(0, false);
+              startAutoPlay(); // Start automatic rotation
+            }, 800);
+          }, 500);
+        }, 500);
+      }
+
+      function showSlide(index, animate = true) {
+        // Hide current slide
+        if (animate && currentSlide !== index) {
+          slides[currentSlide].classList.add('exiting');
+          setTimeout(() => {
+            slides[currentSlide].classList.remove('active', 'exiting');
+          }, 800);
+        } else {
+          slides[currentSlide].classList.remove('active');
+        }
+        dots[currentSlide].classList.remove('active');
+
+        // Show new slide
+        currentSlide = index;
+        setTimeout(() => {
+          slides[currentSlide].classList.add('active');
+          dots[currentSlide].classList.add('active');
+        }, animate ? 400 : 0);
+      }
+
+      function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      }
+
+      function startAutoPlay() {
+        interval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
+      }
+
+      function stopAutoPlay() {
+        clearInterval(interval);
+      }
+
+      // Dot navigation
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          stopAutoPlay();
+          showSlide(index);
+          startAutoPlay();
+        });
+      });
+
+      // Pause on hover
+      const container = document.querySelector('.carousel-container');
+      container.addEventListener('mouseenter', stopAutoPlay);
+      container.addEventListener('mouseleave', startAutoPlay);
+
+      // Touch/swipe support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      container.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+      });
+
+      container.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        startAutoPlay();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          // Swipe left - next slide
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          // Swipe right - previous slide
+          const prev = (currentSlide - 1 + slides.length) % slides.length;
+          showSlide(prev);
+        }
+      }
+
+      // Initialize carousel
+      initCarousel();
+    });
+  </script>
 
   <!-- Cal.com embed script -->
   <script>

@@ -1,0 +1,736 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const labelingRequirements = [
+  {
+    requirement: "FDA Nutrition Facts Panel",
+    description: "Complete nutrition information formatted per FDA guidelines",
+    details: [
+      "Serving size and servings per container",
+      "Calories and calories from fat",
+      "Macronutrients and micronutrients",
+      "Percent Daily Values (%DV)"
+    ],
+    timeline: "2-3 days",
+    icon: "📊"
+  },
+  {
+    requirement: "Health Canada Nutrition Facts Table",
+    description: "Bilingual nutrition table complying with Canadian regulations",
+    details: [
+      "English and French language requirements",
+      "Metric measurements and Canadian RDI values",
+      "Core and supplemented nutrition facts table format",
+      "Allergen declarations in both languages"
+    ],
+    timeline: "2-3 days",
+    icon: "🇨🇦"
+  },
+  {
+    requirement: "Ingredient Declarations",
+    description: "Complete ingredient lists with proper naming and order",
+    details: [
+      "Descending order by weight",
+      "Common and scientific names as required",
+      "Sub-ingredient declarations for compounds",
+      "Allergen highlighting and warnings"
+    ],
+    timeline: "1-2 days",
+    icon: "🧾"
+  },
+  {
+    requirement: "Health Claims & Warnings",
+    description: "Regulatory-compliant claims and mandatory warning statements",
+    details: [
+      "FDA structure/function claims verification",
+      "Health Canada approved health claims",
+      "Required warning statements and disclaimers",
+      "Age restrictions and usage guidelines"
+    ],
+    timeline: "2-4 days",
+    icon: "⚠️"
+  }
+];
+
+const labelingServices = [
+  {
+    service: "Label Design & Review",
+    description: "Professional label design with regulatory compliance verification",
+    benefits: [
+      "FDA and Health Canada compliant layouts",
+      "Eye-catching design that meets regulations",
+      "Multiple format options (bottles, pouches, boxes)",
+      "Print-ready files with proper specifications"
+    ],
+    icon: "🎨"
+  },
+  {
+    service: "Nutrition Analysis",
+    description: "Comprehensive nutritional analysis for accurate label information",
+    benefits: [
+      "Laboratory-verified nutrition facts",
+      "Serving size optimization",
+      "Nutrient content claims validation",
+      "Shelf-life and stability considerations"
+    ],
+    icon: "🔬"
+  },
+  {
+    service: "Regulatory Review",
+    description: "Expert review by regulatory specialists",
+    benefits: [
+      "FDA and Health Canada compliance verification",
+      "Claim substantiation review",
+      "Warning statement compliance",
+      "Market-specific requirement analysis"
+    ],
+    icon: "✅"
+  },
+  {
+    service: "Bilingual Translation",
+    description: "Professional English-French translation for Canadian market",
+    benefits: [
+      "Certified regulatory translators",
+      "Terminology consistency across products",
+      "Cultural adaptation for French markets",
+      "Quebec-specific regulatory compliance"
+    ],
+    icon: "🌐"
+  }
+];
+
+const regulatoryFrameworks = [
+  {
+    jurisdiction: "United States - FDA",
+    scope: "Food and Drug Administration regulations",
+    keyRequirements: [
+      "Nutrition Labeling and Education Act (NLEA)",
+      "Dietary Supplement Health and Education Act (DSHEA)",
+      "FDA Food Code compliance",
+      "Structure/function claim regulations"
+    ],
+    labelElements: ["Nutrition Facts panel", "Supplement Facts panel", "Ingredient list", "Net weight", "Manufacturer info"],
+    timeline: "5-7 business days"
+  },
+  {
+    jurisdiction: "Canada - Health Canada",
+    scope: "Natural and Non-prescription Health Products Directorate",
+    keyRequirements: [
+      "Natural Health Products Regulations",
+      "Food and Drug Regulations",
+      "Consumer Packaging and Labelling Act",
+      "Official Languages Act compliance"
+    ],
+    labelElements: ["Nutrition Facts table", "Medicinal ingredients", "Non-medicinal ingredients", "Directions for use", "NPN number"],
+    timeline: "7-10 business days"
+  }
+];
+
+const labelingProcess = [
+  {
+    phase: "Product Analysis",
+    timeline: "Day 1-2",
+    tasks: [
+      "Review product formulation and specifications",
+      "Identify target markets and regulatory requirements",
+      "Conduct nutrition analysis if needed",
+      "Determine serving sizes and usage directions"
+    ],
+    deliverable: "Comprehensive product analysis report"
+  },
+  {
+    phase: "Content Development",
+    timeline: "Day 3-5",
+    tasks: [
+      "Create nutrition facts panels/tables",
+      "Develop ingredient declarations",
+      "Write regulatory-compliant health claims",
+      "Prepare warning statements and disclaimers"
+    ],
+    deliverable: "Complete label content in required languages"
+  },
+  {
+    phase: "Design & Layout",
+    timeline: "Day 6-8",
+    tasks: [
+      "Design label layout and visual hierarchy",
+      "Ensure font sizes meet minimum requirements",
+      "Optimize space utilization and readability",
+      "Create multiple format variations"
+    ],
+    deliverable: "Professional label designs with regulatory compliance"
+  },
+  {
+    phase: "Review & Approval",
+    timeline: "Day 9-10",
+    tasks: [
+      "Regulatory expert review and verification",
+      "Client review and feedback incorporation",
+      "Final compliance check against regulations",
+      "Preparation of print-ready files"
+    ],
+    deliverable: "Approved labels ready for production"
+  }
+];
+
+const labelingChallenges = [
+  {
+    challenge: "Space Limitations",
+    solution: "Strategic layout optimization and hierarchical information design",
+    outcome: "100% regulatory compliance within space constraints"
+  },
+  {
+    challenge: "Multi-Market Requirements",
+    solution: "Unified design approach accommodating different regulatory frameworks",
+    outcome: "Single label design for multiple markets when possible"
+  },
+  {
+    challenge: "Language Requirements",
+    solution: "Professional regulatory translation and cultural adaptation",
+    outcome: "Perfect bilingual compliance for Canadian market"
+  },
+  {
+    challenge: "Claim Substantiation",
+    solution: "Evidence-based claim development and regulatory pre-approval",
+    outcome: "Zero claim-related regulatory rejections"
+  }
+];
+
+const faqItems = [
+  {
+    question: "What's the difference between US and Canadian labeling requirements?",
+    answer: "US labels require FDA-compliant Nutrition Facts panels and follow DSHEA regulations for supplements. Canadian labels need bilingual Nutrition Facts tables, must comply with Natural Health Products Regulations, and require NPN numbers for supplements. We ensure your labels meet both jurisdictions' specific requirements."
+  },
+  {
+    question: "Do I need separate labels for the US and Canadian markets?",
+    answer: "Not always. We can often design unified labels that meet both FDA and Health Canada requirements, saving you printing costs and inventory complexity. However, some products may need market-specific labels depending on approved claims and regulatory differences."
+  },
+  {
+    question: "How long does the label review and approval process take?",
+    answer: "Our standard timeline is 1-2 weeks from project start to final approved labels. This includes nutrition analysis, content development, design, and regulatory review. Rush services are available for faster turnaround when needed."
+  },
+  {
+    question: "Can you help with nutrition analysis for the label facts?",
+    answer: "Yes, we provide comprehensive nutrition analysis services including laboratory testing when required. We ensure all nutrition facts are accurate and compliant with regulatory requirements for both serving size determination and nutrient content claims."
+  },
+  {
+    question: "What if my product claims are rejected by regulators?",
+    answer: "We conduct thorough pre-approval claim review to minimize rejections. If issues arise, we work with you to modify claims while maintaining marketing effectiveness. Our regulatory expertise helps ensure claims are both compliant and commercially viable."
+  },
+  {
+    question: "Do you provide print-ready files for manufacturing?",
+    answer: "Absolutely. We deliver high-resolution, print-ready files in multiple formats suitable for various printing methods. Files include proper bleeds, color specifications, and technical notes for your manufacturer to ensure perfect reproduction."
+  },
+  {
+    question: "Can you translate existing labels for the Canadian market?",
+    answer: "Yes, we provide professional regulatory translation services from English to French for Canadian market compliance. Our certified translators understand nuances of supplement terminology and ensure cultural appropriateness for Quebec markets."
+  },
+  {
+    question: "What's included in your label compliance review?",
+    answer: "Our review covers nutrition facts accuracy, ingredient declaration compliance, claim substantiation, warning statement requirements, font size regulations, mandatory information placement, and overall regulatory compliance for your target markets."
+  }
+];
+
+const metaTitle = "Compliance Labels | FDA & Health Canada Approved Labeling | NutriCraft";
+const metaDescription = "Professional supplement label design and regulatory compliance services. FDA and Health Canada approved nutrition facts, bilingual labels, and regulatory review. 1-2 week timeline.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/compliance-labels" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Compliance Labeling Services",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "serviceType": "Regulatory Compliance",
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "deliveryLeadTime": "P14D"
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-blue-50 via-white to-green-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-4xl">🏷️</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">FDA & Health Canada Approved</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Compliance Labels
+            <span class="block text-blue-600 text-3xl md:text-4xl lg:text-5xl mt-2">Regulatory Excellence</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Professional supplement labeling services ensuring FDA and Health Canada compliance.
+            Bilingual labels, nutrition facts, and regulatory review for seamless market access.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">1-2 weeks from start to approved labels</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">FDA nutrition facts & Health Canada bilingual tables</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Print-ready files with regulatory compliance</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+              Start Label Project
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors">
+              View Process
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Regulatory Compliance</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🇺🇸</span>
+                <div>
+                  <p class="font-semibold text-dark-900">FDA Requirements</p>
+                  <p class="text-sm text-dark-600">Nutrition Facts panels, DSHEA compliance</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🇨🇦</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Health Canada Standards</p>
+                  <p class="text-sm text-dark-600">Bilingual tables, NHP regulations</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🌐</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Bilingual Labels</p>
+                  <p class="text-sm text-dark-600">English-French for Canadian market</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎨</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Professional Design</p>
+                  <p class="text-sm text-dark-600">Print-ready files, multiple formats</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-blue-50 rounded-lg p-4">
+              <p class="text-center text-blue-700 font-semibold">
+                100% regulatory compliance guaranteed
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regulatory Frameworks -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Regulatory Framework Expertise
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            We navigate complex regulatory requirements across multiple jurisdictions
+            to ensure your labels meet all compliance standards.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {regulatoryFrameworks.map((framework, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{framework.jurisdiction}</h3>
+              <p class="text-dark-600 mb-4">{framework.scope}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Key Requirements:</h4>
+                  <ul class="space-y-1">
+                    {framework.keyRequirements.map(req => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Required Label Elements:</h4>
+                  <div class="flex flex-wrap gap-2">
+                    {framework.labelElements.map(element => (
+                      <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                        {element}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-dark-700">Timeline</p>
+                  <p class="text-blue-600 font-bold">{framework.timeline}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Labeling Services -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Comprehensive Labeling Services
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From nutrition analysis to print-ready files, we handle every aspect
+            of supplement label compliance and design.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {labelingServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <div class="flex items-start gap-4 mb-4">
+                <span class="text-4xl">{service.icon}</span>
+                <div>
+                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
+                  <p class="text-dark-600">{service.description}</p>
+                </div>
+              </div>
+              <ul class="space-y-2">
+                {service.benefits.map(benefit => (
+                  <li class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-dark-700 text-sm">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Labeling Requirements -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Essential Labeling Requirements
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            We ensure your labels include all mandatory information formatted
+            according to FDA and Health Canada specifications.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {labelingRequirements.map((requirement, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-8">
+              <div class="flex items-start gap-4 mb-4">
+                <span class="text-4xl">{requirement.icon}</span>
+                <div>
+                  <h3 class="text-xl font-bold text-dark-900 mb-2">{requirement.requirement}</h3>
+                  <p class="text-dark-600 mb-3">{requirement.description}</p>
+                  <div class="bg-blue-100 rounded-lg px-3 py-1 inline-block mb-4">
+                    <p class="text-sm font-semibold text-blue-800">Timeline: {requirement.timeline}</p>
+                  </div>
+                </div>
+              </div>
+              <ul class="space-y-2">
+                {requirement.details.map(detail => (
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-dark-700 text-sm">{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Labeling Process -->
+  <section id="process" class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            4-Phase Labeling Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our systematic approach ensures your labels are compliant, professional,
+            and ready for production in just 1-2 weeks.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {labelingProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{step.phase}</h3>
+                      <p class="text-blue-600 font-semibold">{step.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-blue-100 rounded-lg px-4 py-2">
+                    <p class="text-sm font-semibold text-blue-800">Deliverable:</p>
+                    <p class="text-sm text-blue-700">{step.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">Key Activities:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {step.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Common Challenges & Solutions -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Labeling Challenges We Solve
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Common labeling obstacles and how our expertise ensures compliance and market success.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-6">
+        {labelingChallenges.map((item, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+              <div class="grid md:grid-cols-3 gap-6 items-center">
+                <div class="text-center md:text-left">
+                  <h3 class="text-lg font-bold text-red-600 mb-2">Challenge:</h3>
+                  <p class="text-dark-700">{item.challenge}</p>
+                </div>
+                <div class="text-center md:text-left">
+                  <h4 class="text-lg font-bold text-blue-600 mb-2">Our Solution:</h4>
+                  <p class="text-dark-700">{item.solution}</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-green-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-green-800">Result:</p>
+                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-blue-600 to-blue-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            Labeling Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={500} duration={2000} suffix="+" />
+              </div>
+              <p class="text-blue-100">Labels Successfully Approved</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={100} duration={2000} suffix="%" />
+              </div>
+              <p class="text-blue-100">Regulatory Compliance Rate</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={10} duration={2000} suffix=" days" />
+              </div>
+              <p class="text-blue-100">Average Project Timeline</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={0} duration={2000} />
+              </div>
+              <p class="text-blue-100">Regulatory Rejections</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready for Compliant Labels?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Get professional, regulatory-compliant labels designed for both
+          US and Canadian markets in just 1-2 weeks.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+            Start Label Project
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            Schedule Consultation
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Compliance Labeling FAQ
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about supplement label compliance and design
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

@@ -1,0 +1,922 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const brandingServices = [
+  {
+    service: "Product Photography",
+    description: "Professional supplement photography for all your marketing needs",
+    deliverables: [
+      "Hero product shots with studio lighting",
+      "Lifestyle photography with models",
+      "Ingredient photography and close-ups",
+      "360-degree product rotation videos"
+    ],
+    timeline: "5-7 days",
+    formats: ["High-res images", "Web-optimized files", "Print-ready formats", "Social media sizes"],
+    icon: "📸"
+  },
+  {
+    service: "Label & Packaging Design",
+    description: "Eye-catching designs that comply with regulations and attract customers",
+    deliverables: [
+      "Multiple label design concepts",
+      "Packaging mockups and 3D renders",
+      "Print-ready production files",
+      "Variant designs for product lines"
+    ],
+    timeline: "7-10 days",
+    formats: ["Vector files", "Print-ready PDFs", "Web graphics", "Mockup presentations"],
+    icon: "🎨"
+  },
+  {
+    service: "Brand Guidelines",
+    description: "Comprehensive brand standards for consistent marketing across all channels",
+    deliverables: [
+      "Logo usage and variations",
+      "Color palette and typography",
+      "Brand voice and messaging guide",
+      "Application examples and templates"
+    ],
+    timeline: "5-7 days",
+    formats: ["PDF brand guide", "Digital asset library", "Template files", "Usage examples"],
+    icon: "📋"
+  },
+  {
+    service: "Marketing Collateral",
+    description: "Complete set of marketing materials for all your promotional needs",
+    deliverables: [
+      "Brochures and sell sheets",
+      "Trade show banners and displays",
+      "Email marketing templates",
+      "Presentation decks and pitch materials"
+    ],
+    timeline: "7-10 days",
+    formats: ["Print-ready files", "Digital templates", "Editable formats", "Multiple sizes"],
+    icon: "📄"
+  }
+];
+
+const brandingProcess = [
+  {
+    phase: "Discovery & Strategy",
+    timeline: "Days 1-2",
+    tasks: [
+      "Brand positioning and target audience analysis",
+      "Competitive landscape and differentiation research",
+      "Visual style and messaging direction planning",
+      "Photography and design brief development"
+    ],
+    deliverable: "Comprehensive brand strategy and creative brief"
+  },
+  {
+    phase: "Creative Development",
+    timeline: "Days 3-10",
+    tasks: [
+      "Professional product photography session",
+      "Label and packaging design concepts",
+      "Brand guidelines and visual identity creation",
+      "Marketing collateral design and development"
+    ],
+    deliverable: "Complete brand kit with all visual assets"
+  },
+  {
+    phase: "Review & Refinement",
+    timeline: "Days 11-14",
+    tasks: [
+      "Client review and feedback incorporation",
+      "Design refinements and optimizations",
+      "File preparation in multiple formats",
+      "Quality assurance and final approval"
+    ],
+    deliverable: "Finalized brand assets ready for production and marketing"
+  },
+  {
+    phase: "Delivery & Support",
+    timeline: "Days 15-21",
+    tasks: [
+      "Digital asset library setup and organization",
+      "File delivery and usage training",
+      "Application guidelines and best practices",
+      "Ongoing support and asset updates"
+    ],
+    deliverable: "Complete brand implementation with ongoing support"
+  }
+];
+
+const digitalAssets = [
+  {
+    category: "Social Media Assets",
+    description: "Optimized graphics for all major social platforms",
+    assets: [
+      "Instagram post templates and story formats",
+      "Facebook cover photos and post graphics",
+      "LinkedIn company page headers and posts",
+      "YouTube thumbnails and channel art",
+      "TikTok video overlays and graphics",
+      "Pinterest pin designs and board covers"
+    ],
+    specifications: "Platform-specific dimensions and formats"
+  },
+  {
+    category: "E-commerce Graphics",
+    description: "Product images and graphics optimized for online sales",
+    assets: [
+      "Main product images with white backgrounds",
+      "Infographic images highlighting key benefits",
+      "Comparison charts and before/after visuals",
+      "Lifestyle images showing product usage",
+      "Packaging shots and unboxing visuals",
+      "Ingredient and nutrition highlight graphics"
+    ],
+    specifications: "Amazon, Shopify, and marketplace optimized"
+  },
+  {
+    category: "Marketing Materials",
+    description: "Professional materials for sales and marketing campaigns",
+    assets: [
+      "Email newsletter templates and headers",
+      "Sales presentation decks and pitch materials",
+      "Trade show banners and booth graphics",
+      "Product catalogs and sell sheets",
+      "Influencer collaboration graphics",
+      "Paid advertising creative assets"
+    ],
+    specifications: "Print and digital formats available"
+  },
+  {
+    category: "Website Elements",
+    description: "Web-ready graphics for your online presence",
+    assets: [
+      "Homepage hero images and banners",
+      "Product page graphics and callouts",
+      "About us team photos and company images",
+      "Blog post headers and featured images",
+      "Icon sets and infographic elements",
+      "Website backgrounds and textures"
+    ],
+    specifications: "Web-optimized files with fast loading times"
+  }
+];
+
+const photographyStyles = [
+  {
+    style: "Studio Product Photography",
+    description: "Clean, professional shots with perfect lighting and backgrounds",
+    includes: [
+      "Multiple angles and perspectives",
+      "White background isolation",
+      "Shadow and reflection variations",
+      "Detail shots of key features"
+    ],
+    bestFor: "E-commerce listings, catalogs, and professional marketing",
+    deliverables: "15-20 high-resolution images per product"
+  },
+  {
+    style: "Lifestyle Photography",
+    description: "Real-world usage scenarios with models and natural settings",
+    includes: [
+      "Models using products naturally",
+      "Home and gym environment setups",
+      "Active lifestyle and fitness scenes",
+      "Before/after transformation concepts"
+    ],
+    bestFor: "Social media, advertising, and aspirational marketing",
+    deliverables: "20-30 lifestyle images with usage rights"
+  },
+  {
+    style: "Ingredient Photography",
+    description: "Beautiful close-ups of natural ingredients and raw materials",
+    includes: [
+      "Individual ingredient beauty shots",
+      "Ingredient combination displays",
+      "Natural textures and organic arrangements",
+      "Color-coordinated ingredient groupings"
+    ],
+    bestFor: "Education, transparency, and natural appeal marketing",
+    deliverables: "10-15 ingredient images with macro detail"
+  },
+  {
+    style: "Video Content Creation",
+    description: "Dynamic video content for social media and marketing campaigns",
+    includes: [
+      "Product rotation and 360-degree views",
+      "Unboxing and first-use experiences",
+      "Behind-the-scenes manufacturing footage",
+      "Ingredient sourcing and quality stories"
+    ],
+    bestFor: "Social media, website headers, and engaging content",
+    deliverables: "3-5 short videos in multiple formats"
+  }
+];
+
+const brandingChallenges = [
+  {
+    challenge: "Standing Out in Crowded Market",
+    solution: "Distinctive visual identity and unique brand positioning strategy",
+    outcome: "400% increase in brand recognition and recall"
+  },
+  {
+    challenge: "Maintaining Consistency Across Channels",
+    solution: "Comprehensive brand guidelines and template library",
+    outcome: "Consistent brand experience across all touchpoints"
+  },
+  {
+    challenge: "Professional Look on Limited Budget",
+    solution: "Strategic focus on high-impact assets and scalable templates",
+    outcome: "Professional brand presence without premium agency costs"
+  },
+  {
+    challenge: "Compliance with Regulatory Requirements",
+    solution: "Designs that balance creativity with FDA and Health Canada rules",
+    outcome: "Zero regulatory issues while maintaining visual appeal"
+  }
+];
+
+const brandingPackages = [
+  {
+    package: "Startup Brand Kit",
+    description: "Essential branding for new supplement companies",
+    includes: [
+      "Logo design and basic brand guidelines",
+      "Product photography session (up to 3 products)",
+      "Label design for primary product",
+      "Basic social media templates",
+      "Email signature and business card designs"
+    ],
+    timeline: "2-3 weeks",
+    investment: "Starting at $2,500",
+    bestFor: "New brands launching their first products"
+  },
+  {
+    package: "Growth Brand Kit",
+    description: "Comprehensive branding for scaling businesses",
+    includes: [
+      "Complete brand identity and guidelines",
+      "Product photography (up to 8 products)",
+      "Packaging design for product line",
+      "Social media asset library (50+ templates)",
+      "Website graphics and marketing materials",
+      "Trade show and presentation materials"
+    ],
+    timeline: "3-4 weeks",
+    investment: "Starting at $5,000",
+    bestFor: "Growing brands expanding their product lines"
+  },
+  {
+    package: "Premium Brand Kit",
+    description: "Full-service branding for established companies",
+    includes: [
+      "Premium brand strategy and positioning",
+      "Extensive product photography and lifestyle shoots",
+      "Complete packaging and label design system",
+      "Comprehensive marketing collateral library",
+      "Video content creation and motion graphics",
+      "Ongoing brand management and updates"
+    ],
+    timeline: "4-6 weeks",
+    investment: "Starting at $10,000",
+    bestFor: "Established brands seeking premium positioning"
+  }
+];
+
+const faqItems = [
+  {
+    question: "How long does it take to complete a full brand kit?",
+    answer: "A complete brand kit typically takes 2-3 weeks depending on the scope. This includes product photography, label design, brand guidelines, and marketing materials. We provide regular updates throughout the process and offer rush services for faster turnaround when needed."
+  },
+  {
+    question: "Do you provide the actual product photography or just design services?",
+    answer: "We provide both! Our team includes professional photographers who specialize in supplement and health product photography. We handle everything from studio setup to post-production editing, delivering high-quality images ready for all your marketing needs."
+  },
+  {
+    question: "Can you design labels that comply with FDA and Health Canada regulations?",
+    answer: "Absolutely. Our design team works closely with our regulatory experts to ensure all labels meet FDA and Health Canada requirements while maintaining visual appeal. We handle nutrition facts panels, ingredient declarations, and required warnings in both English and French for Canadian markets."
+  },
+  {
+    question: "What file formats do you provide for the brand assets?",
+    answer: "We deliver comprehensive file packages including vector files (AI, EPS), high-resolution images (PNG, JPG), print-ready PDFs, and web-optimized formats. You'll also receive editable templates for future use and guidelines for proper usage of all assets."
+  },
+  {
+    question: "Do you create social media content templates?",
+    answer: "Yes, our brand kits include extensive social media asset libraries with templates for Instagram, Facebook, LinkedIn, and other platforms. You'll receive story templates, post designs, highlight covers, and platform-specific graphics optimized for engagement."
+  },
+  {
+    question: "Can you help with packaging design beyond just labels?",
+    answer: "Definitely. We design complete packaging solutions including bottle labels, box designs, pouches, and custom packaging formats. Our designs consider both aesthetic appeal and functional requirements like shelf impact and manufacturing feasibility."
+  },
+  {
+    question: "Do you provide brand guidelines for consistent usage?",
+    answer: "Yes, every brand kit includes comprehensive brand guidelines covering logo usage, color palettes, typography, voice and tone, and application examples. These guidelines ensure consistent brand presentation across all your marketing channels and materials."
+  },
+  {
+    question: "Can you create marketing materials for trade shows and retail?",
+    answer: "Absolutely. We design trade show banners, retail displays, sell sheets, brochures, and presentation materials. All materials follow your brand guidelines and are optimized for their specific use cases, whether it's attracting trade show visitors or convincing retail buyers."
+  }
+];
+
+const metaTitle = "Marketing & Brand Kit Services | Professional Branding for Supplements | NutriCraft";
+const metaDescription = "Complete branding solutions for supplement companies. Product photography, label design, marketing collateral, and digital assets. Professional brand kits in 2-3 weeks.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href="https://nutricraft.com/services/marketing-brand-kit" />
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Marketing & Brand Kit Services",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "NutriCraft",
+          "url": "https://nutricraft.com"
+        },
+        "areaServed": ["US", "CA"],
+        "serviceType": "Branding and Marketing",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "2500",
+          "highPrice": "10000",
+          "priceCurrency": "USD"
+        }
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-blue-50 via-white to-green-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-4xl">🎨</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Professional Branding</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Marketing & Brand Kit
+            <span class="block text-blue-600 text-3xl md:text-4xl lg:text-5xl mt-2">Stand Out & Sell More</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Complete branding solutions for supplement companies. Professional photography,
+            label design, marketing materials, and digital assets to build a powerful brand presence.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">2-3 weeks complete brand kit delivery</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Professional photography & regulatory-compliant design</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Complete marketing asset library & templates</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+              Start Brand Project
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors">
+              View Process
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Brand Kit Includes</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📸</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Professional Photography</p>
+                  <p class="text-sm text-dark-600">Studio, lifestyle, and ingredient shots</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏷️</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Label & Packaging Design</p>
+                  <p class="text-sm text-dark-600">Regulatory-compliant and eye-catching</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📱</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Digital Asset Library</p>
+                  <p class="text-sm text-dark-600">Social media, web, and marketing graphics</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📋</span>
+                <div>
+                  <p class="font-semibold text-dark-900">Brand Guidelines</p>
+                  <p class="text-sm text-dark-600">Consistent usage and style standards</p>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 bg-blue-50 rounded-lg p-4">
+              <p class="text-center text-blue-700 font-semibold">
+                Complete brand transformation in 2-3 weeks
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Branding Services -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Complete Branding Services
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From concept to completion, we create cohesive brand experiences
+            that resonate with your target audience and drive sales.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {brandingServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-8">
+              <div class="flex items-start gap-4 mb-6">
+                <span class="text-4xl">{service.icon}</span>
+                <div>
+                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
+                  <p class="text-dark-600">{service.description}</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">What's Included:</h4>
+                  <ul class="space-y-1">
+                    {service.deliverables.map(deliverable => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{deliverable}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">File Formats:</h4>
+                  <div class="flex flex-wrap gap-1">
+                    {service.formats.map(format => (
+                      <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                        {format}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="bg-blue-100 rounded-lg px-3 py-2 inline-block">
+                  <p class="text-sm font-semibold text-blue-800">Timeline: {service.timeline}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Photography Styles -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Professional Photography Styles
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            High-quality product photography tailored to your brand needs and marketing channels,
+            from e-commerce listings to social media campaigns.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {photographyStyles.map((style, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{style.style}</h3>
+              <p class="text-dark-600 mb-4">{style.description}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Includes:</h4>
+                  <ul class="space-y-1">
+                    {style.includes.map(include => (
+                      <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{include}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="grid md:grid-cols-1 gap-3">
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Best For:</p>
+                    <p class="text-sm text-dark-600">{style.bestFor}</p>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-blue-800">Deliverables:</p>
+                    <p class="text-sm text-blue-700">{style.deliverables}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Digital Assets -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Comprehensive Digital Asset Library
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Everything you need for successful digital marketing across all platforms,
+            from social media to e-commerce and email campaigns.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {digitalAssets.map((category, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{category.category}</h3>
+              <p class="text-dark-600 mb-4">{category.description}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Asset Types:</h4>
+                  <ul class="space-y-1">
+                    {category.assets.map(asset => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{asset}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-green-800">Specifications:</p>
+                  <p class="text-sm text-green-700">{category.specifications}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Branding Packages -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Brand Kit Packages
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Choose the brand kit that matches your business stage and goals,
+            from startup essentials to premium brand experiences.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {brandingPackages.map((pkg, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8 relative">
+              {index === 1 && (
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                    Most Popular
+                  </span>
+                </div>
+              )}
+
+              <h3 class="text-2xl font-bold text-dark-900 mb-3">{pkg.package}</h3>
+              <p class="text-dark-600 mb-4">{pkg.description}</p>
+
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-dark-700 mb-2">Package Includes:</h4>
+                  <ul class="space-y-2">
+                    {pkg.includes.map(include => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{include}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-dark-700">Timeline</p>
+                    <p class="text-sm text-dark-600">{pkg.timeline}</p>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-3">
+                    <p class="text-sm font-semibold text-blue-800">Investment</p>
+                    <p class="text-sm font-bold text-blue-700">{pkg.investment}</p>
+                  </div>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-green-800">Best For:</p>
+                  <p class="text-sm text-green-700">{pkg.bestFor}</p>
+                </div>
+
+                <a
+                  href="/contact"
+                  class={`w-full inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-colors ${
+                    index === 1
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  Get Started
+                  <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Branding Process -->
+  <section id="process" class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            4-Phase Branding Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Our strategic approach ensures your brand resonates with your target audience
+            and stands out in the competitive supplement market.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {brandingProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{step.phase}</h3>
+                      <p class="text-blue-600 font-semibold">{step.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-blue-100 rounded-lg px-4 py-2">
+                    <p class="text-sm font-semibold text-blue-800">Deliverable:</p>
+                    <p class="text-sm text-blue-700">{step.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">Key Activities:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {step.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Branding Challenges & Solutions -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Branding Challenges We Solve
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Common branding obstacles supplement companies face and how our expertise
+            transforms challenges into competitive advantages.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-6">
+        {brandingChallenges.map((item, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-r from-blue-50 to-white rounded-xl shadow-lg p-6">
+              <div class="grid md:grid-cols-3 gap-6 items-center">
+                <div class="text-center md:text-left">
+                  <h3 class="text-lg font-bold text-red-600 mb-2">Challenge:</h3>
+                  <p class="text-dark-700">{item.challenge}</p>
+                </div>
+                <div class="text-center md:text-left">
+                  <h4 class="text-lg font-bold text-blue-600 mb-2">Our Solution:</h4>
+                  <p class="text-dark-700">{item.solution}</p>
+                </div>
+                <div class="text-center">
+                  <div class="bg-green-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-green-800">Result:</p>
+                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-16 md:py-20 bg-gradient-to-r from-blue-600 to-blue-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12">
+            Branding Success Metrics
+          </h2>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={150} duration={2000} suffix="+" />
+              </div>
+              <p class="text-blue-100">Brand Kits Delivered</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={400} duration={2000} suffix="%" />
+              </div>
+              <p class="text-blue-100">Average Brand Recognition Increase</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={21} duration={2000} suffix=" days" />
+              </div>
+              <p class="text-blue-100">Average Project Timeline</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={95} duration={2000} suffix="%" />
+              </div>
+              <p class="text-blue-100">Client Satisfaction Rate</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Build Your Brand?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Transform your supplement business with professional branding that drives sales
+          and builds customer loyalty. Complete brand kits in 2-3 weeks.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+            Start Brand Project
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            Schedule Consultation
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Marketing & Brand Kit FAQ
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about supplement branding and marketing services
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>
