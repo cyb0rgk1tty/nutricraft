@@ -16,33 +16,27 @@ const comparisonData = [
 const benefits = [
   {
     title: "Test Market Viability",
-    description: "Launch new products with minimal risk. Test customer response and refine your offering before scaling.",
-    icon: "🎯"
+    description: "Launch new products with minimal risk. Test customer response and refine your offering before scaling."
   },
   {
     title: "Better Cash Flow Management",
-    description: "Preserve working capital with 73% lower initial investment. Reinvest savings into marketing and growth.",
-    icon: "💰"
+    description: "Preserve working capital with 73% lower initial investment. Reinvest savings into marketing and growth."
   },
   {
     title: "Multiple Product Lines",
-    description: "Launch 3-5 different products for the same cost as one traditional production run.",
-    icon: "📦"
+    description: "Launch 3-5 different products for the same cost as one traditional production run."
   },
   {
     title: "Faster Inventory Turnover",
-    description: "Sell through inventory 5x faster with smaller batches. Reduce storage costs and expiration risk.",
-    icon: "⚡"
+    description: "Sell through inventory 5x faster with smaller batches. Reduce storage costs and expiration risk."
   },
   {
     title: "Seasonal Flexibility",
-    description: "Easily adjust for seasonal demand without being stuck with excess inventory.",
-    icon: "📅"
+    description: "Easily adjust for seasonal demand without being stuck with excess inventory."
   },
   {
     title: "Quality Consistency",
-    description: "Same GMP standards and quality control regardless of order size. No compromise on excellence.",
-    icon: "✅"
+    description: "Same GMP standards and quality control regardless of order size. No compromise on excellence."
   }
 ];
 
@@ -151,6 +145,9 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="space-y-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-mint-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Startup Friendly</span>
+          </div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 leading-tight">
             Low MOQ Supplement Manufacturing
             <span class="block text-mint-600 text-3xl md:text-4xl lg:text-5xl mt-2">Start with Just 1000 Units</span>
@@ -264,7 +261,6 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
         {benefits.map((benefit, index) => (
           <ScrollAnimation delay={index * 100}>
             <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-mint-100 h-full flex flex-col">
-              <div class="text-3xl mb-4">{benefit.icon}</div>
               <h3 class="text-xl font-bold text-dark-900 mb-3">{benefit.title}</h3>
               <p class="text-dark-600 flex-grow">{benefit.description}</p>
             </div>
