@@ -74,7 +74,6 @@ const npnServices = [
       "Clinical evidence compilation",
       "Dosage justification reports"
     ],
-    icon: "📋"
   },
   {
     service: "Submission Assistance",
@@ -85,7 +84,6 @@ const npnServices = [
       "Fee payment coordination",
       "Submission timeline management"
     ],
-    icon: "📤"
   },
   {
     service: "Health Canada Liaison",
@@ -96,7 +94,6 @@ const npnServices = [
       "Timeline status updates",
       "Regulatory correspondence management"
     ],
-    icon: "🤝"
   },
   {
     service: "Compliance Monitoring",
@@ -107,7 +104,6 @@ const npnServices = [
       "Adverse event reporting support",
       "Regulatory update notifications"
     ],
-    icon: "🔍"
   }
 ];
 
@@ -152,18 +148,55 @@ const npnRequirements = [
 
 const npnClassifications = [
   {
-    class: "Class I - Lower Risk",
-    description: "Products with well-established safety profiles",
-    examples: ["Vitamins", "Minerals", "Essential fatty acids", "Probiotics"],
-    timeline: "3-12 months",
-    requirements: "Standard documentation package"
+    class: "Class I - Compendial",
+    description: "Applications that comply with all parameters of one NNHPD monograph",
+    examples: ["Single vitamin products", "Single mineral products", "Products matching one monograph exactly"],
+    timeline: "60 days (2-4 months)",
+    requirements: "Must match monograph specifications 100%",
+    processingTime: "Fastest review time"
   },
   {
-    class: "Class II - Higher Risk",
-    description: "Products requiring more comprehensive review",
-    examples: ["Herbal medicines", "Homeopathics", "Traditional medicines", "Novel ingredients"],
-    timeline: "3-12 months",
-    requirements: "Enhanced safety and efficacy data"
+    class: "Class II - Multiple Monographs",
+    description: "Applications supported by combinations of 2 or more NNHPD monographs",
+    examples: ["Multi-vitamin formulas", "Mineral combinations", "Products using multiple monographs"],
+    timeline: "90 days (3-6 months)",
+    requirements: "Must comply with all referenced monographs",
+    processingTime: "Medium review time"
+  },
+  {
+    class: "Class III - Full Assessment",
+    description: "Applications requiring complete safety and efficacy review",
+    examples: ["Novel ingredients", "New combinations", "Products beyond monograph parameters", "Unique dosage forms"],
+    timeline: "210+ days (7-12 months)",
+    requirements: "Full clinical evidence and safety data",
+    processingTime: "Most comprehensive review"
+  }
+];
+
+const applicationTypes = [
+  {
+    type: "Compendial",
+    description: "For products that follow NNHPD monographs exactly",
+    bestFor: "Vitamins, minerals, and standardized formulations",
+    classRestriction: "Class I only",
+  },
+  {
+    type: "Traditional",
+    description: "For products making traditional use claims",
+    bestFor: "Herbal medicines, Traditional Chinese Medicine, Ayurveda",
+    classRestriction: "Class II or III",
+  },
+  {
+    type: "Homeopathic",
+    description: "For homeopathic medicines (receives DIN-HM instead of NPN)",
+    bestFor: "Homeopathic remedies and preparations",
+    classRestriction: "Various classes",
+  },
+  {
+    type: "General",
+    description: "For all other natural health products",
+    bestFor: "Products not fitting other categories",
+    classRestriction: "Class II or III",
   }
 ];
 
@@ -220,7 +253,7 @@ const faqItems = [
   },
   {
     question: "How long does the NPN application process take?",
-    answer: "The timeline varies by product classification. Class I products (lower risk like vitamins and minerals) typically take 3-12 months, while Class II products (higher risk like herbal medicines) can take 3-12 months as well. Our preparation process takes 2-3 weeks before submission, so the total timeline is usually 3-12 months for NPN approval."
+    answer: "The timeline depends on the application class. Class I (single monograph) takes 60 days (2-4 months total), Class II (multiple monographs) takes 90 days (3-6 months total), and Class III (full assessment) takes 210+ days (7-12 months total). Our preparation process takes 2-3 weeks before submission. Note that these are Health Canada's target timelines - actual processing may vary."
   },
   {
     question: "What documents do I need to provide for the NPN application?",
@@ -228,7 +261,7 @@ const faqItems = [
   },
   {
     question: "How much does an NPN application cost?",
-    answer: "Health Canada fees range from $585-$3,500 CAD depending on product class and submission type. Our professional services for document preparation, submission assistance, and liaison support typically range from $3,000-$8,000, depending on complexity. We provide transparent pricing upfront."
+    answer: "Currently, Health Canada charges NO FEES for NPN applications - it's completely free to apply. However, fees are proposed to start December 1, 2025, with a 7-year phase-in period. Our professional services for document preparation, submission assistance, and liaison support typically range from $3,000-$8,000, depending on complexity. We provide transparent pricing upfront."
   },
   {
     question: "Can I sell my product while the NPN application is pending?",
@@ -245,11 +278,15 @@ const faqItems = [
   {
     question: "Can you help with NPN renewals and ongoing compliance?",
     answer: "Yes, we provide ongoing support including annual renewal assistance, label change notifications, adverse event reporting support, and regulatory update notifications. NPNs don't expire, but certain changes to products may require notifications or new applications."
+  },
+  {
+    question: "What's the difference between an NPN and DIN-HM?",
+    answer: "NPN (Natural Product Number) is for most natural health products like vitamins, minerals, and herbs. DIN-HM (Homeopathic Medicine Number) is specifically for homeopathic medicines. Both are 8-digit numbers issued by Health Canada, but DIN-HM follows different regulatory requirements specific to homeopathic preparations. We can help with both types of applications."
   }
 ];
 
 const metaTitle = "NPN Applications Canada | Natural Product Number Services | NutriCraft";
-const metaDescription = "Expert NPN application services for Canadian supplement market. Document preparation, Health Canada liaison, and regulatory compliance support. 60-90 day processing with professional guidance.";
+const metaDescription = "Expert NPN application services for Canadian supplement market. Document preparation, Health Canada liaison, and regulatory compliance support. Class I (60 days), Class II (90 days), Class III (210+ days) processing with professional guidance. Currently no Health Canada fees.";
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -335,33 +372,21 @@ const metaDescription = "Expert NPN application services for Canadian supplement
           <div class="bg-white rounded-2xl shadow-xl p-8">
             <h3 class="text-2xl font-bold text-dark-900 mb-6">What is an NPN?</h3>
             <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <span class="text-2xl">🇨🇦</span>
-                <div>
-                  <p class="font-semibold text-dark-900">Health Canada Authorization</p>
-                  <p class="text-sm text-dark-600">8-digit number proving regulatory approval</p>
-                </div>
+              <div>
+                <p class="font-semibold text-dark-900">Health Canada Authorization</p>
+                <p class="text-sm text-dark-600">8-digit number proving regulatory approval</p>
               </div>
-              <div class="flex items-start gap-3">
-                <span class="text-2xl">⚖️</span>
-                <div>
-                  <p class="font-semibold text-dark-900">Legal Requirement</p>
-                  <p class="text-sm text-dark-600">Mandatory for supplement sales in Canada</p>
-                </div>
+              <div>
+                <p class="font-semibold text-dark-900">Legal Requirement</p>
+                <p class="text-sm text-dark-600">Mandatory for supplement sales in Canada</p>
               </div>
-              <div class="flex items-start gap-3">
-                <span class="text-2xl">🛡️</span>
-                <div>
-                  <p class="font-semibold text-dark-900">Safety Verification</p>
-                  <p class="text-sm text-dark-600">Confirms safety, efficacy, and quality</p>
-                </div>
+              <div>
+                <p class="font-semibold text-dark-900">Safety Verification</p>
+                <p class="text-sm text-dark-600">Confirms safety, efficacy, and quality</p>
               </div>
-              <div class="flex items-start gap-3">
-                <span class="text-2xl">✅</span>
-                <div>
-                  <p class="font-semibold text-dark-900">Consumer Trust</p>
-                  <p class="text-sm text-dark-600">Builds credibility with retailers and customers</p>
-                </div>
+              <div>
+                <p class="font-semibold text-dark-900">Consumer Trust</p>
+                <p class="text-sm text-dark-600">Builds credibility with retailers and customers</p>
               </div>
             </div>
             <div class="mt-6 bg-mint-50 rounded-lg p-4">
@@ -425,12 +450,9 @@ const metaDescription = "Expert NPN application services for Canadian supplement
         {npnServices.map((service, index) => (
           <ScrollAnimation delay={index * 100}>
             <div class="bg-white rounded-xl shadow-lg p-8">
-              <div class="flex items-start gap-4 mb-4">
-                <span class="text-4xl">{service.icon}</span>
-                <div>
-                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
-                  <p class="text-dark-600">{service.description}</p>
-                </div>
+              <div class="mb-4">
+                <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
+                <p class="text-dark-600">{service.description}</p>
               </div>
               <ul class="space-y-2">
                 {service.details.map(detail => (
@@ -505,19 +527,27 @@ const metaDescription = "Expert NPN application services for Canadian supplement
 
       <ScrollAnimation>
         <div class="mt-12 bg-mint-600 text-white rounded-xl p-8 text-center">
-          <h3 class="text-2xl font-bold mb-4">Timeline Summary</h3>
-          <div class="grid md:grid-cols-3 gap-6">
-            <div>
-              <div class="text-3xl font-bold mb-2">2-3 weeks</div>
-              <p class="text-mint-100">Document preparation</p>
+          <h3 class="text-2xl font-bold mb-6">Timeline Summary by Application Class</h3>
+          <div class="grid md:grid-cols-4 gap-4">
+            <div class="bg-mint-700 rounded-lg p-4">
+              <p class="text-mint-100 text-sm mb-2">Preparation</p>
+              <div class="text-2xl font-bold">2-3 weeks</div>
+              <p class="text-mint-200 text-xs mt-1">All classes</p>
             </div>
-            <div>
-              <div class="text-3xl font-bold mb-2">3-12 months</div>
-              <p class="text-mint-100">Health Canada review</p>
+            <div class="bg-mint-500 rounded-lg p-4">
+              <p class="text-mint-100 text-sm mb-2">Class I</p>
+              <div class="text-2xl font-bold">60 days</div>
+              <p class="text-mint-100 text-xs mt-1">2-4 months total</p>
             </div>
-            <div>
-              <div class="text-3xl font-bold mb-2">3-12 months</div>
-              <p class="text-mint-100">Total time to approval</p>
+            <div class="bg-mint-500 rounded-lg p-4">
+              <p class="text-mint-100 text-sm mb-2">Class II</p>
+              <div class="text-2xl font-bold">90 days</div>
+              <p class="text-mint-100 text-xs mt-1">3-6 months total</p>
+            </div>
+            <div class="bg-mint-500 rounded-lg p-4">
+              <p class="text-mint-100 text-sm mb-2">Class III</p>
+              <div class="text-2xl font-bold">210+ days</div>
+              <p class="text-mint-100 text-xs mt-1">7-12 months total</p>
             </div>
           </div>
         </div>
@@ -531,42 +561,43 @@ const metaDescription = "Expert NPN application services for Canadian supplement
       <ScrollAnimation>
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-            NPN Product Classifications
+            NPN Application Classes
           </h2>
           <p class="text-lg text-dark-600 max-w-3xl mx-auto">
-            Health Canada classifies natural health products into different risk categories,
-            each with specific requirements and timelines.
+            Health Canada uses three application classes based on monograph compliance,
+            not risk level. Each class has different processing times and requirements.
           </p>
         </div>
       </ScrollAnimation>
 
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="grid md:grid-cols-3 gap-6">
         {npnClassifications.map((classification, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="bg-white rounded-xl shadow-lg p-8">
-              <h3 class="text-2xl font-bold text-dark-900 mb-3">{classification.class}</h3>
-              <p class="text-dark-600 mb-4">{classification.description}</p>
+            <div class="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col">
+              <h3 class="text-xl font-bold text-dark-900 mb-2">{classification.class}</h3>
+              <p class="text-dark-600 text-sm mb-4">{classification.description}</p>
 
-              <div class="space-y-4">
+              <div class="space-y-4 flex-grow">
                 <div>
-                  <h4 class="font-semibold text-dark-700 mb-2">Typical Products:</h4>
-                  <div class="flex flex-wrap gap-2">
+                  <h4 class="font-semibold text-dark-700 text-sm mb-2">Examples:</h4>
+                  <div class="flex flex-wrap gap-1">
                     {classification.examples.map(example => (
-                      <span class="bg-mint-50 text-mint-700 px-3 py-1 rounded-lg text-sm">
+                      <span class="bg-mint-50 text-mint-700 px-2 py-1 rounded text-xs">
                         {example}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-4">
-                  <div class="bg-gray-50 rounded-lg p-3">
-                    <p class="text-sm font-semibold text-dark-700">Processing Time</p>
-                    <p class="text-lg font-bold text-mint-600">{classification.timeline}</p>
+                <div class="space-y-3">
+                  <div class="bg-mint-50 rounded-lg p-3">
+                    <p class="text-xs font-semibold text-dark-700 mb-1">Processing Time</p>
+                    <p class="text-sm font-bold text-mint-600">{classification.timeline}</p>
+                    <p class="text-xs text-mint-700 mt-1">{classification.processingTime}</p>
                   </div>
                   <div class="bg-gray-50 rounded-lg p-3">
-                    <p class="text-sm font-semibold text-dark-700">Documentation</p>
-                    <p class="text-sm text-dark-600">{classification.requirements}</p>
+                    <p class="text-xs font-semibold text-dark-700 mb-1">Requirements</p>
+                    <p class="text-xs text-dark-600">{classification.requirements}</p>
                   </div>
                 </div>
               </div>
@@ -574,6 +605,149 @@ const metaDescription = "Expert NPN application services for Canadian supplement
           </ScrollAnimation>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Application Types -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            NPN Application Types
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Health Canada recognizes four application types for natural health products,
+            each suited for different product categories and regulatory pathways.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {applicationTypes.map((appType, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-md p-6 h-full flex flex-col">
+              <h3 class="text-lg font-bold text-dark-900 mb-3">{appType.type}</h3>
+              <p class="text-dark-600 text-sm mb-3">{appType.description}</p>
+              <div class="space-y-2 flex-grow">
+                <div class="bg-white rounded-lg p-2">
+                  <p class="text-xs font-semibold text-dark-700">Best For:</p>
+                  <p class="text-xs text-dark-600">{appType.bestFor}</p>
+                </div>
+                <div class="bg-mint-100 rounded-lg p-2">
+                  <p class="text-xs font-semibold text-mint-800">Class Restriction:</p>
+                  <p class="text-xs text-mint-700">{appType.classRestriction}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- NNHPD Monographs -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Understanding NNHPD Monographs
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Health Canada's Compendium of Monographs provides pre-cleared information
+            that can significantly speed up your NPN application process.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <ScrollAnimation>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-4">What Are Monographs?</h3>
+            <p class="text-dark-600 mb-4">
+              NNHPD monographs are pre-cleared documents containing approved information about
+              natural health product ingredients and formulations. They include:
+            </p>
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Acceptable doses and dosage forms</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Pre-approved health claims</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Required risk statements</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Quality specifications</span>
+              </li>
+            </ul>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-4">Types of Monographs</h3>
+            <div class="space-y-4">
+              <div class="border-l-4 border-mint-600 pl-4">
+                <h4 class="font-semibold text-dark-900">Single Ingredient Monographs</h4>
+                <p class="text-sm text-dark-600">For individual vitamins, minerals, or herbs</p>
+              </div>
+              <div class="border-l-4 border-mint-600 pl-4">
+                <h4 class="font-semibold text-dark-900">Product Monographs</h4>
+                <p class="text-sm text-dark-600">For multi-ingredient formulations like multi-vitamins</p>
+              </div>
+              <div class="border-l-4 border-mint-600 pl-4">
+                <h4 class="font-semibold text-dark-900">Category Monographs</h4>
+                <p class="text-sm text-dark-600">For specific product categories with standard formulations</p>
+              </div>
+            </div>
+            <div class="mt-6 bg-mint-50 rounded-lg p-4">
+              <p class="text-sm text-mint-800 font-semibold mb-2">Key Benefit:</p>
+              <p class="text-sm text-mint-700">
+                Products that comply with monographs qualify for Class I or II applications,
+                resulting in faster approval times (60-90 days vs 210+ days).
+              </p>
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-8">
+          <h3 class="text-xl font-bold text-dark-900 mb-4 text-center">How We Use Monographs to Speed Your Application</h3>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <div class="bg-mint-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-3">1</div>
+              <h4 class="font-semibold text-dark-900 mb-2">Product Analysis</h4>
+              <p class="text-sm text-dark-600">We review your formulation against available monographs</p>
+            </div>
+            <div class="text-center">
+              <div class="bg-mint-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-3">2</div>
+              <h4 class="font-semibold text-dark-900 mb-2">Monograph Matching</h4>
+              <p class="text-sm text-dark-600">We identify which monographs apply to your product</p>
+            </div>
+            <div class="text-center">
+              <div class="bg-mint-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-3">3</div>
+              <h4 class="font-semibold text-dark-900 mb-2">Optimized Submission</h4>
+              <p class="text-sm text-dark-600">We prepare your application for the fastest review path</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
     </div>
   </section>
 
