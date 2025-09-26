@@ -86,3 +86,4 @@ Contact form uses server-side processing with:
 - Tests directory exists but is currently empty
 - Public images should be placed in public/images/ with WebP versions for performance
 - Dynamic formulation pages are pre-configured in sitemap via astro.config.mjs
+- The brand of this project is "Nutricraft Labs"

@@ -1,0 +1,417 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const matchingProcess = [
+  {
+    phase: "Discovery & Requirements",
+    timeline: "Day 1-2",
+    tasks: [
+      "Initial consultation to understand your needs",
+      "Production volume and capacity requirements",
+      "Specific certifications needed",
+      "Budget parameters and timeline"
+    ],
+    deliverable: "Detailed requirements profile"
+  },
+  {
+    phase: "Partner Matching",
+    timeline: "Day 3-5",
+    tasks: [
+      "Database search of pre-vetted partners",
+      "Capability and capacity matching",
+      "Geographic and logistics considerations",
+      "Pricing structure comparison"
+    ],
+    deliverable: "Shortlist of 3-5 matched partners"
+  },
+  {
+    phase: "Vetting & Introduction",
+    timeline: "Week 2",
+    tasks: [
+      "Facility audit reports review",
+      "Quality system documentation check",
+      "Reference checks and case studies",
+      "Facilitated introductions"
+    ],
+    deliverable: "Comprehensive partner profiles"
+  },
+  {
+    phase: "Partnership Setup",
+    timeline: "Week 3-4",
+    tasks: [
+      "NDA and initial agreements",
+      "Pricing negotiations support",
+      "Production planning assistance",
+      "Quality agreement framework"
+    ],
+    deliverable: "Signed partnership agreement"
+  }
+];
+
+const benefits = [
+  {
+    title: "Pre-Vetted Network",
+    description: "Access our curated network of GMP-certified manufacturers who have passed rigorous quality audits",
+    icon: "🏆"
+  },
+  {
+    title: "Time Savings",
+    description: "Skip months of research and vetting. Get matched with qualified partners in days, not months",
+    icon: "⏱️"
+  },
+  {
+    title: "Risk Reduction",
+    description: "Minimize regulatory and quality risks with partners who maintain current certifications",
+    icon: "🛡️"
+  },
+  {
+    title: "Cost Optimization",
+    description: "Compare multiple partners to find the best value without compromising on quality",
+    icon: "💰"
+  },
+  {
+    title: "Expert Guidance",
+    description: "Leverage our industry expertise to navigate complex manufacturing decisions",
+    icon: "🎯"
+  },
+  {
+    title: "Ongoing Support",
+    description: "Continuous relationship management and issue resolution throughout your partnership",
+    icon: "🤝"
+  }
+];
+
+const partnerCapabilities = [
+  "Tablets & Capsules",
+  "Powders & Drink Mixes",
+  "Gummies & Chewables",
+  "Liquids & Tinctures",
+  "Topicals & Creams",
+  "Softgels"
+];
+
+const certifications = [
+  "FDA Registered",
+  "cGMP Certified",
+  "NSF Certified",
+  "USP Verified",
+  "Health Canada Licensed",
+  "ISO 9001:2015"
+];
+
+const faqData = [
+  {
+    question: "What makes a manufacturer GMP-certified?",
+    answer: "GMP (Good Manufacturing Practice) certification ensures facilities follow strict quality control procedures, maintain clean environments, properly train staff, and keep detailed records. Certification requires regular audits by accredited third-party organizations."
+  },
+  {
+    question: "How do you vet manufacturing partners?",
+    answer: "We conduct comprehensive evaluations including facility audits, certification verification, financial stability checks, production capacity assessments, quality system reviews, and customer reference checks. Only partners meeting our strict criteria join our network."
+  },
+  {
+    question: "What information do I need to provide for matching?",
+    answer: "We'll need details about your product type, production volumes, quality requirements, budget range, timeline, target markets, and any specific certifications needed. The more detailed your requirements, the better we can match you."
+  },
+  {
+    question: "Can I work with multiple manufacturers?",
+    answer: "Absolutely! Many brands work with different manufacturers for different product lines. We can help you build a diversified manufacturing strategy that optimizes for each product's unique requirements."
+  },
+  {
+    question: "What if I need to change manufacturers later?",
+    answer: "We provide ongoing support for technology transfer between facilities. This includes documentation transfer, formulation adjustments, validation protocols, and regulatory notifications to ensure a smooth transition."
+  },
+  {
+    question: "Do you work with international manufacturers?",
+    answer: "Yes, our network includes both domestic and international GMP-certified facilities. We help navigate the additional considerations of international manufacturing including logistics, regulations, and communication."
+  },
+  {
+    question: "What are typical minimum order quantities (MOQs)?",
+    answer: "MOQs vary by manufacturer and product type. Our network includes partners with MOQs ranging from 1,000 units for startups to 100,000+ units for established brands. We'll match you based on your volume needs."
+  },
+  {
+    question: "How long does the matching process take?",
+    answer: "Initial matching takes 3-5 business days. The complete process from initial consultation to signed partnership typically takes 2-4 weeks, depending on your decision-making timeline and negotiation complexity."
+  }
+];
+---
+
+<BaseLayout
+  title="GMP Partner Matching | Connect with Certified Manufacturers | Nutricraft"
+  description="Find pre-vetted GMP-certified manufacturing partners for your supplement brand. Fast matching, transparent pricing, and expert guidance. Start your partnership today."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative py-20 lg:py-32 bg-gradient-to-br from-mint-50 via-white to-mint-50 overflow-hidden">
+    <div class="absolute inset-0 bg-grid-mint/5"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Pre-Vetted GMP Network
+          </div>
+
+          <h1 class="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            Connect with
+            <span class="text-mint-600">Pre-Vetted GMP</span>
+            Manufacturing Partners
+          </h1>
+
+          <p class="text-xl lg:text-2xl text-gray-600 mb-8 leading-relaxed">
+            Skip months of research and vetting. Get matched with certified manufacturers
+            who meet your exact requirements in just days.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-mint-600 to-mint-700 rounded-xl hover:from-mint-700 hover:to-mint-800 transform hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl">
+              Get Matched Today
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-700 bg-white border-2 border-mint-200 rounded-xl hover:bg-mint-50 transition-colors">
+              See How It Works
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-mint-600"><CountUp end={50} />+</div>
+              <div class="text-sm text-gray-600 mt-1">Vetted Partners</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-mint-600"><CountUp end={95} />%</div>
+              <div class="text-sm text-gray-600 mt-1">Match Success Rate</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-mint-600"><CountUp end={5} /> Days</div>
+              <div class="text-sm text-gray-600 mt-1">Average Match Time</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-mint-600"><CountUp end={200} />+</div>
+              <div class="text-sm text-gray-600 mt-1">Brands Connected</div>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Partner Capabilities -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            Manufacturing Capabilities in Our Network
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Our partners cover the full spectrum of supplement manufacturing
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {partnerCapabilities.map((capability) => (
+            <div class="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition-shadow">
+              <div class="font-medium text-gray-900">{capability}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3">
+          {certifications.map((cert) => (
+            <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-medium">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {cert}
+            </div>
+          ))}
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Matching Process -->
+  <section id="process" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Your Path to the Perfect Manufacturing Partner
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Our proven 4-step process ensures you find the right partner quickly and confidently
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {matchingProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-white to-mint-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-mint-100">
+              <div class="flex items-start gap-4 mb-6">
+                <div class="flex-shrink-0 w-12 h-12 bg-mint-600 text-white rounded-xl flex items-center justify-center font-bold text-lg">
+                  {index + 1}
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-2xl font-bold text-gray-900 mb-2">{step.phase}</h3>
+                  <div class="inline-flex items-center gap-2 text-mint-600 font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {step.timeline}
+                  </div>
+                </div>
+              </div>
+
+              <ul class="space-y-3 mb-6">
+                {step.tasks.map((task) => (
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-mint-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-gray-600">{task}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="pt-4 border-t border-mint-200">
+                <div class="text-sm font-medium text-gray-500 mb-1">Deliverable:</div>
+                <div class="font-semibold text-gray-900">{step.deliverable}</div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Why Partner Through Nutricraft
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Save time, reduce risk, and find the perfect manufacturing partner with confidence
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {benefits.map((benefit, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div class="text-4xl mb-4">{benefit.icon}</div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{benefit.title}</h3>
+              <p class="text-gray-600 leading-relaxed">{benefit.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Network Stats -->
+  <section class="py-20 bg-mint-600">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center text-white">
+          <h2 class="text-4xl lg:text-5xl font-bold mb-4">
+            Our Growing Partner Network
+          </h2>
+          <p class="text-xl text-mint-100 mb-12 max-w-3xl mx-auto">
+            Connecting brands with trusted manufacturers across North America
+          </p>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div>
+              <div class="text-5xl font-bold mb-2"><CountUp end={12} /></div>
+              <div class="text-mint-100">FDA Registered Facilities</div>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2"><CountUp end={8} /></div>
+              <div class="text-mint-100">NSF Certified Partners</div>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2"><CountUp end={15} /></div>
+              <div class="text-mint-100">cGMP Certified</div>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2"><CountUp end={6} /></div>
+              <div class="text-mint-100">Health Canada Licensed</div>
+            </div>
+          </div>
+
+          <div class="mt-12">
+            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white rounded-xl hover:bg-mint-50 transform hover:scale-105 transition-all duration-200 shadow-xl">
+              Join Our Network
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <FAQ items={faqData} />
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-br from-mint-600 to-mint-700">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center text-white max-w-4xl mx-auto">
+          <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+            Ready to Find Your Perfect Manufacturing Partner?
+          </h2>
+          <p class="text-xl text-mint-100 mb-8">
+            Get matched with pre-vetted GMP-certified manufacturers in just 5 days.
+            No obligations, transparent process, expert support.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white rounded-xl hover:bg-mint-50 transform hover:scale-105 transition-all duration-200 shadow-xl">
+              Start Partner Matching
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+            <a href="mailto:hello@nutricraftlabs.com" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-mint-300 rounded-xl hover:bg-mint-600 transition-colors">
+              Contact Our Team
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+          </div>
+
+          <div class="mt-12 pt-8 border-t border-mint-500">
+            <p class="text-mint-100">
+              Questions? Call us at <a href="tel:1-800-NUTRICRAFT" class="text-white font-semibold hover:underline">1-800-NUTRICRAFT</a>
+            </p>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

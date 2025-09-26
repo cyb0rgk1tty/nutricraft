@@ -1,0 +1,458 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const testingCategories = [
+  {
+    category: "Identity & Purity Testing",
+    tests: [
+      "Raw material identification",
+      "Active ingredient verification",
+      "Botanical authentication",
+      "Adulterant screening"
+    ],
+    icon: "🔍",
+    importance: "Ensures you're getting exactly what you ordered"
+  },
+  {
+    category: "Microbial Testing",
+    tests: [
+      "Total plate count",
+      "Yeast and mold",
+      "E. coli and Salmonella",
+      "Staphylococcus aureus"
+    ],
+    icon: "🦠",
+    importance: "Protects consumers from harmful pathogens"
+  },
+  {
+    category: "Heavy Metals Testing",
+    tests: [
+      "Lead (Pb)",
+      "Arsenic (As)",
+      "Cadmium (Cd)",
+      "Mercury (Hg)"
+    ],
+    icon: "⚗️",
+    importance: "Meets regulatory limits for toxic elements"
+  },
+  {
+    category: "Potency & Label Claims",
+    tests: [
+      "Active ingredient assay",
+      "Vitamin/mineral content",
+      "Dissolution testing",
+      "Homogeneity verification"
+    ],
+    icon: "💊",
+    importance: "Validates your label claims are accurate"
+  },
+  {
+    category: "Stability Testing",
+    tests: [
+      "Accelerated stability",
+      "Real-time stability",
+      "Photo-stability",
+      "Freeze-thaw cycles"
+    ],
+    icon: "📊",
+    importance: "Determines shelf life and storage conditions"
+  },
+  {
+    category: "Physical Testing",
+    tests: [
+      "Tablet hardness",
+      "Disintegration time",
+      "Moisture content",
+      "Particle size distribution"
+    ],
+    icon: "⚖️",
+    importance: "Ensures product consistency and performance"
+  }
+];
+
+const testingProcess = [
+  {
+    step: 1,
+    title: "Sample Collection",
+    description: "Proper sampling from production batches following cGMP protocols",
+    timeline: "Day 1"
+  },
+  {
+    step: 2,
+    title: "Lab Coordination",
+    description: "Samples sent to ISO 17025 certified third-party laboratories",
+    timeline: "Day 2"
+  },
+  {
+    step: 3,
+    title: "Testing Execution",
+    description: "Comprehensive testing according to USP, FCC, or custom specifications",
+    timeline: "Days 3-7"
+  },
+  {
+    step: 4,
+    title: "Results Review",
+    description: "Technical review of all test results against specifications",
+    timeline: "Day 8"
+  },
+  {
+    step: 5,
+    title: "COA Generation",
+    description: "Certificate of Analysis prepared with full traceability",
+    timeline: "Day 9"
+  },
+  {
+    step: 6,
+    title: "Quality Release",
+    description: "Final quality approval and product release for distribution",
+    timeline: "Day 10"
+  }
+];
+
+const complianceStandards = [
+  {
+    region: "United States",
+    standards: ["FDA cGMP", "USP Standards", "NSF Certified", "FDA NDI Requirements"],
+    testing: "Heavy metals, microbials, identity, potency"
+  },
+  {
+    region: "Canada",
+    standards: ["Health Canada GMP", "NPN Requirements", "NHPD Standards", "Site License"],
+    testing: "Bilingual labeling, contaminants, stability"
+  },
+  {
+    region: "European Union",
+    standards: ["EU GMP", "EFSA Guidelines", "Novel Foods", "ISO 22000"],
+    testing: "PAH, mycotoxins, pesticides, allergens"
+  },
+  {
+    region: "Australia",
+    standards: ["TGA Listed", "AUSTL Requirements", "PIC/S GMP", "FSANZ Standards"],
+    testing: "Therapeutic claims validation, bioavailability"
+  }
+];
+
+const faqs = [
+  {
+    question: "What testing is required for my supplement?",
+    answer: "Testing requirements depend on your product type, target market, and regulatory requirements. At minimum, most supplements require identity, potency, microbial, and heavy metal testing. We'll create a custom testing protocol based on your specific needs."
+  },
+  {
+    question: "How long does testing typically take?",
+    answer: "Standard testing packages take 7-10 business days. Expedited testing (3-5 days) is available for an additional fee. Stability testing requires longer timelines, typically 3-24 months depending on the study design."
+  },
+  {
+    question: "Which laboratories do you work with?",
+    answer: "We partner with ISO 17025 accredited laboratories including Eurofins, Micro Quality Labs, and SORA Labs. All our partner labs are FDA-registered and follow USP testing methodologies."
+  },
+  {
+    question: "Can you help with stability testing?",
+    answer: "Yes, we coordinate both accelerated (3-6 months) and real-time (24+ months) stability studies. This includes ICH-compliant protocols, proper storage conditions, and interval testing to establish shelf life."
+  },
+  {
+    question: "What is a Certificate of Analysis (COA)?",
+    answer: "A COA is a document that confirms your product meets its specifications. It includes test results for identity, purity, strength, and composition. COAs are required for regulatory compliance and customer confidence."
+  },
+  {
+    question: "Do you test for allergens?",
+    answer: "Yes, we coordinate allergen testing for the Big 9 allergens (milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, sesame) plus any additional allergens relevant to your product."
+  },
+  {
+    question: "How do you ensure testing accuracy?",
+    answer: "All testing is performed by third-party ISO 17025 accredited laboratories using validated methods. We also implement skip-lot testing programs and retain samples for future reference."
+  }
+];
+
+const certifications = [
+  { name: "ISO 17025", description: "Lab accreditation standard" },
+  { name: "cGMP Compliant", description: "Current Good Manufacturing Practices" },
+  { name: "FDA Registered", description: "All partner labs FDA-registered" },
+  { name: "Health Canada", description: "Licensed for Canadian market" },
+  { name: "USP Verified", description: "United States Pharmacopeia standards" },
+  { name: "NSF Certified", description: "Third-party certification available" }
+];
+---
+
+<BaseLayout
+  title="Quality Testing Services | Third-Party Lab Testing | Nutricraft Labs"
+  description="Comprehensive supplement testing services including microbial, heavy metals, potency, and stability testing. ISO 17025 accredited lab partners. COA generation and regulatory compliance."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-mint-50 via-white to-mint-50 pt-24 pb-20 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-mint-100/20 via-transparent to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative">
+      <ScrollAnimation animation="fadeIn">
+        <div class="max-w-4xl mx-auto text-center">
+          <span class="inline-block px-4 py-2 bg-mint-100 text-mint-700 rounded-full text-sm font-medium mb-6">
+            Third-Party Lab Testing
+          </span>
+
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Quality Testing &
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint-600 to-mint-700">
+              Lab Services
+            </span>
+          </h1>
+
+          <p class="text-xl text-dark-600 mb-8 max-w-3xl mx-auto">
+            Ensure product safety and compliance with comprehensive testing through our network of
+            ISO 17025 accredited laboratories. From raw materials to finished products.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="#testing-categories"
+              class="px-8 py-4 bg-gradient-to-r from-mint-600 to-mint-700 text-white rounded-lg font-medium hover:from-mint-700 hover:to-mint-800 transition-all transform hover:scale-105 inline-flex items-center justify-center"
+            >
+              View Testing Services
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+            <a
+              href="/contact"
+              class="px-8 py-4 bg-white text-mint-700 rounded-lg font-medium border-2 border-mint-200 hover:bg-mint-50 transition-all inline-flex items-center justify-center"
+            >
+              Get Testing Quote
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <!-- Key Metrics -->
+      <ScrollAnimation animation="slideUp" delay={200}>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-4xl mx-auto">
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-mint-600">
+              <CountUp end={48} duration={2000} />hr
+            </div>
+            <div class="text-dark-600 mt-2">Rush Testing Available</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-mint-600">
+              <CountUp end={100} duration={2000} />%
+            </div>
+            <div class="text-dark-600 mt-2">FDA Compliance</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-mint-600">
+              <CountUp end={15} duration={2000} />+
+            </div>
+            <div class="text-dark-600 mt-2">Partner Labs</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-bold text-mint-600">
+              ISO
+            </div>
+            <div class="text-dark-600 mt-2">17025 Certified</div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Testing Categories -->
+  <section id="testing-categories" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <ScrollAnimation animation="fadeIn">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Comprehensive Testing
+            <span class="text-mint-600"> Categories</span>
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Full-spectrum testing services to ensure your products meet the highest quality standards
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {testingCategories.map((category, index) => (
+          <ScrollAnimation animation="slideUp" delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl p-8 border border-mint-100 hover:shadow-xl transition-all">
+              <div class="text-4xl mb-4">{category.icon}</div>
+              <h3 class="text-2xl font-bold text-dark-900 mb-4">{category.category}</h3>
+              <ul class="space-y-2 mb-6">
+                {category.tests.map(test => (
+                  <li class="flex items-start">
+                    <svg class="w-5 h-5 text-mint-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span class="text-dark-600">{test}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="pt-4 border-t border-mint-100">
+                <p class="text-sm text-dark-500 italic">{category.importance}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testing Process -->
+  <section class="py-20 bg-gradient-to-br from-mint-50 via-white to-mint-50">
+    <div class="container mx-auto px-4">
+      <ScrollAnimation animation="fadeIn">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Our Testing
+            <span class="text-mint-600"> Process</span>
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Streamlined testing workflow with full traceability and documentation
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="max-w-5xl mx-auto">
+        <div class="relative">
+          {/* Vertical line connector */}
+          <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-mint-200 hidden md:block"></div>
+
+          {testingProcess.map((step, index) => (
+            <ScrollAnimation animation="slideRight" delay={index * 100}>
+              <div class="relative flex items-start mb-8 last:mb-0">
+                <div class="flex-shrink-0 w-16 h-16 bg-mint-600 text-white rounded-full flex items-center justify-center font-bold text-xl z-10 relative">
+                  {step.step}
+                </div>
+                <div class="ml-8 flex-1 bg-white rounded-lg p-6 shadow-lg">
+                  <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-xl font-bold text-dark-900">{step.title}</h3>
+                    <span class="text-sm text-mint-600 font-medium bg-mint-50 px-3 py-1 rounded-full">
+                      {step.timeline}
+                    </span>
+                  </div>
+                  <p class="text-dark-600">{step.description}</p>
+                </div>
+              </div>
+            </ScrollAnimation>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compliance Standards -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <ScrollAnimation animation="fadeIn">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Global Compliance
+            <span class="text-mint-600"> Standards</span>
+          </h2>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Testing protocols tailored to meet regulatory requirements worldwide
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {complianceStandards.map((region, index) => (
+          <ScrollAnimation animation="slideUp" delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl p-8 border border-mint-100">
+              <h3 class="text-2xl font-bold text-dark-900 mb-4 flex items-center">
+                <span class="w-10 h-10 bg-mint-600 text-white rounded-lg flex items-center justify-center mr-3 text-sm">
+                  {region.region.slice(0, 2).toUpperCase()}
+                </span>
+                {region.region}
+              </h3>
+
+              <div class="mb-6">
+                <h4 class="text-sm font-semibold text-dark-700 uppercase tracking-wide mb-3">Standards</h4>
+                <div class="flex flex-wrap gap-2">
+                  {region.standards.map(standard => (
+                    <span class="px-3 py-1 bg-white text-dark-600 rounded-full text-sm border border-mint-200">
+                      {standard}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-sm font-semibold text-dark-700 uppercase tracking-wide mb-2">Key Testing</h4>
+                <p class="text-dark-600">{region.testing}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section class="py-20 bg-gradient-to-br from-mint-50 via-white to-mint-50">
+    <div class="container mx-auto px-4">
+      <ScrollAnimation animation="fadeIn">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Lab Certifications &
+            <span class="text-mint-600"> Accreditations</span>
+          </h2>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-5xl mx-auto">
+        {certifications.map((cert, index) => (
+          <ScrollAnimation animation="zoomIn" delay={index * 50}>
+            <div class="text-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-all">
+              <div class="text-3xl mb-3">🏆</div>
+              <h3 class="font-bold text-dark-900 mb-1">{cert.name}</h3>
+              <p class="text-xs text-dark-600">{cert.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-mint-600 to-mint-700">
+    <div class="container mx-auto px-4 text-center">
+      <ScrollAnimation animation="fadeIn">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Ready to Ensure Product Quality?
+        </h2>
+        <p class="text-xl text-mint-50 mb-8 max-w-2xl mx-auto">
+          Get a custom testing protocol designed for your specific products and regulatory requirements
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/contact"
+            class="px-8 py-4 bg-white text-mint-700 rounded-lg font-medium hover:bg-mint-50 transition-all transform hover:scale-105 inline-flex items-center justify-center"
+          >
+            Get Testing Quote
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+          <a
+            href="tel:519-900-0180"
+            class="px-8 py-4 bg-transparent text-white rounded-lg font-medium border-2 border-white hover:bg-white hover:text-mint-700 transition-all inline-flex items-center justify-center"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+            </svg>
+            Call 519-900-0180
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <FAQ faqs={faqs} />
+
+  <Footer />
+</BaseLayout>
