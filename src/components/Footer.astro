@@ -3,32 +3,41 @@ const currentYear = new Date().getFullYear();
 
 const footerLinks = [
   {
-    title: "Manufacturing",
+    title: "Services",
     links: [
+      { label: "All Services", href: "/services" },
       { label: "Low MOQ Manufacturing", href: "/services/low-moq-manufacturing" },
       { label: "Private & White Label", href: "/services/private-white-label-manufacturing" },
       { label: "Custom Formulation", href: "/services/custom-formulation" },
     ],
   },
   {
-    title: "Go-to-Market",
+    title: "Compliance & Support",
     links: [
+      { label: "GMP Partner Matching", href: "/services/gmp-partner-matching" },
+      { label: "Quality Testing", href: "/services/quality-testing" },
+      { label: "Compliance Labels", href: "/services/compliance-labels" },
       { label: "NPN Applications", href: "/services/npn-applications" },
+    ],
+  },
+  {
+    title: "Products",
+    links: [
+      { label: "Formulation Types", href: "/formulations" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About Us", href: "#about" },
+      { label: "About Us", href: "/#about" },
+      { label: "Schedule Call", href: "/schedule-call" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Resources",
     links: [
-      // { label: 'Interactive Tools', href: '/#interactive-tools' }, // Coming soon
       { label: "FAQs", href: "/#faq" },
-      { label: "Contact Us", href: "/contact" },
     ],
   },
   {
