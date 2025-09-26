@@ -8,28 +8,26 @@ import CountUp from "../../components/CountUp.astro";
 
 const labelingRequirements = [
   {
-    requirement: "FDA Nutrition Facts Panel",
-    description: "Complete nutrition information formatted per FDA guidelines",
+    requirement: "FDA Supplement Facts Panel",
+    description: "Complete supplement information formatted per FDA DSHEA guidelines",
     details: [
       "Serving size and servings per container",
-      "Calories and calories from fat",
-      "Macronutrients and micronutrients",
-      "Percent Daily Values (%DV)"
+      "Dietary ingredients with quantities and %DV",
+      "Proprietary blend information (if applicable)",
+      "Other ingredients listed separately"
     ],
-    timeline: "2-3 days",
-    icon: "📊"
+    timeline: "2-3 days"
   },
   {
-    requirement: "Health Canada Nutrition Facts Table",
-    description: "Bilingual nutrition table complying with Canadian regulations",
+    requirement: "Health Canada Product Facts Table",
+    description: "Bilingual Product Facts Table (PFT) complying with 2025 Plain Language Labelling regulations",
     details: [
-      "English and French language requirements",
-      "Metric measurements and Canadian RDI values",
-      "Core and supplemented nutrition facts table format",
-      "Allergen declarations in both languages"
+      "English/French bilingual table or separate tables",
+      "Medicinal and non-medicinal ingredients",
+      "Uses, warnings, and directions for use",
+      "Meets June 2025 PLL formatting standards"
     ],
-    timeline: "2-3 days",
-    icon: "🇨🇦"
+    timeline: "3-4 days"
   },
   {
     requirement: "Ingredient Declarations",
@@ -40,8 +38,7 @@ const labelingRequirements = [
       "Sub-ingredient declarations for compounds",
       "Allergen highlighting and warnings"
     ],
-    timeline: "1-2 days",
-    icon: "🧾"
+    timeline: "1-2 days"
   },
   {
     requirement: "Health Claims & Warnings",
@@ -52,8 +49,7 @@ const labelingRequirements = [
       "Required warning statements and disclaimers",
       "Age restrictions and usage guidelines"
     ],
-    timeline: "2-4 days",
-    icon: "⚠️"
+    timeline: "2-4 days"
   }
 ];
 
@@ -66,8 +62,7 @@ const labelingServices = [
       "Eye-catching design that meets regulations",
       "Multiple format options (bottles, pouches, boxes)",
       "Print-ready files with proper specifications"
-    ],
-    icon: "🎨"
+    ]
   },
   {
     service: "Nutrition Analysis",
@@ -77,8 +72,7 @@ const labelingServices = [
       "Serving size optimization",
       "Nutrient content claims validation",
       "Shelf-life and stability considerations"
-    ],
-    icon: "🔬"
+    ]
   },
   {
     service: "Regulatory Review",
@@ -88,8 +82,7 @@ const labelingServices = [
       "Claim substantiation review",
       "Warning statement compliance",
       "Market-specific requirement analysis"
-    ],
-    icon: "✅"
+    ]
   },
   {
     service: "Bilingual Translation",
@@ -99,8 +92,7 @@ const labelingServices = [
       "Terminology consistency across products",
       "Cultural adaptation for French markets",
       "Quebec-specific regulatory compliance"
-    ],
-    icon: ""
+    ]
   }
 ];
 
@@ -109,25 +101,25 @@ const regulatoryFrameworks = [
     jurisdiction: "United States - FDA",
     scope: "Food and Drug Administration regulations",
     keyRequirements: [
-      "Nutrition Labeling and Education Act (NLEA)",
       "Dietary Supplement Health and Education Act (DSHEA)",
-      "FDA Food Code compliance",
-      "Structure/function claim regulations"
+      "21 CFR 101.36 - Supplement Facts labeling",
+      "Structure/function claim regulations",
+      "New Dietary Ingredient (NDI) notifications"
     ],
-    labelElements: ["Nutrition Facts panel", "Supplement Facts panel", "Ingredient list", "Net weight", "Manufacturer info"],
+    labelElements: ["Supplement Facts panel", "Ingredient list", "Net weight", "Manufacturer/distributor info", "Statement of identity"],
     timeline: "5-7 business days"
   },
   {
     jurisdiction: "Canada - Health Canada",
     scope: "Natural and Non-prescription Health Products Directorate",
     keyRequirements: [
-      "Natural Health Products Regulations",
-      "Food and Drug Regulations",
+      "Natural Health Products Regulations (SOR/2003-196)",
+      "2025 Plain Language Labelling (PLL) Regulations",
       "Consumer Packaging and Labelling Act",
-      "Official Languages Act compliance"
+      "Official Languages Act - bilingual requirements"
     ],
-    labelElements: ["Nutrition Facts table", "Medicinal ingredients", "Non-medicinal ingredients", "Directions for use", "NPN number"],
-    timeline: "7-10 business days"
+    labelElements: ["Product Facts Table (PFT)", "NPN/DIN-HM number", "Medicinal ingredients", "Non-medicinal ingredients", "Directions/warnings"],
+    timeline: "7-10 business days (PLL compliance deadline: June 2028)"
   }
 ];
 
@@ -178,6 +170,35 @@ const labelingProcess = [
   }
 ];
 
+const regulatoryUpdates2025 = [
+  {
+    jurisdiction: "Canada",
+    update: "Plain Language Labelling (PLL) Regulations",
+    effectiveDate: "June 21, 2025",
+    complianceDeadline: "June 22, 2028",
+    keyChanges: [
+      "Standardized Product Facts Table (PFT) format required",
+      "Sans-serif fonts and high-contrast design mandatory",
+      "Enhanced allergen disclosure requirements",
+      "Simplified dosage and warning statements"
+    ],
+    impact: "All Natural Health Products must transition to new labeling format"
+  },
+  {
+    jurisdiction: "United States",
+    update: "Continued DSHEA Compliance",
+    effectiveDate: "Ongoing",
+    complianceDeadline: "Immediate",
+    keyChanges: [
+      "Supplement Facts panel format (established 2016)",
+      "New Dietary Ingredient (NDI) notification requirements",
+      "Enhanced structure/function claim substantiation",
+      "Minimum font size requirements (6-8pt)"
+    ],
+    impact: "Stricter enforcement of existing supplement labeling standards"
+  }
+];
+
 const labelingChallenges = [
   {
     challenge: "Space Limitations",
@@ -203,8 +224,16 @@ const labelingChallenges = [
 
 const faqItems = [
   {
+    question: "What are the 2025 Plain Language Labelling (PLL) changes for Canada?",
+    answer: "Health Canada's new Plain Language Labelling regulations came into force June 21, 2025, requiring a standardized Product Facts Table (PFT) with specific formatting: sans-serif fonts, high-contrast design, and clear bilingual presentation. All Natural Health Products must comply by June 22, 2028. The PFT must include medicinal ingredients, uses, warnings, directions, non-medicinal ingredients, and contact information in an easy-to-read format."
+  },
+  {
+    question: "What's the difference between Supplement Facts, Nutrition Facts, and Product Facts?",
+    answer: "These are distinct labeling formats for different product types: 'Supplement Facts' panels are required by the FDA for dietary supplements in the US. 'Nutrition Facts' labels are for conventional foods. In Canada, 'Product Facts Tables (PFT)' are used for Natural Health Products following 2025 PLL regulations, while 'Nutrition Facts' tables are for foods. Each has specific formatting rules and required information unique to their regulatory framework."
+  },
+  {
     question: "What's the difference between US and Canadian labeling requirements?",
-    answer: "US labels require FDA-compliant Nutrition Facts panels and follow DSHEA regulations for supplements. Canadian labels need bilingual Nutrition Facts tables, must comply with Natural Health Products Regulations, and require NPN numbers for supplements. We ensure your labels meet both jurisdictions' specific requirements."
+    answer: "US labels require FDA-compliant Supplement Facts panels and follow DSHEA regulations for dietary supplements. Canadian labels need bilingual Product Facts Tables (PFT) following 2025 Plain Language Labelling regulations, must comply with Natural Health Products Regulations, and require NPN numbers. Canada also requires full bilingual presentation in both English and French. We ensure your labels meet both jurisdictions' specific requirements."
   },
   {
     question: "Do I need separate labels for the US and Canadian markets?",
@@ -231,13 +260,17 @@ const faqItems = [
     answer: "Yes, we provide professional regulatory translation services from English to French for Canadian market compliance. Our certified translators understand nuances of supplement terminology and ensure cultural appropriateness for Quebec markets."
   },
   {
+    question: "How much does supplement label design and compliance review cost?",
+    answer: "Costs vary based on complexity and scope. Basic label design typically ranges from $15-$50 for simple templates, while comprehensive compliance reviews run $240-$500 per product. Full-service label design with regulatory review typically costs $500-$2,000 for single products. Complex multi-market labels or products with extensive claims can range from $2,000-$10,000. We provide detailed quotes based on your specific needs, product type, and target markets."
+  },
+  {
     question: "What's included in your label compliance review?",
-    answer: "Our review covers nutrition facts accuracy, ingredient declaration compliance, claim substantiation, warning statement requirements, font size regulations, mandatory information placement, and overall regulatory compliance for your target markets."
+    answer: "Our review covers Supplement Facts/Product Facts Table accuracy, ingredient declaration compliance, claim substantiation, warning statement requirements, font size regulations (minimum 6-8pt), mandatory information placement, bilingual requirements for Canada, and overall regulatory compliance for your target markets including 2025 PLL standards."
   }
 ];
 
 const metaTitle = "Compliance Labels | FDA & Health Canada Approved Labeling | NutriCraft";
-const metaDescription = "Professional supplement label design and regulatory compliance services. FDA and Health Canada approved nutrition facts, bilingual labels, and regulatory review. 1-2 week timeline.";
+const metaDescription = "Professional supplement label design and regulatory compliance services. FDA Supplement Facts and Health Canada Product Facts Tables. Updated for 2025 Plain Language Labelling regulations. 1-2 week timeline.";
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -267,17 +300,16 @@ const metaDescription = "Professional supplement label design and regulatory com
   <Header />
 
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-blue-50 via-white to-green-50 py-16 md:py-24">
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <span class="text-4xl">🏷️</span>
-            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">FDA & Health Canada Approved</span>
+            <span class="bg-mint-600 text-white px-3 py-1 rounded-full text-sm font-semibold">FDA & Health Canada Approved</span>
           </div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
             Compliance Labels
-            <span class="block text-blue-600 text-3xl md:text-4xl lg:text-5xl mt-2">Regulatory Excellence</span>
+            <span class="block text-mint-600 text-3xl md:text-4xl lg:text-5xl mt-2">Regulatory Excellence</span>
           </h1>
           <p class="text-xl text-dark-600 mb-6">
             Professional supplement labeling services ensuring FDA and Health Canada compliance.
@@ -285,19 +317,19 @@ const metaDescription = "Professional supplement label design and regulatory com
           </p>
           <ul class="space-y-3 mb-8">
             <li class="flex items-center gap-3">
-              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="text-dark-700">1-2 weeks from start to approved labels</span>
             </li>
             <li class="flex items-center gap-3">
-              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              <span class="text-dark-700">FDA nutrition facts & Health Canada bilingual tables</span>
+              <span class="text-dark-700">FDA Supplement Facts & Health Canada Product Facts tables</span>
             </li>
             <li class="flex items-center gap-3">
-              <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="text-dark-700">Print-ready files with regulatory compliance</span>
@@ -310,7 +342,7 @@ const metaDescription = "Professional supplement label design and regulatory com
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
             </a>
-            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors">
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors">
               View Process
               <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -330,7 +362,7 @@ const metaDescription = "Professional supplement label design and regulatory com
                 </span>
                 <div>
                   <p class="font-semibold text-dark-900">FDA Requirements</p>
-                  <p class="text-sm text-dark-600">Nutrition Facts panels, DSHEA compliance</p>
+                  <p class="text-sm text-dark-600">Supplement Facts panels, DSHEA compliance</p>
                 </div>
               </div>
               <div class="flex items-start gap-3">
@@ -341,7 +373,7 @@ const metaDescription = "Professional supplement label design and regulatory com
                 </span>
                 <div>
                   <p class="font-semibold text-dark-900">Health Canada Standards</p>
-                  <p class="text-sm text-dark-600">Bilingual tables, NHP regulations</p>
+                  <p class="text-sm text-dark-600">Product Facts Table (PFT), 2025 PLL regulations</p>
                 </div>
               </div>
               <div class="flex items-start gap-3">
@@ -375,6 +407,92 @@ const metaDescription = "Professional supplement label design and regulatory com
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 2025 Regulatory Updates -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-amber-50 to-white border-y-4 border-amber-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 bg-amber-100 text-amber-900 px-4 py-2 rounded-full text-sm font-bold mb-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            IMPORTANT: 2025 Regulatory Updates
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            New Labeling Requirements in Effect
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Stay compliant with the latest regulatory changes in both US and Canadian markets.
+            We ensure your labels meet all current standards.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {regulatoryUpdates2025.map((update, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg p-8 border-2 border-amber-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-dark-900">{update.jurisdiction}</h3>
+                  <p class="text-amber-700 font-semibold">{update.update}</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-gray-50 rounded-lg p-3">
+                    <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Effective Date</p>
+                    <p class="text-sm font-bold text-dark-900">{update.effectiveDate}</p>
+                  </div>
+                  <div class="bg-amber-50 rounded-lg p-3">
+                    <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Compliance By</p>
+                    <p class="text-sm font-bold text-amber-900">{update.complianceDeadline}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-dark-900 mb-2">Key Changes:</h4>
+                  <ul class="space-y-2">
+                    {update.keyChanges.map(change => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-600 text-sm">{change}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="bg-gradient-to-r from-amber-50 to-amber-100 rounded-lg p-4 border-l-4 border-amber-500">
+                  <p class="text-sm font-semibold text-amber-900">Impact:</p>
+                  <p class="text-sm text-amber-800">{update.impact}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation delay={300}>
+        <div class="mt-8 text-center bg-mint-600 text-white rounded-xl p-6">
+          <p class="text-lg font-semibold mb-2">
+            ✓ We're fully updated with all 2025 labeling requirements
+          </p>
+          <p class="text-mint-100">
+            Our team stays current with regulatory changes to ensure your labels are always compliant
+          </p>
+        </div>
+      </ScrollAnimation>
     </div>
   </section>
 
@@ -439,7 +557,7 @@ const metaDescription = "Professional supplement label design and regulatory com
   </section>
 
   <!-- Labeling Services -->
-  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+  <section class="py-16 md:py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
         <div class="text-center mb-12">
@@ -457,17 +575,17 @@ const metaDescription = "Professional supplement label design and regulatory com
         {labelingServices.map((service, index) => (
           <ScrollAnimation delay={index * 100}>
             <div class="bg-white rounded-xl shadow-lg p-8">
-              <div class="flex items-start gap-4 mb-4">
-                <span class="text-4xl">{service.icon}</span>
-                <div>
-                  <h3 class="text-2xl font-bold text-dark-900 mb-2">{service.service}</h3>
-                  <p class="text-dark-600">{service.description}</p>
-                </div>
+              <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
               </div>
+              <h3 class="text-2xl font-bold text-dark-900 mb-4">{service.service}</h3>
+              <p class="text-dark-600 mb-6">{service.description}</p>
               <ul class="space-y-2">
                 {service.benefits.map(benefit => (
                   <li class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                     </svg>
                     <span class="text-dark-700 text-sm">{benefit}</span>
@@ -500,20 +618,20 @@ const metaDescription = "Professional supplement label design and regulatory com
         {labelingRequirements.map((requirement, index) => (
           <ScrollAnimation delay={index * 100}>
             <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-lg p-8">
-              <div class="flex items-start gap-4 mb-4">
-                <span class="text-4xl">{requirement.icon}</span>
-                <div>
-                  <h3 class="text-xl font-bold text-dark-900 mb-2">{requirement.requirement}</h3>
-                  <p class="text-dark-600 mb-3">{requirement.description}</p>
-                  <div class="bg-blue-100 rounded-lg px-3 py-1 inline-block mb-4">
-                    <p class="text-sm font-semibold text-blue-800">Timeline: {requirement.timeline}</p>
-                  </div>
-                </div>
+              <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-dark-900 mb-2">{requirement.requirement}</h3>
+              <p class="text-dark-600 mb-3">{requirement.description}</p>
+              <div class="bg-mint-100 rounded-lg px-3 py-1 inline-block mb-4">
+                <p class="text-sm font-semibold text-mint-800">Timeline: {requirement.timeline}</p>
               </div>
               <ul class="space-y-2">
                 {requirement.details.map(detail => (
                   <li class="flex items-start gap-2">
-                    <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                     </svg>
                     <span class="text-dark-700 text-sm">{detail}</span>
@@ -611,9 +729,9 @@ const metaDescription = "Professional supplement label design and regulatory com
                   <p class="text-dark-700">{item.solution}</p>
                 </div>
                 <div class="text-center">
-                  <div class="bg-green-100 rounded-lg px-4 py-3">
-                    <p class="text-sm font-semibold text-green-800">Result:</p>
-                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  <div class="bg-mint-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-mint-800">Result:</p>
+                    <p class="text-mint-700 font-bold">{item.outcome}</p>
                   </div>
                 </div>
               </div>
@@ -635,27 +753,27 @@ const metaDescription = "Professional supplement label design and regulatory com
           <div class="grid md:grid-cols-4 gap-8">
             <div>
               <div class="text-5xl font-bold mb-2">
-                <CountUp end={500} duration={2000} suffix="+" />
+                2
               </div>
-              <p class="text-mint-100">Labels Successfully Approved</p>
+              <p class="text-mint-100">Primary Markets Supported</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                1-2
+              </div>
+              <p class="text-mint-100">Weeks Typical Timeline</p>
+            </div>
+            <div>
+              <div class="text-5xl font-bold mb-2">
+                <CountUp end={2025} duration={2000} />
+              </div>
+              <p class="text-mint-100">Current Regulations Expertise</p>
             </div>
             <div>
               <div class="text-5xl font-bold mb-2">
                 <CountUp end={100} duration={2000} suffix="%" />
               </div>
-              <p class="text-mint-100">Regulatory Compliance Rate</p>
-            </div>
-            <div>
-              <div class="text-5xl font-bold mb-2">
-                <CountUp end={10} duration={2000} suffix=" days" />
-              </div>
-              <p class="text-mint-100">Average Project Timeline</p>
-            </div>
-            <div>
-              <div class="text-5xl font-bold mb-2">
-                <CountUp end={0} duration={2000} />
-              </div>
-              <p class="text-mint-100">Regulatory Rejections</p>
+              <p class="text-mint-100">Bilingual Compliance</p>
             </div>
           </div>
         </div>
@@ -681,13 +799,12 @@ const metaDescription = "Professional supplement label design and regulatory com
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
-          <button
-            data-cal-link="Nutricraftlabs"
-            data-cal-config='{"theme":"light"}'
+          <a
+            href="/schedule-call"
             class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
           >
             Schedule Consultation
-          </button>
+          </a>
         </div>
       </ScrollAnimation>
     </div>
@@ -712,40 +829,4 @@ const metaDescription = "Professional supplement label design and regulatory com
   </section>
 
   <Footer />
-
-  <!-- Cal.com embed script -->
-  <script>
-    (function (C, A, L) {
-      let p = function (a, ar) {
-        a.q.push(ar);
-      };
-      let d = C.document;
-      C.Cal =
-        C.Cal ||
-        function () {
-          let cal = C.Cal;
-          let ar = arguments;
-          if (!cal.loaded) {
-            cal.ns = {};
-            cal.q = cal.q || [];
-            d.head.appendChild(d.createElement("script")).src = A;
-            cal.loaded = true;
-          }
-          if (ar[0] === L) {
-            const api = function () {
-              p(api, arguments);
-            };
-            const namespace = ar[1];
-            api.q = api.q || [];
-            typeof namespace === "string"
-              ? (cal.ns[namespace] = api) && p(api, ar)
-              : p(cal, ar);
-            return;
-          }
-          p(cal, ar);
-        };
-    })(window, "https://app.cal.com/embed/embed.js", "init");
-    Cal("init");
-    Cal("ui", {"hideEventTypeDetails":false});
-  </script>
 </BaseLayout>
