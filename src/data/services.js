@@ -1,14 +1,14 @@
 export const services = [
   {
     id: 'gmp-matchmaking',
-    title: 'GMP Manufacturer Matchmaking',
-    description: 'Connect with vetted GMP-certified manufacturing partners that match your specific needs and quality standards.',
+    title: 'Extended Manufacturing Network',
+    description: 'For specialized needs our 15+ core GMP partners can\'t fulfill, we find and vet the right manufacturers for you.',
     features: [
-      'Access to pre-vetted GMP-certified facilities',
-      'Partner matching based on your product requirements',
-      'Transparent pricing and capability comparisons'
+      'Specialized formats and certifications',
+      'Expert vetting and negotiation on your behalf',
+      'Transparent pricing: $2,500 search + 3-5% success fee'
     ],
-    icon: '🏭'
+    icon: '🔍'
   },
   {
     id: 'stock-formulas',

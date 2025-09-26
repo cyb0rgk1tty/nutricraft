@@ -13,7 +13,6 @@ const manufacturingServices = [
     href: "/services/low-moq-manufacturing",
     highlights: ["1000 unit minimum", "All formats available", "Same GMP quality"],
     timeline: "8-10 weeks",
-    badge: "Most Popular",
     cta: "Learn About Low MOQs",
     isComingSoon: false
   },
@@ -23,7 +22,6 @@ const manufacturingServices = [
     href: "/services/private-white-label-manufacturing",
     highlights: ["Custom or stock formulas", "US & Canada compliant", "1000 unit minimum"],
     timeline: "4-16 weeks",
-    badge: "Most Popular",
     cta: "Start Your Brand",
     isComingSoon: false
   },
@@ -39,11 +37,11 @@ const manufacturingServices = [
   {
     title: "GMP Partner Matching",
     description: "Connect with pre-vetted GMP-certified manufacturers that match your specific needs.",
-    href: "#",
+    href: "/services/gmp-partner-matching",
     highlights: ["FDA registered", "cGMP certified", "Transparent pricing"],
     timeline: "1-2 weeks",
     cta: "Find Your Partner",
-    isComingSoon: true
+    isComingSoon: false
   },
   {
     title: "Quality Testing",
@@ -340,11 +338,6 @@ const metaTitle = "Manufacturing & Go-to-Market Services | NutriCraft Labs";
                       More Info Coming Soon
                     </span>
                   )}
-                  {service.badge && !service.isComingSoon && (
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-mint-100 text-mint-800">
-                      {service.badge}
-                    </span>
-                  )}
                 </div>
 
                 {/* Timeline indicator */}
@@ -418,11 +411,6 @@ const metaTitle = "Manufacturing & Go-to-Market Services | NutriCraft Labs";
                   {service.isComingSoon && (
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                       More Info Coming Soon
-                    </span>
-                  )}
-                  {service.badge && !service.isComingSoon && (
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-mint-100 text-mint-800">
-                      {service.badge}
                     </span>
                   )}
                 </div>

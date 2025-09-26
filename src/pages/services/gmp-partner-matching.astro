@@ -1,0 +1,400 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const matchingProcess = [
+  {
+    phase: "Needs Assessment",
+    timeline: "Week 1",
+    tasks: [
+      "Review your specialized requirements",
+      "Determine why core network can't fulfill",
+      "Identify must-have certifications and capabilities",
+      "Define budget and timeline constraints"
+    ],
+    deliverable: "Specialized requirements profile"
+  },
+  {
+    phase: "Extended Network Search",
+    timeline: "Week 2",
+    tasks: [
+      "Search beyond our 15+ core GMP partners",
+      "Identify facilities with specialized capabilities",
+      "Verify current certifications and capacity",
+      "Preliminary pricing and MOQ inquiry"
+    ],
+    deliverable: "2-3 qualified specialist manufacturers"
+  },
+  {
+    phase: "Vetting & Due Diligence",
+    timeline: "Week 3-4",
+    tasks: [
+      "Third-party audit report review",
+      "GMP certification and compliance verification",
+      "Reference checks with current clients",
+      "Site visit coordination (if needed)"
+    ],
+    deliverable: "Detailed vetting reports"
+  },
+  {
+    phase: "Introduction & Negotiation",
+    timeline: "Week 5-6",
+    tasks: [
+      "Facilitated introductions with matched partners",
+      "Pricing and terms negotiation on your behalf",
+      "Quality agreement framework setup",
+      "Ongoing relationship management support"
+    ],
+    deliverable: "Partnership agreement & handoff"
+  }
+];
+
+const benefits = [
+  {
+    title: "Solutions for Edge Cases",
+    description: "When our core 15+ GMP partners can't meet your unique needs, we find specialists who can"
+  },
+  {
+    title: "Expert Vetting on Your Behalf",
+    description: "We conduct the same rigorous due diligence we use for our core network, protecting you from bad actors"
+  },
+  {
+    title: "Negotiation Leverage",
+    description: "Benefit from our industry relationships and experience to secure better terms and pricing"
+  },
+  {
+    title: "Transparent Process",
+    description: "Clear timeline, honest assessment of feasibility, and upfront fee structure with no hidden costs"
+  },
+  {
+    title: "Specialized Capabilities",
+    description: "Access manufacturers with niche certifications, proprietary technologies, or unique formats"
+  },
+  {
+    title: "Peace of Mind",
+    description: "Know that even your most challenging projects have a path forward with Nutricraft's support"
+  }
+];
+
+const specializedNeeds = [
+  {
+    category: "Specialized Formats",
+    examples: "Liposomal formulations, sublingual strips, transdermal patches, effervescent tablets"
+  },
+  {
+    category: "Unique Certifications",
+    examples: "Kosher, Halal, specific organic certifications (USDA, EU, JAS), vegan certifications"
+  },
+  {
+    category: "Proprietary Technologies",
+    examples: "Microencapsulation, nanotechnology, sustained-release systems, specialized extraction methods"
+  },
+  {
+    category: "Geographic Requirements",
+    examples: "EU manufacturing for EFSA compliance, Asia-Pacific facilities, specific state requirements"
+  },
+  {
+    category: "Capacity Needs",
+    examples: "Very high volume (100,000+ units), ultra-low MOQ (<500 units), seasonal overflow"
+  },
+  {
+    category: "Specialized Ingredients",
+    examples: "CBD/hemp products, controlled raw materials, allergen-free facilities, exotic botanicals"
+  }
+];
+
+const pricingStructure = [
+  {
+    service: "Initial Consultation",
+    cost: "Free",
+    description: "Assess if your needs require extended network search"
+  },
+  {
+    service: "Extended Network Search",
+    cost: "$2,500",
+    description: "Comprehensive search and vetting of 2-3 specialized manufacturers"
+  },
+  {
+    service: "Success Fee",
+    cost: "3-5% of first order",
+    description: "Only charged upon successful partnership and first production run"
+  },
+  {
+    service: "Ongoing Support",
+    cost: "Included",
+    description: "6 months of relationship management and issue resolution"
+  }
+];
+
+const faqData = [
+  {
+    question: "How is this different from your standard manufacturing services?",
+    answer: "Nutricraft's core business works with 15+ GMP-certified partner manufacturers who handle 95% of client needs. This extended network service is specifically for specialized requirements our core partners can't fulfill—like unique formats, niche certifications, or ultra-high volumes."
+  },
+  {
+    question: "When do I need this service vs. your regular manufacturing?",
+    answer: "Use our core manufacturing services for standard supplements (capsules, tablets, powders, gummies, softgels) with typical MOQs. This service is for edge cases: liposomal formulations, Kosher certification, EU-based manufacturing, proprietary technologies, or volumes exceeding our partners' capacity."
+  },
+  {
+    question: "What does this service actually cost?",
+    answer: "Initial consultation is free to determine if extended network search is needed. If so, the search and vetting service is $2,500 flat fee. Upon successful partnership and first production run, there's a success fee of 3-5% of the first order value. All ongoing support for 6 months is included."
+  },
+  {
+    question: "Are the fees the same for every project?",
+    answer: "No, fees vary depending on the complexity of your requirements, search scope, and manufacturer location. Highly specialized needs (like proprietary technologies or rare certifications) require more extensive vetting and may have different fee structures. We provide a customized quote during your free consultation based on your specific situation."
+  },
+  {
+    question: "Why should I use Nutricraft instead of finding manufacturers myself?",
+    answer: "We conduct rigorous vetting (facility audits, certification checks, reference verification) that takes weeks and industry expertise. We also negotiate better terms using our relationships and provide ongoing support. Most importantly, we protect you from unqualified manufacturers that could jeopardize your brand."
+  },
+  {
+    question: "Do you stay involved after the match?",
+    answer: "Yes! We provide 6 months of relationship management support including quality issue resolution, communication facilitation, and production problem-solving. Even after that period, we remain available for consultation as needed."
+  },
+  {
+    question: "What if you can't find a suitable manufacturer?",
+    answer: "During our initial free consultation, we honestly assess feasibility. If we can't find a qualified match after our extended search, we refund the $2,500 search fee. We only succeed when you succeed, which is why we're transparent about limitations upfront."
+  },
+  {
+    question: "How do you vet manufacturers in your extended network?",
+    answer: "Same standards as our core partners: third-party audit report review, current GMP certifications (FDA, NSF, USP, or equivalent), financial stability checks, production capacity verification, and reference checks with existing clients. We also verify insurance and quality systems."
+  },
+  {
+    question: "Can you help with international manufacturing?",
+    answer: "Yes, our extended network includes vetted manufacturers in the EU, Asia-Pacific, and other regions. We help navigate international logistics, regulatory differences (EFSA, TGA, etc.), and communication. However, we always recommend domestic manufacturing when possible for simpler compliance."
+  }
+];
+---
+
+<BaseLayout
+  title="Extended Manufacturing Network | Specialized GMP Partner Matching | Nutricraft"
+  description="When our core network can't meet your specialized supplement manufacturing needs, we find and vet the right GMP-certified partners. Transparent pricing, expert guidance for unique requirements."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative py-20 lg:py-32 bg-gradient-to-br from-mint-50 via-white to-mint-50 overflow-hidden">
+    <div class="absolute inset-0 bg-grid-mint/5"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Extended Network Service
+          </div>
+
+          <h1 class="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            Specialized Manufacturing
+            <span class="text-mint-600">When Our Network Can't</span>
+          </h1>
+
+          <p class="text-xl lg:text-2xl text-gray-600 mb-4 leading-relaxed">
+            Our 15+ GMP partners handle 95% of supplement manufacturing needs. For specialized requirements they can't fulfill, we find and vet the right manufacturers for you.
+          </p>
+
+          <p class="text-lg text-gray-500 mb-8 italic">
+            Note: Most clients are served by our core manufacturing services. This is for edge cases only.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-mint-600 rounded-lg hover:bg-mint-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+              Free Consultation
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+            <a href="#process" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white border-2 border-mint-600 rounded-lg hover:bg-mint-50 transition-colors duration-300">
+              See How It Works
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- When You Need This Service -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            When You Need Our Extended Network
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            This service is specifically for specialized needs our core 15+ GMP partners cannot accommodate
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {specializedNeeds.map((need) => (
+            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{need.category}</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">{need.examples}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-12 text-center">
+          <div class="inline-block bg-mint-50 border-2 border-mint-200 rounded-lg p-6 max-w-2xl">
+            <p class="text-gray-700 font-medium mb-2">
+              💡 For standard supplement manufacturing (capsules, tablets, powders, gummies, softgels)
+            </p>
+            <p class="text-gray-600">
+              <a href="/services/private-white-label-manufacturing" class="text-mint-600 hover:text-mint-700 font-semibold underline">Explore our core manufacturing services →</a>
+            </p>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Matching Process -->
+  <section id="process" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            How Extended Network Matching Works
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Typical timeline: 5-6 weeks from initial consultation to partnership agreement
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {matchingProcess.map((step, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-white to-mint-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-mint-100">
+              <div class="flex items-start gap-4 mb-6">
+                <div class="flex-shrink-0 w-12 h-12 bg-mint-600 text-white rounded-xl flex items-center justify-center font-bold text-lg">
+                  {index + 1}
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-2xl font-bold text-gray-900 mb-2">{step.phase}</h3>
+                  <div class="inline-flex items-center gap-2 text-mint-600 font-medium">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {step.timeline}
+                  </div>
+                </div>
+              </div>
+
+              <ul class="space-y-3 mb-6">
+                {step.tasks.map((task) => (
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-mint-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-gray-600">{task}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="pt-4 border-t border-mint-200">
+                <div class="text-sm font-medium text-gray-500 mb-1">Deliverable:</div>
+                <div class="font-semibold text-gray-900">{step.deliverable}</div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Why Use Our Extended Network Service
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Expert vetting and negotiation for specialized manufacturing needs our core partners can't fulfill
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {benefits.map((benefit, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{benefit.title}</h3>
+              <p class="text-gray-600 leading-relaxed">{benefit.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Common questions about our extended manufacturing network service
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqData} />
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-mint-600">
+    <div class="container mx-auto px-6">
+      <ScrollAnimation>
+        <div class="text-center text-white max-w-4xl mx-auto">
+          <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+            Have Specialized Manufacturing Needs?
+          </h2>
+          <p class="text-xl text-mint-100 mb-8">
+            Start with a free consultation to determine if our extended network service is right for you. Most clients are served by our core manufacturing partners—we'll be honest about the best path forward.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white rounded-lg hover:bg-mint-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+              Schedule Free Consultation
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+            <a href="mailto:hello@nutricraftlabs.com" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-mint-300 rounded-lg hover:bg-mint-700 transition-colors duration-300">
+              Email Us Your Needs
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+          </div>
+
+          <div class="border-t border-mint-400 pt-6">
+            <p class="text-mint-100 text-lg">
+              Looking for standard supplement manufacturing? <a href="/services/private-white-label-manufacturing" class="text-white font-bold hover:underline">Start with our core services →</a>
+            </p>
+          </div>
+
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
