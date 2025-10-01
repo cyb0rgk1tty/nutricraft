@@ -15,7 +15,7 @@ import FormulationImage from "../components/FormulationImage.astro";
 import TextRotator from "../components/TextRotator.astro";
 import { services } from "../data/services.js";
 import { testimonials } from "../data/testimonials.js";
-import { formulations } from "../data/formulations.js";
+import { dosageForms } from "../data/dosage-forms.js";
 ---
 
 <BaseLayout>
@@ -53,7 +53,7 @@ import { formulations } from "../data/formulations.js";
               <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              <span class="text-dark-700 font-medium text-sm">FDA & Health Canada Compliant</span>
+              <span class="text-dark-700 font-medium text-sm">FDA-Registered & Health Canada Licensed</span>
             </div>
             <div class="flex items-center gap-2">
               <span class="text-dark-700 font-bold text-lg">20+ Brands Launched</span>
@@ -61,7 +61,7 @@ import { formulations } from "../data/formulations.js";
           </div>
           
           <p class="text-xl text-dark-600 leading-relaxed">
-            Skip the complexity of finding reliable manufacturers. We connect you with pre-vetted GMP partners and handle all compliance from formulation to market ready products.
+            Skip the complexity of finding reliable manufacturers. End-to-end services from formulation to fulfillment and digital marketing. We connect you with pre-vetted GMP-certified partners and handle all compliance.
           </p>
 
           <!-- CTA Buttons -->
@@ -201,7 +201,7 @@ import { formulations } from "../data/formulations.js";
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              Pre-vetted partners
+              15+ GMP-certified manufacturing partners
             </div>
           </div>
         </ScrollAnimation>
@@ -223,7 +223,7 @@ import { formulations } from "../data/formulations.js";
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              100% compliant
+              100% FDA & Health Canada compliant
             </div>
           </div>
         </ScrollAnimation>
@@ -245,7 +245,7 @@ import { formulations } from "../data/formulations.js";
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              Transparent pricing
+              Transparent pricing • Quotes in 24 hours
             </div>
           </div>
         </ScrollAnimation>
@@ -267,7 +267,7 @@ import { formulations } from "../data/formulations.js";
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              Start with just 1000 units
+              Start with 1000 units (vs industry 5000+)
             </div>
           </div>
         </ScrollAnimation>
@@ -300,13 +300,13 @@ import { formulations } from "../data/formulations.js";
     </div>
   </section>
 
-  <!-- Popular Supplement Formulations Section -->
-  <section id="formulations" class="py-20 bg-gradient-to-b from-white to-mint-50">
+  <!-- Available Dosage Forms Section -->
+  <section id="dosage-forms" class="py-20 bg-gradient-to-b from-white to-mint-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-            Popular Supplement Formulations
+            Available Dosage Forms
           </h2>
           <p class="text-xl text-dark-600 max-w-3xl mx-auto">
             Choose any dosage form you need and we'll work with you to make it into reality.
@@ -314,13 +314,13 @@ import { formulations } from "../data/formulations.js";
         </div>
       </ScrollAnimation>
 
-      <!-- Formulation Cards Grid -->
+      <!-- Dosage Forms Cards Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
-          formulations.slice(0, 6).map((formulation, index) => (
+          dosageForms.slice(0, 6).map((formulation, index) => (
             <ScrollAnimation animation="fade-up" delay={Math.floor(index / 3) * 150}>
               <a
-                href={`/formulations/${formulation.slug}`}
+                href={`/dosage-forms/${formulation.slug}`}
                 class="group relative bg-white rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col overflow-hidden"
               >
                 <!-- Image Container - Edge to Edge -->
@@ -376,14 +376,14 @@ import { formulations } from "../data/formulations.js";
         }
       </div>
 
-      <!-- View All Formulations Button -->
+      <!-- View All Dosage Forms Button -->
       <ScrollAnimation animation="fade-up" delay={400}>
         <div class="mt-12 text-center">
           <a
-            href="/formulations"
+            href="/dosage-forms"
             class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
-            View All Formulation Options
+            View All Dosage Forms
             <svg
               class="ml-2 w-5 h-5"
               fill="none"
@@ -403,33 +403,48 @@ import { formulations } from "../data/formulations.js";
 
       <!-- CTA Section -->
       <ScrollAnimation animation="fade-up" delay={600}>
-        <div class="mt-16 bg-white rounded-2xl p-12 shadow-lg text-center">
-          <h3 class="text-2xl md:text-3xl font-bold text-dark-900 mb-4">
-            Need Something Specific?
-          </h3>
-          <p class="text-lg text-dark-600 mb-8 max-w-2xl mx-auto">
-            Our team specializes in custom formulations and unique delivery methods. 
-            Let's discuss how we can bring your vision to life.
-          </p>
-          <a
-            href="/contact"
-            class="inline-flex items-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-200"
-          >
-            Request Free Consultation
-            <svg
-              class="w-5 h-5 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div class="mt-16 bg-gradient-to-br from-mint-50 to-white rounded-2xl p-12 shadow-lg border border-mint-100">
+          <div class="text-center mb-6">
+            <span class="inline-block bg-mint-600 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              2025 Trending Ingredients
+            </span>
+            <h3 class="text-2xl md:text-3xl font-bold text-dark-900 mb-4">
+              Need Something Specific?
+            </h3>
+            <p class="text-lg text-dark-600 mb-6 max-w-2xl mx-auto">
+              Our team specializes in custom formulations with the latest ingredients: GLP-1 support complexes, Vitamin B12 (trending #1 in 2025), functional mushroom blends, and more.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <span class="bg-mint-100 text-mint-700 px-3 py-1 rounded-full text-sm font-medium">GLP-1 Support</span>
+            <span class="bg-mint-100 text-mint-700 px-3 py-1 rounded-full text-sm font-medium">Vitamin B12 Complex</span>
+            <span class="bg-mint-100 text-mint-700 px-3 py-1 rounded-full text-sm font-medium">Functional Mushrooms</span>
+            <span class="bg-mint-100 text-mint-700 px-3 py-1 rounded-full text-sm font-medium">NMN (NAD+)</span>
+            <span class="bg-mint-100 text-mint-700 px-3 py-1 rounded-full text-sm font-medium">Postbiotics</span>
+          </div>
+
+          <div class="text-center">
+            <a
+              href="/services/custom-formulation"
+              class="inline-flex items-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-200 shadow-lg"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              ></path>
-            </svg>
-          </a>
+              Explore Custom Formulation
+              <svg
+                class="w-5 h-5 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                ></path>
+              </svg>
+            </a>
+          </div>
         </div>
       </ScrollAnimation>
     </div>
@@ -639,15 +654,13 @@ import { formulations } from "../data/formulations.js";
               unwavering support for our clients' success.
             </p>
             <p>
-              Our team's decades of industry experience and extensive partner
+              Our team's combined 15+ years of industry experience and extensive partner
               network enable us to match you with the perfect manufacturing
               solution. We've facilitated 20+ successful product
               launches for brands entering the North American market.
             </p>
             <p>
-              What sets us apart is our agency model – we work for you, not the
-              manufacturers. This ensures unbiased recommendations and the best
-              possible terms for your business.
+              What sets us apart is our comprehensive service offering – from formulation to fulfillment and digital marketing (Shopify stores, TikTok content, Meta Ads). We work for you, not the manufacturers, ensuring unbiased recommendations and the best possible terms for your business.
             </p>
           </div>
 
@@ -716,10 +729,13 @@ import { formulations } from "../data/formulations.js";
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
         <h2
-          class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-12"
+          class="text-3xl md:text-4xl font-bold text-dark-900 text-center mb-4"
         >
           Why Brands Choose Nutricraft Labs
         </h2>
+        <p class="text-xl text-dark-600 text-center max-w-3xl mx-auto mb-12">
+          Your one-stop-shop for the entire supplement brand launch journey. From custom formulation to fulfillment and digital marketing—everything coordinated through one trusted partner, ensuring consistency, seamless execution, and significant time savings at every step.
+        </p>
       </ScrollAnimation>
 
       <div class="grid md:grid-cols-3 gap-8">
@@ -899,8 +915,37 @@ import { formulations } from "../data/formulations.js";
               Scalable Solutions
             </h3>
             <p class="text-dark-600">
-              Start with MOQs as low as 1000 units. Test your market without huge investments, 
-              then scale seamlessly as your business grows.
+              Start with 1000 units and scale to 10,000+. Test your market without huge investments,
+              then grow seamlessly as your business expands.
+            </p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation animation="fade-up" delay={400}>
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-mint-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-dark-900 mb-3">
+              Complete Digital Marketing
+            </h3>
+            <p class="text-dark-600">
+              Launch with professional Shopify stores, TikTok content, Instagram Reels, and Meta/Google Ads campaigns optimized for 2025 supplement compliance.
             </p>
           </div>
         </ScrollAnimation>
@@ -972,19 +1017,13 @@ import { formulations } from "../data/formulations.js";
             <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
             </svg>
-            <span class="text-dark-700">Free Consultation</span>
+            <span class="text-dark-700">Free Consultation & Quote in 24 Hours</span>
           </div>
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
             </svg>
-            <span class="text-dark-700">No Upfront Fees</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-            </svg>
-            <span class="text-dark-700">Quick Response</span>
+            <span class="text-dark-700">No Upfront Fees • Low 1000 Unit MOQ</span>
           </div>
         </div>
       </ScrollAnimation>
@@ -995,7 +1034,7 @@ import { formulations } from "../data/formulations.js";
             href="/contact"
             class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
           >
-            Get Your Free Manufacturing Quote
+            Get Your Free Launch Quote
             <svg
               class="ml-2 w-6 h-6"
               fill="none"

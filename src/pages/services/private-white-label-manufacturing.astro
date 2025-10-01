@@ -504,24 +504,22 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
       <div class="grid md:grid-cols-2 gap-8">
         {painPoints.map((point, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-              <div class="flex-1">
-                <h3 class="text-xl font-bold text-dark-900 mb-3">{point.problem}</h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="bg-gray-50 rounded-lg p-3">
-                    <p class="text-sm font-semibold text-dark-700 mb-1">Industry Standard</p>
-                    <p class="text-sm text-dark-600">{point.traditional}</p>
-                  </div>
-                  <div class="bg-mint-50 rounded-lg p-3">
-                    <p class="text-sm font-semibold text-mint-700 mb-1">Our Solution</p>
-                    <p class="text-sm text-mint-600">{point.ourSolution}</p>
-                  </div>
+            <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <h3 class="text-xl font-bold text-dark-900 mb-3">{point.problem}</h3>
+              <div class="grid grid-cols-2 gap-4 flex-grow">
+                <div class="bg-gray-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-dark-700 mb-1">Industry Standard</p>
+                  <p class="text-sm text-dark-600">{point.traditional}</p>
                 </div>
-                <div class="mt-3 text-center">
-                  <span class="inline-flex items-center px-3 py-1 bg-mint-100 text-mint-700 rounded-full text-sm font-semibold">
-                    {point.savings}
-                  </span>
+                <div class="bg-mint-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-mint-700 mb-1">Our Solution</p>
+                  <p class="text-sm text-mint-600">{point.ourSolution}</p>
                 </div>
+              </div>
+              <div class="mt-3 text-center">
+                <span class="inline-flex items-center px-3 py-1 bg-mint-100 text-mint-700 rounded-full text-sm font-semibold">
+                  {point.savings}
+                </span>
               </div>
             </div>
           </ScrollAnimation>
@@ -649,6 +647,20 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
           </ScrollAnimation>
         ))}
       </div>
+
+      <ScrollAnimation>
+        <div class="mt-8 text-center">
+          <a
+            href="/dosage-forms"
+            class="inline-flex items-center justify-center px-6 py-3 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-md hover:shadow-lg"
+          >
+            View All Dosage Forms
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
 
       <ScrollAnimation>
         <div class="mt-12">

@@ -10,6 +10,16 @@
       ],
       "destination": "https://nutricraftlabs.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/formulations/:slug*",
+      "destination": "/dosage-forms/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/formulations",
+      "destination": "/dosage-forms",
+      "permanent": true
     }
   ],
   "headers": [

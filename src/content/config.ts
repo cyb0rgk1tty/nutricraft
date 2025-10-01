@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 
-const formulations = defineCollection({
+const dosageForms = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -10,5 +10,5 @@ const formulations = defineCollection({
 });
 
 export const collections = {
-  formulations: formulations
+  'dosage-forms': dosageForms
 };

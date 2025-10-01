@@ -4,12 +4,12 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ScrollAnimation from "../../components/ScrollAnimation.astro";
 import FormulationImage from "../../components/FormulationImage.astro";
-import { formulations, formulationComparison } from "../../data/formulations.js";
+import { dosageForms, formulationComparison } from "../../data/dosage-forms.js";
 ---
 
-<BaseLayout 
-  title="Supplement Formulation Types - Nutricraft Labs" 
-  description="Compare tablets, capsules, softgels, gummies, powders, and liquid supplement manufacturing options. Find the perfect format for your product."
+<BaseLayout
+  title="Supplement Dosage Forms - Nutricraft Labs"
+  description="Compare tablets, capsules, softgels, gummies, powders, and liquid supplement manufacturing options. Find the perfect dosage form for your product."
 >
   <Header />
 
@@ -19,26 +19,26 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
       <div class="text-center">
         <ScrollAnimation animation="fade-up">
           <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
-            Supplement Formulation Types
+            Available Dosage Forms
           </h1>
           <p class="text-xl text-dark-600 max-w-3xl mx-auto">
-            Choose the perfect delivery format for your supplements. Each formulation 
-            type offers unique benefits for different nutrients and target markets.
+            Choose the perfect delivery format for your supplements. Each dosage form
+            offers unique benefits for different nutrients and target markets.
           </p>
         </ScrollAnimation>
       </div>
     </div>
   </section>
 
-  <!-- Formulations Grid -->
+  <!-- Dosage Forms Grid -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
-          formulations.map((formulation, index) => (
+          dosageForms.map((formulation, index) => (
             <ScrollAnimation animation="fade-up" delay={Math.floor(index / 3) * 150}>
               <a
-                href={`/formulations/${formulation.slug}`}
+                href={`/dosage-forms/${formulation.slug}`}
                 class="group relative bg-gray-50 rounded-xl hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1 overflow-hidden"
               >
                 <!-- Image Container - Edge to Edge -->
@@ -50,7 +50,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
-                
+
                 <!-- Content Container with Padding -->
                 <div class="p-8 flex flex-col flex-grow">
                   <!-- Content -->
@@ -60,7 +60,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
                   <p class="text-dark-600 mb-4 flex-grow">
                     {formulation.shortDescription}
                   </p>
-                  
+
                   <!-- Best For Pills -->
                   <div class="mb-4">
                     <p class="text-sm font-semibold text-dark-700 mb-2">Best for:</p>
@@ -72,7 +72,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
                       ))}
                     </div>
                   </div>
-                  
+
                   <!-- Learn More Link -->
                   <div class="flex items-center text-mint-600 font-medium group-hover:text-mint-700 mt-auto">
                     <span>View details</span>
@@ -104,7 +104,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
-          Formulation Comparison Guide
+          Dosage Form Comparison Guide
         </h2>
       </ScrollAnimation>
 
@@ -127,7 +127,7 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
                   </div>
                   <div class="flex items-center">
                     <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
-                      <div 
+                      <div
                         class="bg-mint-600 h-2 rounded-full transition-all duration-1000"
                         style={`width: ${item.rate}`}
                       ></div>
@@ -171,10 +171,10 @@ import { formulations, formulationComparison } from "../../data/formulations.js"
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <ScrollAnimation animation="fade-up">
         <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
-          Need Help Choosing the Right Format?
+          Need Help Choosing the Right Dosage Form?
         </h2>
         <p class="text-xl text-dark-600 mb-8">
-          Our formulation experts will help you select the perfect delivery system 
+          Our formulation experts will help you select the perfect delivery system
           for your supplement based on your ingredients, target market, and budget.
         </p>
         <a

@@ -1,90 +1,112 @@
 export const services = [
   {
-    id: 'gmp-matchmaking',
-    title: 'Extended Manufacturing Network',
-    description: 'For specialized needs our 15+ core GMP partners can\'t fulfill, we find and vet the right manufacturers for you.',
+    id: 'private-label',
+    title: 'Private Label & White Label Manufacturing',
+    description: 'Launch your supplement brand with just 1000 units minimum. Custom formulas or ready-made products.',
     features: [
-      'Specialized formats and certifications',
-      'Expert vetting and negotiation on your behalf',
-      'Transparent pricing: $2,500 search + 3-5% success fee'
+      'Start with 1000 units (vs industry 5000+)',
+      'FDA-registered, Health Canada compliant',
+      '200+ stock formulas or custom R&D'
     ],
-    icon: '🔍'
+    icon: '🏭'
   },
   {
-    id: 'stock-formulas',
-    title: 'Stock Formulas & White-Label Launch',
-    description: 'Fast-track your product launch with ready-to-label formulas from our partner network. Perfect for quick market entry.',
+    id: 'low-moq',
+    title: 'Low MOQ Manufacturing',
+    description: 'Test your market with 73% less capital. Perfect for startups and new product launches.',
     features: [
-      'Pre-approved formulas ready for immediate production',
-      'Customizable label design and branding',
-      'Low minimum order quantities available'
+      '1000 unit minimum order quantity',
+      'Same GMP quality as large orders',
+      'Launch 3-5 products for one traditional MOQ cost'
     ],
-    icon: '🏷️'
-  },
-  {
-    id: 'npn-applications',
-    title: 'NPN Applications',
-    description: 'We assist in preparing and submitting Natural Product Number applications for the Canadian market.',
-    features: [
-      'Document preparation and submission assistance',
-      'Regulatory compliance guidance',
-      'Health Canada liaison support'
-    ],
-    icon: '📋'
-  },
-  {
-    id: 'compliance-labels',
-    title: 'Compliance Label Creation',
-    description: 'Ensure market compliance with bilingual labeling that meets all Canadian and US regulatory requirements.',
-    features: [
-      'Bilingual (English/French) label creation',
-      'FDA and Health Canada compliance verification',
-      'Nutrition facts panel formatting'
-    ],
-    icon: '✅'
+    icon: '📊'
   },
   {
     id: 'custom-formulation',
     title: 'Custom Formulation',
-    description: 'Work with our partner formulators to create unique supplements tailored to your market needs.',
+    description: 'Create unique, proprietary formulas with expert R&D teams. 2025 trending ingredients available.',
     features: [
-      'Access to experienced R&D teams',
-      'Ingredient sourcing and compatibility testing',
-      'Stability and shelf-life consultation'
+      '12-16 weeks from concept to market',
+      'GLP-1 support, Vitamin B12, functional mushrooms',
+      'You own the formula IP forever'
     ],
     icon: '🧪'
   },
   {
+    id: 'gmp-matchmaking',
+    title: 'Extended Manufacturing Network',
+    description: 'For specialized needs our 15+ GMP partners can\'t fulfill, we find and vet manufacturers for you.',
+    features: [
+      'Specialized formats and certifications',
+      'Expert vetting and negotiation',
+      'Transparent $2,500 search + 3-5% success fee'
+    ],
+    icon: '🔍'
+  },
+  {
+    id: 'npn-applications',
+    title: 'NPN Applications',
+    description: 'Complete support for Natural Product Number applications for the Canadian market.',
+    features: [
+      '60-90 day approval for Class I products',
+      '92% first-time approval rate',
+      'Full document preparation and submission'
+    ],
+    icon: '📋'
+  },
+  {
     id: 'quality-testing',
     title: 'Quality & Testing',
-    description: 'Comprehensive testing through our partner laboratories ensures product safety and quality.',
+    description: 'Third-party laboratory testing ensures product safety, potency, and regulatory compliance.',
     features: [
-      'Third-party laboratory testing coordination',
       'Certificate of Analysis (COA) management',
-      'Microbial and heavy metal testing arrangement'
+      'Microbial and heavy metal testing',
+      'Stability and shelf-life verification'
     ],
     icon: '🔬'
   },
   {
+    id: 'compliance-labels',
+    title: 'Compliance Label Creation',
+    description: 'Bilingual labels meeting all FDA and Health Canada requirements. Platform ad-compliant messaging.',
+    features: [
+      'English/French bilingual labels',
+      'Meta Ads and Google Ads compliance',
+      'FDA and Health Canada verified'
+    ],
+    icon: '✅'
+  },
+  {
     id: 'fulfillment',
     title: 'Fulfillment & Distribution',
-    description: 'Streamline your logistics with our trusted 3PL partner network for warehousing and distribution.',
+    description: 'Complete logistics solutions with 3PL partner network. Setup in 2-3 weeks with 99.5% accuracy.',
     features: [
-      'Partner 3PL warehouse solutions',
-      'Direct-to-consumer fulfillment options',
-      'Amazon FBA preparation services'
+      'D2C fulfillment and Amazon FBA',
+      '3PL warehouses across North America',
+      '24-hour order processing'
     ],
     icon: '📦'
   },
   {
     id: 'marketing-brand',
     title: 'Marketing & Brand Kit',
-    description: 'Professional branding and marketing materials to launch your products with confidence.',
+    description: 'Professional branding with TikTok content, Meta Ads, Google Ads, and Shopify stores for 2025.',
     features: [
-      'Product photography coordination',
-      'Label and packaging design services',
-      'Marketing collateral development'
+      'Product photography and video content',
+      'TikTok, Instagram Reels, social media',
+      'Google Ads & Meta Ads campaign setup'
     ],
     icon: '🎨'
+  },
+  {
+    id: 'website-design',
+    title: 'Website Design & Development',
+    description: 'Conversion-optimized Shopify stores and custom websites built for supplement e-commerce.',
+    features: [
+      'Shopify store design and setup',
+      'Mobile-responsive, fast loading',
+      'Payment and shipping configuration'
+    ],
+    icon: '💻'
   }
 ];

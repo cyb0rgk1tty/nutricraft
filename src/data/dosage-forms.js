@@ -1,4 +1,4 @@
-export const formulations = [
+export const dosageForms = [
   {
     id: 'tablets',
     name: 'Tablets',
@@ -45,7 +45,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Direct compression or wet granulation',
-      moq: '500 bottles (30,000-60,000 tablets)',
+      moq: '1000 bottles (60,000-120,000 tablets)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2-3 years typically'
     },
@@ -108,7 +108,7 @@ export const formulations = [
     ],
     manufacturingDetails: {
       process: 'Encapsulation of powder or liquid fills',
-      moq: '500 bottles (30,000-60,000 capsules)',
+      moq: '1000 bottles (60,000-120,000 capsules)',
       leadTime: '8-10 weeks for first production',
       shelfLife: '2 years typically'
     },
@@ -123,70 +123,6 @@ export const formulations = [
       'Vegetarians/vegans (plant-based capsules)',
       'Those who dislike tablet texture',
       'Premium supplement buyers'
-    ]
-  },
-  {
-    id: 'odt',
-    name: 'ODT',
-    slug: 'odt',
-    tagline: 'Fast-dissolving, no water needed, convenient',
-    shortDescription: 'Innovative tablets that dissolve rapidly in the mouth for fast absorption and ultimate convenience.',
-    metaDescription: 'Discover Orally Disintegrating Tablets (ODTs) - the fast-acting supplement format that dissolves in seconds without water. Learn about rapid absorption, enhanced compliance, and why ODTs are perfect for on-the-go nutrition.',
-    image: '/images/formulations/odt-800.jpg',
-    responsiveImages: {
-      small: '/images/formulations/odt-400.jpg',
-      medium: '/images/formulations/odt-800.jpg',
-      large: '/images/formulations/odt-1200.jpg',
-      smallWebp: '/images/formulations/odt-400.webp',
-      mediumWebp: '/images/formulations/odt-800.webp',
-      largeWebp: '/images/formulations/odt-1200.webp'
-    },
-    articleImage: {
-      small: '/images/formulations/articles/odt-400.jpg',
-      medium: '/images/formulations/articles/odt-800.jpg',
-      large: '/images/formulations/articles/odt-1200.jpg',
-      smallWebp: '/images/formulations/articles/odt-400.webp',
-      mediumWebp: '/images/formulations/articles/odt-800.webp',
-      largeWebp: '/images/formulations/articles/odt-1200.webp',
-      alt: 'Professional ODT supplement manufacturing'
-    },
-    imageAlt: 'Orally disintegrating tablet on tongue',
-    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>`,
-    bestFor: ['Immune Support', 'Energy Boost', 'Pediatric Vitamins', 'Senior Nutrition'],
-    benefits: [
-      'Dissolves in 30 seconds to 2 minutes',
-      'No water required for administration',
-      'Rapid onset of action (20-30% faster)',
-      'Enhanced compliance for all ages',
-      'Pre-gastric absorption possible',
-      'Convenient for travel and on-the-go'
-    ],
-    considerations: [
-      'Requires moisture-resistant packaging',
-      'Limited to certain ingredients',
-      'May have slight taste/texture',
-      'Higher cost than regular tablets',
-      'Sensitive to humidity'
-    ],
-    manufacturingDetails: {
-      process: 'Low-force compression or freeze-drying',
-      moq: '1,000 bottles (60,000-120,000 tablets)',
-      leadTime: '10-12 weeks for first production',
-      shelfLife: '18-24 months in proper packaging'
-    },
-    technicalSpecs: {
-      bioavailability: 'Enhanced by 20-30% vs regular tablets',
-      dissolutionTime: '30 seconds to 2 minutes',
-      sizes: '8mm to 15mm diameter',
-      packaging: ['Blister packs', 'Moisture-proof bottles', 'Single-serve sachets']
-    },
-    targetDemographics: [
-      'Pediatric patients',
-      'Geriatric consumers',
-      'Busy professionals',
-      'Those with swallowing difficulties'
     ]
   },
   {
@@ -318,6 +254,133 @@ export const formulations = [
     ]
   },
   {
+    id: 'chewables',
+    name: 'Chewables',
+    slug: 'chewables',
+    tagline: 'Higher potency than gummies, better taste than tablets',
+    shortDescription: 'The perfect balance between therapeutic effectiveness and consumer compliance.',
+    metaDescription: 'Explore chewable tablets that combine high-dose capacity with pleasant taste. Learn about enhanced bioavailability, superior stability, and why chewables bridge the gap between potency and palatability.',
+    image: '/images/formulations/chewables-800.jpg',
+    responsiveImages: {
+      small: '/images/formulations/chewables-400.jpg',
+      medium: '/images/formulations/chewables-800.jpg',
+      large: '/images/formulations/chewables-1200.jpg',
+      smallWebp: '/images/formulations/chewables-400.webp',
+      mediumWebp: '/images/formulations/chewables-800.webp',
+      largeWebp: '/images/formulations/chewables-1200.webp'
+    },
+    articleImage: {
+      small: '/images/formulations/articles/chewables-400.jpg',
+      medium: '/images/formulations/articles/chewables-800.jpg',
+      large: '/images/formulations/articles/chewables-1200.jpg',
+      smallWebp: '/images/formulations/articles/chewables-400.webp',
+      mediumWebp: '/images/formulations/articles/chewables-800.webp',
+      largeWebp: '/images/formulations/articles/chewables-1200.webp',
+      alt: 'Professional chewable supplement manufacturing'
+    },
+    imageAlt: 'Chewable supplement tablets',
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>`,
+    bestFor: ['Calcium', 'Vitamin D', 'Multivitamins', 'Antacids'],
+    benefits: [
+      'Higher active ingredient content than gummies',
+      'Enhanced bioavailability through chewing',
+      'No water needed for consumption',
+      'Better stability than gummies',
+      'Pleasant taste without excess sugar',
+      'Suitable for all ages'
+    ],
+    considerations: [
+      'Texture preferences vary',
+      'Requires flavoring systems',
+      'May contain sugar alcohols',
+      'Higher cost than regular tablets'
+    ],
+    manufacturingDetails: {
+      process: 'Direct compression with flavor systems',
+      moq: '1000 bottles (60,000-120,000 tablets)',
+      leadTime: '8-10 weeks for first production',
+      shelfLife: '2 years typically'
+    },
+    technicalSpecs: {
+      bioavailability: '15-25% better than swallowed tablets',
+      consumptionTime: 'Immediate (chewable)',
+      activeContent: '40-60% by weight',
+      flavorOptions: ['Natural fruit', 'Mint', 'Chocolate', 'Custom flavors']
+    },
+    targetDemographics: [
+      'Children and families',
+      'Adults who dislike swallowing pills',
+      'Active lifestyle consumers',
+      'Those seeking better compliance'
+    ]
+  },
+  {
+    id: 'odt',
+    name: 'Orally Disintegrating Tablets (ODT)',
+    slug: 'oral-disintegrating-tablets',
+    tagline: 'Fast-dissolving, no water needed, convenient',
+    shortDescription: 'Innovative tablets that dissolve rapidly in the mouth for fast absorption and ultimate convenience.',
+    metaDescription: 'Discover Orally Disintegrating Tablets (ODTs) - the fast-acting supplement format that dissolves in seconds without water. Learn about rapid absorption, enhanced compliance, and why ODTs are perfect for on-the-go nutrition.',
+    image: '/images/formulations/odt-800.jpg',
+    responsiveImages: {
+      small: '/images/formulations/odt-400.jpg',
+      medium: '/images/formulations/odt-800.jpg',
+      large: '/images/formulations/odt-1200.jpg',
+      smallWebp: '/images/formulations/odt-400.webp',
+      mediumWebp: '/images/formulations/odt-800.webp',
+      largeWebp: '/images/formulations/odt-1200.webp'
+    },
+    articleImage: {
+      small: '/images/formulations/articles/odt-400.jpg',
+      medium: '/images/formulations/articles/odt-800.jpg',
+      large: '/images/formulations/articles/odt-1200.jpg',
+      smallWebp: '/images/formulations/articles/odt-400.webp',
+      mediumWebp: '/images/formulations/articles/odt-800.webp',
+      largeWebp: '/images/formulations/articles/odt-1200.webp',
+      alt: 'Professional ODT supplement manufacturing'
+    },
+    imageAlt: 'Orally disintegrating tablet on tongue',
+    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>`,
+    bestFor: ['Immune Support', 'Energy Boost', 'Pediatric Vitamins', 'Senior Nutrition'],
+    benefits: [
+      'Dissolves in 30 seconds to 2 minutes',
+      'No water required for administration',
+      'Rapid onset of action (20-30% faster)',
+      'Enhanced compliance for all ages',
+      'Pre-gastric absorption possible',
+      'Convenient for travel and on-the-go'
+    ],
+    considerations: [
+      'Requires moisture-resistant packaging',
+      'Limited to certain ingredients',
+      'May have slight taste/texture',
+      'Higher cost than regular tablets',
+      'Sensitive to humidity'
+    ],
+    manufacturingDetails: {
+      process: 'Low-force compression or freeze-drying',
+      moq: '1,000 bottles (60,000-120,000 tablets)',
+      leadTime: '10-12 weeks for first production',
+      shelfLife: '18-24 months in proper packaging'
+    },
+    technicalSpecs: {
+      bioavailability: 'Enhanced by 20-30% vs regular tablets',
+      dissolutionTime: '30 seconds to 2 minutes',
+      sizes: '8mm to 15mm diameter',
+      packaging: ['Blister packs', 'Moisture-proof bottles', 'Single-serve sachets']
+    },
+    targetDemographics: [
+      'Pediatric patients',
+      'Geriatric consumers',
+      'Busy professionals',
+      'Those with swallowing difficulties'
+    ]
+  },
+  {
     id: 'softgels',
     name: 'Softgels',
     slug: 'softgels',
@@ -378,61 +441,6 @@ export const formulations = [
       'Older adults (easy to swallow)',
       'Those seeking maximum absorption',
       'Omega-3 and fat-soluble vitamin users'
-    ]
-  },
-  {
-    id: 'liquids',
-    name: 'Liquids',
-    slug: 'liquids',
-    tagline: 'Fastest absorption, easy dosing',
-    shortDescription: 'Premium liquid formulations offering maximum bioavailability and convenience.',
-    metaDescription: 'Learn why liquid supplements offer the fastest absorption rates and highest bioavailability. Explore liquid formulation advantages, applications, and ideal use cases for maximum effectiveness.',
-    image: '/images/formulations/liquid-800.jpg',
-    responsiveImages: {
-      small: '/images/formulations/liquid-400.jpg',
-      medium: '/images/formulations/liquid-800.jpg',
-      large: '/images/formulations/liquid-1200.jpg',
-      smallWebp: '/images/formulations/liquid-400.webp',
-      mediumWebp: '/images/formulations/liquid-800.webp',
-      largeWebp: '/images/formulations/liquid-1200.webp'
-    },
-    imageAlt: 'Liquid supplement bottles',
-    icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-    </svg>`,
-    bestFor: ['Multivitamins', 'Minerals', 'Herbal tinctures'],
-    benefits: [
-      'Fastest absorption rate of all formats',
-      'No dissolution time needed',
-      'Easy to adjust dosing',
-      'Ideal for those who cannot swallow pills',
-      'Can combine multiple ingredients easily',
-      'Often better taste than pills'
-    ],
-    considerations: [
-      'Shorter shelf life',
-      'Requires preservatives',
-      'Glass bottles add shipping weight/cost',
-      'May require refrigeration',
-      'Potential for contamination once opened'
-    ],
-    manufacturingDetails: {
-      process: 'Solution preparation and bottling',
-      moq: '500 bottles',
-      leadTime: '8-10 weeks for first production',
-      shelfLife: '12-18 months typically'
-    },
-    technicalSpecs: {
-      bioavailability: 'Up to 98% absorption rate',
-      absorptionTime: '1-4 minutes',
-      packaging: ['Glass bottles', 'PET bottles', 'Dropper bottles', 'Spray bottles'],
-      preservatives: ['Natural options available', 'Citric acid', 'Potassium sorbate']
-    },
-    targetDemographics: [
-      'Parents with children',
-      'Elderly consumers',
-      'Those seeking rapid effects',
-      'Premium/natural product buyers'
     ]
   },
   {
@@ -500,66 +508,58 @@ export const formulations = [
     ]
   },
   {
-    id: 'chewables',
-    name: 'Chewables',
-    slug: 'chewables',
-    tagline: 'Higher potency than gummies, better taste than tablets',
-    shortDescription: 'The perfect balance between therapeutic effectiveness and consumer compliance.',
-    metaDescription: 'Explore chewable tablets that combine high-dose capacity with pleasant taste. Learn about enhanced bioavailability, superior stability, and why chewables bridge the gap between potency and palatability.',
-    image: '/images/formulations/chewables-800.jpg',
+    id: 'liquids',
+    name: 'Liquids',
+    slug: 'liquids',
+    tagline: 'Fastest absorption, easy dosing',
+    shortDescription: 'Premium liquid formulations offering maximum bioavailability and convenience.',
+    metaDescription: 'Learn why liquid supplements offer the fastest absorption rates and highest bioavailability. Explore liquid formulation advantages, applications, and ideal use cases for maximum effectiveness.',
+    image: '/images/formulations/liquid-800.jpg',
     responsiveImages: {
-      small: '/images/formulations/chewables-400.jpg',
-      medium: '/images/formulations/chewables-800.jpg',
-      large: '/images/formulations/chewables-1200.jpg',
-      smallWebp: '/images/formulations/chewables-400.webp',
-      mediumWebp: '/images/formulations/chewables-800.webp',
-      largeWebp: '/images/formulations/chewables-1200.webp'
+      small: '/images/formulations/liquid-400.jpg',
+      medium: '/images/formulations/liquid-800.jpg',
+      large: '/images/formulations/liquid-1200.jpg',
+      smallWebp: '/images/formulations/liquid-400.webp',
+      mediumWebp: '/images/formulations/liquid-800.webp',
+      largeWebp: '/images/formulations/liquid-1200.webp'
     },
-    articleImage: {
-      small: '/images/formulations/articles/chewables-400.jpg',
-      medium: '/images/formulations/articles/chewables-800.jpg',
-      large: '/images/formulations/articles/chewables-1200.jpg',
-      smallWebp: '/images/formulations/articles/chewables-400.webp',
-      mediumWebp: '/images/formulations/articles/chewables-800.webp',
-      largeWebp: '/images/formulations/articles/chewables-1200.webp',
-      alt: 'Professional chewable supplement manufacturing'
-    },
-    imageAlt: 'Chewable supplement tablets',
+    imageAlt: 'Liquid supplement bottles',
     icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
     </svg>`,
-    bestFor: ['Calcium', 'Vitamin D', 'Multivitamins', 'Antacids'],
+    bestFor: ['Multivitamins', 'Minerals', 'Herbal tinctures'],
     benefits: [
-      'Higher active ingredient content than gummies',
-      'Enhanced bioavailability through chewing',
-      'No water needed for consumption',
-      'Better stability than gummies',
-      'Pleasant taste without excess sugar',
-      'Suitable for all ages'
+      'Fastest absorption rate of all formats',
+      'No dissolution time needed',
+      'Easy to adjust dosing',
+      'Ideal for those who cannot swallow pills',
+      'Can combine multiple ingredients easily',
+      'Often better taste than pills'
     ],
     considerations: [
-      'Texture preferences vary',
-      'Requires flavoring systems',
-      'May contain sugar alcohols',
-      'Higher cost than regular tablets'
+      'Shorter shelf life',
+      'Requires preservatives',
+      'Glass bottles add shipping weight/cost',
+      'May require refrigeration',
+      'Potential for contamination once opened'
     ],
     manufacturingDetails: {
-      process: 'Direct compression with flavor systems',
-      moq: '500 bottles (30,000-60,000 tablets)',
+      process: 'Solution preparation and bottling',
+      moq: '1000 bottles',
       leadTime: '8-10 weeks for first production',
-      shelfLife: '2 years typically'
+      shelfLife: '12-18 months typically'
     },
     technicalSpecs: {
-      bioavailability: '15-25% better than swallowed tablets',
-      consumptionTime: 'Immediate (chewable)',
-      activeContent: '40-60% by weight',
-      flavorOptions: ['Natural fruit', 'Mint', 'Chocolate', 'Custom flavors']
+      bioavailability: 'Up to 98% absorption rate',
+      absorptionTime: '1-4 minutes',
+      packaging: ['Glass bottles', 'PET bottles', 'Dropper bottles', 'Spray bottles'],
+      preservatives: ['Natural options available', 'Citric acid', 'Potassium sorbate']
     },
     targetDemographics: [
-      'Children and families',
-      'Adults who dislike swallowing pills',
-      'Active lifestyle consumers',
-      'Those seeking better compliance'
+      'Parents with children',
+      'Elderly consumers',
+      'Those seeking rapid effects',
+      'Premium/natural product buyers'
     ]
   }
 ];

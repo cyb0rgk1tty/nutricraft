@@ -11,15 +11,15 @@ export default defineConfig({
     tailwind(), 
     sitemap({
       customPages: [
-        'https://nutricraftlabs.com/formulations/tablets',
-        'https://nutricraftlabs.com/formulations/capsules',
-        'https://nutricraftlabs.com/formulations/powders',
-        'https://nutricraftlabs.com/formulations/gummies',
-        'https://nutricraftlabs.com/formulations/chewables',
-        'https://nutricraftlabs.com/formulations/oral-disintegrating-tablets',
-        'https://nutricraftlabs.com/formulations/softgels',
-        'https://nutricraftlabs.com/formulations/effervescent',
-        'https://nutricraftlabs.com/formulations/liquids'
+        'https://nutricraftlabs.com/dosage-forms/tablets',
+        'https://nutricraftlabs.com/dosage-forms/capsules',
+        'https://nutricraftlabs.com/dosage-forms/powders',
+        'https://nutricraftlabs.com/dosage-forms/gummies',
+        'https://nutricraftlabs.com/dosage-forms/chewables',
+        'https://nutricraftlabs.com/dosage-forms/oral-disintegrating-tablets',
+        'https://nutricraftlabs.com/dosage-forms/softgels',
+        'https://nutricraftlabs.com/dosage-forms/effervescent',
+        'https://nutricraftlabs.com/dosage-forms/liquids'
       ]
     }), 
     robotsTxt()

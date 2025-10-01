@@ -3,11 +3,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import FormulationImage from "../../components/FormulationImage.astro";
-import { formulations, getFormulationBySlug, formulationComparison } from "../../data/formulations.js";
+import { dosageForms, getFormulationBySlug, formulationComparison } from "../../data/dosage-forms.js";
 import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  return formulations.map((formulation) => ({
+  return dosageForms.map((formulation) => ({
     params: { format: formulation.slug },
   }));
 }
@@ -20,7 +20,7 @@ if (!formulation) {
 }
 
 // Get article content from content collection
-const article = await getEntry('formulations', formulation.slug);
+const article = await getEntry('dosage-forms', formulation.slug);
 const { Content } = article ? await article.render() : { Content: null };
 
 // SEO metadata
