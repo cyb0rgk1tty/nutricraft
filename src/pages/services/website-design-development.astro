@@ -1,0 +1,855 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import CountUp from "../../components/CountUp.astro";
+
+const websiteServices = [
+  {
+    service: "E-Commerce Website Development",
+    description: "Conversion-optimized Shopify stores built specifically for supplement brands",
+    deliverables: [
+      "Custom Shopify theme design and setup",
+      "Product page optimization with reviews",
+      "Mobile-responsive design (60%+ of traffic)",
+      "Payment gateway and shipping integration"
+    ],
+    timeline: "3-4 weeks",
+    formats: ["Live Shopify store", "Custom theme files", "Training documentation", "Ongoing support"],
+    icon: ""
+  },
+  {
+    service: "Custom Website Development",
+    description: "Fully custom websites tailored to your unique brand and business needs",
+    deliverables: [
+      "Custom design and development from scratch",
+      "Advanced functionality and integrations",
+      "Content management system (CMS)",
+      "Scalable architecture for growth"
+    ],
+    timeline: "6-8 weeks",
+    formats: ["Custom-coded website", "CMS access", "Documentation", "Source code"],
+    icon: ""
+  },
+  {
+    service: "Landing Page Design",
+    description: "High-converting landing pages for product launches and ad campaigns",
+    deliverables: [
+      "Conversion-focused page design",
+      "A/B testing variations",
+      "Lead capture forms and CTAs",
+      "Google Analytics and tracking setup"
+    ],
+    timeline: "1-2 weeks",
+    formats: ["Responsive landing pages", "Analytics setup", "A/B test variants", "Performance reports"],
+    icon: ""
+  },
+  {
+    service: "Website Redesign & Optimization",
+    description: "Refresh outdated websites and optimize for better conversions and user experience",
+    deliverables: [
+      "UX audit and conversion analysis",
+      "Modern design refresh",
+      "Speed and performance optimization",
+      "Mobile responsiveness improvements"
+    ],
+    timeline: "2-4 weeks",
+    formats: ["Redesigned website", "Performance reports", "SEO improvements", "Mobile optimization"],
+    icon: ""
+  },
+  {
+    service: "SEO & Technical Optimization",
+    description: "Improve search rankings and site performance for organic traffic growth",
+    deliverables: [
+      "Technical SEO audit and fixes",
+      "On-page SEO optimization",
+      "Page speed optimization",
+      "Schema markup and meta tags"
+    ],
+    timeline: "2-3 weeks",
+    formats: ["SEO audit report", "Optimized website", "Keyword research", "Performance metrics"],
+    icon: ""
+  },
+  {
+    service: "Website Maintenance & Support",
+    description: "Ongoing updates, security, and technical support to keep your site running smoothly",
+    deliverables: [
+      "Monthly security updates",
+      "Content and design updates",
+      "Performance monitoring",
+      "Technical support and troubleshooting"
+    ],
+    timeline: "Ongoing",
+    formats: ["Monthly reports", "Update logs", "Support tickets", "Performance dashboards"],
+    icon: ""
+  }
+];
+
+const websiteFeatures = [
+  {
+    category: "Core Features",
+    description: "Essential features every supplement e-commerce site needs",
+    features: [
+      "Product catalog with filtering and search",
+      "Shopping cart and secure checkout",
+      "Customer accounts and order history",
+      "Subscription and auto-ship options",
+      "Email capture and newsletter signup",
+      "Live chat and customer support integration"
+    ],
+    specifications: "Built for conversion and user experience"
+  },
+  {
+    category: "Compliance & Trust",
+    description: "Features that build credibility and meet regulatory requirements",
+    features: [
+      "FDA disclaimer and supplement facts display",
+      "Trust badges and security seals",
+      "Customer reviews and testimonials",
+      "SSL certificate and secure payment processing",
+      "Privacy policy and terms of service pages",
+      "Transparent ingredient sourcing information"
+    ],
+    specifications: "Compliant with FDA and FTC regulations"
+  },
+  {
+    category: "Marketing & Growth",
+    description: "Tools to drive traffic, convert visitors, and grow your business",
+    features: [
+      "Google Analytics and conversion tracking",
+      "Email marketing integration (Klaviyo, Mailchimp)",
+      "Abandoned cart recovery",
+      "Upsell and cross-sell recommendations",
+      "Loyalty program and referral system",
+      "Blog and content marketing platform"
+    ],
+    specifications: "Integrated with marketing tools and ad platforms"
+  },
+  {
+    category: "Performance & SEO",
+    description: "Technical optimizations for speed, search rankings, and user experience",
+    features: [
+      "Mobile-first responsive design",
+      "Fast page load speeds (under 3 seconds)",
+      "SEO-optimized URLs and meta tags",
+      "Image optimization and lazy loading",
+      "Schema markup for rich search results",
+      "ADA accessibility compliance"
+    ],
+    specifications: "Optimized for Google search and Core Web Vitals"
+  }
+];
+
+const developmentProcess = [
+  {
+    phase: "Discovery & Planning",
+    timeline: "Week 1",
+    tasks: [
+      "Define project goals, target audience, and success metrics",
+      "Analyze competitors and industry best practices",
+      "Create sitemap and information architecture",
+      "Develop wireframes and user flow diagrams"
+    ],
+    deliverable: "Project roadmap and wireframe mockups"
+  },
+  {
+    phase: "Design & Prototyping",
+    timeline: "Week 2-3",
+    tasks: [
+      "Create high-fidelity design mockups for key pages",
+      "Design mobile and tablet responsive layouts",
+      "Develop brand-consistent visual elements",
+      "Client review and design iteration"
+    ],
+    deliverable: "Final approved design mockups"
+  },
+  {
+    phase: "Development & Integration",
+    timeline: "Week 3-5",
+    tasks: [
+      "Build website on chosen platform (Shopify, custom, etc.)",
+      "Integrate payment gateways and shipping providers",
+      "Set up product catalog and inventory management",
+      "Implement marketing tools and analytics tracking"
+    ],
+    deliverable: "Functional staging website for testing"
+  },
+  {
+    phase: "Testing & Optimization",
+    timeline: "Week 5-6",
+    tasks: [
+      "Cross-browser and device testing",
+      "Performance optimization and speed testing",
+      "Security audit and SSL certificate setup",
+      "User acceptance testing (UAT) with stakeholders"
+    ],
+    deliverable: "Bug fixes and optimizations complete"
+  },
+  {
+    phase: "Launch & Training",
+    timeline: "Week 6",
+    tasks: [
+      "Final pre-launch checklist and review",
+      "Domain setup and DNS configuration",
+      "Website launch and monitoring",
+      "Team training on content management and updates"
+    ],
+    deliverable: "Live website and training documentation"
+  },
+  {
+    phase: "Post-Launch Support",
+    timeline: "Ongoing",
+    tasks: [
+      "Monitor site performance and uptime",
+      "Address any post-launch issues or bugs",
+      "Implement analytics tracking and reporting",
+      "Provide ongoing maintenance and updates"
+    ],
+    deliverable: "Monthly performance reports and support"
+  }
+];
+
+const websitePackages = [
+  {
+    package: "Starter Website",
+    description: "Essential e-commerce setup for new supplement brands",
+    includes: [
+      "Shopify store setup with theme customization",
+      "Up to 10 product pages with descriptions",
+      "Basic SEO setup and meta tags",
+      "Mobile-responsive design",
+      "Payment gateway integration (Stripe, PayPal)",
+      "Contact form and email capture",
+      "1 month of post-launch support"
+    ],
+    timeline: "3-4 weeks",
+    investment: "Starting at $3,000",
+    bestFor: "Startups launching their first supplement brand"
+  },
+  {
+    package: "Growth Website",
+    description: "Advanced e-commerce with marketing and growth features",
+    includes: [
+      "Custom Shopify theme or platform development",
+      "Unlimited product pages and catalog setup",
+      "Advanced SEO optimization and blog setup",
+      "Subscription and auto-ship functionality",
+      "Email marketing integration (Klaviyo, Mailchimp)",
+      "Abandoned cart recovery and upsell features",
+      "Google Analytics and conversion tracking",
+      "3 months of post-launch support and training"
+    ],
+    timeline: "4-6 weeks",
+    investment: "Starting at $7,000",
+    bestFor: "Growing brands scaling their online presence"
+  },
+  {
+    package: "Premium Website",
+    description: "Fully custom website with enterprise-level features and integrations",
+    includes: [
+      "Fully custom design and development",
+      "Advanced features: loyalty programs, referrals, memberships",
+      "Custom integrations with CRM, ERP, or fulfillment systems",
+      "Multi-channel sales (Amazon, eBay, social commerce)",
+      "Advanced analytics and reporting dashboards",
+      "A/B testing setup for conversion optimization",
+      "Comprehensive SEO and content strategy",
+      "6 months of dedicated support and optimization"
+    ],
+    timeline: "6-8 weeks",
+    investment: "Starting at $15,000",
+    bestFor: "Established brands seeking competitive advantage"
+  }
+];
+
+const designTrends2025 = [
+  {
+    trend: "Mobile-First Design",
+    description: "Over 60% of e-commerce traffic comes from mobile devices",
+    implementation: "Responsive design that prioritizes mobile experience from the start, not as an afterthought",
+    impact: "Higher conversion rates and better user experience"
+  },
+  {
+    trend: "Video & Interactive Content",
+    description: "Product videos and interactive elements engage visitors and boost conversions",
+    implementation: "Hero videos, product demos, unboxing experiences, and 3D product viewers",
+    impact: "Increased engagement and reduced return rates"
+  },
+  {
+    trend: "AI-Powered Personalization",
+    description: "Personalized product recommendations and content based on user behavior",
+    implementation: "Smart product recommendations, dynamic content, and personalized email campaigns",
+    impact: "Higher average order value and repeat purchases"
+  },
+  {
+    trend: "Clean, Minimalist Aesthetics",
+    description: "Focus on clarity, readability, and reducing cognitive load for visitors",
+    implementation: "White space, simple navigation, clear CTAs, and high-quality product imagery",
+    impact: "Better user experience and higher conversion rates"
+  },
+  {
+    trend: "Trust & Transparency",
+    description: "Customers demand transparency about ingredients, sourcing, and testing",
+    implementation: "Detailed product information, third-party testing results, customer reviews, and certifications",
+    impact: "Increased trust and higher customer lifetime value"
+  },
+  {
+    trend: "Fast Page Load Speeds",
+    description: "Page speed is a critical ranking factor and conversion driver",
+    implementation: "Image optimization, lazy loading, code minification, and CDN usage",
+    impact: "Better SEO rankings and lower bounce rates"
+  }
+];
+
+const platformComparison = [
+  {
+    platform: "Shopify",
+    bestFor: "Most supplement brands (90% of our clients)",
+    pros: [
+      "Easy to use and manage without technical skills",
+      "Built-in e-commerce features and payment processing",
+      "Large app ecosystem for marketing and growth",
+      "Reliable hosting and security included"
+    ],
+    cons: [
+      "Monthly subscription fees ($29-$299/month)",
+      "Transaction fees on non-Shopify payments",
+      "Limited customization without coding knowledge"
+    ],
+    recommendation: "Best for 90% of supplement brands. Fast setup, reliable, and easy to scale."
+  },
+  {
+    platform: "WooCommerce (WordPress)",
+    bestFor: "Brands with existing WordPress sites or specific customization needs",
+    pros: [
+      "Free core software (pay for hosting and extensions)",
+      "Unlimited customization and flexibility",
+      "Large plugin library for added functionality",
+      "Full control over data and hosting"
+    ],
+    cons: [
+      "Requires technical knowledge or developer support",
+      "Ongoing maintenance and security updates needed",
+      "Hosting and plugin costs can add up"
+    ],
+    recommendation: "Good for brands with WordPress experience or complex requirements."
+  },
+  {
+    platform: "Custom Development",
+    bestFor: "Enterprise brands with unique requirements",
+    pros: [
+      "Completely custom features and integrations",
+      "No platform limitations or restrictions",
+      "Full ownership of code and infrastructure",
+      "Can integrate with any system or API"
+    ],
+    cons: [
+      "Highest upfront cost ($15,000+)",
+      "Longer development timeline (2-3 months)",
+      "Requires ongoing developer support"
+    ],
+    recommendation: "Only recommended for brands with complex, unique needs that can't be met by Shopify or WooCommerce."
+  }
+];
+
+const faqItems = [
+  {
+    question: "Which platform is best for my supplement brand?",
+    answer: "For 90% of supplement brands, Shopify is the best choice. It's easy to use, has built-in e-commerce features, reliable hosting, and a large app ecosystem for marketing and growth. We only recommend custom development or WooCommerce if you have very specific requirements that Shopify can't meet."
+  },
+  {
+    question: "How much does a supplement e-commerce website cost?",
+    answer: "Website costs vary based on complexity. A basic Shopify store starts at $3,000, a growth-focused site with advanced features runs $7,000+, and fully custom enterprise websites start at $15,000. This includes design, development, and post-launch support. Monthly costs include hosting ($29-$299/month for Shopify) and any premium apps or plugins."
+  },
+  {
+    question: "How long does it take to build a supplement website?",
+    answer: "A standard Shopify store takes 3-4 weeks from kickoff to launch. More complex sites with custom features take 4-6 weeks. Fully custom development projects typically require 6-8 weeks. Timeline depends on client feedback speed, content readiness, and complexity of requirements."
+  },
+  {
+    question: "Do you provide content writing for product pages?",
+    answer: "We can help optimize product descriptions and write basic copy, but we recommend clients provide initial product information since they know their products best. For comprehensive content writing (blog posts, detailed product descriptions, SEO content), we can connect you with professional copywriters specializing in supplements."
+  },
+  {
+    question: "Will my website be mobile-friendly?",
+    answer: "Absolutely. All our websites are mobile-first and fully responsive, meaning they work perfectly on phones, tablets, and desktops. Since over 60% of e-commerce traffic comes from mobile devices, we prioritize mobile experience in every design."
+  },
+  {
+    question: "Can you help with FDA compliance and disclaimers?",
+    answer: "Yes, we include FDA-compliant disclaimer language on your website and ensure proper display of supplement facts panels. However, we recommend consulting with a regulatory compliance expert or attorney for specific health claims and marketing language. We can connect you with specialists in supplement compliance."
+  },
+  {
+    question: "Do you integrate with Amazon, social media, or other sales channels?",
+    answer: "Yes, we can integrate your website with Amazon, Facebook Shop, Instagram Shopping, TikTok Shop, and other sales channels. This allows you to manage inventory and orders from a central location while selling across multiple platforms."
+  },
+  {
+    question: "What's included in post-launch support?",
+    answer: "Post-launch support includes bug fixes, technical troubleshooting, training on how to manage your website, and answering questions. Our Starter package includes 1 month, Growth includes 3 months, and Premium includes 6 months. After that, we offer ongoing maintenance packages for continued support."
+  },
+  {
+    question: "Can you help with SEO and getting my site ranked on Google?",
+    answer: "Yes, all our websites include basic SEO setup: optimized page titles, meta descriptions, clean URLs, fast load speeds, and mobile responsiveness. For more aggressive SEO campaigns (link building, content marketing, ongoing optimization), we recommend working with an SEO specialist or agency. We can connect you with trusted partners."
+  },
+  {
+    question: "What if I already have a website and just need improvements?",
+    answer: "We offer website redesign and optimization services. This includes UX audits, design refreshes, speed optimization, mobile improvements, and conversion rate optimization. Pricing depends on the scope of work, but typically starts at $2,000 for optimization projects and $5,000+ for full redesigns."
+  }
+];
+
+const metaDescription = "Professional website design and development for supplement brands. E-commerce Shopify stores, custom websites, landing pages, and SEO optimization. Launch your online presence with expert support.";
+const metaTitle = "Website Design & Development | Supplement E-Commerce Websites | NutriCraft Labs";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span>E-Commerce Website Development</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Professional Websites Built<br/>
+            <span class="text-mint-600">for Supplement Brands</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8">
+            Launch your online store with conversion-optimized design, mobile-first development, and expert support from strategy to launch.
+          </p>
+
+          <!-- Value Props -->
+          <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">Mobile-First Design</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">FDA Compliant</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">3-6 Week Launch</span>
+            </div>
+          </div>
+
+          <!-- Dual CTAs -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <span class="ml-2">Get Your Free Website Quote</span>
+            </a>
+            <a href="#packages" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-mint-600">
+                <span class="ml-2">View Website Packages</span>
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <span>Complete Website Solutions</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Website Design & Development Services
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            From simple Shopify stores to fully custom enterprise websites, we build online experiences that convert visitors into customers
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {websiteServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col group hover:scale-105">
+              <div class="flex-grow">
+                <div class="flex items-start justify-between mb-3">
+                  <h3 class="text-2xl font-bold text-gray-900">{service.service}</h3>
+                </div>
+
+                {/* Timeline indicator */}
+                <div class="inline-flex items-center gap-2 text-sm text-gray-600 mb-3">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>{service.timeline}</span>
+                </div>
+
+                <p class="text-gray-600 mb-4">{service.description}</p>
+                <ul class="space-y-2 mb-6">
+                  {service.deliverables.map(deliverable => (
+                    <li class="flex items-start gap-2">
+                      <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-gray-700">{deliverable}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2025 Design Trends Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <span>2025 E-Commerce Trends</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Modern Design Trends We Implement
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Stay ahead of the competition with the latest e-commerce design trends and best practices
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {designTrends2025.map((trend, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{trend.trend}</h3>
+              <p class="text-gray-600 mb-4">{trend.description}</p>
+              <div class="bg-mint-50 p-4 rounded-lg mb-4">
+                <p class="text-sm text-gray-700"><strong>How we implement it:</strong> {trend.implementation}</p>
+              </div>
+              <div class="mt-auto">
+                <p class="text-sm text-mint-600 font-semibold">Impact: {trend.impact}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Website Features Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Essential Features for Supplement E-Commerce
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Every website we build includes these critical features to maximize conversions and build customer trust
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {websiteFeatures.map((category, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl p-8 border border-mint-200 h-full">
+              <h3 class="text-2xl font-bold text-gray-900 mb-3">{category.category}</h3>
+              <p class="text-gray-600 mb-6">{category.description}</p>
+              <ul class="space-y-3 mb-6">
+                {category.features.map(feature => (
+                  <li class="flex items-start gap-2">
+                    <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="text-sm text-mint-600 font-semibold">
+                {category.specifications}
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Development Process Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Our Website Development Process
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            From discovery to launch, we guide you through every step with transparency and expert support
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {developmentProcess.map((phase, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="bg-mint-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">
+                  {index + 1}
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">{phase.phase}</h3>
+              </div>
+              <div class="text-sm text-mint-600 font-semibold mb-4">{phase.timeline}</div>
+              <ul class="space-y-2 mb-6 flex-grow">
+                {phase.tasks.map(task => (
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-mint-600 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-700 text-sm">{task}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="bg-mint-50 p-3 rounded-lg">
+                <p class="text-sm text-gray-700"><strong>Deliverable:</strong> {phase.deliverable}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Comparison Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Choosing the Right Platform
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            We help you select the best platform based on your budget, technical skills, and business goals
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {platformComparison.map((platform, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl p-8 border border-mint-200">
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900 mb-2">{platform.platform}</h3>
+                  <p class="text-mint-600 font-semibold">{platform.bestFor}</p>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h4 class="font-semibold text-gray-900 mb-3">Pros:</h4>
+                  <ul class="space-y-2">
+                    {platform.pros.map(pro => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">{pro}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-900 mb-3">Cons:</h4>
+                  <ul class="space-y-2">
+                    {platform.cons.map(con => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">{con}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-lg border border-mint-200">
+                <p class="text-gray-700"><strong>Our Recommendation:</strong> {platform.recommendation}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages Section -->
+  <section id="packages" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <span>Website Packages</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Choose Your Website Package
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Transparent pricing and comprehensive packages designed for supplement brands at every stage
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {websitePackages.map((pkg, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class={`bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col ${index === 1 ? 'ring-2 ring-mint-600 relative' : ''}`}>
+              {index === 1 && (
+                <div class="absolute top-0 right-0 bg-mint-600 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg rounded-tr-lg">
+                  Most Popular
+                </div>
+              )}
+              <div class="flex-grow">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">{pkg.package}</h3>
+                <p class="text-gray-600 mb-4">{pkg.description}</p>
+
+                <div class="mb-6">
+                  <div class="text-3xl font-bold text-mint-600 mb-1">{pkg.investment}</div>
+                  <div class="text-sm text-gray-600">{pkg.timeline} delivery</div>
+                </div>
+
+                <div class="mb-6">
+                  <h4 class="font-semibold text-gray-900 mb-3">What's included:</h4>
+                  <ul class="space-y-2">
+                    {pkg.includes.map(item => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700 text-sm">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="bg-mint-50 p-3 rounded-lg">
+                  <p class="text-sm text-gray-700"><strong>Best for:</strong> {pkg.bestFor}</p>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <a href="/contact" class={`block text-center px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${index === 1 ? 'bg-mint-600 text-white hover:bg-mint-700' : 'bg-white text-mint-600 border-2 border-mint-600 hover:bg-mint-50'}`}>
+                  Get Started
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation delay={300}>
+        <div class="mt-12 text-center">
+          <p class="text-gray-600 mb-4">
+            Not sure which package is right for you? We'll help you choose during your free consultation.
+          </p>
+          <a href="/schedule-call" class="text-mint-600 hover:text-mint-700 font-semibold underline">
+            Schedule a free strategy call →
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Everything you need to know about website design and development for supplement brands
+          </p>
+        </div>
+      </ScrollAnimation>
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Ready to Launch Your Supplement Website?
+        </h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          Get a custom quote and strategy session to discuss your website goals, timeline, and budget.
+        </p>
+
+        <!-- Trust Elements -->
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Free Consultation</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">3-6 Week Launch</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Post-Launch Support</span>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={200}>
+        <div class="flex justify-center mb-6">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Get Your Free Website Quote
+            <svg
+              class="ml-2 w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+
+        <p class="text-sm text-gray-600">
+          Ready to get started? <a href="/schedule-call" class="text-mint-600 hover:text-mint-700 font-semibold underline">Schedule a consultation</a> or request your custom quote above.
+        </p>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
