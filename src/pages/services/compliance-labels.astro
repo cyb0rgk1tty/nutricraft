@@ -4,7 +4,6 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ScrollAnimation from "../../components/ScrollAnimation.astro";
 import FAQ from "../../components/FAQ.astro";
-import CountUp from "../../components/CountUp.astro";
 
 const labelingRequirements = [
   {
@@ -193,7 +192,7 @@ const regulatoryUpdates2025 = [
       "Supplement Facts panel format (established 2016)",
       "New Dietary Ingredient (NDI) notification requirements",
       "Enhanced structure/function claim substantiation",
-      "Minimum font size requirements (6-8pt)"
+      "Minimum 8-point font size (6-point for column headings only)"
     ],
     impact: "Stricter enforcement of existing supplement labeling standards"
   }
@@ -260,12 +259,12 @@ const faqItems = [
     answer: "Yes, we provide professional regulatory translation services from English to French for Canadian market compliance. Our certified translators understand nuances of supplement terminology and ensure cultural appropriateness for Quebec markets."
   },
   {
-    question: "How much does supplement label design and compliance review cost?",
-    answer: "Costs vary based on complexity and scope. Basic label design typically ranges from $15-$50 for simple templates, while comprehensive compliance reviews run $240-$500 per product. Full-service label design with regulatory review typically costs $500-$2,000 for single products. Complex multi-market labels or products with extensive claims can range from $2,000-$10,000. We provide detailed quotes based on your specific needs, product type, and target markets."
+    question: "How is pricing determined for label design and compliance review?",
+    answer: "Pricing varies based on multiple factors including product complexity, number of ingredients, target markets (US, Canada, or both), formulation type, required testing, claim substantiation needs, and timeline requirements. Each project is unique, and we provide detailed custom quotes based on your specific requirements. Contact us for a personalized quote tailored to your product and business needs."
   },
   {
     question: "What's included in your label compliance review?",
-    answer: "Our review covers Supplement Facts/Product Facts Table accuracy, ingredient declaration compliance, claim substantiation, warning statement requirements, font size regulations (minimum 6-8pt), mandatory information placement, bilingual requirements for Canada, and overall regulatory compliance for your target markets including 2025 PLL standards."
+    answer: "Our review covers Supplement Facts/Product Facts Table accuracy, ingredient declaration compliance, claim substantiation, warning statement requirements, font size regulations (minimum 8-point for standard packages, 6-point for column headings), mandatory information placement, bilingual requirements for Canada, and overall regulatory compliance for your target markets including 2025 PLL standards."
   }
 ];
 
@@ -743,7 +742,7 @@ const metaDescription = "Professional supplement label design and regulatory com
   </section>
 
   <!-- Success Metrics -->
-  <section class="py-16 md:py-20 bg-gradient-to-r from-mint-600 to-mint-700">
+  <!-- <section class="py-16 md:py-20 bg-gradient-to-r from-mint-600 to-mint-700">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
         <div class="text-center text-white">
@@ -779,21 +778,21 @@ const metaDescription = "Professional supplement label design and regulatory com
         </div>
       </ScrollAnimation>
     </div>
-  </section>
+  </section> -->
 
   <!-- CTA Section -->
-  <section class="py-16 md:py-20">
+  <section class="py-16 md:py-20 bg-mint-600">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <ScrollAnimation>
-        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
           Ready for Compliant Labels?
         </h2>
-        <p class="text-xl text-dark-600 mb-8">
+        <p class="text-xl text-mint-50 mb-8">
           Get professional, regulatory-compliant labels designed for both
           US and Canadian markets in just 1-2 weeks.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-colors shadow-lg">
             Start Label Project
             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -801,7 +800,7 @@ const metaDescription = "Professional supplement label design and regulatory com
           </a>
           <a
             href="/schedule-call"
-            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-700 text-white font-semibold rounded-lg border-2 border-white hover:bg-mint-800 transition-colors"
           >
             Schedule Consultation
           </a>
