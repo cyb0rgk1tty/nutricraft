@@ -184,29 +184,25 @@ const warehouseOptions = [
     type: "East Coast Fulfillment",
     locations: ["New Jersey", "Virginia", "Georgia"],
     coverage: "1-2 day delivery to 60% of US population",
-    specialties: ["High-volume processing", "Same-day shipping", "International export"],
-    pricing: "from $2.50 per order + storage"
+    specialties: ["High-volume processing", "Same-day shipping", "International export"]
   },
   {
     type: "West Coast Fulfillment",
     locations: ["California", "Nevada", "Oregon"],
     coverage: "1-2 day delivery to Western US and Canada",
-    specialties: ["Technology integration", "Sustainable packaging", "Canadian shipping"],
-    pricing: "from $2.75 per order + storage"
+    specialties: ["Technology integration", "Sustainable packaging", "Canadian shipping"]
   },
   {
     type: "Central US Fulfillment",
     locations: ["Texas", "Illinois", "Ohio"],
     coverage: "2-3 day delivery nationwide",
-    specialties: ["Cost-effective shipping", "Large item handling", "B2B distribution"],
-    pricing: "from $2.25 per order + storage"
+    specialties: ["Cost-effective shipping", "Large item handling", "B2B distribution"]
   },
   {
     type: "Canadian Fulfillment",
     locations: ["Toronto", "Vancouver", "Montreal"],
     coverage: "Fast delivery across Canada",
-    specialties: ["Bilingual customer service", "Health Canada compliance", "Cross-border expertise"],
-    pricing: "from $3.25 CAD per order + storage"
+    specialties: ["Bilingual customer service", "Health Canada compliance", "Cross-border expertise"]
   }
 ];
 
@@ -291,7 +287,7 @@ const faqItems = [
   },
   {
     question: "What are the typical costs for 3PL fulfillment?",
-    answer: "Costs vary by location and services, but typically range from $2.25-$3.25 per order plus monthly storage fees of $0.50-$1.00 per cubic foot. We negotiate competitive rates with our partner network and provide transparent pricing upfront with no hidden fees."
+    answer: "Costs vary based on location, services, order volume, and product characteristics. Factors include receiving fees, storage costs, pick and pack labor, packaging materials, and shipping charges. We negotiate competitive rates with our partner network and provide transparent pricing upfront with no hidden fees. Contact us for a customized quote based on your specific needs."
   },
   {
     question: "How do you handle inventory tracking across multiple locations?",
@@ -342,7 +338,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
   <Header />
 
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-mint-50 via-white to-green-50 py-16 md:py-24">
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div>
@@ -470,7 +466,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
       <div class="grid md:grid-cols-2 gap-8">
         {fulfillmentServices.map((service, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-lg p-8">
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-lg p-8 h-full flex flex-col">
               <div class="flex items-start gap-4 mb-6">
                 <span class="text-4xl">{service.icon}</span>
                 <div>
@@ -479,7 +475,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                 </div>
               </div>
 
-              <div class="space-y-4">
+              <div class="space-y-4 flex-grow">
                 <div>
                   <h4 class="font-semibold text-dark-700 mb-2">Key Features:</h4>
                   <ul class="space-y-1">
@@ -499,7 +495,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   <ul class="space-y-1">
                     {service.benefits.map(benefit => (
                       <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                         </svg>
                         <span class="text-dark-600 text-sm">{benefit}</span>
@@ -516,7 +512,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
   </section>
 
   <!-- Distribution Channels -->
-  <section class="py-16 md:py-20 bg-gradient-to-br from-green-50 to-white">
+  <section class="py-16 md:py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
         <div class="text-center mb-12">
@@ -543,7 +539,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   <ul class="space-y-1">
                     {channel.advantages.map(advantage => (
                       <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                         </svg>
                         <span class="text-dark-600 text-sm">{advantage}</span>
@@ -570,7 +566,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   </div>
                   <div class="bg-gray-50 rounded-lg p-3">
                     <p class="text-sm font-semibold text-dark-700">Avg. Margin</p>
-                    <p class="text-lg font-bold text-green-600">{channel.averageMargin}</p>
+                    <p class="text-lg font-bold text-mint-600">{channel.averageMargin}</p>
                   </div>
                 </div>
               </div>
@@ -599,7 +595,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
       <div class="grid md:grid-cols-2 gap-8">
         {warehouseOptions.map((warehouse, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
               <h3 class="text-xl font-bold text-dark-900 mb-3">{warehouse.type}</h3>
 
               <div class="space-y-4">
@@ -624,9 +620,9 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   </div>
                 </div>
 
-                <div class="bg-green-50 rounded-lg p-3">
-                  <p class="text-sm font-semibold text-green-800">Pricing:</p>
-                  <p class="text-green-700 font-bold">{warehouse.pricing}</p>
+                <div class="bg-mint-50 rounded-lg p-3">
+                  <p class="text-sm font-semibold text-mint-800">Coverage Benefits:</p>
+                  <p class="text-mint-700 font-medium text-sm">Optimized shipping zones and transit times</p>
                 </div>
               </div>
             </div>
@@ -676,7 +672,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   <h4 class="font-semibold text-dark-700 mb-2">Integrations:</h4>
                   <div class="flex flex-wrap gap-1">
                     {tech.integration.map(integration => (
-                      <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                      <span class="bg-mint-100 text-mint-700 px-2 py-1 rounded text-xs">
                         {integration}
                       </span>
                     ))}
@@ -763,7 +759,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
       <div class="space-y-6">
         {fulfillmentChallenges.map((item, index) => (
           <ScrollAnimation delay={index * 100}>
-            <div class="bg-gradient-to-r from-mint-50 to-white rounded-xl shadow-lg p-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
               <div class="grid md:grid-cols-3 gap-6 items-center">
                 <div class="text-center md:text-left">
                   <h3 class="text-lg font-bold text-red-600 mb-2">Challenge:</h3>
@@ -774,9 +770,9 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
                   <p class="text-dark-700">{item.solution}</p>
                 </div>
                 <div class="text-center">
-                  <div class="bg-green-100 rounded-lg px-4 py-3">
-                    <p class="text-sm font-semibold text-green-800">Result:</p>
-                    <p class="text-green-700 font-bold">{item.outcome}</p>
+                  <div class="bg-mint-100 rounded-lg px-4 py-3">
+                    <p class="text-sm font-semibold text-mint-800">Result:</p>
+                    <p class="text-mint-700 font-bold">{item.outcome}</p>
                   </div>
                 </div>
               </div>
@@ -788,6 +784,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
   </section>
 
   <!-- Success Metrics -->
+  <!-- Fulfillment Success Metrics - Hidden
   <section class="py-16 md:py-20 bg-gradient-to-r from-mint-600 to-mint-700">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
@@ -810,7 +807,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
             </div>
             <div>
               <div class="text-5xl font-bold mb-2">
-                <CountUp end={50} duration={2000} suffix="+" />
+                <CountUp end={3} duration={2000} suffix="+" />
               </div>
               <p class="text-mint-100">3PL Partner Locations</p>
             </div>
@@ -825,6 +822,7 @@ const metaDescription = "Streamlined fulfillment and distribution solutions for 
       </ScrollAnimation>
     </div>
   </section>
+  -->
 
   <!-- CTA Section -->
   <section class="py-16 md:py-20">
