@@ -6,7 +6,7 @@ export const services = [
     features: [
       'Start with 1000 units (vs industry 5000+)',
       'FDA-registered, Health Canada compliant',
-      '200+ stock formulas or custom R&D'
+      '50+ stock formulas or custom R&D'
     ],
     icon: '🏭'
   },
