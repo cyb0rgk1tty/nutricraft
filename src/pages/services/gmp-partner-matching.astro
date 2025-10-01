@@ -204,12 +204,16 @@ const faqData = [
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-mint-600 rounded-lg hover:bg-mint-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-mint-600 rounded-lg hover:bg-mint-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
               Free Consultation
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
-            </a>
+            </button>
             <a href="#process" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white border-2 border-mint-600 rounded-lg hover:bg-mint-50 transition-colors duration-300">
               See How It Works
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -371,12 +375,16 @@ const faqData = [
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a href="/schedule-call" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white rounded-lg hover:bg-mint-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white rounded-lg hover:bg-mint-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
               Schedule Free Consultation
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
-            </a>
+            </button>
             <a href="mailto:hello@nutricraftlabs.com" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-mint-300 rounded-lg hover:bg-mint-700 transition-colors duration-300">
               Email Us Your Needs
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,4 +405,25 @@ const faqData = [
   </section>
 
   <Footer />
+
+  <!-- Service Schema for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Extended Manufacturing Network & GMP Partner Matching",
+    "provider": {
+      "@type": "Organization",
+      "name": "Nutricraft Labs"
+    },
+    "areaServed": ["CA", "US"],
+    "description": "Specialized GMP partner matching service for unique supplement manufacturing requirements that our core network can't fulfill. We find and vet specialized manufacturers for liposomal formulations, niche certifications, proprietary technologies, and high-volume capacity needs.",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "2500",
+      "description": "Extended network search and vetting service. Success fee of 3-5% of first order upon successful partnership."
+    }
+  }
+  </script>
 </BaseLayout>

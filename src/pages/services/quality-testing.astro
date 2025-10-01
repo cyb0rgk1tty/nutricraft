@@ -243,15 +243,16 @@ const certifications = [
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/contact"
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
               class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-mint-600 rounded-lg hover:bg-mint-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              Get Testing Quote
+              Schedule Consultation
               <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
-            </a>
+            </button>
             <a
               href="#testing-categories"
               class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-mint-600 bg-white border-2 border-mint-600 rounded-lg hover:bg-mint-50 transition-colors duration-300"
@@ -578,10 +579,20 @@ const certifications = [
         <p class="text-xl text-mint-50 mb-8 max-w-2xl mx-auto">
           Get a custom testing protocol designed for your specific products and regulatory requirements
         </p>
-        <div class="flex justify-center">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="px-8 py-4 bg-white text-mint-700 rounded-lg font-medium hover:bg-mint-50 transition-all transform hover:scale-105 inline-flex items-center justify-center"
+          >
+            Schedule Consultation
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
           <a
             href="/contact"
-            class="px-8 py-4 bg-white text-mint-700 rounded-lg font-medium hover:bg-mint-50 transition-all transform hover:scale-105 inline-flex items-center justify-center"
+            class="px-8 py-4 bg-mint-700 text-white border-2 border-white rounded-lg font-medium hover:bg-mint-800 transition-all inline-flex items-center justify-center"
           >
             Get Testing Quote
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -612,4 +623,24 @@ const certifications = [
   </section>
 
   <Footer />
+
+  <!-- Service Schema for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Quality Testing & Laboratory Services",
+    "provider": {
+      "@type": "Organization",
+      "name": "Nutricraft Labs"
+    },
+    "areaServed": ["CA", "US"],
+    "description": "Comprehensive supplement quality testing through our network of ISO 17025 accredited laboratories. Services include identity & purity testing, microbial testing, heavy metals testing, potency verification, and stability testing for supplements.",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "description": "Testing packages starting from basic compliance tests to comprehensive quality assurance protocols"
+    }
+  }
+  </script>
 </BaseLayout>
