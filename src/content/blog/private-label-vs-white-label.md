@@ -3,7 +3,7 @@ title: "Private Label vs White Label: What's the Difference?"
 description: "Understanding the key differences between private label and white label supplement manufacturing to make the right choice for your brand."
 pubDate: 2025-09-30
 author: "Nutricraft Labs"
-tags: ["manufacturing", "private-label", "white-label", "branding"]
+tags: ["Manufacturing", "Private Label", "White Label", "Branding"]
 draft: false
 ---
 

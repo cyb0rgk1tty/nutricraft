@@ -3,7 +3,7 @@ title: "How to Choose the Right Dosage Form for Your Supplement"
 description: "Complete guide to selecting the optimal supplement delivery format - tablets, capsules, softgels, gummies, or powders. Compare bioavailability, costs, and consumer preferences for your brand."
 pubDate: 2025-09-26
 author: "Nutricraft Labs"
-tags: ["dosage-forms", "product-development", "formulation"]
+tags: ["Dosage Forms", "Product Development", "Formulation"]
 draft: false
 ---
 
