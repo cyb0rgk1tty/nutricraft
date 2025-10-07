@@ -39,8 +39,12 @@ npx astro sync       # Generate TypeScript types for content collections
 src/
 ├── pages/             # Routes - file-based routing
 │   ├── api/          # API endpoints (contact.ts for form handling)
-│   ├── blog/         # Blog pages (index and [slug] dynamic routes)
-│   ├── formulations/ # Dynamic routes with [format].astro
+│   ├── blog/         # Blog pages and routes
+│   │   ├── index.astro        # Blog listing page
+│   │   ├── [slug].astro       # Individual blog post pages
+│   │   └── tag/
+│   │       └── [tag].astro    # Tag filter pages (auto-generated)
+│   ├── dosage-forms/ # Dynamic routes with [format].astro
 │   └── services/     # Service pages
 │       └── _drafts/  # Unpublished service pages (not built)
 ├── components/       # Reusable Astro components
@@ -49,6 +53,8 @@ src/
 ├── content/         # Content collections (Astro Content Layer)
 │   ├── blog/        # Markdown blog posts
 │   └── dosage-forms/ # Dosage form content
+├── utils/           # Utility functions
+│   └── slugify.ts   # URL slugification for tags
 └── data/           # JS data files (services, formulations, etc.)
 ```
 
@@ -72,16 +78,33 @@ Blog functionality using Astro's Content Layer API:
 - **Blog Posts**: Markdown files in `src/content/blog/`
 - **Collection Config**: Defined in `src/content/config.ts` with glob loader
 - **Blog Routes**:
-  - `/blog` - Main blog listing page
-  - `/blog/[slug]` - Individual blog post pages
-  - `/blog/tag/[tag]` - Tag filtering (planned)
-- **Adding New Posts**: Create `.md` files in `src/content/blog/` with required frontmatter (title, description, pubDate, author, tags, draft)
-- **SEO Optimized**: All posts include proper meta descriptions, structured headings, and internal linking
+  - `/blog` - Main blog listing page with tag cloud
+  - `/blog/[slug]` - Individual blog post pages (e.g., `/blog/private-label-vs-white-label`)
+  - `/blog/tag/[tag]` - Tag filter pages (e.g., `/blog/tag/product-development`)
+- **Adding New Posts**:
+  1. Create `.md` file in `src/content/blog/`
+  2. Required frontmatter: `title`, `description`, `pubDate`, `author`, `tags`, `draft`
+  3. Use Title Case for tags (e.g., "Private Label", "Product Development")
+  4. Tags automatically convert to URL-safe slugs via `slugify()` utility
+  5. Set `draft: false` to publish (draft posts excluded from listings)
+- **Tag System**:
+  - Tags display in Title Case (e.g., "Private Label")
+  - URLs automatically slugified (e.g., `/blog/tag/private-label`)
+  - Handled by `src/utils/slugify.ts` utility function
+  - Tag filter pages auto-generated via `getStaticPaths()`
+- **Content Width**: Articles use `max-w-4xl` (896px) for optimal table/content display
+- **SEO Optimized**: Meta descriptions, structured headings, internal linking, FAQ sections
+- **Current Posts**: 2 comprehensive articles (4,200+ and 5,800+ words)
+  - "Private Label vs White Label: What's the Difference?" (Sept 30, 2025)
+  - "How to Choose the Right Dosage Form for Your Supplement" (Sept 26, 2025)
 
 ### Deployment
 - Site deployed on Vercel (output: 'server', adapter: vercel())
 - Domain: https://nutricraftlabs.com
-- Sitemap includes dynamic formulation pages and blog posts
+- **Sitemap**: Automatically includes all published blog posts
+  - Configured in `astro.config.mjs` using `getCollection('blog')`
+  - Blog post URLs dynamically generated and added to sitemap
+  - No manual updates needed when adding new posts
 
 ### Image Optimization
 Image optimization scripts available in scripts/ directory:
@@ -106,5 +129,21 @@ Contact form uses server-side processing with:
 - No ESLint or Prettier configuration (consider adding for consistency)
 - Tests directory exists but is currently empty
 - Public images should be placed in public/images/ with WebP versions for performance
-- Dynamic formulation pages are pre-configured in sitemap via astro.config.mjs
 - The brand of this project is "Nutricraft Labs"
+
+### Blog Writing Guidelines
+
+When creating new blog articles:
+- **Word Count**: Aim for 3,000-5,000+ words for comprehensive coverage
+- **Tone**: Conversational, human-written style with contractions and varied sentences
+- **No AI Patterns**: Avoid em-dashes, generic phrasing, or robotic tone
+- **Pricing**: Show typical price ranges with soft disclaimers (e.g., "Pricing varies based on formulation complexity...")
+- **Tables**: Use Markdown tables for comparisons, cost breakdowns, decision matrices
+- **Internal Linking**: Link to relevant service pages (e.g., `/services/private-white-label-manufacturing`)
+- **Real Data**: Use actual Nutricraft pricing and specifications:
+  - 1,000 unit MOQ (vs industry 5,000+)
+  - 210+ stock formulas
+  - FDA-registered, GMP-certified
+  - White label: $8-12K, Private label: $15-25K
+- **SEO**: Include FAQ sections, long-tail keywords, comprehensive comparisons
+- **Manufacturing Perspective**: Write from insider/manufacturing floor viewpoint

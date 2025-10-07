@@ -1,70 +1,92 @@
-# Nutricraft Labs - Landing Page
+# Nutricraft Labs - Website
 
-A modern, high-performance landing page for Nutricraft Labs - a premium supplement manufacturing and private label solutions provider.
+A modern, high-performance website for Nutricraft Labs - a premium supplement manufacturing and private label solutions provider.
 
 ## 🚀 Features
 
 - **Modern Design**: Clean, professional design with mint green theme
 - **Fully Responsive**: Mobile-first approach with responsive design for all devices
-- **SEO Optimized**: Built-in SEO with meta tags, structured data, and sitemap
-- **Interactive Tools**: MOQ calculator, lead time estimator, and cost savings calculator
-- **Performance Optimized**: Fast loading with Astro.js and optimized assets
+- **SEO Optimized**: Built-in SEO with meta tags, structured data, automatic sitemap
+- **Content-Rich Blog**: Comprehensive articles (3,000-5,000+ words) with tag filtering
+- **Content Collections**: Markdown-based content management for blog and dosage forms
+- **Performance Optimized**: Fast loading with Astro.js SSR and optimized assets
 - **Accessibility**: WCAG compliant with semantic HTML and proper ARIA labels
+- **Dynamic Routes**: Automatic page generation for blog posts, tags, and dosage forms
 
-## 📋 Sections
+## 📋 Main Sections
 
+### Marketing Pages
 1. **Hero Section** - Eye-catching introduction with trust badges
-2. **Services** - Comprehensive list of 8 core services
-3. **Manufacturing Capabilities** - Product formats, MOQs, and facility info
-4. **Product Showcase** - Animated product demonstration
-5. **Certifications** - Display of all compliance and quality certifications
-6. **About Us** - Company story and statistics
-7. **Why Choose Us** - Key differentiators and benefits
-8. **Testimonials** - Client success stories
-9. **Interactive Tools** - Calculators for business planning
-10. **Contact Form** - Lead generation form
+2. **Services** - 8+ comprehensive service pages (manufacturing, formulation, compliance, etc.)
+3. **Dosage Forms** - 9 detailed pages on supplement formats (tablets, capsules, softgels, etc.)
+4. **Manufacturing Capabilities** - Product formats, MOQs, and facility info
+5. **About Us** - Company story and statistics
+6. **Why Choose Us** - Key differentiators and benefits
+7. **Testimonials** - Client success stories
+8. **Contact Form** - Lead generation with server-side processing
+
+### Blog
+9. **Blog Listing** - Main blog page with tag cloud and post cards
+10. **Blog Articles** - SEO-optimized long-form content (4,000+ words)
+11. **Tag Pages** - Filter blog posts by topic (Manufacturing, Private Label, etc.)
+12. **Related Posts** - Tag-based content recommendations
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Astro.js](https://astro.build) v5.12.9
+- **Framework**: [Astro.js](https://astro.build) v5 with SSR
 - **Styling**: [Tailwind CSS](https://tailwindcss.com) v3.4.0
-- **SEO**: astro-seo v0.8.4
-- **Language**: TypeScript
-- **Deployment**: Cloudflare Pages ready
+- **Content**: Astro Content Collections with glob loaders
+- **Language**: TypeScript (strict mode)
+- **Email**: Nodemailer for contact form
+- **Analytics**: Google Tag Manager
+- **Deployment**: Vercel (SSR adapter)
+- **Domain**: https://nutricraftlabs.com
 
 ## 📦 Project Structure
 
 ```
 /
 ├── public/
-│   ├── favicon.svg
-│   ├── robots.txt
-│   └── images/          # Public images
+│   ├── images/              # Static images (logos, products, etc.)
+│   └── robots.txt
 ├── src/
-│   ├── components/      # Reusable components
+│   ├── pages/               # Routes (file-based routing)
+│   │   ├── index.astro     # Homepage
+│   │   ├── blog/           # Blog routes
+│   │   │   ├── index.astro          # Blog listing
+│   │   │   ├── [slug].astro         # Individual posts
+│   │   │   └── tag/[tag].astro      # Tag filter pages
+│   │   ├── dosage-forms/   # Product format pages
+│   │   │   ├── index.astro
+│   │   │   └── [format].astro
+│   │   ├── services/       # Service pages
+│   │   ├── api/            # API endpoints
+│   │   │   └── contact.ts  # Form handling
+│   │   └── contact.astro
+│   ├── content/            # Content Collections (Markdown)
+│   │   ├── blog/          # Blog posts (.md files)
+│   │   ├── dosage-forms/  # Dosage form content
+│   │   └── config.ts      # Collection schemas
+│   ├── components/         # Reusable components
 │   │   ├── Header.astro
 │   │   ├── Footer.astro
+│   │   ├── BlogCard.astro
 │   │   ├── ServiceCard.astro
-│   │   ├── TestimonialCard.astro
-│   │   ├── MOQCalculator.astro
-│   │   ├── LeadTimeEstimator.astro
-│   │   ├── CostSavingsCalculator.astro
-│   │   └── ProductShowcase.astro
-│   ├── data/           # Data files
-│   │   ├── services.js
-│   │   ├── certifications.js
-│   │   ├── manufacturing.js
-│   │   └── testimonials.js
-│   ├── layouts/        # Page layouts
+│   │   └── ScrollAnimation.astro
+│   ├── layouts/           # Page layouts
 │   │   └── BaseLayout.astro
-│   ├── pages/          # Route pages
-│   │   ├── index.astro
-│   │   └── sitemap.xml.js
-│   └── styles/         # Global styles
-│       ├── global.css
-│       └── tailwind.css
-├── astro.config.mjs    # Astro configuration
-├── tailwind.config.mjs # Tailwind configuration
+│   ├── data/             # Structured data
+│   │   ├── services.js
+│   │   ├── dosage-forms.js
+│   │   └── testimonials.js
+│   ├── utils/            # Utility functions
+│   │   └── slugify.ts    # Tag URL slugification
+│   └── styles/           # Global styles
+│       └── global.css
+├── scripts/              # Image optimization scripts
+├── astro.config.mjs     # Astro configuration
+├── tailwind.config.mjs  # Tailwind configuration
+├── CLAUDE.md            # AI assistant documentation
 └── package.json
 ```
 
@@ -87,12 +109,18 @@ cd Nutricraft-labs
 npm install
 ```
 
-3. Start the development server:
+3. Create `.env` file:
 ```bash
-npm run dev
+cp .env.example .env
+# Add SMTP credentials for contact form
 ```
 
-4. Open [http://localhost:4321](http://localhost:4321) in your browser
+4. Start the development server:
+```bash
+npm run dev -- --host 0.0.0.0
+```
+
+5. Open [http://192.168.50.5:4321](http://192.168.50.5:4321) in your browser
 
 ### Building for Production
 
@@ -113,22 +141,37 @@ npm run preview
 ### Colors
 
 The color scheme is defined in `tailwind.config.mjs`. Main colors:
-- Primary: Mint green (#00c16e)
+- Primary/Mint: #10b981 (green-500)
 - Mint shades: 50-900
-- Gray shades: 50-900
+- Dark shades: 50-900
 
-### Content
+### Content Management
 
+#### Blog Posts
+1. Create `.md` file in `src/content/blog/`
+2. Add frontmatter:
+```yaml
+---
+title: "Your Title Here"
+description: "SEO description"
+pubDate: 2025-09-30
+author: "Nutricraft Labs"
+tags: ["Manufacturing", "Private Label"]  # Use Title Case
+draft: false
+---
+```
+3. Write content in Markdown
+4. Publish by setting `draft: false`
+
+#### Services & Data
 - **Services**: Edit `src/data/services.js`
-- **Certifications**: Edit `src/data/certifications.js`
-- **Manufacturing**: Edit `src/data/manufacturing.js`
+- **Dosage Forms**: Edit `src/data/dosage-forms.js`
 - **Testimonials**: Edit `src/data/testimonials.js`
 
 ### Images
 
-Place images in:
-- `public/images/` for static images
-- `src/assets/` for images that need processing
+- `public/images/` - Static images (logos, products)
+- Optimize with scripts in `scripts/` directory
 
 ## 📱 Responsive Design
 
@@ -141,31 +184,41 @@ The site is fully responsive with breakpoints:
 
 SEO features include:
 - Meta tags and Open Graph tags
-- Structured data (Schema.org)
-- XML sitemap at `/sitemap.xml`
+- **Automatic Sitemap**: Blog posts dynamically added to sitemap
 - Robots.txt configuration
 - Semantic HTML structure
+- Long-form content (3,000-5,000+ words)
+- Internal linking structure
+- FAQ sections for featured snippets
+- Tag-based content organization
 
 ## 🚀 Deployment
 
-### Cloudflare Pages
+### Vercel (Current)
 
-1. Build the project:
-```bash
-npm run build
-```
+The site is deployed on Vercel with SSR enabled:
 
-2. Deploy the `dist/` directory to Cloudflare Pages
-
-3. Set the build command: `npm run build`
-4. Set the output directory: `dist`
+1. Push to `main` branch
+2. Vercel automatically builds and deploys
+3. Build command: `npm run build`
+4. Output directory: `dist`
+5. Environment variables configured in Vercel dashboard
 
 ## 📝 Environment Variables
 
-Create a `.env` file for any environment-specific variables:
+Create a `.env` file with these variables:
 
 ```env
-PUBLIC_SITE_URL=https://thewellnessdrop.com
+# SMTP Configuration (for contact form)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your-email@example.com
+SMTP_PASS=your-password
+SMTP_FROM=noreply@nutricraftlabs.com
+SMTP_TO=hello@nutricraftlabs.com
+
+# Site Configuration
+PUBLIC_SITE_URL=https://nutricraftlabs.com
 ```
 
 ## 🤝 Contributing
