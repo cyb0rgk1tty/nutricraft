@@ -565,7 +565,7 @@ export const dosageForms = [
 ];
 
 export const getFormulationBySlug = (slug) => {
-  return formulations.find(f => f.slug === slug);
+  return dosageForms.find(f => f.slug === slug);
 };
 
 export const formulationComparison = {
