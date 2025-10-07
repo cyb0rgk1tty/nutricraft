@@ -8,7 +8,7 @@ import robotsTxt from 'astro-robots-txt';
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    tailwind(), 
+    tailwind(),
     sitemap({
       customPages: [
         'https://nutricraftlabs.com/dosage-forms/tablets',
@@ -19,9 +19,12 @@ export default defineConfig({
         'https://nutricraftlabs.com/dosage-forms/oral-disintegrating-tablets',
         'https://nutricraftlabs.com/dosage-forms/softgels',
         'https://nutricraftlabs.com/dosage-forms/effervescent',
-        'https://nutricraftlabs.com/dosage-forms/liquids'
+        'https://nutricraftlabs.com/dosage-forms/liquids',
+        'https://nutricraftlabs.com/blog',
+        'https://nutricraftlabs.com/blog/private-label-vs-white-label',
+        'https://nutricraftlabs.com/blog/choosing-right-dosage-form'
       ]
-    }), 
+    }),
     robotsTxt()
   ],
   output: 'server',

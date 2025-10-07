@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+// Get all published blog posts, sorted by date (newest first)
+const allPosts = await getCollection("blog", ({ data }) => {
+  return data.draft !== true;
+});
+
+const sortedPosts = allPosts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get all unique tags
+const allTags = [...new Set(sortedPosts.flatMap(post => post.data.tags))].sort();
+---
+
+<BaseLayout
+  title="Blog - Nutricraft Labs"
+  description="Expert insights on supplement manufacturing, private label products, formulation development, and industry trends from Nutricraft Labs."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <ScrollAnimation animation="fade-up">
+          <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
+            Supplement Manufacturing Insights
+          </h1>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            Expert guidance on product development, manufacturing processes, and industry best practices.
+          </p>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {sortedPosts.length > 0 ? (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {sortedPosts.map((post, index) => (
+            <ScrollAnimation animation="fade-up" delay={Math.floor(index / 3) * 150}>
+              <BlogCard post={post} />
+            </ScrollAnimation>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-xl text-gray-600">
+            No blog posts yet. Check back soon for expert insights!
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Tags Section -->
+  {allTags.length > 0 && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollAnimation animation="fade-up">
+          <h2 class="text-2xl font-bold text-dark-900 mb-6 text-center">
+            Browse by Topic
+          </h2>
+          <div class="flex flex-wrap justify-center gap-3">
+            {allTags.map((tag) => (
+              <a
+                href={`/blog/tag/${tag}`}
+                class="px-4 py-2 bg-white text-dark-700 rounded-full border border-gray-200 hover:border-mint-600 hover:text-mint-600 transition-colors duration-300"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        </ScrollAnimation>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+          Ready to Launch Your Supplement Brand?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Our team of experts is ready to help you bring your vision to life—from formulation to fulfillment.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Schedule a Call
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+          >
+            Get in Touch
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
