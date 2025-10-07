@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { getCollection, getEntry, render } from "astro:content";
+import { slugify } from "../../utils/slugify";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => {
@@ -81,7 +82,7 @@ const pageImage = post.data.image?.url
         <div class="flex flex-wrap gap-2 mb-6">
           {post.data.tags.map((tag) => (
             <a
-              href={`/blog/tag/${tag}`}
+              href={`/blog/tag/${slugify(tag)}`}
               class="text-sm px-3 py-1 bg-mint-600/10 text-mint-700 rounded-full hover:bg-mint-600/20 transition-colors"
             >
               {tag}
