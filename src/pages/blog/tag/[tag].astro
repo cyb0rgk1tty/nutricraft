@@ -30,19 +30,34 @@ export async function getStaticPaths() {
   });
 }
 
+// For SSR mode, fetch posts at runtime
 const { tag } = Astro.params;
-const { posts, tagName } = Astro.props;
+
+// Get all posts
+const allPosts = await getCollection("blog", ({ data }) => {
+  return data.draft !== true;
+});
+
+// Get all unique tags to find the matching tag name
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
+// Find the original tag name (Title Case) from the slugified URL
+const tagName = allTags.find(t => slugify(t) === tag);
+
+// If tag not found, redirect to 404
+if (!tagName) {
+  return Astro.redirect('/404');
+}
+
+// Filter posts by this tag
+const posts = allPosts.filter((post) =>
+  post.data.tags.includes(tagName)
+);
 
 // Sort posts by date (newest first)
 const sortedPosts = posts.sort((a, b) =>
   b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
-// Get all tags for the tag cloud
-const allPosts = await getCollection("blog", ({ data }) => {
-  return data.draft !== true;
-});
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))].sort();
 ---
 
 <BaseLayout
