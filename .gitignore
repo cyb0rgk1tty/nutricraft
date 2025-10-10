@@ -48,3 +48,7 @@ coverage/
 # yarn.lock
 # pnpm-lock.yaml
 .vercel
+
+# Google Sheets service account credentials (never commit!)
+*-credentials.json
+service-account*.json

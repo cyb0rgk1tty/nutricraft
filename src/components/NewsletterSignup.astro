@@ -1,0 +1,111 @@
+---
+// Newsletter signup component with Google Sheets storage
+---
+
+<div class="newsletter-signup max-w-3xl w-full bg-gradient-to-br from-mint-50 to-white rounded-lg p-6 md:p-8 shadow-md border border-mint-100">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <!-- Mail Icon -->
+      <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+      </svg>
+      <h3 class="text-xl font-semibold text-gray-900">
+        Stay Updated
+      </h3>
+    </div>
+    <p class="text-sm text-gray-600">
+      Get weekly insights on supplement manufacturing, industry trends, and compliance updates delivered to your inbox.
+    </p>
+  </div>
+
+  <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 items-start">
+    <input
+      type="email"
+      id="newsletter-email"
+      name="email"
+      required
+      placeholder="Enter your email address"
+      class="flex-1 w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white focus:border-mint-500 focus:ring-2 focus:ring-mint-200 focus:outline-none transition-colors duration-200 text-sm"
+    />
+    <button
+      type="submit"
+      class="bg-mint-600 text-white font-medium py-2.5 px-6 rounded-lg hover:bg-mint-700 focus:outline-none focus:ring-2 focus:ring-mint-500 focus:ring-offset-2 transition-colors duration-200 whitespace-nowrap"
+    >
+      Subscribe
+    </button>
+  </form>
+
+  <div id="newsletter-message" class="mt-3 text-sm hidden"></div>
+</div>
+
+<script>
+  const newsletterForm = document.getElementById('newsletter-form') as HTMLFormElement;
+  const newsletterEmail = document.getElementById('newsletter-email') as HTMLInputElement;
+  const newsletterMessage = document.getElementById('newsletter-message') as HTMLDivElement;
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const submitBtn = this.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const originalText = submitBtn.textContent || 'Subscribe';
+
+      // Update button state
+      submitBtn.textContent = 'Subscribing...';
+      submitBtn.disabled = true;
+
+      // Hide previous message
+      newsletterMessage.classList.add('hidden');
+
+      try {
+        const email = newsletterEmail.value.trim();
+
+        // Send to API
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            source: 'footer'
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Success message
+          newsletterMessage.textContent = result.message;
+          newsletterMessage.className = 'mt-3 text-sm text-mint-700 font-medium';
+          newsletterMessage.classList.remove('hidden');
+
+          // Clear form
+          newsletterForm.reset();
+
+          // Track conversion in GTM if available
+          if (window.dataLayer) {
+            window.dataLayer.push({
+              event: 'newsletter_signup',
+              newsletter_source: 'footer'
+            });
+          }
+        } else {
+          // Error message
+          newsletterMessage.textContent = result.error || 'Failed to subscribe. Please try again.';
+          newsletterMessage.className = 'mt-3 text-sm text-red-600 font-medium';
+          newsletterMessage.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Newsletter subscription error:', error);
+        newsletterMessage.textContent = 'An error occurred. Please try again later.';
+        newsletterMessage.className = 'mt-3 text-sm text-red-600 font-medium';
+        newsletterMessage.classList.remove('hidden');
+      } finally {
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+</script>
