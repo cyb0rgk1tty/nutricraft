@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
+import { createPersonInTwentyCrm } from '../../utils/twentyCrm';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -88,6 +89,29 @@ ${message}
       text: textContent,
       html: htmlContent,
     });
+
+    // Create person in Twenty CRM (non-blocking - don't fail form if CRM fails)
+    try {
+      const crmResult = await createPersonInTwentyCrm({
+        name,
+        email,
+        phone,
+        company,
+        targetMarket,
+        orderQuantity,
+        projectType,
+        message,
+      });
+
+      if (crmResult.success) {
+        console.log('Twenty CRM: Person created successfully:', crmResult.personId);
+      } else {
+        console.error('Twenty CRM: Failed to create person:', crmResult.error);
+      }
+    } catch (crmError) {
+      // Log CRM errors but don't fail the form submission
+      console.error('Twenty CRM: Error creating person:', crmError);
+    }
 
     return new Response(JSON.stringify({
       success: true,
