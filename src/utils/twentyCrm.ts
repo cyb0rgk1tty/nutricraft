@@ -56,8 +56,6 @@ export async function createPersonInTwentyCrm(
             firstName
             lastName
           }
-          email
-          phone
         }
       }
     `;
@@ -67,17 +65,26 @@ export async function createPersonInTwentyCrm(
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
 
+    // Build input data - Twenty CRM uses plural fields for emails and phones
     const variables = {
       data: {
         name: {
           firstName,
           lastName,
         },
-        email: formData.email,
-        ...(formData.phone && { phone: formData.phone }),
         ...(formData.company && { companyName: formData.company }),
       },
     };
+
+    // Add email if provided (Twenty may expect it as singular 'email' in input despite plural query field)
+    if (formData.email) {
+      (variables.data as any).email = formData.email;
+    }
+
+    // Add phone if provided
+    if (formData.phone) {
+      (variables.data as any).phone = formData.phone;
+    }
 
     // Make API request to Twenty CRM
     const response = await fetch(apiUrl, {
