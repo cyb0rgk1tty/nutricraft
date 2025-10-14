@@ -30,6 +30,8 @@ npx astro sync       # Generate TypeScript types for content collections
 - **Framework**: Astro.js v5 with SSR enabled (Vercel adapter)
 - **Styling**: Tailwind CSS with custom mint green theme
 - **Email**: Nodemailer for contact form submissions
+- **CRM**: Twenty CRM integration for automatic lead capture
+- **Newsletter**: Google Sheets API for subscriber management
 - **Analytics**: Google Tag Manager integration
 - **TypeScript**: Strict mode enabled
 
@@ -54,7 +56,8 @@ src/
 │   ├── blog/        # Markdown blog posts
 │   └── dosage-forms/ # Dosage form content
 ├── utils/           # Utility functions
-│   └── slugify.ts   # URL slugification for tags
+│   ├── slugify.ts   # URL slugification for tags
+│   └── twentyCrm.ts # Twenty CRM API integration
 └── data/           # JS data files (services, formulations, etc.)
 ```
 
@@ -74,7 +77,8 @@ src/
    - Tag pages: Fetch all posts with `getCollection()` and filter at runtime
 
 ### API Endpoints
-- `/api/contact` - Handles contact form submissions via Nodemailer
+- `/api/contact` - Handles contact form submissions via Nodemailer + Twenty CRM
+- `/api/newsletter` - Handles newsletter subscriptions via Google Sheets API
 
 ### Content Collections & Blog
 
@@ -125,8 +129,22 @@ Image optimization scripts available in scripts/ directory:
 ### Forms & Contact
 Contact form uses server-side processing with:
 - Validation on both client and server
-- Nodemailer for SMTP email sending
-- Environment variables for SMTP configuration
+- Nodemailer for SMTP email sending (primary notification)
+- Twenty CRM integration for automatic lead capture (optional)
+- Environment variables for SMTP and CRM configuration
+
+**Twenty CRM Integration** (src/pages/api/contact.ts + src/utils/twentyCrm.ts):
+- Creates Person records in Twenty CRM automatically when forms are submitted
+- Non-blocking implementation (email always succeeds even if CRM fails)
+- Maps form fields to Twenty CRM Person object:
+  - name → firstName/lastName (automatically split)
+  - email → email
+  - phone → phone (optional)
+  - company → companyName (optional)
+- Additional lead qualification data (target market, order quantity, project type, message) captured in logs
+- GraphQL API calls with Bearer token authentication
+- Environment variables: `TWENTY_API_URL` and `TWENTY_API_KEY`
+- Setup guide: See TWENTY_CRM_SETUP.md
 
 ### Analytics & Tracking
 - Google Tag Manager integration via Analytics.astro component

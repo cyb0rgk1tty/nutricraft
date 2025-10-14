@@ -38,6 +38,8 @@ A modern, high-performance website for Nutricraft Labs - a premium supplement ma
 - **Content**: Astro Content Collections with glob loaders
 - **Language**: TypeScript (strict mode)
 - **Email**: Nodemailer for contact form
+- **CRM**: Twenty CRM integration for automatic lead capture
+- **Newsletter**: Google Sheets API for subscriber management
 - **Analytics**: Google Tag Manager
 - **Deployment**: Vercel (SSR adapter)
 - **Domain**: https://nutricraftlabs.com
@@ -80,7 +82,8 @@ A modern, high-performance website for Nutricraft Labs - a premium supplement ma
 │   │   ├── dosage-forms.js
 │   │   └── testimonials.js
 │   ├── utils/            # Utility functions
-│   │   └── slugify.ts    # Tag URL slugification
+│   │   ├── slugify.ts    # Tag URL slugification
+│   │   └── twentyCrm.ts  # Twenty CRM API integration
 │   └── styles/           # Global styles
 │       └── global.css
 ├── scripts/              # Image optimization scripts
@@ -113,6 +116,8 @@ npm install
 ```bash
 cp .env.example .env
 # Add SMTP credentials for contact form
+# Optionally add Twenty CRM credentials for automatic lead capture
+# Optionally add Google Sheets credentials for newsletter
 ```
 
 4. Start the development server:
@@ -209,17 +214,27 @@ The site is deployed on Vercel with SSR enabled:
 Create a `.env` file with these variables:
 
 ```env
-# SMTP Configuration (for contact form)
+# SMTP Configuration (required for contact form)
 SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=your-email@example.com
 SMTP_PASS=your-password
-SMTP_FROM=noreply@nutricraftlabs.com
-SMTP_TO=hello@nutricraftlabs.com
+EMAIL_TO=hello@nutricraftlabs.com
 
-# Site Configuration
-PUBLIC_SITE_URL=https://nutricraftlabs.com
+# Twenty CRM Integration (optional - for automatic lead capture)
+TWENTY_API_URL=https://your-workspace.twenty.com/graphql
+TWENTY_API_KEY=your_twenty_api_key_here
+
+# Google Sheets API (optional - for newsletter subscriptions)
+GOOGLE_SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_SHEET_ID=your_spreadsheet_id_here
 ```
+
+See setup guides for detailed configuration:
+- **Contact Form Email**: See `.env.example`
+- **Twenty CRM Integration**: See `TWENTY_CRM_SETUP.md`
+- **Newsletter/Google Sheets**: See `GOOGLE_SHEETS_SETUP.md`
 
 ## 🤝 Contributing
 
