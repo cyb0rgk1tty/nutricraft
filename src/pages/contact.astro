@@ -408,33 +408,49 @@ import Footer from "../components/Footer.astro";
     (function() {
       let phoneInput;
       let iti;
+      let retryCount = 0;
 
       function initPhoneInput() {
+        retryCount++;
+        console.log('Attempting to init phone input, retry:', retryCount);
+        console.log('intlTelInput available:', typeof window.intlTelInput);
+
         if (typeof window.intlTelInput === 'undefined') {
-          // Library not loaded yet, wait and try again
-          setTimeout(initPhoneInput, 100);
+          if (retryCount < 50) {
+            // Library not loaded yet, wait and try again
+            setTimeout(initPhoneInput, 100);
+          } else {
+            console.error('intl-tel-input library failed to load after 5 seconds');
+          }
           return;
         }
 
         phoneInput = document.querySelector("#phone");
+        console.log('Phone input element:', phoneInput);
 
         if (phoneInput && !phoneInput.classList.contains('iti-initialized')) {
           phoneInput.classList.add('iti-initialized');
 
-          iti = window.intlTelInput(phoneInput, {
-            initialCountry: "ca",
-            preferredCountries: ["ca", "us"],
-            separateDialCode: true,
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/utils.js",
-            formatOnDisplay: true,
-            autoPlaceholder: "aggressive",
-            customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
-              return selectedCountryPlaceholder;
-            }
-          });
+          console.log('Initializing intl-tel-input...');
+          try {
+            iti = window.intlTelInput(phoneInput, {
+              initialCountry: "ca",
+              preferredCountries: ["ca", "us"],
+              separateDialCode: true,
+              utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/utils.js",
+              formatOnDisplay: true,
+              autoPlaceholder: "aggressive",
+              customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                return selectedCountryPlaceholder;
+              }
+            });
 
-          // Store iti instance globally for form submission
-          window.phoneIti = iti;
+            // Store iti instance globally for form submission
+            window.phoneIti = iti;
+            console.log('Successfully initialized intl-tel-input:', iti);
+          } catch(e) {
+            console.error('Error initializing intl-tel-input:', e);
+          }
 
           // Add validation styling on blur
           phoneInput.addEventListener('blur', function() {
