@@ -11,6 +11,7 @@ export const POST: APIRoute = async ({ request }) => {
     const name = data.get('name')?.toString() || '';
     const email = data.get('email')?.toString() || '';
     const phone = data.get('phone')?.toString() || '';
+    const phoneCountryCode = data.get('phoneCountryCode')?.toString() || '';
     const company = data.get('company')?.toString() || '';
     const targetMarket = data.get('target-market')?.toString() || '';
     const orderQuantity = data.get('order-quantity')?.toString() || '';
@@ -99,6 +100,7 @@ ${message}
         name,
         email,
         phone,
+        phoneCountryCode,
         company,
         targetMarket,
         orderQuantity,

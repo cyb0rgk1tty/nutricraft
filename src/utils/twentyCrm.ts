@@ -42,6 +42,7 @@ interface ContactFormData {
   name: string;
   email: string;
   phone?: string;
+  phoneCountryCode?: string;
   company?: string;
   targetMarket?: string;
   orderQuantity?: string;
@@ -124,10 +125,23 @@ export async function createPersonInTwentyCrm(
     if (formData.phone) {
       const normalizedPhone = normalizePhoneNumber(formData.phone);
       if (normalizedPhone) {
-        // Extract country code from normalized phone (e.g., +1 from +14168888888)
-        const countryCodeMatch = normalizedPhone.match(/^\+(\d{1,3})/);
-        const countryCode = countryCodeMatch ? `+${countryCodeMatch[1]}` : '';
-        const phoneNumber = countryCode ? normalizedPhone.slice(countryCode.length) : normalizedPhone;
+        // If phoneCountryCode is provided from intl-tel-input, use it directly
+        // Otherwise extract from normalized phone (fallback for edge cases)
+        let countryCode = '';
+        let phoneNumber = '';
+
+        if (formData.phoneCountryCode) {
+          // Use the country code from intl-tel-input (e.g., "1" for US/Canada)
+          countryCode = `+${formData.phoneCountryCode}`;
+          // Remove the country code prefix from the normalized phone
+          phoneNumber = normalizedPhone.replace(/^\+\d{1,3}/, '');
+        } else {
+          // Fallback: Extract country code from normalized phone (e.g., +1 from +14168888888)
+          // Use non-greedy matching - try 1 digit first, then 2, then 3
+          const countryCodeMatch = normalizedPhone.match(/^\+(\d{1,3})/);
+          countryCode = countryCodeMatch ? `+${countryCodeMatch[1]}` : '';
+          phoneNumber = countryCode ? normalizedPhone.slice(countryCode.length) : normalizedPhone;
+        }
 
         (variables.data as any).phones = {
           primaryPhoneNumber: phoneNumber,

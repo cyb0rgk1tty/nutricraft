@@ -570,7 +570,11 @@ import Footer from "../components/Footer.astro";
             }
             // Get phone number in E.164 format (e.g., +14168888888)
             const fullNumber = window.phoneIti.getNumber();
+            const countryData = window.phoneIti.getSelectedCountryData();
+
             formData.set('phone', fullNumber);
+            // Send country code separately for accurate CRM processing
+            formData.set('phoneCountryCode', countryData.dialCode); // e.g., "1" for US/Canada
           }
 
           // Send form data to API
