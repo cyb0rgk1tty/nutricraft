@@ -3,6 +3,38 @@
  * Handles creation of Person records in Twenty CRM from contact form submissions
  */
 
+/**
+ * Normalizes phone number to E.164 format
+ * @param phone - Raw phone number from form
+ * @returns Normalized phone number or null if invalid
+ */
+function normalizePhoneNumber(phone: string): string | null {
+  if (!phone) return null;
+
+  // Remove all non-digit characters except leading +
+  const cleaned = phone.replace(/[^\d+]/g, '');
+
+  // If already has country code (starts with +), return as-is
+  if (cleaned.startsWith('+')) {
+    return cleaned;
+  }
+
+  // If it's a 10-digit North American number, add +1
+  if (cleaned.length === 10 && /^[2-9]\d{9}$/.test(cleaned)) {
+    return `+1${cleaned}`;
+  }
+
+  // If it's an 11-digit number starting with 1, add +
+  if (cleaned.length === 11 && cleaned.startsWith('1')) {
+    return `+${cleaned}`;
+  }
+
+  // For other formats, try to extract country code
+  // If we can't normalize it, return null (skip phone field)
+  console.warn(`Twenty CRM: Unable to normalize phone number: ${phone}`);
+  return null;
+}
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -85,13 +117,21 @@ export async function createPersonInTwentyCrm(
       };
     }
 
-    // Add phones if provided (Twenty CRM expects an object with primaryPhoneNumber, countryCode, and additionalPhones)
+    // Add phones if provided and valid (Twenty CRM expects E.164 format)
     if (formData.phone) {
-      (variables.data as any).phones = {
-        primaryPhoneNumber: formData.phone,
-        primaryPhoneCountryCode: '',
-        additionalPhones: null,
-      };
+      const normalizedPhone = normalizePhoneNumber(formData.phone);
+      if (normalizedPhone) {
+        // Extract country code from normalized phone (e.g., +1 from +14168888888)
+        const countryCodeMatch = normalizedPhone.match(/^\+(\d{1,3})/);
+        const countryCode = countryCodeMatch ? `+${countryCodeMatch[1]}` : '';
+        const phoneNumber = countryCode ? normalizedPhone.slice(countryCode.length) : normalizedPhone;
+
+        (variables.data as any).phones = {
+          primaryPhoneNumber: phoneNumber,
+          primaryPhoneCountryCode: countryCode,
+          additionalPhones: null,
+        };
+      }
     }
 
     // Make API request to Twenty CRM
