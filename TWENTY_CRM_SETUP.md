@@ -99,9 +99,9 @@ To verify:
 1. In Twenty CRM, click on **People** in the left sidebar
 2. You should see a list view with columns like:
    - Name
-   - Email
-   - Phone
-   - Company
+   - Email (or Emails)
+   - Phone (or Phones)
+   - Company (optional relationship field)
 
 If you don't see the People section, contact your Twenty CRM administrator.
 
@@ -122,7 +122,7 @@ If you don't see the People section, contact your Twenty CRM administrator.
 6. Check your Twenty CRM:
    - Go to **People** section
    - You should see a new person record with the test data
-   - Name, email, phone, and company should all be populated
+   - Name, email, and phone (if provided) should all be populated
 
 ---
 
@@ -157,10 +157,10 @@ When someone submits your contact form:
 1. **Email sent** (primary notification) ✅
 2. **Person created in Twenty CRM** automatically with:
    - **Name** (split into firstName/lastName)
-   - **Email**
-   - **Phone** (if provided)
-   - **Company** (if provided)
-3. **Additional lead data** captured:
+   - **Email** (stored in emails.primaryEmail)
+   - **Phone** (stored in phones.primaryPhoneNumber, if provided)
+3. **Additional lead data** captured in logs:
+   - Company name
    - Target market
    - Order quantity
    - Project type
@@ -180,9 +180,9 @@ Here's how form fields map to Twenty CRM Person fields:
 | Contact Form Field | Twenty CRM Field | Notes |
 |-------------------|------------------|-------|
 | Name | name.firstName<br>name.lastName | Automatically split |
-| Email | email | Primary contact |
-| Phone | phone | Optional |
-| Company | companyName | Optional |
+| Email | emails.primaryEmail | Object structure with primaryEmail |
+| Phone | phones.primaryPhoneNumber | Object structure with phone details |
+| Company | *(not currently stored)* | Requires companyId relationship |
 | Target Market | *(future: note)* | Currently logged |
 | Order Quantity | *(future: note)* | Currently logged |
 | Project Type | *(future: note)* | Currently logged |
@@ -236,7 +236,10 @@ Here's how form fields map to Twenty CRM Person fields:
 **Solution**: Person object field mismatch
 - Twenty CRM's Person object may have different field names
 - Check Twenty CRM documentation for your version
-- The integration uses: `name.firstName`, `name.lastName`, `email`, `phone`
+- The integration uses:
+  - `name.firstName`, `name.lastName` (name structure)
+  - `emails.primaryEmail`, `emails.additionalEmails` (emails object)
+  - `phones.primaryPhoneNumber`, `phones.primaryPhoneCountryCode` (phones object)
 
 ---
 
@@ -253,7 +256,8 @@ Here's how form fields map to Twenty CRM Person fields:
 ### Person created but missing some fields
 
 **Solution**: Optional fields
-- Phone and Company are optional - only saved if provided in form
+- Phone is optional - only saved if provided in form
+- Company is not currently stored (requires companyId relationship)
 - Check that form fields have the correct `name` attributes
 - Verify field mapping in `/src/utils/twentyCrm.ts`
 
@@ -297,7 +301,7 @@ If you hit rate limits, the form will still work (email sends), but CRM sync may
 3. ✅ Dev server restarted
 4. ✅ Test form submitted locally
 5. ✅ Person appears in Twenty CRM People section
-6. ✅ All fields populated correctly (name, email, phone, company)
+6. ✅ All fields populated correctly (name, email, phone)
 7. ✅ Console logs show success message
 8. ✅ Environment variables added to Vercel
 9. ✅ Production deployment successful
@@ -310,13 +314,14 @@ If you hit rate limits, the form will still work (email sends), but CRM sync may
 
 Potential improvements to the integration:
 
-1. **Notes/Activities**: Attach lead qualification data as notes
-2. **Custom Fields**: Store target market, order quantity in custom fields
-3. **Company Linking**: Auto-create/link Company records
+1. **Company Support**: Auto-create/link Company records from company name field
+2. **Notes/Activities**: Attach lead qualification data as notes
+3. **Custom Fields**: Store target market, order quantity in custom fields
 4. **Lead Scoring**: Calculate lead quality based on form data
 5. **Webhooks**: Trigger workflows in Twenty when forms submitted
 6. **Duplicate Detection**: Check for existing people before creating
 7. **Lead Assignment**: Auto-assign to sales reps based on criteria
+8. **Country Code Detection**: Auto-detect phone country codes from phone numbers
 
 ---
 
