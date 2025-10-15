@@ -403,48 +403,67 @@ import Footer from "../components/Footer.astro";
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/css/intlTelInput.css">
   <script is:inline src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/intlTelInput.min.js"></script>
 
-  <script>
+  <script is:inline>
     // Initialize International Phone Input
-    let phoneInput;
-    let iti;
+    (function() {
+      let phoneInput;
+      let iti;
 
-    document.addEventListener('DOMContentLoaded', function() {
-      phoneInput = document.querySelector("#phone");
+      function initPhoneInput() {
+        if (typeof window.intlTelInput === 'undefined') {
+          // Library not loaded yet, wait and try again
+          setTimeout(initPhoneInput, 100);
+          return;
+        }
 
-      if (phoneInput) {
-        iti = window.intlTelInput(phoneInput, {
-          initialCountry: "ca", // Default to Canada
-          preferredCountries: ["ca", "us"],
-          separateDialCode: true,
-          utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/utils.js",
-          formatOnDisplay: true,
-          autoPlaceholder: "aggressive",
-          customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
-            return selectedCountryPlaceholder;
-          }
-        });
+        phoneInput = document.querySelector("#phone");
 
-        // Add validation styling on blur
-        phoneInput.addEventListener('blur', function() {
-          if (phoneInput.value.trim()) {
-            if (iti.isValidNumber()) {
-              phoneInput.classList.remove('border-red-300');
-              phoneInput.classList.add('border-green-300');
-            } else {
-              phoneInput.classList.remove('border-green-300');
-              phoneInput.classList.add('border-red-300');
+        if (phoneInput && !phoneInput.classList.contains('iti-initialized')) {
+          phoneInput.classList.add('iti-initialized');
+
+          iti = window.intlTelInput(phoneInput, {
+            initialCountry: "ca",
+            preferredCountries: ["ca", "us"],
+            separateDialCode: true,
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/utils.js",
+            formatOnDisplay: true,
+            autoPlaceholder: "aggressive",
+            customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+              return selectedCountryPlaceholder;
             }
-          } else {
-            phoneInput.classList.remove('border-red-300', 'border-green-300');
-          }
-        });
+          });
 
-        // Reset validation styling on input
-        phoneInput.addEventListener('input', function() {
-          phoneInput.classList.remove('border-red-300', 'border-green-300');
-        });
+          // Store iti instance globally for form submission
+          window.phoneIti = iti;
+
+          // Add validation styling on blur
+          phoneInput.addEventListener('blur', function() {
+            if (phoneInput.value.trim()) {
+              if (iti.isValidNumber()) {
+                phoneInput.classList.remove('border-red-300');
+                phoneInput.classList.add('border-green-300');
+              } else {
+                phoneInput.classList.remove('border-green-300');
+                phoneInput.classList.add('border-red-300');
+              }
+            } else {
+              phoneInput.classList.remove('border-red-300', 'border-green-300');
+            }
+          });
+
+          // Reset validation styling on input
+          phoneInput.addEventListener('input', function() {
+            phoneInput.classList.remove('border-red-300', 'border-green-300');
+          });
+        }
       }
-    });
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPhoneInput);
+      } else {
+        initPhoneInput();
+      }
+    })();
   </script>
 
   <script>
@@ -481,8 +500,9 @@ import Footer from "../components/Footer.astro";
           const formData = new FormData(this);
 
           // Validate and format phone number if provided
-          if (iti && phoneInput.value.trim()) {
-            if (!iti.isValidNumber()) {
+          const phoneInput = document.querySelector("#phone");
+          if (window.phoneIti && phoneInput && phoneInput.value.trim()) {
+            if (!window.phoneIti.isValidNumber()) {
               alert("Please enter a valid phone number for your selected country.");
               submitBtn.textContent = originalText;
               submitBtn.disabled = false;
@@ -490,7 +510,7 @@ import Footer from "../components/Footer.astro";
               return;
             }
             // Get phone number in E.164 format (e.g., +14168888888)
-            const fullNumber = iti.getNumber();
+            const fullNumber = window.phoneIti.getNumber();
             formData.set('phone', fullNumber);
           }
 
