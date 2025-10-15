@@ -131,16 +131,23 @@ export async function createPersonInTwentyCrm(
         let phoneNumber = '';
 
         if (formData.phoneCountryCode) {
-          // Use the country code from intl-tel-input (e.g., "1" for US/Canada)
+          // Use the country code from intl-tel-input (e.g., "1" for US/Canada, "44" for UK)
           countryCode = `+${formData.phoneCountryCode}`;
-          // Remove the country code prefix from the normalized phone
-          phoneNumber = normalizedPhone.replace(/^\+\d{1,3}/, '');
+          // Remove the exact country code prefix using its known length
+          // E.g., "+14168888888" with countryCode "+1" (length 2) → "4168888888"
+          // E.g., "+447700900000" with countryCode "+44" (length 3) → "7700900000"
+          phoneNumber = normalizedPhone.slice(countryCode.length);
         } else {
           // Fallback: Extract country code from normalized phone (e.g., +1 from +14168888888)
-          // Use non-greedy matching - try 1 digit first, then 2, then 3
+          // Without the country code from the library, we can't reliably determine where it ends
+          // This fallback handles edge cases but may not work for all countries
           const countryCodeMatch = normalizedPhone.match(/^\+(\d{1,3})/);
           countryCode = countryCodeMatch ? `+${countryCodeMatch[1]}` : '';
           phoneNumber = countryCode ? normalizedPhone.slice(countryCode.length) : normalizedPhone;
+
+          if (countryCodeMatch) {
+            console.warn(`Twenty CRM: Using fallback country code extraction for ${normalizedPhone}. May be inaccurate.`);
+          }
         }
 
         (variables.data as any).phones = {
