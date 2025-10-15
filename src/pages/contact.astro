@@ -583,6 +583,16 @@ import Footer from "../components/Footer.astro";
             const fullNumber = window.phoneIti.getNumber();
             const countryData = window.phoneIti.getSelectedCountryData();
 
+            // DEBUG: Log all available country data
+            console.log('=== intl-tel-input Country Data ===');
+            console.log('Full countryData object:', countryData);
+            console.log('Available properties:', Object.keys(countryData));
+            console.log('dialCode:', countryData.dialCode);
+            console.log('iso2:', countryData.iso2);
+            console.log('name:', countryData.name);
+            console.log('Full E.164 number:', fullNumber);
+            console.log('===================================');
+
             formData.set('phone', fullNumber);
             // Send country code separately for accurate CRM processing
             formData.set('phoneCountryCode', countryData.dialCode); // e.g., "1" for US/Canada
