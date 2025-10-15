@@ -5,7 +5,8 @@
 
 /**
  * Normalizes phone number to E.164 format
- * @param phone - Raw phone number from form
+ * Phone input library should send E.164 format (+14168888888), but we handle edge cases
+ * @param phone - Phone number from form (should be E.164 format)
  * @returns Normalized phone number or null if invalid
  */
 function normalizePhoneNumber(phone: string): string | null {
@@ -14,10 +15,12 @@ function normalizePhoneNumber(phone: string): string | null {
   // Remove all non-digit characters except leading +
   const cleaned = phone.replace(/[^\d+]/g, '');
 
-  // If already has country code (starts with +), return as-is
+  // If already has country code (starts with +), return as-is (expected from intl-tel-input)
   if (cleaned.startsWith('+')) {
     return cleaned;
   }
+
+  // Fallback handling for edge cases where E.164 format isn't provided:
 
   // If it's a 10-digit North American number, add +1
   if (cleaned.length === 10 && /^[2-9]\d{9}$/.test(cleaned)) {
@@ -29,8 +32,8 @@ function normalizePhoneNumber(phone: string): string | null {
     return `+${cleaned}`;
   }
 
-  // For other formats, try to extract country code
-  // If we can't normalize it, return null (skip phone field)
+  // For other formats, we can't reliably determine the country code
+  // Log warning but don't fail - phone is optional
   console.warn(`Twenty CRM: Unable to normalize phone number: ${phone}`);
   return null;
 }
