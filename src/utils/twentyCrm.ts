@@ -132,18 +132,19 @@ export async function createPersonInTwentyCrm(
 
         if (formData.phoneCountryCode) {
           // Use the country code from intl-tel-input (e.g., "1" for US/Canada, "44" for UK)
-          countryCode = `+${formData.phoneCountryCode}`;
-          // Remove the exact country code prefix using its known length
-          // E.g., "+14168888888" with countryCode "+1" (length 2) → "4168888888"
-          // E.g., "+447700900000" with countryCode "+44" (length 3) → "7700900000"
-          phoneNumber = normalizedPhone.slice(countryCode.length);
+          // Twenty CRM wants the country code WITHOUT the "+" prefix
+          countryCode = formData.phoneCountryCode;
+          // Remove the country code prefix from normalized phone using exact length
+          // E.g., "+14168888888" with countryCode "1" → skip "+1" (2 chars) → "4168888888"
+          // E.g., "+447700900000" with countryCode "44" → skip "+44" (3 chars) → "7700900000"
+          phoneNumber = normalizedPhone.slice(1 + countryCode.length); // +1 for the "+" symbol
         } else {
-          // Fallback: Extract country code from normalized phone (e.g., +1 from +14168888888)
+          // Fallback: Extract country code from normalized phone (e.g., 1 from +14168888888)
           // Without the country code from the library, we can't reliably determine where it ends
           // This fallback handles edge cases but may not work for all countries
           const countryCodeMatch = normalizedPhone.match(/^\+(\d{1,3})/);
-          countryCode = countryCodeMatch ? `+${countryCodeMatch[1]}` : '';
-          phoneNumber = countryCode ? normalizedPhone.slice(countryCode.length) : normalizedPhone;
+          countryCode = countryCodeMatch ? countryCodeMatch[1] : ''; // Just the digits, no "+"
+          phoneNumber = countryCode ? normalizedPhone.slice(1 + countryCode.length) : normalizedPhone;
 
           if (countryCodeMatch) {
             console.warn(`Twenty CRM: Using fallback country code extraction for ${normalizedPhone}. May be inaccurate.`);
@@ -152,7 +153,7 @@ export async function createPersonInTwentyCrm(
 
         (variables.data as any).phones = {
           primaryPhoneNumber: phoneNumber,
-          primaryPhoneCountryCode: countryCode,
+          primaryPhoneCountryCode: countryCode, // Twenty CRM expects just digits (e.g., "1", "44")
           additionalPhones: null,
         };
       }
