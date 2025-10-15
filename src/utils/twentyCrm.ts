@@ -10,6 +10,7 @@ interface ContactFormData {
   company?: string;
   targetMarket?: string;
   orderQuantity?: string;
+  budget?: string;
   projectType: string;
   message: string;
 }
@@ -41,6 +42,7 @@ export async function createPersonInTwentyCrm(
     const leadNotes = [
       formData.targetMarket && `Target Market: ${formData.targetMarket}`,
       formData.orderQuantity && `Order Quantity: ${formData.orderQuantity}`,
+      formData.budget && `Budget: ${formData.budget}`,
       `Project Type: ${formData.projectType}`,
       `Message: ${formData.message}`,
     ]

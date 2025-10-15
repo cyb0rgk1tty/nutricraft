@@ -14,6 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
     const company = data.get('company')?.toString() || '';
     const targetMarket = data.get('target-market')?.toString() || '';
     const orderQuantity = data.get('order-quantity')?.toString() || '';
+    const budget = data.get('budget')?.toString() || '';
     const projectType = data.get('project-type')?.toString() || '';
     const message = data.get('message')?.toString() || '';
 
@@ -60,6 +61,7 @@ export const POST: APIRoute = async ({ request }) => {
       <p><strong>Company:</strong> ${company || 'Not provided'}</p>
       <p><strong>Target Market:</strong> ${targetMarket || 'Not provided'}</p>
       <p><strong>Order Quantity:</strong> ${orderQuantity || 'Not provided'}</p>
+      <p><strong>Budget:</strong> ${budget || 'Not provided'}</p>
       <p><strong>Project Type:</strong> ${projectType}</p>
       <p><strong>Message:</strong></p>
       <p>${message.replace(/\n/g, '<br>')}</p>
@@ -74,6 +76,7 @@ Phone: ${phone || 'Not provided'}
 Company: ${company || 'Not provided'}
 Target Market: ${targetMarket || 'Not provided'}
 Order Quantity: ${orderQuantity || 'Not provided'}
+Budget: ${budget || 'Not provided'}
 Project Type: ${projectType}
 
 Message:
@@ -99,6 +102,7 @@ ${message}
         company,
         targetMarket,
         orderQuantity,
+        budget,
         projectType,
         message,
       });
