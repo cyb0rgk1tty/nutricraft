@@ -403,6 +403,49 @@ import Footer from "../components/Footer.astro";
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/css/intlTelInput.css">
   <script is:inline src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/intlTelInput.min.js"></script>
 
+  <!-- Custom styling for intl-tel-input to match form fields -->
+  <style>
+    /* Make intl-tel-input container match other form fields */
+    .iti {
+      width: 100%;
+      display: block;
+    }
+
+    .iti__input {
+      width: 100% !important;
+      padding: 0.75rem 1rem !important;
+      border-radius: 0.5rem !important;
+      border: 1px solid #d1d5db !important;
+      transition: border-color 0.3s, box-shadow 0.3s !important;
+    }
+
+    /* Match the mint green focus state of other fields */
+    .iti__input:focus {
+      outline: none !important;
+      border-color: #00c896 !important; /* mint-500 */
+      box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.1) !important; /* mint-200 with opacity */
+    }
+
+    /* Country dropdown styling */
+    .iti__country-list {
+      border-radius: 0.5rem !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .iti__selected-country:hover,
+    .iti__selected-country:focus {
+      background-color: #f0fdf6 !important; /* mint-50 */
+    }
+
+    .iti__country:hover {
+      background-color: #f0fdf6 !important; /* mint-50 */
+    }
+
+    .iti__active {
+      background-color: #d1fae5 !important; /* mint-100 */
+    }
+  </style>
+
   <script is:inline>
     // Initialize International Phone Input
     (function() {
