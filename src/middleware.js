@@ -15,7 +15,7 @@ export async function onRequest({ request, url }, next) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://cdn.jsdelivr.net",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com https://www.googletagmanager.com https://*.google.com https://*.google-analytics.com https://*.googletagmanager.com https://alb.reddit.com https://*.reddit.com https://www.redditstatic.com",
+    "connect-src 'self' https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com https://www.googletagmanager.com https://*.google.com https://*.google-analytics.com https://*.googletagmanager.com https://googleads.g.doubleclick.net https://*.googleadservices.com https://alb.reddit.com https://*.reddit.com https://www.redditstatic.com",
     "frame-src 'self' https://calendly.com https://chat.tangleapps.vip https://app.cal.com https://www.googletagmanager.com https://*.reddit.com",
     "base-uri 'self'",
     "form-action 'self'",
