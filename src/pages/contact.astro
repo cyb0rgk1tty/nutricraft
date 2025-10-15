@@ -10,132 +10,172 @@ import Footer from "../components/Footer.astro";
 >
   <Header />
 
-  <!-- Contact Hero Section -->
+  <!-- Compact Hero Section -->
   <section
-    class="relative bg-gradient-to-b from-mint-50 to-white overflow-hidden py-16 md:py-24"
+    class="relative bg-gradient-to-b from-mint-50 to-white overflow-hidden py-8 md:py-12"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1
-          class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6"
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-dark-900 mb-3"
         >
           Get in Touch
         </h1>
-        <p class="text-xl text-dark-600 max-w-3xl mx-auto">
-          Ready to launch your supplement brand? Our team is here to guide you
-          through every step of the sourcing and manufacturing process.
+        <p class="text-lg md:text-xl text-dark-600 max-w-3xl mx-auto">
+          Ready to launch your supplement brand? From initial idea to final product,
+          we guide you through every step—formulation, sourcing, manufacturing,
+          labeling, packaging, and regulatory compliance.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Contact Information Section -->
-  <section class="py-12 bg-white">
+  <!-- Two-Column Contact Section -->
+  <section id="contact" class="py-12 bg-gradient-to-b from-white to-mint-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-3 gap-8 mb-16">
-        <div class="text-center">
-          <div
-            class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-8 h-8 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              ></path>
-            </svg>
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Left Column: Contact Information & Trust Elements (appears second on mobile) -->
+        <div class="lg:col-span-1 space-y-6 order-2 lg:order-1">
+          <!-- Contact Information Cards -->
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-dark-900 mb-6">Contact Information</h2>
+
+            <div class="space-y-6">
+              <!-- Email -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg
+                    class="w-6 h-6 text-mint-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-dark-900 mb-1">Email</h3>
+                  <a
+                    href="mailto:hello@nutricraftlabs.com"
+                    class="text-mint-600 hover:text-mint-700 transition-colors text-sm"
+                  >
+                    hello@nutricraftlabs.com
+                  </a>
+                </div>
+              </div>
+
+              <!-- Chat -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg
+                    class="w-6 h-6 text-mint-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-dark-900 mb-1">Live Chat</h3>
+                  <button
+                    onclick="window.openChatwootChat()"
+                    class="text-mint-600 hover:text-mint-700 transition-colors font-medium text-sm"
+                  >
+                    Start Chat Now
+                  </button>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg
+                    class="w-6 h-6 text-mint-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-dark-900 mb-1">Location</h3>
+                  <p class="text-dark-600 text-sm">Toronto, Canada</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-2">Email</h3>
-          <a
-            href="mailto:hello@nutricraftlabs.com"
-            class="text-mint-600 hover:text-mint-700 transition-colors"
-          >
-            hello@nutricraftlabs.com
-          </a>
+
+          <!-- Trust Elements -->
+          <div class="bg-mint-50 rounded-xl p-6">
+            <h3 class="font-bold text-dark-900 mb-4">Why Choose Us?</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-dark-700">Response within 24 hours</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-dark-700">100% Confidential</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-dark-700">Free consultation & quote</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm text-dark-700">GMP-certified partners</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div class="text-center">
-          <div
-            class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-8 h-8 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <!-- Right Column: Contact Form (appears first on mobile) -->
+        <div class="lg:col-span-2 order-1 lg:order-2">
+          <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <div class="mb-6">
+              <h2 class="text-2xl md:text-3xl font-bold text-dark-900 mb-2">
+                Start Your Supplement Journey
+              </h2>
+              <p class="text-dark-600">
+                Tell us about your project and we'll get back to you within 24 hours
+              </p>
+            </div>
+
+            <form
+              id="contact-form"
+              method="POST"
+              action="/api/contact"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-2">Chat</h3>
-          <button
-            onclick="window.openChatwootChat()"
-            class="text-mint-600 hover:text-mint-700 transition-colors font-medium"
-          >
-            Start Live Chat
-          </button>
-        </div>
-
-        <div class="text-center">
-          <div
-            class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-8 h-8 text-mint-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-dark-900 mb-2">Location</h3>
-          <p class="text-dark-600">Toronto, Canada</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Form Section -->
-  <section id="contact" class="py-20 bg-gradient-to-b from-white to-mint-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
-          Start Your Supplement Journey Today
-        </h2>
-        <p class="text-xl text-dark-600">
-          Tell us about your project and let's create something exceptional
-          together
-        </p>
-      </div>
-
-      <form
-        id="contact-form"
-        class="bg-white rounded-2xl shadow-xl p-8 md:p-12"
-        method="POST"
-        action="/api/contact"
-      >
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <label
@@ -327,23 +367,26 @@ import Footer from "../components/Footer.astro";
           ></textarea>
         </div>
 
-        <div class="mt-8 flex flex-col sm:flex-row gap-4">
-          <button
-            type="submit"
-            class="flex-1 bg-mint-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-mint-700 transition-colors duration-300"
-          >
-            Submit Inquiry
-          </button>
-          <button
-            type="button"
-            data-cal-link="Nutricraftlabs"
-            data-cal-config='{"theme":"light"}'
-            class="sm:w-auto bg-white text-mint-600 font-semibold py-4 px-8 rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
-          >
-            Schedule Discovery Call
-          </button>
+              <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                <button
+                  type="submit"
+                  class="flex-1 bg-mint-600 text-white font-semibold py-4 px-8 rounded-lg hover:bg-mint-700 transition-colors duration-300"
+                >
+                  Submit Inquiry
+                </button>
+                <button
+                  type="button"
+                  data-cal-link="Nutricraftlabs"
+                  data-cal-config='{"theme":"light"}'
+                  class="sm:w-auto bg-white text-mint-600 font-semibold py-4 px-8 rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+                >
+                  Schedule Discovery Call
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 
