@@ -248,22 +248,25 @@ import Footer from "../components/Footer.astro";
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mt-6">
-          <div class="relative">
+          <div class="relative" x-data="{ open: false, selected: [] }">
             <label
               for="target-market"
               class="block text-sm font-semibold text-dark-900 mb-2"
               >Target Market</label
             >
             <!-- Hidden input to store selected values -->
-            <input type="hidden" id="target-market" name="target-market" value="" />
+            <input type="hidden" id="target-market" name="target-market" :value="selected.join(', ')" />
 
             <!-- Display button -->
             <button
               type="button"
-              id="target-market-button"
+              @click="open = !open"
               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300 text-left flex items-center justify-between bg-white"
             >
-              <span id="target-market-display" class="text-gray-500">Select target markets</span>
+              <span
+                :class="selected.length > 0 ? 'text-dark-900' : 'text-gray-500'"
+                x-text="selected.length > 0 ? selected.join(', ') : 'Select target markets'"
+              ></span>
               <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
@@ -271,15 +274,18 @@ import Footer from "../components/Footer.astro";
 
             <!-- Dropdown panel -->
             <div
-              id="target-market-dropdown"
-              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden"
+              x-show="open"
+              @click.away="open = false"
+              x-transition
+              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
                 <label class="flex items-center space-x-3 hover:bg-mint-50 p-2 rounded cursor-pointer">
                   <input
                     type="checkbox"
                     value="USA"
-                    class="target-market-checkbox w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
+                    x-model="selected"
+                    class="w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
                   />
                   <span class="text-dark-900">USA</span>
                 </label>
@@ -287,7 +293,8 @@ import Footer from "../components/Footer.astro";
                   <input
                     type="checkbox"
                     value="Canada"
-                    class="target-market-checkbox w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
+                    x-model="selected"
+                    class="w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
                   />
                   <span class="text-dark-900">Canada</span>
                 </label>
@@ -295,7 +302,8 @@ import Footer from "../components/Footer.astro";
                   <input
                     type="checkbox"
                     value="Other"
-                    class="target-market-checkbox w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
+                    x-model="selected"
+                    class="w-4 h-4 text-mint-600 border-gray-300 rounded focus:ring-mint-500"
                   />
                   <span class="text-dark-900">Other</span>
                 </label>
@@ -402,6 +410,9 @@ import Footer from "../components/Footer.astro";
   <!-- International Phone Input Library -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/css/intlTelInput.css">
   <script is:inline src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/intlTelInput.min.js"></script>
+
+  <!-- Alpine.js for reactive dropdowns and interactive elements -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <!-- Custom styling for intl-tel-input to match form fields -->
   <style>
@@ -659,56 +670,5 @@ import Footer from "../components/Footer.astro";
         }, 300);
       }
     };
-  </script>
-
-  <script>
-    // Target Market Multi-Select Dropdown
-    const targetMarketButton = document.getElementById('target-market-button');
-    const targetMarketDropdown = document.getElementById('target-market-dropdown');
-    const targetMarketDisplay = document.getElementById('target-market-display');
-    const targetMarketInput = document.getElementById('target-market');
-    const checkboxes = document.querySelectorAll('.target-market-checkbox');
-
-    // Toggle dropdown
-    targetMarketButton.addEventListener('click', function(e) {
-      e.stopPropagation();
-      targetMarketDropdown.classList.toggle('hidden');
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!targetMarketButton.contains(e.target) && !targetMarketDropdown.contains(e.target)) {
-        targetMarketDropdown.classList.add('hidden');
-      }
-    });
-
-    // Handle checkbox changes
-    checkboxes.forEach(function(checkbox) {
-      checkbox.addEventListener('change', function() {
-        updateSelectedMarkets();
-      });
-    });
-
-    // Update display and hidden input
-    function updateSelectedMarkets() {
-      const selected = [];
-      checkboxes.forEach(function(checkbox) {
-        if (checkbox.checked) {
-          selected.push(checkbox.value);
-        }
-      });
-
-      if (selected.length > 0) {
-        targetMarketDisplay.textContent = selected.join(', ');
-        targetMarketDisplay.classList.remove('text-gray-500');
-        targetMarketDisplay.classList.add('text-dark-900');
-        targetMarketInput.value = selected.join(', ');
-      } else {
-        targetMarketDisplay.textContent = 'Select target markets';
-        targetMarketDisplay.classList.add('text-gray-500');
-        targetMarketDisplay.classList.remove('text-dark-900');
-        targetMarketInput.value = '';
-      }
-    }
   </script>
 </BaseLayout>
