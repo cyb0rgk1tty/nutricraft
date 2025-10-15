@@ -89,7 +89,7 @@ import Footer from "../components/Footer.astro";
                 <div>
                   <h3 class="font-semibold text-dark-900 mb-1">Live Chat</h3>
                   <button
-                    onclick="window.openChatwootChat()"
+                    id="chat-button"
                     class="text-mint-600 hover:text-mint-700 transition-colors font-medium text-sm"
                   >
                     Start Chat Now
@@ -177,6 +177,19 @@ import Footer from "../components/Footer.astro";
               </p>
             </div>
 
+            <!-- Error message container (hidden by default) -->
+            <div id="form-error" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert" aria-live="polite">
+              <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-red-800 mb-1">Error</h3>
+                  <p id="form-error-message" class="text-sm text-red-700"></p>
+                </div>
+              </div>
+            </div>
+
             <form
               id="contact-form"
               method="POST"
@@ -225,10 +238,11 @@ import Footer from "../components/Footer.astro";
               type="tel"
               id="phone"
               name="phone"
+              aria-describedby="phone-helper"
               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
               placeholder="+1 (555) 123-4567"
             />
-            <p class="text-xs text-gray-500 mt-1">Select your country and enter your phone number</p>
+            <p id="phone-helper" class="text-xs text-gray-500 mt-1">Select your country and enter your phone number</p>
           </div>
 
           <div>
@@ -245,11 +259,22 @@ import Footer from "../components/Footer.astro";
               placeholder="Your Company"
             />
           </div>
+
+          <!-- Honeypot field for spam prevention (hidden from humans, bots will fill it) -->
+          <input
+            type="text"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+            style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+            aria-hidden="true"
+          />
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mt-6">
           <div class="relative" x-data="{ open: false, selected: [] }">
             <label
+              id="target-market-label"
               for="target-market"
               class="block text-sm font-semibold text-dark-900 mb-2"
               >Target Market</label
@@ -261,6 +286,9 @@ import Footer from "../components/Footer.astro";
             <button
               type="button"
               @click="open = !open"
+              :aria-expanded="open"
+              aria-controls="target-market-panel"
+              aria-labelledby="target-market-label"
               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300 text-left flex items-center justify-between bg-white"
             >
               <span
@@ -274,9 +302,12 @@ import Footer from "../components/Footer.astro";
 
             <!-- Dropdown panel -->
             <div
+              id="target-market-panel"
               x-show="open"
               @click.away="open = false"
               x-transition
+              role="group"
+              aria-labelledby="target-market-label"
               class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
@@ -407,12 +438,95 @@ import Footer from "../components/Footer.astro";
 
   <Footer />
 
+  <!-- Resource hints for better performance -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- Schema.org Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Nutricraft Labs",
+    "description": "Contact Nutricraft Labs for supplement manufacturing quotes, consultation, and project inquiries. Response within 24 hours.",
+    "url": "https://nutricraftlabs.com/contact",
+    "mainEntity": {
+      "@type": "LocalBusiness",
+      "name": "Nutricraft Labs",
+      "description": "Premium supplement manufacturing and private label services with GMP-certified facilities",
+      "url": "https://nutricraftlabs.com",
+      "logo": "https://nutricraftlabs.com/images/logo.png",
+      "email": "hello@nutricraftlabs.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Toronto",
+        "addressRegion": "ON",
+        "addressCountry": "CA"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "United States"
+        },
+        {
+          "@type": "Country",
+          "name": "Canada"
+        }
+      ],
+      "priceRange": "$$",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Supplement Manufacturing Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Private Label Supplement Manufacturing",
+              "description": "Ready-made supplement formulations with custom labeling and packaging"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "White Label Supplement Manufacturing",
+              "description": "Pre-formulated supplements with your brand identity"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Custom Formulation Development",
+              "description": "Create unique supplement formulations tailored to your specifications"
+            }
+          }
+        ]
+      }
+    },
+    "potentialAction": {
+      "@type": "CommunicateAction",
+      "name": "Contact Form",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://nutricraftlabs.com/contact",
+        "inLanguage": "en-US",
+        "actionPlatform": [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/MobileWebPlatform"
+        ]
+      }
+    }
+  }
+  </script>
+
   <!-- International Phone Input Library -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/css/intlTelInput.css">
   <script is:inline src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.4/build/js/intlTelInput.min.js"></script>
 
   <!-- Alpine.js for reactive dropdowns and interactive elements -->
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 
   <!-- Custom styling for intl-tel-input to match form fields -->
   <style>
@@ -455,6 +569,17 @@ import Footer from "../components/Footer.astro";
     .iti__active {
       background-color: #d1fae5 !important; /* mint-100 */
     }
+
+    /* Loading spinner animation */
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
   </style>
 
   <script is:inline>
@@ -466,8 +591,6 @@ import Footer from "../components/Footer.astro";
 
       function initPhoneInput() {
         retryCount++;
-        console.log('Attempting to init phone input, retry:', retryCount);
-        console.log('intlTelInput available:', typeof window.intlTelInput);
 
         if (typeof window.intlTelInput === 'undefined') {
           if (retryCount < 50) {
@@ -480,12 +603,10 @@ import Footer from "../components/Footer.astro";
         }
 
         phoneInput = document.querySelector("#phone");
-        console.log('Phone input element:', phoneInput);
 
         if (phoneInput && !phoneInput.classList.contains('iti-initialized')) {
           phoneInput.classList.add('iti-initialized');
 
-          console.log('Initializing intl-tel-input...');
           try {
             iti = window.intlTelInput(phoneInput, {
               initialCountry: "ca",
@@ -501,7 +622,6 @@ import Footer from "../components/Footer.astro";
 
             // Store iti instance globally for form submission
             window.phoneIti = iti;
-            console.log('Successfully initialized intl-tel-input:', iti);
           } catch(e) {
             console.error('Error initializing intl-tel-input:', e);
           }
@@ -512,18 +632,22 @@ import Footer from "../components/Footer.astro";
               if (iti.isValidNumber()) {
                 phoneInput.classList.remove('border-red-300');
                 phoneInput.classList.add('border-green-300');
+                phoneInput.setAttribute('aria-invalid', 'false');
               } else {
                 phoneInput.classList.remove('border-green-300');
                 phoneInput.classList.add('border-red-300');
+                phoneInput.setAttribute('aria-invalid', 'true');
               }
             } else {
               phoneInput.classList.remove('border-red-300', 'border-green-300');
+              phoneInput.removeAttribute('aria-invalid');
             }
           });
 
           // Reset validation styling on input
           phoneInput.addEventListener('input', function() {
             phoneInput.classList.remove('border-red-300', 'border-green-300');
+            phoneInput.removeAttribute('aria-invalid');
           });
         }
       }
@@ -537,6 +661,28 @@ import Footer from "../components/Footer.astro";
   </script>
 
   <script>
+    // Helper function to show inline error messages
+    function showFormError(message) {
+      const errorContainer = document.getElementById('form-error');
+      const errorMessage = document.getElementById('form-error-message');
+
+      if (errorContainer && errorMessage) {
+        errorMessage.textContent = message;
+        errorContainer.classList.remove('hidden');
+
+        // Scroll to error message
+        errorContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Helper function to hide error messages
+    function hideFormError() {
+      const errorContainer = document.getElementById('form-error');
+      if (errorContainer) {
+        errorContainer.classList.add('hidden');
+      }
+    }
+
     // Contact Form Conversion Tracking for GTM
     function gtag_report_conversion(url) {
       window.dataLayer = window.dataLayer || [];
@@ -561,9 +707,20 @@ import Footer from "../components/Footer.astro";
       contactForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
+        // Hide any previous error messages
+        hideFormError();
+
         const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = "Sending...";
+        const originalHtml = submitBtn.innerHTML;
+        submitBtn.innerHTML = `
+          <span class="flex items-center justify-center gap-2">
+            <svg class="spinner w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Sending...</span>
+          </span>
+        `;
         submitBtn.disabled = true;
 
         try {
@@ -573,8 +730,8 @@ import Footer from "../components/Footer.astro";
           const phoneInput = document.querySelector("#phone");
           if (window.phoneIti && phoneInput && phoneInput.value.trim()) {
             if (!window.phoneIti.isValidNumber()) {
-              alert("Please enter a valid phone number for your selected country.");
-              submitBtn.textContent = originalText;
+              showFormError("Please enter a valid phone number for your selected country.");
+              submitBtn.innerHTML = originalHtml;
               submitBtn.disabled = false;
               phoneInput.focus();
               return;
@@ -615,15 +772,15 @@ import Footer from "../components/Footer.astro";
               </div>
             `;
           } else {
-            // Show error
-            alert(result.error || "Something went wrong. Please try again.");
-            submitBtn.textContent = originalText;
+            // Show inline error
+            showFormError(result.error || "Something went wrong. Please try again.");
+            submitBtn.innerHTML = originalHtml;
             submitBtn.disabled = false;
           }
         } catch (error) {
           console.error("Form submission error:", error);
-          alert("Failed to send message. Please try again later.");
-          submitBtn.textContent = originalText;
+          showFormError("Failed to send message. Please try again later.");
+          submitBtn.innerHTML = originalHtml;
           submitBtn.disabled = false;
         }
       });
@@ -640,7 +797,7 @@ import Footer from "../components/Footer.astro";
     });
 
     // Function to open chat
-    window.openChatwootChat = function () {
+    function openChatwootChat() {
       if (chatwootReady && window.$chatwoot) {
         window.$chatwoot.toggle("open");
         // Track chat open in GTM
@@ -665,10 +822,21 @@ import Footer from "../components/Footer.astro";
             });
           } else if (retries > 10) {
             clearInterval(checkInterval);
-            alert("Chat is still loading. Please try again in a moment.");
+            // Show inline error if showFormError is available, otherwise console log
+            if (typeof showFormError === 'function') {
+              showFormError("Chat is still loading. Please try again in a moment.");
+            } else {
+              console.error("Chat is still loading. Please try again in a moment.");
+            }
           }
         }, 300);
       }
-    };
+    }
+
+    // Attach event listener to chat button
+    const chatButton = document.getElementById('chat-button');
+    if (chatButton) {
+      chatButton.addEventListener('click', openChatwootChat);
+    }
   </script>
 </BaseLayout>

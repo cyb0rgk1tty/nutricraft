@@ -4,6 +4,20 @@ import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
 import { createPersonInTwentyCrm } from '../../utils/twentyCrm';
 
+/**
+ * Escape HTML special characters to prevent XSS in email templates
+ */
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse form data
@@ -18,6 +32,20 @@ export const POST: APIRoute = async ({ request }) => {
     const budget = data.get('budget')?.toString() || '';
     const projectType = data.get('project-type')?.toString() || '';
     const message = data.get('message')?.toString() || '';
+    const honeypot = data.get('website')?.toString() || '';
+
+    // Honeypot spam check - if filled, it's a bot
+    if (honeypot) {
+      console.log('Spam detected: Honeypot field filled');
+      // Return success to not alert the bot
+      return new Response(JSON.stringify({
+        success: true,
+        message: 'Thank you for your inquiry! We\'ll be in touch within 24 hours.'
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     // Basic validation
     if (!name || !email || !projectType || !message) {
@@ -53,19 +81,19 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
 
-    // Email content
+    // Email content (escape all user input to prevent XSS)
     const htmlContent = `
       <h2>New Contact Form Submission</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-      <p><strong>Company:</strong> ${company || 'Not provided'}</p>
-      <p><strong>Target Market:</strong> ${targetMarket || 'Not provided'}</p>
-      <p><strong>Order Quantity:</strong> ${orderQuantity || 'Not provided'}</p>
-      <p><strong>Budget:</strong> ${budget || 'Not provided'}</p>
-      <p><strong>Project Type:</strong> ${projectType}</p>
+      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Phone:</strong> ${phone ? escapeHtml(phone) : 'Not provided'}</p>
+      <p><strong>Company:</strong> ${company ? escapeHtml(company) : 'Not provided'}</p>
+      <p><strong>Target Market:</strong> ${targetMarket ? escapeHtml(targetMarket) : 'Not provided'}</p>
+      <p><strong>Order Quantity:</strong> ${orderQuantity ? escapeHtml(orderQuantity) : 'Not provided'}</p>
+      <p><strong>Budget:</strong> ${budget ? escapeHtml(budget) : 'Not provided'}</p>
+      <p><strong>Project Type:</strong> ${escapeHtml(projectType)}</p>
       <p><strong>Message:</strong></p>
-      <p>${message.replace(/\n/g, '<br>')}</p>
+      <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
     `;
 
     const textContent = `
