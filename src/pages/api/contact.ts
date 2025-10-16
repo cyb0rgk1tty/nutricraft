@@ -18,11 +18,57 @@ function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
+/**
+ * Capitalize names properly for display in emails and CRM
+ * Handles hyphens, apostrophes, and multiple spaces
+ * @param name - Full name from form input
+ * @returns Properly capitalized name
+ */
+function capitalizeName(name: string): string {
+  if (!name) return '';
+
+  // Trim and normalize multiple spaces to single space
+  const normalized = name.trim().replace(/\s+/g, ' ');
+
+  // Split by spaces and capitalize each word
+  return normalized.split(' ').map(word => {
+    if (!word) return '';
+
+    // Handle hyphenated names (e.g., "mary-jane" -> "Mary-Jane")
+    if (word.includes('-')) {
+      return word.split('-').map(part => capitalizeWord(part)).join('-');
+    }
+
+    return capitalizeWord(word);
+  }).join(' ');
+}
+
+/**
+ * Capitalize a single word, handling apostrophes
+ * @param word - Single word to capitalize
+ * @returns Capitalized word
+ */
+function capitalizeWord(word: string): string {
+  if (!word) return '';
+
+  // Handle names with apostrophes (e.g., "o'brien" -> "O'Brien")
+  if (word.includes("'")) {
+    return word.split("'").map((part, index) => {
+      if (!part) return '';
+      // Capitalize first letter of each part after apostrophe
+      return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+    }).join("'");
+  }
+
+  // Standard capitalization: first letter uppercase, rest lowercase
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse form data
     const data = await request.formData();
-    const name = data.get('name')?.toString() || '';
+    const name = capitalizeName(data.get('name')?.toString() || '');
     const email = data.get('email')?.toString() || '';
     const phone = data.get('phone')?.toString() || '';
     const phoneCountryCode = data.get('phoneCountryCode')?.toString() || '';
