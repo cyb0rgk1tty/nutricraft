@@ -43,6 +43,12 @@ const comparisonData = [
     privateLabel: "Complete control over formula, dosage, ingredients",
     whiteLabel: "Customize label and packaging only",
     bestFor: "Private for full control"
+  },
+  {
+    aspect: "Market Availability",
+    privateLabel: "US and Canada (exclusive NPN per brand)",
+    whiteLabel: "US only (NPNs cannot be shared)",
+    bestFor: "Private for Canadian market"
   }
 ];
 
@@ -84,16 +90,16 @@ const productFormats = [
   { name: "Liquids", description: "Tinctures & syrups", moq: "1000 units" }
 ];
 
-// Stock Formula Categories with NPN status
+// Stock Formula Categories (US Market White Label)
 const stockFormulas = [
-  { category: "Weight Management", count: "25+", popular: ["Garcinia Cambogia", "Green Coffee Bean", "CLA Complex"], npnReady: true },
-  { category: "Sports Nutrition", count: "30+", popular: ["Whey Protein", "BCAA", "Pre-Workout"], npnReady: true },
-  { category: "Immune Support", count: "20+", popular: ["Vitamin C + Zinc", "Elderberry", "Mushroom Complex"], npnReady: true },
-  { category: "Beauty & Wellness", count: "35+", popular: ["Collagen Peptides", "Biotin", "Hair Vitamins"], npnReady: true },
-  { category: "Men's Health", count: "15+", popular: ["Testosterone Support", "Prostate Health", "Men's Multi"], npnReady: false },
-  { category: "Women's Health", count: "20+", popular: ["Prenatal", "Menopause Support", "Women's Multi"], npnReady: true },
-  { category: "General Health", count: "40+", popular: ["Multivitamin", "Omega-3", "Probiotics"], npnReady: true },
-  { category: "Cognitive/Mood", count: "25+", popular: ["Nootropics", "Ashwagandha", "5-HTP"], npnReady: false }
+  { category: "Weight Management", count: "25+", popular: ["Garcinia Cambogia", "Green Coffee Bean", "CLA Complex"] },
+  { category: "Sports Nutrition", count: "30+", popular: ["Whey Protein", "BCAA", "Pre-Workout"] },
+  { category: "Immune Support", count: "20+", popular: ["Vitamin C + Zinc", "Elderberry", "Mushroom Complex"] },
+  { category: "Beauty & Wellness", count: "35+", popular: ["Collagen Peptides", "Biotin", "Hair Vitamins"] },
+  { category: "Men's Health", count: "15+", popular: ["Testosterone Support", "Prostate Health", "Men's Multi"] },
+  { category: "Women's Health", count: "20+", popular: ["Prenatal", "Menopause Support", "Women's Multi"] },
+  { category: "General Health", count: "40+", popular: ["Multivitamin", "Omega-3", "Probiotics"] },
+  { category: "Cognitive/Mood", count: "25+", popular: ["Nootropics", "Ashwagandha", "5-HTP"] }
 ];
 
 // Process Timeline
@@ -244,7 +250,11 @@ const faqItems = [
   },
   {
     question: "Do I need an NPN to sell supplements in Canada?",
-    answer: "Yes, all supplements sold in Canada require a Natural Product Number (NPN) from Health Canada. Many of our white label formulas already have NPNs or are NPN-ready, significantly reducing your time to market. We handle the entire application process for formulas that need new NPNs. The approval process typically takes 60-90 days for Class I products."
+    answer: "Yes, all supplements sold in Canada require a Natural Product Number (NPN) from Health Canada. IMPORTANT: NPNs are brand-specific and cannot be shared between companies. This means white label products (non-exclusive formulas) can only be sold in the US market. For the Canadian market, you must use private label or semi-custom formulations to obtain your own exclusive NPN. We handle the entire NPN application process, which typically takes 60-90 days for Class I products with Health Canada-compliant ingredients."
+  },
+  {
+    question: "Why can't I use white label products for the Canadian market?",
+    answer: "White label products use non-exclusive formulas that are sold to multiple brands. However, Health Canada's NPN (Natural Product Number) system requires each brand to have its own unique NPN tied to their specific company and product. You cannot use another company's NPN, and NPNs cannot be transferred or shared. This regulatory requirement means that for Canada, you must choose private label (custom formulation) or semi-custom options where you obtain your own exclusive NPN. White label products work perfectly for the US market, which has different regulatory requirements."
   },
   {
     question: "What are the bilingual labeling requirements for Canada?",
@@ -252,7 +262,7 @@ const faqItems = [
   },
   {
     question: "Can I sell the same products in both Canada and the US?",
-    answer: "Yes, but you'll need different labels for each market. US labels don't require French text and have different regulatory requirements. Canadian products need NPN numbers and bilingual labels, while US products follow FDA guidelines. We can produce separate runs for each market or help you create dual-market compliant labels where possible."
+    answer: "Yes with private label or semi-custom formulations, but you'll need different labels and separate NPN applications for each market. White label products can only be sold in the US due to NPN restrictions. For dual-market products: US labels follow FDA guidelines (English only), while Canadian labels require Health Canada NPN numbers and full bilingual (English/French) compliance. We can produce separate label runs optimized for each market or help you create packaging that accommodates both markets."
   },
   {
     question: "Are your supplements FDA and Health Canada compliant?",
@@ -281,7 +291,7 @@ const faqItems = [
 ];
 
 const metaTitle = "Private Label & White Label Supplement Manufacturing | Low MOQ | US & Canada | Nutricraft";
-const metaDescription = "Launch your supplement brand with just 1000 units minimum. Private label custom formulas or white label ready-made products. FDA-registered, Health Canada compliant manufacturing. US and Canadian markets. Get your free quote in 24 hours.";
+const metaDescription = "Launch your supplement brand with just 1000 units minimum. White label for US market or private label custom formulas for US & Canada. FDA-registered, Health Canada compliant manufacturing. Get your free quote in 24 hours.";
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -324,8 +334,8 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
             Private Label & White Label <span class="text-mint-600">Supplement Manufacturing</span>
           </h1>
           <p class="text-xl text-dark-600 mb-6">
-            Launch your supplement brand in the US or Canada with just <strong>1000 units minimum order</strong>.
-            Choose custom private label formulations or ready-made white label products.
+            Launch your supplement brand with just <strong>1000 units minimum order</strong>.
+            <strong>White label</strong> for fast US market entry, or <strong>private label</strong> for custom formulations in both US and Canada markets.
             FDA & Health Canada compliant manufacturing.
           </p>
           <ul class="space-y-3 mb-8">
@@ -345,7 +355,7 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
               <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              <span class="text-dark-700">US & Canadian market compliance</span>
+              <span class="text-dark-700">US market ready (white label) or dual-market access (private label)</span>
             </li>
             <li class="flex items-center gap-3">
               <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -500,7 +510,7 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
           </h2>
           <p class="text-lg text-dark-600 max-w-3xl mx-auto">
             Traditional supplement manufacturers make it nearly impossible for new brands to succeed.
-            We've eliminated every barrier to entry for both US and Canadian markets.
+            We've eliminated barriers to entry with white label for the US market and private label for both US and Canadian markets.
           </p>
         </div>
       </ScrollAnimation>
@@ -571,9 +581,14 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
             </table>
           </div>
           <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-            <p class="text-sm text-gray-600 italic text-center">
+            <p class="text-sm text-gray-600 italic text-center mb-3">
               *Pricing shown represents typical ranges for demonstration purposes. Actual costs vary based on formulation complexity, ingredients, testing requirements, packaging choices, and order volume. Contact us for a personalized quote.
             </p>
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mt-3">
+              <p class="text-sm text-blue-900">
+                <strong>Important for Canadian Market:</strong> White label products can only be sold in the US because Health Canada's NPN (Natural Product Number) system requires brand-specific approval that cannot be shared. For the Canadian market, you must use private label or semi-custom formulations to obtain your own exclusive NPN.
+              </p>
+            </div>
           </div>
         </div>
       </ScrollAnimation>
@@ -583,6 +598,12 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
           <div class="bg-white rounded-lg p-6 border-2 border-gray-200">
             <h3 class="text-xl font-bold text-dark-900 mb-3">Choose Private Label If You:</h3>
             <ul class="space-y-2">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Need access to <strong>Canadian market</strong> (required for Canada)</span>
+              </li>
               <li class="flex items-start gap-2">
                 <svg class="w-5 h-5 text-mint-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -606,6 +627,12 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
           <div class="bg-white rounded-lg p-6 border-2 border-gray-200">
             <h3 class="text-xl font-bold text-dark-900 mb-3">Choose White Label If You:</h3>
             <ul class="space-y-2">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-mint-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-dark-700">Are targeting the <strong>US market only</strong></span>
+              </li>
               <li class="flex items-start gap-2">
                 <svg class="w-5 h-5 text-mint-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -673,9 +700,12 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
 
       <ScrollAnimation>
         <div class="mt-12">
-          <h3 class="text-2xl font-bold text-dark-900 text-center mb-8">
-            50+ Stock Formulas Ready to Label
+          <h3 class="text-2xl font-bold text-dark-900 text-center mb-4">
+            50+ Stock Formulas Ready to Label (US Market)
           </h3>
+          <p class="text-center text-dark-600 mb-8 max-w-3xl mx-auto">
+            These white label formulas are ready for the US market. For Canadian market entry, we'll help you develop private label or semi-custom formulations with your own exclusive NPN.
+          </p>
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {stockFormulas.map((category, index) => (
               <div class="bg-white rounded-lg p-4 border border-gray-200">
@@ -746,13 +776,52 @@ const metaDescription = "Launch your supplement brand with just 1000 units minim
   <section class="py-16 md:py-20 bg-gradient-to-b from-white to-mint-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
-        <div class="text-center mb-12">
+        <div class="text-center mb-8">
           <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
             Serving Both US & Canadian Markets
           </h2>
           <p class="text-lg text-dark-600 max-w-3xl mx-auto">
             Understanding market differences helps you succeed in both countries with the right strategy.
           </p>
+        </div>
+      </ScrollAnimation>
+
+      <!-- Critical NPN Restriction Notice -->
+      <ScrollAnimation>
+        <div class="max-w-4xl mx-auto mb-12">
+          <div class="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-600 p-6 rounded-r-lg shadow-md">
+            <div class="flex items-start gap-4">
+              <svg class="w-8 h-8 text-red-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+              </svg>
+              <div>
+                <h3 class="text-xl font-bold text-red-900 mb-2">Critical: White Label Cannot Be Used for Canadian Market</h3>
+                <p class="text-red-900 mb-3">
+                  Health Canada's Natural Product Number (NPN) system requires each brand to obtain its own unique, brand-specific approval. NPNs are legally tied to a specific company and product, and <strong>cannot be shared, transferred, or used by multiple brands</strong>.
+                </p>
+                <div class="bg-white bg-opacity-50 rounded p-4 mb-3">
+                  <p class="text-red-900 font-semibold mb-2">What this means for you:</p>
+                  <ul class="space-y-2 text-red-900">
+                    <li class="flex items-start gap-2">
+                      <span class="font-bold">•</span>
+                      <span><strong>White Label = US Market Only</strong> - Non-exclusive formulas cannot have shared NPNs</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="font-bold">•</span>
+                      <span><strong>Private Label = US & Canada</strong> - Custom formulations get your own exclusive NPN</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="font-bold">•</span>
+                      <span><strong>Semi-Custom = US & Canada</strong> - Modified formulas qualify for your own NPN</span>
+                    </li>
+                  </ul>
+                </div>
+                <p class="text-sm text-red-800 italic">
+                  This is a regulatory requirement by Health Canada, not a manufacturer limitation. We'll guide you to the right product type based on your target market.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </ScrollAnimation>
 

@@ -2,11 +2,11 @@ export const services = [
   {
     id: 'private-label',
     title: 'Private Label & White Label Manufacturing',
-    description: 'Launch your supplement brand with just 1000 units minimum. Custom formulas or ready-made products.',
+    description: 'Launch your supplement brand with just 1000 units minimum. White label (US market) or private label (US & Canada).',
     features: [
       'Start with 1000 units (vs industry 5000+)',
-      'FDA-registered, Health Canada compliant',
-      '50+ stock formulas or custom R&D'
+      'White label for US / Private label for US & Canada',
+      '50+ stock formulas (US) or custom R&D (both markets)'
     ],
     icon: '🏭'
   },
