@@ -47,6 +47,7 @@ interface ContactFormData {
   targetMarket?: string;
   orderQuantity?: string;
   budget?: string;
+  timeline?: string;
   projectType: string;
   message: string;
 }
@@ -79,6 +80,7 @@ export async function createPersonInTwentyCrm(
       formData.targetMarket && `Target Market: ${formData.targetMarket}`,
       formData.orderQuantity && `Order Quantity: ${formData.orderQuantity}`,
       formData.budget && `Budget: ${formData.budget}`,
+      formData.timeline && `Timeline: ${formData.timeline}`,
       `Project Type: ${formData.projectType}`,
       `Message: ${formData.message}`,
     ]

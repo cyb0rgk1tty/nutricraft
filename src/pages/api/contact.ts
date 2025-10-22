@@ -76,6 +76,7 @@ export const POST: APIRoute = async ({ request }) => {
     const targetMarket = data.get('target-market')?.toString() || '';
     const orderQuantity = data.get('order-quantity')?.toString() || '';
     const budget = data.get('budget')?.toString() || '';
+    const timeline = data.get('timeline')?.toString() || '';
     const projectType = data.get('project-type')?.toString() || '';
     const message = data.get('message')?.toString() || '';
     const honeypot = data.get('website')?.toString() || '';
@@ -137,6 +138,7 @@ export const POST: APIRoute = async ({ request }) => {
       <p><strong>Target Market:</strong> ${targetMarket ? escapeHtml(targetMarket) : 'Not provided'}</p>
       <p><strong>Order Quantity:</strong> ${orderQuantity ? escapeHtml(orderQuantity) : 'Not provided'}</p>
       <p><strong>Budget:</strong> ${budget ? escapeHtml(budget) : 'Not provided'}</p>
+      <p><strong>Timeline:</strong> ${timeline ? escapeHtml(timeline) : 'Not provided'}</p>
       <p><strong>Project Type:</strong> ${escapeHtml(projectType)}</p>
       <p><strong>Message:</strong></p>
       <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
@@ -152,6 +154,7 @@ Company: ${company || 'Not provided'}
 Target Market: ${targetMarket || 'Not provided'}
 Order Quantity: ${orderQuantity || 'Not provided'}
 Budget: ${budget || 'Not provided'}
+Timeline: ${timeline || 'Not provided'}
 Project Type: ${projectType}
 
 Message:
@@ -179,6 +182,7 @@ ${message}
         targetMarket,
         orderQuantity,
         budget,
+        timeline,
         projectType,
         message,
       });
