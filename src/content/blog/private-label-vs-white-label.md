@@ -97,7 +97,7 @@ White label is perfect if you're:
 
 **Misconception #1: "White label products are lower quality"**
 
-Not true. The quality depends on the manufacturer, not whether it's white or private label. Our white label products come from the same FDA-registered, GMP-certified facilities as our custom formulations, using the same quality ingredients and testing protocols.
+Not true. The quality depends on the manufacturer, not whether it's white or private label. White label products manufactured through our partner network come from the same FDA-registered, GMP-certified facilities as custom formulations, using the same quality ingredients and testing protocols.
 
 **Misconception #2: "Everyone will have the same product"**
 

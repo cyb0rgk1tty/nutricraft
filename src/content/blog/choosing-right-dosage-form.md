@@ -634,7 +634,7 @@ Our team considers:
 
 ### Our Manufacturing Capabilities
 
-We produce supplements in all major formats:
+We coordinate manufacturing through our partner network for all major supplement formats:
 - [Tablets](/dosage-forms/tablets) including standard, caplets, and chewables
 - [Capsules](/dosage-forms/capsules) in both gelatin and vegetarian options
 - [Softgels](/dosage-forms/softgels) in standard and mini sizes
@@ -643,7 +643,7 @@ We produce supplements in all major formats:
 - [Liquids](/dosage-forms/liquids) including syrups, tinctures, and drops
 - [Chewables](/dosage-forms/chewables) with multiple flavor profiles
 
-We work directly with your team to optimize formulations for manufacturability, stability, and consumer appeal. Our formulators have seen thousands of projects and can help you avoid expensive mistakes.
+We work directly with your team to optimize formulations for manufacturability, stability, and consumer appeal. Our formulation experts coordinate with partner R&D teams who have seen thousands of projects and can help you avoid expensive mistakes.
 
 ## Ready to Launch Your Supplement Brand?
 

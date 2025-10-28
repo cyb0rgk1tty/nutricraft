@@ -2,7 +2,7 @@ export const services = [
   {
     id: 'private-label',
     title: 'Private Label & White Label Manufacturing',
-    description: 'Launch your supplement brand with just 1000 units minimum. White label (US market) or private label (US & Canada).',
+    description: 'Launch your supplement brand through our partner network with just 1000 units minimum. White label (US market) or private label (US & Canada).',
     features: [
       'Start with 1000 units (vs industry 5000+)',
       'White label for US / Private label for US & Canada',
@@ -24,7 +24,7 @@ export const services = [
   {
     id: 'custom-formulation',
     title: 'Custom Formulation',
-    description: 'Create unique, proprietary formulas with expert R&D teams. 2025 trending ingredients available.',
+    description: 'Create unique, proprietary formulas with our formulation experts and partner R&D teams. 2025 trending ingredients available.',
     features: [
       '12-16 weeks from concept to market',
       'GLP-1 support, Vitamin B12, functional mushrooms',
