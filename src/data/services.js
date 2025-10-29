@@ -66,8 +66,8 @@ export const services = [
     icon: '🔬'
   },
   {
-    id: 'compliance-labels',
-    title: 'Compliance Label Creation',
+    id: 'compliant-product-labels',
+    title: 'Compliant Product Label Creation',
     description: 'Bilingual labels meeting all FDA and Health Canada requirements. Platform ad-compliant messaging.',
     features: [
       'English/French bilingual labels',

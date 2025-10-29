@@ -20,6 +20,11 @@
       "source": "/formulations",
       "destination": "/dosage-forms",
       "permanent": true
+    },
+    {
+      "source": "/services/compliance-labels",
+      "destination": "/services/compliant-product-labels",
+      "permanent": true
     }
   ],
   "headers": [
