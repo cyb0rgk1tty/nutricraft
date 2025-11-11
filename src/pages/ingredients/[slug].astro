@@ -1,0 +1,523 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { ingredients, getIngredientBySlug, getAllIngredientSlugs, getIngredientsByForm } from "../../data/ingredients.js";
+import { formulations } from "../../data/formulations.js";
+
+export async function getStaticPaths() {
+  return getAllIngredientSlugs().map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const ingredient = getIngredientBySlug(slug);
+
+if (!ingredient) {
+  return Astro.redirect('/404');
+}
+
+// Get recommended dosage form details
+const recommendedForms = ingredient.recommendedForms.map(formId =>
+  formulations.find(f => f.id === formId)
+).filter(Boolean);
+
+// SEO metadata
+const pageTitle = ingredient.metaTitle;
+const pageDescription = ingredient.metaDescription;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-6">
+          {ingredient.name} Supplement Manufacturing
+        </h1>
+        <p class="text-xl text-dark-600 mb-8">
+          {ingredient.description}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Schedule Consultation
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+          >
+            Get a Quote
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Benefits Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+        Why {ingredient.name} is Popular
+      </h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {ingredient.benefits.map((benefit) => (
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center">
+                <svg
+                  class="w-6 h-6 text-mint-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <p class="ml-4 text-dark-600">{benefit}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Dosage Forms Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-4 text-center">
+        Best Dosage Forms for {ingredient.name}
+      </h2>
+      <p class="text-lg text-dark-600 text-center mb-12 max-w-3xl mx-auto">
+        Not all dosage forms are created equal. Here are the most effective formats for {ingredient.name.toLowerCase()} supplements based on bioavailability and consumer preference.
+      </p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {recommendedForms.map((form) => (
+          <a
+            href={`/dosage-forms/${form.slug}`}
+            class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 p-6 block"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-dark-900">{form.name}</h3>
+            </div>
+            <p class="text-dark-600 mb-4">{form.shortDescription}</p>
+            <span class="text-mint-600 font-semibold inline-flex items-center">
+              Learn more
+              <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Manufacturing Specifications Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+        Manufacturing Specifications
+      </h2>
+
+      <div class="space-y-8">
+        <!-- Typical Dosage & Strength -->
+        <div class="bg-mint-50 rounded-xl p-6">
+          <h3 class="text-2xl font-bold text-dark-900 mb-4">Typical Dosage & Strength</h3>
+          <div class="space-y-3">
+            <div class="flex items-start">
+              <svg class="w-6 h-6 text-mint-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <p class="font-semibold text-dark-900">Recommended Daily Dose:</p>
+                <p class="text-dark-700">{ingredient.typicalDosage}</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <svg class="w-6 h-6 text-mint-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <p class="font-semibold text-dark-900">Typical Product Strength:</p>
+                <p class="text-dark-700">{ingredient.typicalStrength}</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <svg class="w-6 h-6 text-mint-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <p class="font-semibold text-dark-900">Common Serving Sizes:</p>
+                <p class="text-dark-700">{ingredient.servingSizes.join(', ')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manufacturing Considerations -->
+        <div>
+          <h3 class="text-2xl font-bold text-dark-900 mb-4">Manufacturing Considerations</h3>
+
+          <div class="space-y-4">
+            <div class="border-l-4 border-mint-600 pl-4">
+              <h4 class="font-bold text-dark-900 mb-2">Stability & Storage</h4>
+              <p class="text-dark-700">{ingredient.manufacturingConsiderations.stability}</p>
+            </div>
+
+            <div class="border-l-4 border-mint-600 pl-4">
+              <h4 class="font-bold text-dark-900 mb-2">Bioavailability</h4>
+              <p class="text-dark-700">{ingredient.manufacturingConsiderations.bioavailability}</p>
+            </div>
+
+            <div class="border-l-4 border-mint-600 pl-4">
+              <h4 class="font-bold text-dark-900 mb-2">Flavoring & Palatability</h4>
+              <p class="text-dark-700">{ingredient.manufacturingConsiderations.flavoring}</p>
+            </div>
+
+            <div class="border-l-4 border-mint-600 pl-4">
+              <h4 class="font-bold text-dark-900 mb-2">Sourcing & Quality</h4>
+              <p class="text-dark-700">{ingredient.manufacturingConsiderations.sourcing}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing & MOQ Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+        Pricing & Minimum Order Quantity
+      </h2>
+
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 class="text-xl font-bold text-dark-900 mb-4">Our Minimum Order Quantity</h3>
+            <p class="text-dark-700 mb-4">{ingredient.moqRange}</p>
+            <p class="text-sm text-dark-600">
+              Most manufacturers require 5,000+ units. Our <a href="/services/low-moq-manufacturing" class="text-mint-600 hover:text-mint-700 underline">1,000-unit MOQ</a> lets you start smaller and test the market without massive upfront investment.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-dark-900 mb-4">Lead Time</h3>
+            <p class="text-dark-700 mb-4">{ingredient.leadTime}</p>
+            <p class="text-sm text-dark-600">
+              Includes formulation finalization, production, quality testing, and packaging. Rush options may be available for additional cost.
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-200 pt-8">
+          <h3 class="text-xl font-bold text-dark-900 mb-4">Typical Retail Pricing</h3>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-mint-50 rounded-lg p-4">
+              <p class="text-sm font-semibold text-dark-600 mb-2">Budget Tier</p>
+              <p class="text-2xl font-bold text-dark-900 mb-2">{ingredient.priceRange.budget}</p>
+              <p class="text-xs text-dark-600">Entry-level products, standard formulations</p>
+            </div>
+            <div class="bg-mint-100 rounded-lg p-4 ring-2 ring-mint-600">
+              <p class="text-sm font-semibold text-mint-700 mb-2">Mid-Range</p>
+              <p class="text-2xl font-bold text-dark-900 mb-2">{ingredient.priceRange.midRange}</p>
+              <p class="text-xs text-dark-600">Higher quality, better absorption</p>
+            </div>
+            <div class="bg-mint-50 rounded-lg p-4">
+              <p class="text-sm font-semibold text-dark-600 mb-2">Premium</p>
+              <p class="text-2xl font-bold text-dark-900 mb-2">{ingredient.priceRange.premium}</p>
+              <p class="text-xs text-dark-600">Pharmaceutical grade, patented forms</p>
+            </div>
+          </div>
+          <p class="text-sm text-dark-600 mt-4">
+            *Retail prices shown are market averages. Your costs will be significantly lower. Contact us for detailed manufacturing cost breakdowns.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regulatory Compliance Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+        Regulatory Compliance: US & Canada
+      </h2>
+
+      <div class="space-y-6">
+        <!-- US Requirements -->
+        <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-blue-600">
+          <div class="flex items-center mb-4">
+            <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+            </svg>
+            <h3 class="text-2xl font-bold text-dark-900">United States (FDA)</h3>
+          </div>
+          <p class="text-dark-700">{ingredient.regulatoryNotes.us}</p>
+        </div>
+
+        <!-- Canadian Requirements -->
+        <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-red-600">
+          <div class="flex items-center mb-4">
+            <svg class="w-8 h-8 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <h3 class="text-2xl font-bold text-dark-900">Canada (Health Canada)</h3>
+          </div>
+          <p class="text-dark-700">{ingredient.regulatoryNotes.canada}</p>
+        </div>
+
+        <div class="bg-mint-50 rounded-xl p-6">
+          <p class="text-dark-700">
+            <strong>Our Expertise:</strong> We've helped secure <a href="/services/npn-applications" class="text-mint-600 hover:text-mint-700 underline">92% NPN approval rate</a> for Canadian products. Our team ensures your {ingredient.name.toLowerCase()} formulation meets all regulatory requirements for both markets, from label compliance to permitted health claims.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Products Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-4 text-center">
+        Popular {ingredient.name} Product Types
+      </h2>
+      <p class="text-lg text-dark-600 text-center mb-12 max-w-3xl mx-auto">
+        These are the most successful {ingredient.name.toLowerCase()} products in the market. We can help you create any of these formulations.
+      </p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {ingredient.popularProducts.map((product) => (
+          <div class="bg-white rounded-lg p-6 shadow-md">
+            <div class="flex items-center mb-3">
+              <div class="w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mr-3">
+                <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <h3 class="font-bold text-dark-900">{product}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Market Trends Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-6 text-center">
+        Market Trends & Opportunities
+      </h2>
+      <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl p-8">
+        <p class="text-lg text-dark-700 mb-4">{ingredient.marketTrends}</p>
+        <p class="text-dark-600">
+          <strong>Target Market:</strong> {ingredient.targetMarket}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Common Challenges Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+        Common Challenges (And How We Solve Them)
+      </h2>
+
+      <div class="space-y-4">
+        {ingredient.commonChallenges.map((challenge, index) => (
+          <div class="bg-white rounded-lg p-6 shadow-md flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-4">
+              <span class="text-amber-700 font-bold">{index + 1}</span>
+            </div>
+            <p class="text-dark-700 flex-1">{challenge}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 bg-mint-600 text-white rounded-xl p-6">
+        <p class="text-lg">
+          <strong>Our manufacturing partners have solved these challenges</strong> across hundreds of {ingredient.name.toLowerCase()} products. We'll help you avoid common pitfalls and launch a high-quality, compliant product.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+        Frequently Asked Questions
+      </h2>
+
+      <div class="space-y-6">
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            What's the minimum order quantity for {ingredient.name} supplements?
+          </h3>
+          <p class="text-dark-700">
+            Our minimum order quantity is {ingredient.moqRange}. Most manufacturers require 5,000+ units, but our <a href="/services/low-moq-manufacturing" class="text-mint-600 hover:text-mint-700 underline">1,000-unit MOQ</a> lets you test the market without massive upfront investment. This makes {ingredient.name.toLowerCase()} supplements accessible even for new brands.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            How long does it take to manufacture {ingredient.name} products?
+          </h3>
+          <p class="text-dark-700">
+            Typical lead time is {ingredient.leadTime}. This includes formulation finalization, ingredient sourcing, production, quality testing (including third-party COA), packaging, and labeling. Rush production may be available depending on facility capacity.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            Which dosage form is best for {ingredient.name}?
+          </h3>
+          <p class="text-dark-700 mb-3">
+            The best dosage form depends on bioavailability, consumer preference, and your target market. For {ingredient.name.toLowerCase()}, we typically recommend:
+          </p>
+          <ul class="list-disc list-inside text-dark-700 space-y-2">
+            {recommendedForms.slice(0, 3).map((form) => (
+              <li><a href={`/dosage-forms/${form.slug}`} class="text-mint-600 hover:text-mint-700 underline">{form.name}</a> - {form.shortDescription.toLowerCase()}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            Can you help with Canadian Natural Product Number (NPN) applications?
+          </h3>
+          <p class="text-dark-700">
+            Yes! We specialize in <a href="/services/npn-applications" class="text-mint-600 hover:text-mint-700 underline">Canadian NPN applications</a> with a 92% approval rate. For {ingredient.name.toLowerCase()} products, we'll handle the entire submission process, from compiling evidence to responding to Health Canada inquiries. Typical NPN approval takes 6-12 months.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            How much does it cost to manufacture {ingredient.name} supplements?
+          </h3>
+          <p class="text-dark-700">
+            Manufacturing costs depend on dosage form, strength, packaging, and order quantity. At our 1,000-unit MOQ, typical total costs range from $8,000-15,000 including product manufacturing, packaging, testing, and compliance. We provide transparent pricing with detailed breakdowns. <a href="/contact" class="text-mint-600 hover:text-mint-700 underline">Contact us</a> for a custom quote based on your specific requirements.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            Do you offer custom formulations or only stock formulas?
+          </h3>
+          <p class="text-dark-700">
+            We offer both! If you want a standard {ingredient.name.toLowerCase()} formulation, we can match you with proven stock formulas from our manufacturing partners (white label). If you want something unique, we create <a href="/services/custom-formulation" class="text-mint-600 hover:text-mint-700 underline">custom formulations</a> tailored to your target market, combining {ingredient.name.toLowerCase()} with complementary ingredients for enhanced benefits.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            What quality testing is included?
+          </h3>
+          <p class="text-dark-700">
+            All {ingredient.name.toLowerCase()} products include third-party Certificate of Analysis (COA) testing for:
+          </p>
+          <ul class="list-disc list-inside text-dark-700 mt-2 space-y-1">
+            <li>Active ingredient potency and identity</li>
+            <li>Microbial contamination (bacteria, yeast, mold)</li>
+            <li>Heavy metals (lead, arsenic, cadmium, mercury)</li>
+            <li>Contaminants and adulterants</li>
+          </ul>
+          <p class="text-dark-700 mt-3">
+            All manufacturing partners are FDA-registered, GMP-certified facilities that follow strict quality protocols.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+        Ready to Launch Your {ingredient.name} Product?
+      </h2>
+      <p class="text-xl text-dark-600 mb-8">
+        Our expert team will guide you through formulation, production, regulatory compliance, and everything you need to bring your {ingredient.name.toLowerCase()} supplement to market in the US and Canada.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button
+          data-cal-link="Nutricraftlabs"
+          data-cal-config='{"theme":"light"}'
+          class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+        >
+          Schedule Consultation
+          <svg
+            class="ml-2 w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+        </button>
+        <a
+          href="/services/private-white-label-manufacturing"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+        >
+          Learn About Our Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

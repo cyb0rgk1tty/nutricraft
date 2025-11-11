@@ -1,0 +1,461 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { geographicMarkets, getAllMarketSlugs, getMarketBySlug } from "../data/geographic-markets.js";
+
+export async function getStaticPaths() {
+  return getAllMarketSlugs().map((slug) => ({
+    params: { location: slug },
+  }));
+}
+
+const { location } = Astro.params;
+const market = getMarketBySlug(location);
+
+if (!market) {
+  return Astro.redirect('/404');
+}
+
+// Determine if this is a country, province, or state for tailored content
+const isCountry = market.type === 'country';
+const isProvince = market.type === 'province';
+const isState = market.type === 'state';
+const isCanadian = market.id === 'canada' || market.type === 'province';
+
+// SEO metadata
+const pageTitle = market.metaTitle;
+const pageDescription = market.metaDescription;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-6">
+          {market.name} Supplement Manufacturing
+        </h1>
+        <p class="text-xl text-dark-600 mb-8">
+          {market.description}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Schedule Consultation
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+          >
+            Get a Quote
+            <svg
+              class="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Market Overview Section -->
+  {market.marketData && (
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+          {market.name} Supplement Market Overview
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div class="bg-mint-50 rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-mint-600 mb-2">{market.marketData.marketSize}</div>
+            <div class="text-dark-600">Market Size</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-mint-600 mb-2">{market.marketData.growthRate}</div>
+            <div class="text-dark-600">Annual Growth</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-mint-600 mb-2">{market.population}</div>
+            <div class="text-dark-600">Population</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-mint-600 mb-2">
+              {market.languages.length}+
+            </div>
+            <div class="text-dark-600">Languages</div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-2xl font-bold text-dark-900 mb-4">Top Product Categories</h3>
+            <ul class="space-y-2">
+              {market.marketData.topCategories.map((category) => (
+                <li class="flex items-center text-dark-700">
+                  <svg class="w-5 h-5 text-mint-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                  {category}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-bold text-dark-900 mb-4">Consumer Trends</h3>
+            <p class="text-dark-700">{market.marketData.consumerTrends}</p>
+
+            <h3 class="text-2xl font-bold text-dark-900 mb-4 mt-6">Competitive Landscape</h3>
+            <p class="text-dark-700">{market.marketData.competitiveLandscape}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Regulatory Requirements Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-4 text-center">
+        Regulatory Requirements for {market.name}
+      </h2>
+      <p class="text-lg text-dark-600 text-center mb-12">
+        Regulated by: <strong>{market.regulatoryBody}</strong>
+      </p>
+
+      <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-bold text-dark-900 mb-6">Core Requirements</h3>
+        <ul class="space-y-3">
+          {market.requirements.map((requirement) => (
+            <li class="flex items-start">
+              <svg class="w-6 h-6 text-mint-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span class="text-dark-700">{requirement}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {market.uniqueRequirements && (
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-dark-900 mb-6">Unique {market.name} Requirements</h3>
+          {market.uniqueRequirements.map((item) => (
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h4 class="text-xl font-bold text-dark-900 mb-3">{item.requirement}</h4>
+              <p class="text-dark-700">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Nutricraft Advantages Section -->
+  {market.nutricraftAdvantages && (
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+          Why Choose Nutricraft for {market.name}?
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {market.nutricraftAdvantages.map((advantage) => (
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+              </div>
+              <p class="ml-4 text-dark-600">{advantage}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Shipping & Logistics Section -->
+  {market.shippingConsiderations && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+          Shipping & Logistics
+        </h2>
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <p class="text-lg text-dark-700">{market.shippingConsiderations}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Pricing Section (if available) -->
+  {market.pricing && (
+    <section class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+          {isCanadian ? 'Pricing for Canadian Market Entry' : 'Pricing for ' + market.name}
+        </h2>
+
+        <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl shadow-lg p-8">
+          {market.pricing.npnApplication && (
+            <div class="mb-6">
+              <h3 class="text-xl font-bold text-dark-900 mb-2">NPN Application Service</h3>
+              <p class="text-2xl font-bold text-mint-700 mb-2">{market.pricing.npnApplication}</p>
+              <p class="text-dark-600">Per formulation (Health Canada approval)</p>
+            </div>
+          )}
+
+          {market.pricing.bilingualLabels && (
+            <div class="mb-6">
+              <h3 class="text-xl font-bold text-dark-900 mb-2">Bilingual Label Design</h3>
+              <p class="text-2xl font-bold text-mint-700 mb-2">{market.pricing.bilingualLabels}</p>
+              <p class="text-dark-600">Additional cost vs. English-only labels</p>
+            </div>
+          )}
+
+          {market.pricing.totalAdditionalCost && (
+            <div class="border-t border-mint-200 pt-6">
+              <h3 class="text-xl font-bold text-dark-900 mb-2">Total Additional Investment</h3>
+              <p class="text-3xl font-bold text-dark-900">{market.pricing.totalAdditionalCost}</p>
+              <p class="text-dark-600 mt-2">To enter the Canadian market beyond base manufacturing costs</p>
+            </div>
+          )}
+
+          {market.pricing.totalCost && (
+            <div>
+              <h3 class="text-xl font-bold text-dark-900 mb-2">Total Investment (1000 units)</h3>
+              <p class="text-3xl font-bold text-dark-900 mb-2">{market.pricing.totalCost}</p>
+              <p class="text-dark-600">Includes manufacturing, packaging, testing, compliance</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Common Challenges Section -->
+  {market.commonChallenges && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+          Common Challenges (And How We Help)
+        </h2>
+
+        <div class="space-y-4">
+          {market.commonChallenges.map((challenge, index) => (
+            <div class="bg-white rounded-lg p-6 shadow-md flex items-start">
+              <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-4">
+                <span class="text-amber-700 font-bold">{index + 1}</span>
+              </div>
+              <p class="text-dark-700 flex-1">{challenge}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Success Stories Section (if available) -->
+  {market.successStories && (
+    <section class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+          Our Success in {market.name}
+        </h2>
+        <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-lg p-8 border-l-4 border-mint-600">
+          <p class="text-lg text-dark-700">{market.successStories}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Major Cities (if available) -->
+  {market.majorCities && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">
+          Serving {market.name} Markets
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          {market.majorCities.map((city) => (
+            <span class="px-6 py-3 bg-white rounded-full text-dark-700 shadow-md text-lg">
+              {city}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+        Frequently Asked Questions
+      </h2>
+
+      <div class="space-y-6">
+        {/* Question 1: Timeline */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            How long does it take to launch a supplement in {market.name}?
+          </h3>
+          <p class="text-dark-700">
+            {isCanadian
+              ? `For the Canadian market, expect 6-12 months for NPN approval plus 10-14 weeks for manufacturing and quality testing. Total time from concept to market entry: 9-15 months. Our 92% NPN approval rate and expert guidance helps you avoid delays. We also offer expedited pathways where possible. For US market-only products (white label), you can launch in 4-8 weeks.`
+              : `For the US market, typical timeline is 4-6 weeks for white label products (existing formulas) or 10-14 weeks for custom formulations. This includes manufacturing, third-party testing, and compliant labeling. No FDA pre-market approval required for most supplements, allowing faster market entry than Canada.`
+            }
+          </p>
+        </div>
+
+        {/* Question 2: MOQ */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            What's the minimum order quantity for {market.name}?
+          </h3>
+          <p class="text-dark-700">
+            Our minimum order quantity is <strong>1,000 units</strong> regardless of market. Most manufacturers require 5,000-10,000 units, but our <a href="/services/low-moq-manufacturing" class="text-mint-600 hover:text-mint-700 underline">low MOQ approach</a> lets you test the {market.name} market without massive upfront investment. This is especially valuable when entering a new geographic market.
+          </p>
+        </div>
+
+        {/* Question 3: Costs */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            How much does it cost to manufacture supplements for {market.name}?
+          </h3>
+          <p class="text-dark-700">
+            {isCanadian
+              ? `For the Canadian market, expect $11,000-18,000 total for your first 1,000 units, which includes: base manufacturing ($8,000-12,000), NPN application ($2,500-5,000), and bilingual label design (+$300-500). The NPN is a one-time cost per formulation. Subsequent production runs only incur manufacturing costs. <a href="/contact" class="text-mint-600 hover:text-mint-700 underline">Contact us</a> for a detailed quote.`
+              : `For the ${market.name} market, expect $8,000-15,000 for your first 1,000-unit production run at our MOQ. This includes manufacturing, packaging, third-party testing (COA, microbial, heavy metals), and compliant labeling. ${market.id === 'california' ? 'California Prop 65 testing adds $300-500. ' : ''}Costs vary based on dosage form, ingredients, and packaging. <a href="/contact" class="text-mint-600 hover:text-mint-700 underline">Contact us</a> for a custom quote.`
+            }
+          </p>
+        </div>
+
+        {/* Question 4: Market-specific (varies by location) */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            {isCanadian
+              ? `Do I need separate NPNs for each province?`
+              : market.id === 'california'
+                ? `Do I need a Prop 65 warning on my supplements?`
+                : market.id === 'quebec'
+                  ? `Do my labels need to be in French?`
+                  : `Can I sell products manufactured for ${market.name} in other states?`
+            }
+          </h3>
+          <p class="text-dark-700">
+            {isCanadian
+              ? `No - NPNs are federal (Health Canada) approvals that are valid across all Canadian provinces and territories. Once you have an NPN, you can sell your product anywhere in Canada. However, you must comply with federal bilingual labeling requirements (English and French) regardless of which province you're selling in.`
+              : market.id === 'california'
+                ? `It depends on your formulation. California's Proposition 65 requires warnings if your product contains certain chemicals (including heavy metals like lead or cadmium) above specific thresholds. We include Prop 65 testing with every batch to determine if warnings are needed. Most supplements require testing, and many require warnings. Our manufacturing partners help you minimize contaminant levels to avoid warnings when possible.`
+                : market.id === 'quebec'
+                  ? `Yes - Quebec's Charter of the French Language (Bill 101) requires French text to be at least as prominent as English on all labels. French must appear first or be more prominent. This is stricter than federal bilingual requirements. We provide expert French-language label design that meets both federal and Quebec provincial requirements. All Canadian products need bilingual labels, but Quebec has additional French-predominance rules.`
+                  : `Yes - supplements manufactured to FDA standards can be sold anywhere in the US. However, some states have additional requirements (California Prop 65, for example). Our manufacturing partners produce to the highest standards, ensuring compliance across all states. ${market.name} products can be sold nationwide with no additional regulatory requirements (beyond ensuring you meet any state-specific labeling laws).`
+            }
+          </p>
+        </div>
+
+        {/* Question 5: Expertise */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            Why should I choose Nutricraft for {market.name}?
+          </h3>
+          <p class="text-dark-700">
+            {isCanadian
+              ? `We specialize in the Canadian market with a 92% NPN approval rate (far exceeding industry average). Our team understands Health Canada's requirements inside and out, from ingredient monographs to evidence standards to bilingual labeling. We've successfully obtained NPNs across all major supplement categories and can guide you through the entire process. Many manufacturers only serve the US - we're experts in both markets.`
+              : `We understand the unique characteristics of the ${market.name} market, from consumer preferences to regulatory nuances to distribution channels. Our 1,000-unit MOQ lets you test the ${market.name} market without massive risk. We provide FDA-compliant labeling, GMP-certified manufacturing, and third-party testing as standard. ${market.id === 'california' ? 'We include Prop 65 testing and compliance expertise for the California market. ' : ''}Plus, we can help you expand to Canada when you're ready, giving you dual-market capability.`
+            }
+          </p>
+        </div>
+
+        {/* Question 6: Services */}
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-xl font-bold text-dark-900 mb-3">
+            What services do you provide beyond manufacturing?
+          </h3>
+          <p class="text-dark-700">
+            We're a full-service supplement partner, not just a manufacturer. Our services include: <a href="/services/custom-formulation" class="text-mint-600 hover:text-mint-700 underline">custom formulation</a>, <a href="/services/private-white-label-manufacturing" class="text-mint-600 hover:text-mint-700 underline">white label and private label</a>, manufacturing coordination with GMP-certified facilities, third-party quality testing, {isCanadian ? '<a href="/services/npn-applications" class="text-mint-600 hover:text-mint-700 underline">NPN applications</a> for Health Canada, bilingual label design, ' : 'FDA-compliant labeling, '}<a href="/services/compliant-labels" class="text-mint-600 hover:text-mint-700 underline">label compliance review</a>, <a href="/services/fulfillment" class="text-mint-600 hover:text-mint-700 underline">fulfillment services</a>, and <a href="/services/marketing" class="text-mint-600 hover:text-mint-700 underline">marketing support</a>. We handle everything from concept to customer delivery.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+        Ready to Launch in {market.name}?
+      </h2>
+      <p class="text-xl text-dark-600 mb-8">
+        Our expert team will guide you through the entire process - from formulation to {isCanadian ? 'NPN approval to' : 'FDA compliance to'} manufacturing to market entry. Get started with {isCanadian ? 'Canada' : market.name}'s leading supplement manufacturing partner.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button
+          data-cal-link="Nutricraftlabs"
+          data-cal-config='{"theme":"light"}'
+          class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+        >
+          Schedule Consultation
+          <svg
+            class="ml-2 w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+        </button>
+        <a
+          href="/services/private-white-label-manufacturing"
+          class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+        >
+          Explore Our Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
