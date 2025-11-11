@@ -43,7 +43,7 @@ export const geographicMarkets = [
       consumerTrends: 'Growing preference for natural health products, aging population driving supplement use, strong regulatory trust',
       competitiveLandscape: 'Less saturated than US market, higher consumer trust in supplements due to NPN system, premium pricing accepted'
     },
-    nutricraft Advantages: [
+    nutricraftAdvantages: [
       'High NPN approval success rate across all major supplement categories',
       'Bilingual label design and compliance included',
       'Expert navigation of Health Canada monographs and evidence requirements',
@@ -336,7 +336,7 @@ export const geographicMarkets = [
       'NPN applications with Quebec market considerations',
       'Connections to Quebec-based distributors and retailers',
       'French and English bilingual team support'
-    },
+    ],
     shippingConsiderations: 'Products typically ship to Montreal-area distribution centers. Typical shipping from US manufacturers: 3-5 business days. Quebec has strong retail pharmacy network for distribution.',
     commonChallenges: [
       'French-language labeling must be culturally appropriate, not just translated',
