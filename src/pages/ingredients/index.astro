@@ -1,0 +1,366 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import { ingredients } from "../../data/ingredients.js";
+
+// Categorize ingredients for filtering
+const categories = {
+  all: {
+    name: "All Ingredients",
+    ingredients: ingredients
+  },
+  vitamins: {
+    name: "Vitamins & Minerals",
+    ingredients: ingredients.filter(i => ['vitamin-d', 'vitamin-b12', 'magnesium'].includes(i.id))
+  },
+  omega: {
+    name: "Omega & Fatty Acids",
+    ingredients: ingredients.filter(i => ['omega-3'].includes(i.id))
+  },
+  protein: {
+    name: "Protein & Amino Acids",
+    ingredients: ingredients.filter(i => ['collagen', 'protein', 'creatine'].includes(i.id))
+  },
+  herbal: {
+    name: "Herbal & Botanical",
+    ingredients: ingredients.filter(i => ['turmeric', 'ashwagandha'].includes(i.id))
+  },
+  gut: {
+    name: "Gut Health",
+    ingredients: ingredients.filter(i => ['probiotics', 'postbiotics'].includes(i.id))
+  },
+  specialty: {
+    name: "Specialty & Trending",
+    ingredients: ingredients.filter(i => ['nmn', 'glp-1-support', 'functional-mushrooms'].includes(i.id))
+  }
+};
+
+const metaTitle = "Supplement Ingredient Manufacturing Library | Nutricraft Labs";
+const metaDescription = "Expert supplement manufacturing for 14+ popular ingredients. Omega-3, collagen, probiotics, vitamins, and more. 1000-unit MOQ, GMP-certified facilities, FDA-compliant. Get started today.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span>Ingredient Manufacturing Expertise</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Supplement Ingredient<br/>
+            <span class="text-mint-600">Manufacturing Library</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8">
+            Expert manufacturing for 14+ popular supplement ingredients. From omega-3 and collagen to cutting-edge ingredients like NMN and GLP-1 support supplements.
+          </p>
+
+          <!-- Value Props -->
+          <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">1000 Unit MOQs</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">GMP-Certified Facilities</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">US & Canada Markets</span>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Schedule Consultation
+            </button>
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-mint-600">
+              Get Custom Quote
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Intro Content -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="prose prose-lg max-w-none">
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Your Partner for Premium Ingredient Manufacturing</h2>
+
+          <p class="text-gray-600 mb-4">
+            At Nutricraft Labs, we specialize in manufacturing high-quality supplements across a comprehensive range of ingredients. Whether you're launching with proven bestsellers like omega-3 and vitamin D, or exploring cutting-edge ingredients like NMN and GLP-1 support supplements, we provide the expertise and manufacturing capabilities to bring your vision to life.
+          </p>
+
+          <p class="text-gray-600 mb-4">
+            Our ingredient library represents the most popular and scientifically-backed supplement ingredients in today's market. Each ingredient page provides detailed manufacturing specifications, recommended dosage forms, typical pricing ranges, regulatory considerations for both US and Canadian markets, and common formulation challenges with proven solutions.
+          </p>
+
+          <h3 class="text-2xl font-bold text-gray-900 mb-4 mt-8">Why Choose Nutricraft for Ingredient Manufacturing?</h3>
+
+          <div class="grid md:grid-cols-2 gap-6 my-8">
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-bold text-gray-900 mb-2">Industry-Low MOQs</h4>
+              <p class="text-gray-600 text-sm">Start with just 1,000 units - 3-5x lower than the industry standard of 5,000+ units. Test your market without massive upfront investment.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-bold text-gray-900 mb-2">Dual-Market Expertise</h4>
+              <p class="text-gray-600 text-sm">We understand both US FDA regulations and Canadian Health Canada requirements, including NPN applications and bilingual labeling.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-bold text-gray-900 mb-2">Quality Certifications</h4>
+              <p class="text-gray-600 text-sm">All our manufacturing partners are GMP-certified, FDA-registered facilities with rigorous quality control and third-party testing.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h4 class="font-bold text-gray-900 mb-2">Format Flexibility</h4>
+              <p class="text-gray-600 text-sm">From capsules and tablets to softgels, gummies, powders, and liquids - we can manufacture your ingredient in the optimal format for bioavailability and consumer preference.</p>
+            </div>
+          </div>
+
+          <p class="text-gray-600">
+            Browse our ingredient library below to explore manufacturing specifications, market trends, pricing guidance, and regulatory requirements for each ingredient. Have questions or need a custom formulation? <a href="/contact" class="text-mint-600 hover:text-mint-700 font-semibold">Contact our team</a> for expert guidance.
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Category Filter (Client-side filtering) -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="flex flex-wrap justify-center gap-3 mb-4">
+          <button
+            class="filter-btn px-6 py-3 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 shadow-md"
+            data-category="all"
+          >
+            All Ingredients ({ingredients.length})
+          </button>
+          {Object.entries(categories).filter(([key]) => key !== 'all').map(([key, cat]) => (
+            <button
+              class="filter-btn px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-mint-50 hover:text-mint-700 transition-all duration-300 shadow-md border border-gray-200"
+              data-category={key}
+            >
+              {cat.name} ({cat.ingredients.length})
+            </button>
+          ))}
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Ingredients Grid -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="ingredients-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {ingredients.map((ingredient, index) => {
+          // Get category for data attribute
+          const categoryKey = Object.keys(categories).find(key =>
+            key !== 'all' && categories[key].ingredients.some(i => i.id === ingredient.id)
+          );
+
+          return (
+            <ScrollAnimation delay={index * 50}>
+              <div
+                class="ingredient-card bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col group hover:scale-105"
+                data-category={categoryKey}
+              >
+                <div class="flex-grow">
+                  <h3 class="text-2xl font-bold text-gray-900 mb-3">{ingredient.name}</h3>
+
+                  {/* Brief description */}
+                  <p class="text-gray-600 mb-4 line-clamp-3">{ingredient.description}</p>
+
+                  {/* Key benefits (show 3) */}
+                  <div class="mb-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-2">Key Benefits:</h4>
+                    <ul class="space-y-1">
+                      {ingredient.benefits.slice(0, 3).map(benefit => (
+                        <li class="flex items-start gap-2 text-sm">
+                          <svg class="w-4 h-4 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                          </svg>
+                          <span class="text-gray-600">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Manufacturing highlights */}
+                  <div class="bg-mint-50 rounded-lg p-4 mb-4">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <div class="text-gray-500 text-xs font-medium">MOQ</div>
+                        <div class="text-gray-900 font-semibold">1,000 units</div>
+                      </div>
+                      <div>
+                        <div class="text-gray-500 text-xs font-medium">Lead Time</div>
+                        <div class="text-gray-900 font-semibold">{ingredient.leadTime}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div class="mt-6">
+                  <a href={`/ingredients/${ingredient.slug}`} class="inline-flex items-center text-mint-600 font-semibold hover:text-mint-700 transition-colors">
+                    View Details
+                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </ScrollAnimation>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Ready to Manufacture Your Supplement?
+        </h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          Start with expert formulation guidance, industry-low MOQs, and full regulatory support for US and Canadian markets.
+        </p>
+
+        <!-- Trust Elements -->
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Free Consultation</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">No Upfront Fees</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Quick Response</span>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={200}>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Schedule Consultation
+            <svg
+              class="ml-2 w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-10 py-5 bg-white text-mint-600 font-bold text-lg rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Get Free Quote
+            <svg
+              class="ml-2 w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+
+        <p class="text-sm text-gray-600">
+          Need ingredient-specific guidance? <a href="/contact" class="text-mint-600 hover:text-mint-700 font-semibold underline">Contact our formulation team</a> for expert advice.
+        </p>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Client-side filtering
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const ingredientCards = document.querySelectorAll('.ingredient-card');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.category;
+
+        // Update active button
+        filterButtons.forEach(btn => {
+          if (btn === button) {
+            btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+            btn.classList.add('bg-mint-600', 'text-white');
+          } else {
+            btn.classList.remove('bg-mint-600', 'text-white');
+            btn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+          }
+        });
+
+        // Filter cards
+        ingredientCards.forEach(card => {
+          if (category === 'all' || card.dataset.category === category) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
