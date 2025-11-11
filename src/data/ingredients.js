@@ -31,7 +31,7 @@ export const ingredients = [
       sourcing: 'Wild-caught fish preferred over farmed. Popular sources include anchovies, sardines, mackerel (IFOS certified). Krill oil and algae oil (vegan) are premium alternatives. Third-party testing for heavy metals, PCBs, and dioxins is essential.'
     },
     moqRange: '1000 bottles (60,000-180,000 softgels depending on bottle size)',
-    leadTime: '10-12 weeks from formulation approval to delivery',
+    leadTime: '4-6 weeks',
     shelfLife: '24 months when properly stored (cool, dark, nitrogen-flushed)',
     marketTrends: 'Growing demand for sustainable sourcing (MSC certified), plant-based algae oil for vegan consumers, and higher concentration formulas (70-80% Omega-3 content). Krill oil gaining popularity despite higher cost.',
     relatedIngredients: ['vitamin-e', 'coq10'],
@@ -87,7 +87,7 @@ export const ingredients = [
       sourcing: 'Bovine (Type I & III from grass-fed cattle), Marine (Type I from wild-caught fish skin), Chicken (Type II from chicken cartilage). Each type has different amino acid profiles and benefits.'
     },
     moqRange: 'Powders: 500-1000 units (tubs); Capsules: 1000 bottles; Gummies: 1000 bottles',
-    leadTime: '8-10 weeks for powders; 10-12 weeks for capsules/gummies',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when properly stored in airtight containers',
     marketTrends: 'Explosive growth in beauty-from-within category. Multi-collagen blends (Types I, II, III, V, X) trending. Marine collagen commanding premium pricing. Vegan collagen alternatives emerging but lack efficacy data.',
     relatedIngredients: ['vitamin-c', 'hyaluronic-acid', 'biotin'],
@@ -143,7 +143,7 @@ export const ingredients = [
       sourcing: 'D3 derived from lanolin (sheep\'s wool - most common) or lichen (vegan source - more expensive). Both equally effective. Ensure vitamin meets USP standards.'
     },
     moqRange: '1000 bottles (90,000-180,000 softgels or capsules depending on count)',
-    leadTime: '8-10 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when protected from light and moisture',
     marketTrends: 'Increased awareness post-COVID due to immune health focus. Higher potency products (5000-10,000 IU) gaining market share. D3+K2 combination products trending. Vegan D3 from lichen commanding premium.',
     relatedIngredients: ['vitamin-k2', 'calcium', 'magnesium'],
@@ -199,7 +199,7 @@ export const ingredients = [
       sourcing: 'Strain specificity is critical - not all Lactobacillus strains are equal. Work with reputable suppliers who provide stability data, identity testing, and CFU guarantees at expiration (not just manufacture).'
     },
     moqRange: '1000 bottles (30,000-60,000 capsules; 500-1000 powder units)',
-    leadTime: '12-14 weeks (longer due to stability testing requirements)',
+    leadTime: '4-6 weeks',
     shelfLife: '18-24 months for shelf-stable strains at room temperature; 12-18 months for refrigerated',
     marketTrends: 'Strain diversity trending (multi-strain formulas with 10-20+ strains). Women\'s health probiotics (vaginal health). Spore-based probiotics (Bacillus) for superior stability. Postbiotics emerging as next evolution.',
     relatedIngredients: ['prebiotics', 'fiber', 'digestive-enzymes'],
@@ -255,7 +255,7 @@ export const ingredients = [
       sourcing: 'Different forms for different benefits: Glycinate (sleep, calming), Citrate (constipation, absorption), Threonate (cognitive), Oxide (budget, laxative). Multi-form blends trending.'
     },
     moqRange: '1000 bottles (90,000-180,000 capsules/tablets; 500-1000 powder units)',
-    leadTime: '8-10 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '36+ months across all forms',
     marketTrends: 'Magnesium glycinate gaining market share for sleep support. Magnesium threonate for cognitive health (premium pricing). Multi-form blends for comprehensive benefits. Powder formats popular for flexible dosing.',
     relatedIngredients: ['calcium', 'vitamin-d', 'zinc'],
@@ -311,7 +311,7 @@ export const ingredients = [
       sourcing: 'Whey: US dairy preferred, grass-fed commanding premium. Plant: Organic pea (Canada, Europe), organic rice (Asia). Quality varies significantly - insist on CoA testing for protein content, heavy metals, and purity.'
     },
     moqRange: '500-1000 units (varies by container size - larger tubs have lower MOQ)',
-    leadTime: '8-12 weeks depending on complexity of blend and flavoring',
+    leadTime: '4-6 weeks',
     shelfLife: '18-24 months in sealed, moisture-free containers',
     marketTrends: 'Plant-based proteins exploding (pea, rice, hemp, pumpkin seed). Grass-fed whey premium positioning. Multi-source blends (whey + casein; pea + rice). Clean label (fewer ingredients, natural flavors). Collagen protein crossover.',
     relatedIngredients: ['creatine', 'bcaa', 'digestive-enzymes'],
@@ -367,7 +367,7 @@ export const ingredients = [
       sourcing: 'Synthetic B12 (vegan-friendly) is standard. Methylcobalamin more expensive than cyanocobalamin. Adenosylcobalamin and hydroxocobalamin are specialty forms.'
     },
     moqRange: '1000 bottles (60,000-120,000 tablets or capsules)',
-    leadTime: '8-10 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when protected from light and moisture',
     marketTrends: 'Explosive growth due to plant-based diet popularity and energy/fatigue concerns. Methylcobalamin preferred over cyanocobalamin by informed consumers. B12 + folate combinations trending. Sublingual and liquid formats gaining share.',
     relatedIngredients: ['folate', 'b-complex', 'iron'],
@@ -423,7 +423,7 @@ export const ingredients = [
       sourcing: 'India is primary source (Curcuma longa). Quality varies dramatically - standardization to 95% curcuminoids is industry standard. Organic certification available. Test for heavy metals (lead concern in some sources).'
     },
     moqRange: '1000 bottles (60,000-120,000 capsules)',
-    leadTime: '10-12 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when protected from light',
     marketTrends: 'Turmeric + ginger combinations trending. High-absorption formulas (Meriva, BCM-95) commanding premium. Organic turmeric growing. Topical turmeric (skincare) expanding. Golden milk powder blends.',
     relatedIngredients: ['ginger', 'black-pepper-extract', 'boswellia'],
@@ -479,7 +479,7 @@ export const ingredients = [
       sourcing: 'India is primary source. KSM-66 (full-spectrum root extract) and Sensoril (root and leaf) are premium patented extracts with clinical studies. Organic certification available. Ensure testing for heavy metals.'
     },
     moqRange: '1000 bottles (60,000-120,000 capsules)',
-    leadTime: '10-12 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when protected from light',
     marketTrends: 'Explosive growth in stress-relief category. KSM-66 brand recognition commanding premium. Ashwagandha gummies for stress gaining traction. Combination formulas (ashwagandha + rhodiola, ashwagandha + L-theanine) trending.',
     relatedIngredients: ['rhodiola', 'l-theanine', 'magnesium'],
@@ -535,7 +535,7 @@ export const ingredients = [
       sourcing: 'China is major producer. CreaPure (Germany) is premium brand with superior purity and testing. Ensure testing for creatinine (breakdown product) and impurities (dicyandiamide).'
     },
     moqRange: 'Powders: 500-1000 units; Capsules: 1000 bottles',
-    leadTime: '6-8 weeks (creatine is simple formulation)',
+    leadTime: '4-6 weeks',
     shelfLife: '36+ months',
     marketTrends: 'Creatine gummies emerging (convenience factor). Women\'s market growing (previously male-dominated). Cognitive health positioning expanding. Creatine + protein combinations. Vegan/vegetarian emphasis (creatine only found in meat).',
     relatedIngredients: ['protein', 'bcaa', 'beta-alanine'],
@@ -591,7 +591,7 @@ export const ingredients = [
       sourcing: 'Quality varies dramatically. Pharmaceutical-grade NMN from reputable suppliers essential. Third-party testing for purity (>99%), contaminants critical. Some products are contaminated with nicotinamide instead of NMN.'
     },
     moqRange: '1000 bottles (30,000-60,000 capsules)',
-    leadTime: '12-14 weeks (specialty ingredient, testing requirements)',
+    leadTime: '4-6 weeks',
     shelfLife: '18-24 months with proper storage (cool, dark, dry)',
     marketTrends: 'Exploding category driven by longevity science (David Sinclair, Bryan Johnson). Premium pricing accepted by educated consumers. Combination formulas (NMN + resveratrol, NMN + TMG) trending. Regulatory scrutiny increasing.',
     relatedIngredients: ['resveratrol', 'tmg', 'pterostilbene'],
@@ -648,7 +648,7 @@ export const ingredients = [
       sourcing: 'Key ingredients: Berberine (from Berberis aristata), Chromium picolinate, Soluble fiber (inulin, psyllium), Probiotics (specific strains), Cinnamon extract. Quality and standardization critical.'
     },
     moqRange: '1000 bottles (formulation complexity affects MOQ)',
-    leadTime: '10-14 weeks (multi-ingredient formulation, testing)',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months depending on ingredients',
     marketTrends: 'EXPLOSIVE category growth in 2024-2025 riding GLP-1 drug popularity. Consumers seeking natural alternatives or complementary support. Expect regulatory scrutiny on claims. First-mover advantage in emerging category.',
     relatedIngredients: ['berberine', 'chromium', 'fiber', 'cinnamon'],
@@ -704,7 +704,7 @@ export const ingredients = [
       sourcing: 'China and US are major producers. Organic certification available. Quality varies - insist on beta-glucan content testing (>20%), mushroom species verification (DNA testing), and heavy metal screening. Mycelium vs. fruiting body is key distinction.'
     },
     moqRange: '1000 bottles (60,000-120,000 capsules; 500-1000 powder units)',
-    leadTime: '10-12 weeks from formulation approval',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months when protected from moisture',
     marketTrends: 'Massive category growth. Multi-mushroom "stacks" (5-10 species) trending. Coffee + mushroom products exploding. Lion\'s Mane for cognitive health leading growth. Gummies for accessibility. Expect continued expansion.',
     relatedIngredients: ['ashwagandha', 'rhodiola', 'vitamin-d'],
@@ -760,7 +760,7 @@ export const ingredients = [
       sourcing: 'Emerging ingredient category. Key suppliers include specialty fermentation companies. Common ingredients: CoreBiome (postbiotic metabolites), Lactobacillus plantarum L-137 (heat-killed), Butyrate (short-chain fatty acid). Quality and clinical backing vary.'
     },
     moqRange: '1000 bottles (30,000-60,000 capsules)',
-    leadTime: '12-14 weeks (specialty ingredients, sourcing)',
+    leadTime: '4-6 weeks',
     shelfLife: '24-36 months (major advantage vs. live probiotics)',
     marketTrends: 'Next-gen category emerging as alternative to probiotics. Appeals to consumers who don\'t want live bacteria or refrigeration hassle. Science-backed but less consumer awareness currently. Expected to grow significantly as education increases.',
     relatedIngredients: ['prebiotics', 'probiotics', 'fiber'],
