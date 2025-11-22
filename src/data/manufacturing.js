@@ -57,10 +57,10 @@ export const productionDetails = {
   leadTimes: {
     title: 'Production Lead Times',
     details: [
-      { type: 'First Production Run', time: '8-10 weeks' },
-      { type: 'Repeat Orders', time: '6-8 weeks' },
+      { type: 'First Production Run', time: '4-6 weeks' },
+      { type: 'Repeat Orders', time: '4-6 weeks' },
       { type: 'Rush Production', time: '4-6 weeks (additional fees apply)' },
-      { type: 'Stock Formulas', time: '4-5 weeks' }
+      { type: 'Stock Formulas', time: '4-6 weeks' }
     ]
   },
   facility: {

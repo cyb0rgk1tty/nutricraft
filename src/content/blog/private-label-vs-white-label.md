@@ -216,7 +216,7 @@ What you generally can't change without full custom development:
 
 This middle path typically costs:
 - Investment: $10,000-15,000
-- Timeline: 8-10 weeks
+- Timeline: 4-6 weeks
 - MOQ: Still 1,000 units
 
 You get some differentiation and customization without the full cost and timeline of building from scratch. It's a smart option if you've found a stock formula that's 80% of what you want.
@@ -227,7 +227,7 @@ Let's put everything side by side:
 
 | Factor | White Label | Semi-Custom | Private Label |
 |--------|-------------|-------------|---------------|
-| **Timeline** | 4-6 weeks | 8-10 weeks | 12-16 weeks |
+| **Timeline** | 4-6 weeks | 4-6 weeks | 4-6 weeks |
 | **Investment (1,000 units)** | $8-12K | $10-15K | $15-25K |
 | **MOQ at Nutricraft** | 1,000 units | 1,000 units | 1,000 units |
 | **Formula Exclusivity** | Non-exclusive | Limited exclusivity | 100% exclusive |
@@ -350,7 +350,7 @@ Remember, there's also the semi-custom option: start with a stock formula and mo
 - Costs $10-15K (middle ground)
 - Gets you into Canadian market
 - Provides some differentiation
-- Faster than full custom (8-10 weeks vs 12-16 weeks)
+- Same fast timeline (4-6 weeks) as other options
 
 Many brands use this approach: semi-custom for Canada, white label for US testing, then go fully custom once validated.
 

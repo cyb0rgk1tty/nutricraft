@@ -84,7 +84,7 @@ export const whyChooseUs = [
   },
   {
     title: 'Fast Turnaround',
-    description: '6-8 weeks for repeat orders, 8-10 weeks for new products. Rush options available.',
+    description: '4-6 weeks for all orders. Rush options available.',
     icon: '⚡'
   },
   {

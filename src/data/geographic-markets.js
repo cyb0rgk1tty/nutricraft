@@ -113,7 +113,7 @@ export const geographicMarkets = [
     nutricraftAdvantages: [
       'FDA-registered, GMP-certified manufacturing partners',
       '1000-unit MOQ (vs. industry standard 5000+)',
-      'Fast turnaround: 4-6 weeks for white label, 10-14 weeks for custom',
+      'Fast turnaround: 4-6 weeks for white label and custom formulations',
       'Full label compliance review included',
       'Structure/function claim development and substantiation',
       'Expert navigation of FDA regulations'

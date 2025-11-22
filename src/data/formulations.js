@@ -46,7 +46,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Direct compression or wet granulation',
       moq: '1000 bottles (60,000-120,000 tablets)',
-      leadTime: '8-10 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2-3 years typically'
     },
     technicalSpecs: {
@@ -109,7 +109,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Encapsulation of powder or liquid fills',
       moq: '1000 bottles (60,000-120,000 capsules)',
-      leadTime: '8-10 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2 years typically'
     },
     technicalSpecs: {
@@ -173,7 +173,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Blending, granulation, or spray drying',
       moq: '1000 units (tubs or stick packs)',
-      leadTime: '8-10 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2 years in proper packaging'
     },
     technicalSpecs: {
@@ -237,7 +237,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Depositing or stamping process',
       moq: '1,000 bottles (60,000-120,000 gummies)',
-      leadTime: '10-12 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '18-24 months typically'
     },
     technicalSpecs: {
@@ -300,7 +300,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Direct compression with flavor systems',
       moq: '1000 bottles (60,000-120,000 tablets)',
-      leadTime: '8-10 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2 years typically'
     },
     technicalSpecs: {
@@ -364,7 +364,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Low-force compression or freeze-drying',
       moq: '1,000 bottles (60,000-120,000 tablets)',
-      leadTime: '10-12 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '18-24 months in proper packaging'
     },
     technicalSpecs: {
@@ -427,7 +427,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Rotary die encapsulation',
       moq: '1,000 bottles (60,000-120,000 softgels)',
-      leadTime: '10-12 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2-3 years when properly stored'
     },
     technicalSpecs: {
@@ -491,7 +491,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Effervescent granulation and compression',
       moq: '5,000 tubes (100,000-150,000 tablets)',
-      leadTime: '12-14 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '2 years in moisture-proof packaging'
     },
     technicalSpecs: {
@@ -546,7 +546,7 @@ export const formulations = [
     manufacturingDetails: {
       process: 'Solution preparation and bottling',
       moq: '1000 bottles',
-      leadTime: '8-10 weeks for first production',
+      leadTime: '4-6 weeks for first production',
       shelfLife: '12-18 months typically'
     },
     technicalSpecs: {

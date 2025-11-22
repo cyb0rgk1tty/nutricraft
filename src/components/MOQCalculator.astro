@@ -73,7 +73,7 @@
           >1000 units</span>
       </p>
       <p>
-        Lead Time: <span id="lead-time" class="font-semibold">6-8 weeks</span>
+        Lead Time: <span id="lead-time" class="font-semibold">4-6 weeks</span>
       </p>
       <p>
         Estimated Cost: <span id="est-cost" class="font-semibold"
@@ -104,20 +104,20 @@
 
     // Simple MOQ logic
     let moq = 1000;
-    let leadTime = "6-8 weeks";
+    let leadTime = "4-6 weeks";
 
     switch (productType) {
       case "gummies":
         moq = 1000;
-        leadTime = "8-10 weeks";
+        leadTime = "4-6 weeks";
         break;
       case "custom":
         moq = 2000;
-        leadTime = "10-12 weeks";
+        leadTime = "4-6 weeks";
         break;
       case "powders":
         if (quantity > 5000) {
-          leadTime = "8-10 weeks";
+          leadTime = "4-6 weeks";
         }
         break;
     }

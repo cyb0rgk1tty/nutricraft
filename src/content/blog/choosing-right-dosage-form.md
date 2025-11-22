@@ -469,11 +469,11 @@ Let's talk real numbers. Understanding the cost structure helps you plan realist
 |-------------|------------|-------------|----------------|-------------|-----------|
 | **Tablets** | 1.0x (baseline) | 5,000-25,000 | $0.05-0.15 | Low | 4-6 weeks |
 | **Capsules** | 1.3x | 5,000-25,000 | $0.08-0.22 | Low-Medium | 4-6 weeks |
-| **Softgels** | 1.8x | 25,000-50,000 | $0.12-0.35 | Medium-High | 6-8 weeks |
-| **Gummies** | 1.9x | 10,000-50,000 | $0.15-0.40 | High | 6-10 weeks |
-| **Chewables** | 1.4x | 10,000-25,000 | $0.10-0.25 | Medium | 5-7 weeks |
-| **Powders** | 0.8x | 500-5,000 lbs | $0.30-1.50/serving | Low | 3-5 weeks |
-| **Liquids** | 1.5x | 2,500-10,000 | $0.50-2.00/bottle | Medium-High | 6-8 weeks |
+| **Softgels** | 1.8x | 25,000-50,000 | $0.12-0.35 | Medium-High | 4-6 weeks |
+| **Gummies** | 1.9x | 10,000-50,000 | $0.15-0.40 | High | 4-6 weeks |
+| **Chewables** | 1.4x | 10,000-25,000 | $0.10-0.25 | Medium | 4-6 weeks |
+| **Powders** | 0.8x | 500-5,000 lbs | $0.30-1.50/serving | Low | 4-6 weeks |
+| **Liquids** | 1.5x | 2,500-10,000 | $0.50-2.00/bottle | Medium-High | 4-6 weeks |
 
 *These are manufacturing costs only. They don't include ingredients, packaging, fulfillment, or the million other costs of running a supplement brand.
 
