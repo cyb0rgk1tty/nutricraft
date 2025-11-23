@@ -1,0 +1,412 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+import { getClientTypeBySlug, clientTypes } from "../../data/client-types.js";
+
+// Get the slug from the URL
+const { slug } = Astro.params;
+
+// Fetch the client type data at runtime (SSR mode)
+const clientType = getClientTypeBySlug(slug);
+
+// 404 if not found
+if (!clientType) {
+  return Astro.redirect('/404');
+}
+
+const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, benefits, recommendedServices, faqItems } = clientType;
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <!-- Breadcrumb -->
+          <nav class="mb-6">
+            <ol class="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <li><a href="/" class="hover:text-mint-600 transition-colors">Home</a></li>
+              <li><span class="text-gray-400">/</span></li>
+              <li><a href="/who-we-serve" class="hover:text-mint-600 transition-colors">Who We Serve</a></li>
+              <li><span class="text-gray-400">/</span></li>
+              <li class="text-mint-600 font-medium">{name}</li>
+            </ol>
+          </nav>
+
+          <div class="text-6xl mb-6">{icon}</div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Supplement Manufacturing for<br/>
+            <span class="text-mint-600">{name}</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            {heroDescription}
+          </p>
+
+          <!-- Value Props -->
+          <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">1,000 Unit MOQ</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">FDA & GMP Certified</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">Full Support</span>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              Get Free Quote
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-mint-600"
+            >
+              Schedule Consultation
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Pain Points & Solutions Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            We Solve Your Biggest Challenges
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Traditional supplement manufacturing was not designed for {name.toLowerCase()}. We changed that.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {painPoints.map((point, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border border-gray-100">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="flex-grow">
+                  <h3 class="text-xl font-bold text-gray-900 mb-2">Problem: {point.problem}</h3>
+                  <div class="bg-mint-50 rounded-lg p-4 mt-4">
+                    <div class="flex items-start gap-3">
+                      <div class="flex-shrink-0">
+                        <svg class="w-6 h-6 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-semibold text-mint-800">Our Solution:</p>
+                        <p class="text-mint-700">{point.solution}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Why {name} Choose Nutricraft
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            We have helped many {name.toLowerCase()} launch successful supplement brands. Here is what makes us the right partner.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl p-8 shadow-lg">
+          <ul class="space-y-6">
+            {benefits.map((benefit, index) => (
+              <ScrollAnimation delay={index * 50}>
+                <li class="flex items-start gap-4">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-mint-100 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="text-lg text-gray-700">{benefit}</p>
+                </li>
+              </ScrollAnimation>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended Services Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Recommended Services for {name}
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Based on our experience working with {name.toLowerCase()}, these services provide the best path to launching your supplement brand.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {recommendedServices.map((service, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col group hover:scale-105 border border-gray-100">
+              <div class="flex-grow">
+                <h3 class="text-xl font-bold text-gray-900 mb-3">{service.name}</h3>
+                <p class="text-gray-600 mb-6">{service.description}</p>
+              </div>
+              <div class="mt-auto">
+                <a
+                  href={service.link}
+                  class="inline-flex items-center text-mint-600 font-semibold hover:text-mint-700 transition-colors"
+                >
+                  Learn More
+                  <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+
+      <ScrollAnimation>
+        <div class="mt-12 text-center">
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center px-6 py-3 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
+          >
+            View All Services
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 text-center">
+        <ScrollAnimation>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">1,000</div>
+            <div class="text-lg font-medium text-gray-700">Unit Minimum Order</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={100}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">4-6</div>
+            <div class="text-lg font-medium text-gray-700">Weeks to Launch</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={200}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">210+</div>
+            <div class="text-lg font-medium text-gray-700">Stock Formulas</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={300}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">15+</div>
+            <div class="text-lg font-medium text-gray-700">GMP Partners</div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-lg text-gray-600">
+            Common questions from {name.toLowerCase()} about starting a supplement brand
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <!-- Other Client Types Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            We Also Work With
+          </h2>
+        </div>
+      </ScrollAnimation>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        {clientTypes.filter(c => c.slug !== slug).map((client, index) => (
+          <ScrollAnimation delay={index * 50}>
+            <a
+              href={`/who-we-serve/${client.slug}`}
+              class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
+            >
+              <span class="text-xl">{client.icon}</span>
+              <span class="text-gray-700 font-medium">{client.name}</span>
+            </a>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Ready to Launch Your Supplement Brand?
+        </h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          Join other successful {name.toLowerCase()} who have launched their supplement brands with Nutricraft Labs.
+        </p>
+
+        <!-- Trust Elements -->
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Free Consultation</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">No Upfront Fees</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Quick Response</span>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={200}>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Schedule Consultation
+            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-10 py-5 bg-white text-mint-600 font-bold text-lg rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Get Free Quote
+            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>

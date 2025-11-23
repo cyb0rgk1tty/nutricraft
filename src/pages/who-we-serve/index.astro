@@ -1,0 +1,309 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import { clientTypes } from "../../data/client-types.js";
+
+const metaTitle = "Who We Work With | Nutricraft Labs";
+const metaDescription = "Nutricraft Labs partners with health enthusiasts, athletes, personal trainers, gym owners, startups, and SMBs. Low 1,000 unit MOQ, full manufacturing support.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span>Who We Work With</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Your Vision.<br/>
+            <span class="text-mint-600">Our Manufacturing Expertise.</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8">
+            Whether you are a health enthusiast with an idea or an established business expanding your product line, we have the manufacturing solutions to bring your supplements to market.
+          </p>
+
+          <!-- Value Props -->
+          <div class="flex flex-wrap justify-center gap-4 mb-10">
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">1,000 Unit MOQ</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">All Experience Levels</span>
+            </div>
+            <div class="flex items-center gap-2 bg-mint-50 px-3 py-1 rounded-full">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-700 font-medium text-sm">End-to-End Support</span>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              Get Started
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#clients" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-mint-600">
+              See Who We Serve
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Intro Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="prose prose-lg max-w-none text-gray-600">
+          <p class="text-xl leading-relaxed">
+            At Nutricraft Labs, we believe great supplement brands can come from anywhere. You do not need millions in funding or decades of industry experience to create products that help people live healthier lives. What you need is the right manufacturing partner who understands your goals and removes the barriers standing between you and your market.
+          </p>
+          <p class="leading-relaxed">
+            Our 1,000 unit minimum order quantity is 3-5 times lower than what most manufacturers require. Combined with our network of 15+ GMP-certified facilities, expert formulation support, and full go-to-market services, we have helped health enthusiasts, professional athletes, fitness professionals, gyms, startups, and established businesses all successfully launch their supplement brands.
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Client Types - Alternating Horizontal Cards -->
+  <section id="clients" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Find Your Path to Market
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Select your profile below to see how we can help you launch and grow your supplement brand
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-16 md:space-y-24">
+        {clientTypes.map((client, index) => (
+          <ScrollAnimation delay={100}>
+            <div class={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8 md:gap-12 lg:gap-16`}>
+              {/* Visual Side */}
+              <div class="w-full md:w-1/2">
+                <div class="relative">
+                  <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-2xl p-8 md:p-12 aspect-[4/3] flex items-center justify-center shadow-lg">
+                    <div class="text-8xl md:text-9xl">{client.icon}</div>
+                  </div>
+                  {/* Decorative elements */}
+                  <div class={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} w-24 h-24 bg-mint-200 rounded-full opacity-50 -z-10`}></div>
+                  <div class={`absolute -top-4 ${index % 2 === 0 ? '-left-4' : '-right-4'} w-16 h-16 bg-mint-300 rounded-full opacity-30 -z-10`}></div>
+                </div>
+              </div>
+
+              {/* Content Side */}
+              <div class="w-full md:w-1/2 space-y-6">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-900">{client.name}</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">{client.shortDescription}</p>
+
+                {/* Key benefits preview */}
+                <ul class="space-y-3">
+                  {client.benefits.slice(0, 3).map((benefit) => (
+                    <li class="flex items-start gap-3">
+                      <svg class="w-5 h-5 text-mint-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-gray-700">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={`/who-we-serve/${client.slug}`}
+                  class="inline-flex items-center justify-center px-6 py-3 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                >
+                  Learn More
+                  <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Why Brands Choose Nutricraft
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            We remove the barriers that keep great supplement ideas from reaching the market
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <ScrollAnimation>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Low Capital Required</h3>
+            <p class="text-gray-600">Start with 1,000 units and 73% less capital than traditional manufacturers require</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">GMP Certified</h3>
+            <p class="text-gray-600">All manufacturing partners are FDA-registered and GMP-certified for quality assurance</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={200}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Fast to Market</h3>
+            <p class="text-gray-600">White label products ship in 4-6 weeks, custom formulations in 12-16 weeks</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={300}>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Full Support</h3>
+            <p class="text-gray-600">From formulation to fulfillment, we guide you through every step of the process</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 text-center">
+        <ScrollAnimation>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">20+</div>
+            <div class="text-lg font-medium text-gray-700">Successful Brands Launched</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={100}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">210+</div>
+            <div class="text-lg font-medium text-gray-700">Stock Formulas Available</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={200}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">15+</div>
+            <div class="text-lg font-medium text-gray-700">GMP Manufacturing Partners</div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={300}>
+          <div class="text-center">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">92%</div>
+            <div class="text-lg font-medium text-gray-700">NPN Approval Rate</div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-b from-mint-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Ready to Start Your Supplement Brand?
+        </h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          No matter where you are in your journey, we can help you take the next step toward launching your supplement brand.
+        </p>
+
+        <!-- Trust Elements -->
+        <div class="flex flex-wrap justify-center gap-6 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Free Consultation</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">No Minimum Experience</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700">Quick Response</span>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={200}>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-10 py-5 bg-mint-600 text-white font-bold text-lg rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Schedule Consultation
+            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-10 py-5 bg-white text-mint-600 font-bold text-lg rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            Get Free Quote
+            <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
