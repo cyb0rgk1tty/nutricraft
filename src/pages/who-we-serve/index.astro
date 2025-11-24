@@ -104,9 +104,23 @@ const metaDescription = "Nutricraft Labs partners with health enthusiasts, athle
               {/* Visual Side */}
               <div class="w-full md:w-1/2">
                 <div class="relative">
-                  <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-2xl p-8 md:p-12 aspect-[4/3] flex items-center justify-center shadow-lg">
-                    <div class="text-8xl md:text-9xl">{client.icon}</div>
-                  </div>
+                  <picture class="block">
+                    <source
+                      srcset={`/images/who-we-serve/${client.slug}-600.webp 600w, /images/who-we-serve/${client.slug}-1000.webp 1000w, /images/who-we-serve/${client.slug}-1500.webp 1500w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      type="image/webp"
+                    />
+                    <img
+                      src={`/images/who-we-serve/${client.slug}-1000.jpg`}
+                      srcset={`/images/who-we-serve/${client.slug}-600.jpg 600w, /images/who-we-serve/${client.slug}-1000.jpg 1000w, /images/who-we-serve/${client.slug}-1500.jpg 1500w`}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      alt={`${client.name} - Supplement Manufacturing`}
+                      class="w-full h-auto rounded-2xl shadow-lg object-cover aspect-[4/3]"
+                      loading="lazy"
+                      width="1000"
+                      height="750"
+                    />
+                  </picture>
                   {/* Decorative elements */}
                   <div class={`absolute -bottom-4 ${index % 2 === 0 ? '-right-4' : '-left-4'} w-24 h-24 bg-mint-200 rounded-full opacity-50 -z-10`}></div>
                   <div class={`absolute -top-4 ${index % 2 === 0 ? '-left-4' : '-right-4'} w-16 h-16 bg-mint-300 rounded-full opacity-30 -z-10`}></div>
