@@ -3,11 +3,18 @@ export const clientTypes = [
     id: 'health-enthusiasts',
     name: 'Health Enthusiasts',
     slug: 'health-enthusiasts',
-    icon: '💪',
-    shortDescription: 'Turn your personal wellness journey into a brand that inspires others.',
+        shortDescription: 'Turn your personal wellness journey into a brand that inspires others.',
     metaTitle: 'Supplement Manufacturing for Health Enthusiasts | Nutricraft Labs',
-    metaDescription: 'Launch your own supplement brand as a health enthusiast. 1,000 unit MOQ, 210+ stock formulas, full support from concept to market. Start your wellness brand today.',
+    metaDescription: 'Launch your own supplement brand as a health enthusiast. 1,000 unit MOQ, 100+ stock formulas, full support from concept to market. Start your wellness brand today.',
     heroDescription: 'You live and breathe wellness. You have spent years researching supplements, testing products, and discovering what actually works. Now you are ready to share that knowledge with others through your own supplement brand.',
+    examples: [
+      'An architect who reversed type 2 diabetes through diet and targeted supplementation',
+      'A post-menopausal woman who lost 60 pounds and now helps others on their weight loss journey',
+      'A former corporate executive who overcame chronic fatigue and created an energy supplement line',
+      'A fitness mom who developed a prenatal vitamin after struggling to find clean options during pregnancy',
+      'A biohacker who spent years optimizing cognitive performance and now shares his nootropic stack',
+      'A retired nurse who created a joint support formula after years of helping patients with mobility issues'
+    ],
     painPoints: [
       {
         problem: 'High minimum orders lock you out',
@@ -23,12 +30,12 @@ export const clientTypes = [
       },
       {
         problem: 'No industry connections',
-        solution: 'Access our network of 15+ vetted manufacturing partners'
+        solution: 'Access our network of 5+ vetted manufacturing partners'
       }
     ],
     benefits: [
       'Launch with 73% less capital than traditional manufacturers require',
-      'Choose from 210+ proven stock formulas or create custom blends',
+      'Choose from 100+ proven stock formulas or create custom formulas',
       'Professional product labels that meet FDA and Health Canada requirements',
       'Marketing support including photography, social media content, and ad setup',
       'Full ownership of your formulas and brand identity'
@@ -73,8 +80,7 @@ export const clientTypes = [
     id: 'athletes',
     name: 'Athletes',
     slug: 'athletes',
-    icon: '🏆',
-    shortDescription: 'Create performance supplements you would actually use and trust.',
+        shortDescription: 'Create performance supplements you would actually use and trust.',
     metaTitle: 'Supplement Manufacturing for Athletes | Nutricraft Labs',
     metaDescription: 'Athletes launching supplement brands. Create performance products you trust with 1,000 unit MOQ, sport-tested ingredients, and full regulatory compliance.',
     heroDescription: 'You know what works because you have tested it on yourself. Years of training have taught you which supplements deliver results and which are just marketing hype. Your followers trust your recommendations. Now turn that credibility into your own supplement line.',
@@ -143,8 +149,7 @@ export const clientTypes = [
     id: 'personal-trainers',
     name: 'Personal Trainers',
     slug: 'personal-trainers',
-    icon: '🏋️',
-    shortDescription: 'Add supplement sales to your training business without the hassle.',
+        shortDescription: 'Add supplement sales to your training business without the hassle.',
     metaTitle: 'Supplement Manufacturing for Personal Trainers | Nutricraft Labs',
     metaDescription: 'Personal trainers: launch your own supplement line. Add recurring revenue, strengthen client results, and build your brand with 1,000 unit MOQ.',
     heroDescription: 'Your clients already ask you what supplements to take. You have been recommending other brands for years without seeing a dime. Now you can offer supplements under your own brand, keep the margin, and know exactly what your clients are taking.',
@@ -213,8 +218,7 @@ export const clientTypes = [
     id: 'gym-owners',
     name: 'Gym Owners',
     slug: 'gym-owners',
-    icon: '🏢',
-    shortDescription: 'Turn your gym into a complete fitness brand with house supplements.',
+        shortDescription: 'Turn your gym into a complete fitness brand with house supplements.',
     metaTitle: 'Supplement Manufacturing for Gym Owners | Nutricraft Labs',
     metaDescription: 'Gym owners: create house-brand supplements. Increase per-member revenue, build brand loyalty, and differentiate from competitors with 1,000 unit MOQ.',
     heroDescription: 'Your members see your gym brand on the wall every day. They trust your equipment, your trainers, and your programming. Why should they buy supplements from someone else? House-brand supplements turn your gym into a complete fitness solution.',
@@ -283,8 +287,7 @@ export const clientTypes = [
     id: 'healthcare-professionals',
     name: 'Healthcare Professionals',
     slug: 'healthcare-professionals',
-    icon: '⚕️',
-    shortDescription: 'Offer practitioner-grade supplements to support your patient care protocols.',
+        shortDescription: 'Offer practitioner-grade supplements to support your patient care protocols.',
     metaTitle: 'Supplement Manufacturing for Healthcare Professionals | Nutricraft Labs',
     metaDescription: 'Doctors, naturopaths, chiropractors, and wellness practitioners: create professional-grade supplements for your patients. Private label with 1,000 unit MOQ.',
     heroDescription: 'Your patients trust your expertise and follow your treatment recommendations. When you recommend supplements, they want to buy from you. Professional-grade, practitioner-branded supplements let you control quality while creating a new revenue stream.',
@@ -353,8 +356,7 @@ export const clientTypes = [
     id: 'startups',
     name: 'Startups',
     slug: 'startups',
-    icon: '🚀',
-    shortDescription: 'Launch your supplement brand without the typical startup barriers.',
+        shortDescription: 'Launch your supplement brand without the typical startup barriers.',
     metaTitle: 'Supplement Manufacturing for Startups | Nutricraft Labs',
     metaDescription: 'Supplement startups: launch with 1,000 unit MOQ instead of 5,000+. Test products, validate markets, and scale efficiently with full manufacturing support.',
     heroDescription: 'You have the vision for a supplement brand that fills a gap in the market. Maybe you have spotted an underserved niche or have a unique angle on a popular category. What you need is a manufacturing partner who understands startup economics.',
@@ -373,7 +375,7 @@ export const clientTypes = [
       },
       {
         problem: 'Finding reliable manufacturing partners',
-        solution: 'Access to 15+ vetted GMP-certified facilities'
+        solution: 'Access to 5+ vetted GMP-certified facilities'
       }
     ],
     benefits: [
@@ -423,8 +425,7 @@ export const clientTypes = [
     id: 'established-supplement-brands',
     name: 'Established Supplement Brands',
     slug: 'established-supplement-brands',
-    icon: '🏆',
-    shortDescription: 'Scale your existing supplement brand with flexible manufacturing and expanded capabilities.',
+        shortDescription: 'Scale your existing supplement brand with flexible manufacturing and expanded capabilities.',
     metaTitle: 'Manufacturing for Established Supplement Brands | Nutricraft Labs',
     metaDescription: 'Established supplement brands: expand your product line, improve margins, and access new markets. Flexible MOQs, custom formulations, and full regulatory support.',
     heroDescription: 'You have built a successful supplement brand with loyal customers and proven products. Now you need a manufacturing partner who can help you scale efficiently, expand your product line, and enter new markets without the headaches of managing multiple vendors.',
@@ -443,13 +444,14 @@ export const clientTypes = [
       },
       {
         problem: 'Need better margins without sacrificing quality',
-        solution: 'Competitive pricing from our 15+ GMP partner network'
+        solution: 'Competitive pricing from our 5+ GMP partner network'
       }
     ],
     benefits: [
+      'We handle manufacturing, compliance, and logistics so you can focus on growing your brand',
       'Test new product ideas with low-risk 1,000 unit runs',
-      'Access specialized manufacturing capabilities across our partner network',
       'Expand into Canadian market with full NPN regulatory support',
+      'Access specialized manufacturing capabilities across our partner network',
       'Maintain quality standards with FDA-registered, GMP-certified facilities',
       'Streamline operations with single point of contact for multiple products'
     ],

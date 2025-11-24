@@ -170,7 +170,7 @@ When creating new blog articles:
 - **Internal Linking**: Link to relevant service pages (e.g., `/services/private-white-label-manufacturing`)
 - **Real Data**: Use actual Nutricraft pricing and specifications:
   - 1,000 unit MOQ (vs industry 5,000+)
-  - 210+ stock formulas
+  - 100+ stock formulas
   - FDA-registered, GMP-certified
   - White label: $8-12K, Private label: $15-25K
 - **SEO**: Include FAQ sections, long-tail keywords, comprehensive comparisons

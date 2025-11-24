@@ -41,7 +41,7 @@ Most manufacturers offer catalogs of 50-200 stock formulas across popular catego
 - Immune support (vitamin C + zinc, elderberry, mushrooms)
 - General health (omega-3, probiotics, turmeric)
 
-At Nutricraft, we maintain [210+ stock formulas](/services/private-white-label-manufacturing) across these categories. Note: White label products are designed for the US market only—for Canada, you'll need private label or semi-custom formulations due to NPN requirements (more on this later).
+At Nutricraft, we maintain [100+ stock formulas](/services/private-white-label-manufacturing) across these categories. Note: White label products are designed for the US market only—for Canada, you'll need private label or semi-custom formulations due to NPN requirements (more on this later).
 
 ### Real Cost Breakdown
 

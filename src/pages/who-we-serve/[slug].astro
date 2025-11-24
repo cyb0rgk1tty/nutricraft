@@ -17,7 +17,7 @@ if (!clientType) {
   return Astro.redirect('/404');
 }
 
-const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, benefits, recommendedServices, faqItems } = clientType;
+const { name, metaTitle, metaDescription, heroDescription, examples, painPoints, benefits, recommendedServices, faqItems } = clientType;
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -39,7 +39,6 @@ const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, ben
             </ol>
           </nav>
 
-          <div class="text-6xl mb-6">{icon}</div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
             Supplement Manufacturing for<br/>
             <span class="text-mint-600">{name}</span>
@@ -143,6 +142,50 @@ const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, ben
       </div>
     </div>
   </section>
+
+  {/* Examples Section - only shows if examples exist */}
+  {examples && examples.length > 0 && (
+    <section class="py-16 bg-mint-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollAnimation>
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">
+              People Like You
+            </h2>
+            <p class="text-gray-600">
+              Real stories of people who turned their health journey into a supplement brand
+            </p>
+          </div>
+        </ScrollAnimation>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {examples.map((example, index) => (
+            <ScrollAnimation delay={index * 100}>
+              <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 h-full">
+                <div class="flex flex-col items-center text-center">
+                  <div class="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                  <h3 class="font-bold text-gray-900 mb-2">
+                    {example.includes('architect') && 'The Architect'}
+                    {example.includes('menopausal') && 'The Transformer'}
+                    {example.includes('executive') && 'The Executive'}
+                    {example.includes('mom') && 'The Fitness Mom'}
+                    {example.includes('biohacker') && 'The Biohacker'}
+                    {example.includes('nurse') && 'The Caregiver'}
+                    {!example.includes('architect') && !example.includes('menopausal') && !example.includes('executive') && !example.includes('mom') && !example.includes('biohacker') && !example.includes('nurse') && `Story ${index + 1}`}
+                  </h3>
+                  <p class="text-gray-600 text-sm">{example}</p>
+                </div>
+              </div>
+            </ScrollAnimation>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Benefits Section -->
   <section class="py-20 bg-gray-50">
@@ -253,13 +296,13 @@ const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, ben
         </ScrollAnimation>
         <ScrollAnimation delay={200}>
           <div class="text-center">
-            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">210+</div>
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">100+</div>
             <div class="text-lg font-medium text-gray-700">Stock Formulas</div>
           </div>
         </ScrollAnimation>
         <ScrollAnimation delay={300}>
           <div class="text-center">
-            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">15+</div>
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-mint-600">5+</div>
             <div class="text-lg font-medium text-gray-700">GMP Partners</div>
           </div>
         </ScrollAnimation>
@@ -303,7 +346,6 @@ const { name, icon, metaTitle, metaDescription, heroDescription, painPoints, ben
               href={`/who-we-serve/${client.slug}`}
               class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
             >
-              <span class="text-xl">{client.icon}</span>
               <span class="text-gray-700 font-medium">{client.name}</span>
             </a>
           </ScrollAnimation>
