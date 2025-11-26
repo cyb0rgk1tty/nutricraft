@@ -66,6 +66,17 @@ export const services = [
     icon: '🔬'
   },
   {
+    id: 'custom-placebo-tablets',
+    title: 'Custom Placebo Tablets',
+    description: 'Professional placebo tablets for clinical research, internal testing, and marketing photography. Matched to your active formulas.',
+    features: [
+      'Clinical research & blind studies',
+      'Product photography & trade shows',
+      'Match size, shape, color, coating'
+    ],
+    icon: '💊'
+  },
+  {
     id: 'compliant-product-labels',
     title: 'Compliant Product Label Creation',
     description: 'Bilingual labels meeting all FDA and Health Canada requirements. Platform ad-compliant messaging.',

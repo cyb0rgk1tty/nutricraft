@@ -1,0 +1,477 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ScrollAnimation from "../../components/ScrollAnimation.astro";
+import FAQ from "../../components/FAQ.astro";
+
+const placeboProcess = [
+  {
+    phase: "Specification & Matching",
+    timeline: "Days 1-3",
+    tasks: [
+      "Send us your active product sample or detailed specifications",
+      "We analyze size, shape, color, weight, and coating",
+      "Review and approve matching proposal",
+      "Confirm documentation requirements"
+    ],
+    deliverable: "Matching specification sheet"
+  },
+  {
+    phase: "Production",
+    timeline: "Weeks 1-2",
+    tasks: [
+      "Inert excipient formulation (MCC, lactose, or custom base)",
+      "Tablet compression to exact specifications",
+      "Coating application if required",
+      "In-process quality checks"
+    ],
+    deliverable: "Matched placebo tablets"
+  },
+  {
+    phase: "Quality Control & Delivery",
+    timeline: "Weeks 2-4",
+    tasks: [
+      "Final quality inspection",
+      "Certificate of Analysis (COA) preparation",
+      "Batch documentation for research applications",
+      "Secure packaging and shipping"
+    ],
+    deliverable: "Tablets with full documentation"
+  }
+];
+
+const useCases = [
+  {
+    title: "Clinical Research",
+    audience: "CROs, pharmaceutical companies, academic institutions",
+    icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+    </svg>`,
+    benefits: [
+      "IRB-compliant manufacturing documentation",
+      "Exact matching for proper blinding",
+      "Batch records and chain of custody",
+      "Consistent quality across study duration"
+    ],
+    description: "Run controlled studies with confidence. Our research-grade placebos are manufactured with full documentation to meet institutional review board requirements and ensure proper blinding in clinical trials."
+  },
+  {
+    title: "Internal Testing & QA",
+    audience: "Supplement brands, R&D teams, quality assurance",
+    icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>`,
+    benefits: [
+      "Blind taste and texture testing",
+      "Packaging line validation",
+      "Stability comparison controls",
+      "Consumer perception studies"
+    ],
+    description: "Test your products without bias. Use matched placebos for internal blind testing, packaging validation, and quality control protocols. Perfect for R&D teams evaluating new formulations."
+  },
+  {
+    title: "Marketing & Photography",
+    audience: "Creative agencies, trade show exhibitors, brands",
+    icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+    </svg>`,
+    benefits: [
+      "Professional product photography",
+      "Trade show display samples",
+      "Investor presentations and pitch decks",
+      "Retail display and shelf mockups"
+    ],
+    description: "Create stunning visuals before your product launches. Professional-looking tablets for photography, trade shows, investor presentations, and retail displays. Safe for handling and realistic in appearance."
+  }
+];
+
+const matchingSpecs = [
+  { spec: "Size & Shape", capability: "Custom diameters 5-22mm, round, oval, oblong, or custom shapes" },
+  { spec: "Color", capability: "Pantone matching or sample-based color matching" },
+  { spec: "Weight", capability: "+/- 2% of your active formula weight" },
+  { spec: "Coating", capability: "Film coating, gloss, matte, or uncoated options" },
+  { spec: "Embossing", capability: "Logo, scoring lines, custom patterns available" },
+  { spec: "Texture", capability: "Smooth, speckled, or custom surface finishes" }
+];
+
+const faqItems = [
+  {
+    question: "What are custom placebo tablets used for?",
+    answer: "Custom placebo tablets serve three main purposes: clinical research (controlled studies requiring matched inactive tablets for proper blinding), internal testing and QA (blind taste tests, packaging validation, stability controls), and marketing/photography (product photos, trade shows, retail displays, investor presentations). Each use case has different documentation and matching requirements."
+  },
+  {
+    question: "Can you match my existing product exactly?",
+    answer: "Yes, we can match your active tablets on multiple dimensions: size (diameter and thickness), shape (round, oval, oblong, custom), color (via Pantone matching or physical sample), weight (+/- 2% accuracy), coating (gloss, matte, film), and embossing (logos, scoring). Send us a sample or detailed specifications and we'll provide a matching proposal."
+  },
+  {
+    question: "What documentation do you provide for clinical research?",
+    answer: "For research-grade placebos, we provide: Certificate of Analysis (COA), complete batch records, material safety data sheets (MSDS), chain of custody documentation, and stability data. This documentation package is designed to meet IRB requirements and support clinical trial protocols."
+  },
+  {
+    question: "How quickly can I get placebo tablets for a photo shoot?",
+    answer: "For marketing and photography applications, we can often expedite production to 1-2 weeks if using standard specifications. Rush orders for simple, unmatched placebos may be available in as little as 5-7 business days. Custom matched placebos for photography typically take 2-3 weeks."
+  },
+  {
+    question: "What's the minimum order for placebo tablets?",
+    answer: "Our standard minimum order is 1,000 tablets, which works well for most research studies, internal testing, and photography needs. For larger clinical trials or ongoing research programs, we offer volume pricing. Contact us to discuss your specific quantity requirements."
+  },
+  {
+    question: "Are there any regulatory considerations for placebo tablets?",
+    answer: "For clinical research, your placebo tablets should be manufactured under GMP conditions with proper documentation, which we provide. For marketing and photography use, there are generally no regulatory requirements since the tablets aren't being consumed. We can advise on documentation needs based on your specific application."
+  },
+  {
+    question: "What ingredients are used in placebo tablets?",
+    answer: "Our placebo tablets use pharmaceutical-grade inert excipients including microcrystalline cellulose (MCC), lactose, starch, and magnesium stearate. These are the same inactive ingredients commonly used in pharmaceutical and supplement manufacturing. We can accommodate specific ingredient requests or restrictions if needed."
+  },
+  {
+    question: "Can I get placebo samples before ordering?",
+    answer: "Yes, for larger orders or ongoing research programs, we can produce a small sample batch for approval before full production. Sample costs are typically applied as credit toward your production order. For photography and marketing applications, we can often provide reference samples of similar tablets."
+  }
+];
+
+const metaTitle = "Custom Placebo Tablets | Research, Testing & Marketing Props | Nutricraft Labs";
+const metaDescription = "Professional placebo tablets for clinical research, product testing, and marketing photography. Matched to your active formulas. GMP-certified. 1000 unit MOQ.";
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Custom Placebo Tablets",
+        "description": metaDescription,
+        "provider": {
+          "@type": "Organization",
+          "name": "Nutricraft Labs",
+          "url": "https://nutricraftlabs.com"
+        },
+        "areaServed": ["US", "CA"],
+        "serviceType": "Manufacturing"
+      })}
+    </script>
+  </Fragment>
+
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-mint-50 via-white to-mint-50 py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-mint-600 text-white px-3 py-1 rounded-full text-sm font-semibold">GMP Manufacturing</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-900 mb-6">
+            Custom Placebo Tablets
+            <span class="block text-mint-600 text-3xl md:text-4xl lg:text-5xl mt-2">For Research, Testing & Marketing</span>
+          </h1>
+          <p class="text-xl text-dark-600 mb-6">
+            Professional-grade placebo tablets matched to your active product specifications. Perfect for clinical research,
+            internal testing, and marketing photography. GMP-certified manufacturing with full documentation.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Match size, shape, color, weight, and coating</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">Research-grade documentation available</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <svg class="w-6 h-6 text-mint-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-dark-700">From 1,000 units, 2-4 week turnaround</span>
+            </li>
+          </ul>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+              Request Placebo Quote
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+            <a href="#use-cases" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors">
+              View Use Cases
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-dark-900 mb-6">Why Custom Placebos?</h3>
+            <div class="space-y-4">
+              <div>
+                <p class="font-semibold text-dark-900">Proper Blinding</p>
+                <p class="text-sm text-dark-600">Matched tablets ensure study integrity</p>
+              </div>
+              <div>
+                <p class="font-semibold text-dark-900">Professional Appearance</p>
+                <p class="text-sm text-dark-600">Realistic props for photos and displays</p>
+              </div>
+              <div>
+                <p class="font-semibold text-dark-900">Full Documentation</p>
+                <p class="text-sm text-dark-600">COA and batch records for research</p>
+              </div>
+              <div>
+                <p class="font-semibold text-dark-900">GMP Manufacturing</p>
+                <p class="text-sm text-dark-600">Quality you can trust for any application</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section id="use-cases" class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Three Ways to Use Custom Placebos
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            Whether you're running clinical trials, testing products, or creating marketing materials,
+            we have the right solution for your needs.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {useCases.map((useCase, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-lg p-8 h-full flex flex-col">
+              <div class="text-mint-600 mb-4" set:html={useCase.icon} />
+              <h3 class="text-2xl font-bold text-dark-900 mb-2">{useCase.title}</h3>
+              <p class="text-sm text-mint-600 font-medium mb-4">{useCase.audience}</p>
+              <p class="text-dark-600 mb-6">{useCase.description}</p>
+              <div class="mt-auto">
+                <h4 class="font-semibold text-dark-900 mb-3">Key Benefits:</h4>
+                <ul class="space-y-2">
+                  {useCase.benefits.map(benefit => (
+                    <li class="flex items-start gap-2">
+                      <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-dark-700 text-sm">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section id="process" class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Simple 3-Step Process
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From specification to delivery in 2-4 weeks. We make ordering custom placebos straightforward.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-8">
+        {placeboProcess.map((phase, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div class="grid md:grid-cols-3 gap-6 p-8">
+                <div class="md:col-span-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-mint-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-dark-900">{phase.phase}</h3>
+                      <p class="text-mint-600 font-semibold">{phase.timeline}</p>
+                    </div>
+                  </div>
+                  <div class="bg-mint-100 rounded-lg px-4 py-2 inline-block">
+                    <p class="text-sm font-semibold text-mint-800">Deliverable:</p>
+                    <p class="text-sm text-mint-700">{phase.deliverable}</p>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <h4 class="font-semibold text-dark-900 mb-3">What Happens:</h4>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {phase.tasks.map(task => (
+                      <li class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-mint-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-dark-700 text-sm">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Matching Capabilities -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Matching Capabilities
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            We can match virtually any tablet specification to ensure your placebos are indistinguishable from active products.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation>
+        <div class="bg-gradient-to-br from-mint-50 to-white rounded-xl shadow-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-mint-600 text-white">
+                <tr>
+                  <th class="px-6 py-4 text-left font-semibold">Specification</th>
+                  <th class="px-6 py-4 text-left font-semibold">Our Capability</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matchingSpecs.map((row, index) => (
+                  <tr class={`border-b ${index % 2 === 0 ? 'bg-white' : 'bg-mint-50/50'}`}>
+                    <td class="px-6 py-4 font-semibold text-dark-900">{row.spec}</td>
+                    <td class="px-6 py-4 text-dark-700">{row.capability}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation delay={100}>
+        <div class="mt-8 bg-mint-100 rounded-xl p-6">
+          <div class="flex items-start gap-4">
+            <svg class="w-8 h-8 text-mint-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <h4 class="font-bold text-dark-900 mb-2">How to Get Started</h4>
+              <p class="text-dark-700">
+                The easiest way to get a quote is to send us a sample of your active product along with any specifications you have.
+                We'll analyze it and provide a matching proposal within 2-3 business days. If you don't have a product yet,
+                just describe what you need and we'll recommend options.
+              </p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+          Ready to Order Custom Placebos?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Tell us about your project and we'll provide a custom quote. Whether it's for research,
+          testing, or marketing, we're here to help.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors shadow-lg">
+            Request a Quote
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors"
+          >
+            Schedule a Call
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Placebo Tablet FAQs
+          </h2>
+          <p class="text-lg text-dark-600">
+            Common questions about our custom placebo tablet service
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- Cal.com embed script -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) {
+        a.q.push(ar);
+      };
+      let d = C.document;
+      C.Cal =
+        C.Cal ||
+        function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () {
+              p(api, arguments);
+            };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            typeof namespace === "string"
+              ? (cal.ns[namespace] = api) && p(api, ar)
+              : p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init");
+    Cal("ui", {"hideEventTypeDetails":false});
+  </script>
+</BaseLayout>
