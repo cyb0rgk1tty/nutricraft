@@ -207,7 +207,16 @@ const metaDescription = "Professional placebo tablets for clinical research, pro
             </a>
           </div>
         </div>
-        <div class="relative">
+        <div class="relative space-y-6">
+          <picture>
+            <source srcset="/images/services/placebo-tablets-hero.webp" type="image/webp">
+            <img
+              src="/images/services/placebo-tablets-hero.jpg"
+              alt="Professional white placebo tablets in clinical laboratory setting"
+              class="rounded-2xl shadow-xl w-full"
+              loading="eager"
+            />
+          </picture>
           <div class="bg-white rounded-2xl shadow-xl p-8">
             <h3 class="text-2xl font-bold text-dark-900 mb-6">Why Custom Placebos?</h3>
             <div class="space-y-4">
@@ -277,8 +286,75 @@ const metaDescription = "Professional placebo tablets for clinical research, pro
     </div>
   </section>
 
+  <!-- Tablet Variety Gallery -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+            Endless Customization Options
+          </h2>
+          <p class="text-lg text-dark-600 max-w-3xl mx-auto">
+            From shape and size to color and coating - we can match virtually any tablet specification.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <ScrollAnimation>
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <picture>
+              <source srcset="/images/services/placebo-round-tablets.webp" type="image/webp">
+              <img src="/images/services/placebo-round-tablets.jpg" alt="Round tablets in various colors" class="w-full h-48 object-cover" loading="lazy" />
+            </picture>
+            <div class="p-4">
+              <h3 class="font-bold text-dark-900">Round Tablets</h3>
+              <p class="text-sm text-dark-600">Classic shape in any color</p>
+            </div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={100}>
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <picture>
+              <source srcset="/images/services/placebo-oval-tablets.webp" type="image/webp">
+              <img src="/images/services/placebo-oval-tablets.jpg" alt="Oval and oblong tablets" class="w-full h-48 object-cover" loading="lazy" />
+            </picture>
+            <div class="p-4">
+              <h3 class="font-bold text-dark-900">Oval & Oblong</h3>
+              <p class="text-sm text-dark-600">Various sizes and profiles</p>
+            </div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={200}>
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <picture>
+              <source srcset="/images/services/placebo-custom-shapes.webp" type="image/webp">
+              <img src="/images/services/placebo-custom-shapes.jpg" alt="Custom shaped tablets with embossing" class="w-full h-48 object-cover" loading="lazy" />
+            </picture>
+            <div class="p-4">
+              <h3 class="font-bold text-dark-900">Custom Shapes</h3>
+              <p class="text-sm text-dark-600">Unique shapes & embossing</p>
+            </div>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation delay={300}>
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <picture>
+              <source srcset="/images/services/placebo-colored-tablets.webp" type="image/webp">
+              <img src="/images/services/placebo-colored-tablets.jpg" alt="Colorful and speckled tablets" class="w-full h-48 object-cover" loading="lazy" />
+            </picture>
+            <div class="p-4">
+              <h3 class="font-bold text-dark-900">Colors & Textures</h3>
+              <p class="text-sm text-dark-600">Speckled, solid, or gradient</p>
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
   <!-- Process Section -->
-  <section id="process" class="py-16 md:py-20 bg-gradient-to-br from-mint-50 to-white">
+  <section id="process" class="py-16 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation>
         <div class="text-center mb-12">
