@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "fal-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-fal-ai-image"
+      ],
+      "env": {
+        "FAL_KEY": "6dbc034e-d9d5-4afd-bdbd-14d2a96d41e1:2eb1bdcb038504bbc2cddc01d60de78c"
+      }
+    }
+  }
+}

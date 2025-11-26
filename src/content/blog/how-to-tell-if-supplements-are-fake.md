@@ -5,6 +5,9 @@ pubDate: 2025-10-07
 author: "Nutricraft Labs"
 tags: ["Supplement Quality", "Counterfeit Prevention", "Manufacturing", "Consumer Protection", "Third-Party Testing"]
 draft: false
+image:
+  url: "/images/blog/fake-supplements-hero-1200.webp"
+  alt: "Quality control inspection of supplement bottles in laboratory setting"
 ---
 
 In September 2024, Amazon made an announcement that sent shockwaves through the supplement industry. At their annual Accelerate seller conference in Seattle, they revealed they're shutting down their "commingling" program by mid-2026.
@@ -103,6 +106,8 @@ This is why understanding verification methods matters. You can't just assume bu
 
 Walk down any supplement aisle and you'll see various certification seals. USP. NSF. ConsumerLab. Informed Choice. What do they actually mean?
 
+![Modern analytical chemistry laboratory with HPLC testing equipment](/images/blog/fake-supplements-lab-800.webp)
+
 Let me break down the major players.
 
 ### USP (United States Pharmacopeia)
@@ -198,6 +203,8 @@ So when you see "FDA-registered," understand what that means: the facility told 
 
 At Nutricraft Labs, we're both FDA-registered *and* GMP-certified by third-party auditors. But we don't lead with "FDA-approved" because supplements aren't approved by FDA. That's actually a red flag. If a supplement claims FDA approval, they're either confused or lying.
 
+![Intact tamper-evident seal on supplement bottle cap](/images/blog/fake-supplements-seal-800.webp)
+
 ## How to Read a Certificate of Analysis (COA)
 
 Certificates of Analysis are your window into what testing was actually done on a product. But most consumers have never seen one, let alone know how to interpret it.
@@ -220,6 +227,8 @@ According to FDA requirements, a legitimate COA must contain:
 ### How to Verify Your Product Matches the COA
 
 Here's the critical step most people miss: **you need to verify the COA matches your actual product**.
+
+![Batch and lot number codes on supplement bottle](/images/blog/fake-supplements-batch-800.webp)
 
 1. **Find your product's batch/lot number** – Usually printed on the bottom or side of the bottle
 2. **Request the COA for that specific batch** – Many brands have them available on their website or will email them
@@ -345,6 +354,8 @@ Some countries have excellent regulatory oversight (Canada, EU countries, Austra
 Let me pull back the curtain on what happens at a quality supplement manufacturer like Nutricraft Labs.
 
 ### Raw Material Verification
+
+![Laboratory testing of raw supplement ingredients](/images/blog/fake-supplements-testing-800.webp)
 
 Before a single [capsule](/dosage-forms/capsules) gets filled, we test every raw material that comes in:
 

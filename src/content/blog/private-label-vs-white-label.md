@@ -5,6 +5,9 @@ pubDate: 2025-09-30
 author: "Nutricraft Labs"
 tags: ["Manufacturing", "Private Label", "White Label", "Branding"]
 draft: false
+image:
+  url: "/images/blog/private-label-hero-1200.webp"
+  alt: "Modern supplement manufacturing production line with automated bottle filling equipment"
 ---
 
 If you've spent any time researching supplement manufacturing, you've probably noticed something confusing: some companies use "private label" and "white label" interchangeably, while others insist they're completely different things. Talk to three manufacturers and you'll get three different definitions.
@@ -42,6 +45,8 @@ Most manufacturers offer catalogs of 50-200 stock formulas across popular catego
 - General health (omega-3, probiotics, turmeric)
 
 At Nutricraft, we maintain [100+ stock formulas](/services/private-white-label-manufacturing) across these categories. Note: White label products are designed for the US market only—for Canada, you'll need private label or semi-custom formulations due to NPN requirements (more on this later).
+
+![White label supplement bottles ready for custom branding](/images/blog/private-label-white-bottles-800.webp)
 
 ### Real Cost Breakdown
 
@@ -137,6 +142,8 @@ Small batch samples are produced for your testing and approval. You'll evaluate 
 **Stage 6: Full Production (Week 12-16)**
 Once approved, full production runs. For 1,000 units, production typically takes 2-3 weeks, followed by packaging, testing, and shipping.
 
+![Supplement formulation scientist working in R&D laboratory](/images/blog/private-label-formulation-800.webp)
+
 ### Real Cost Breakdown
 
 Custom formulation requires more upfront investment:
@@ -220,6 +227,8 @@ This middle path typically costs:
 - MOQ: Still 1,000 units
 
 You get some differentiation and customization without the full cost and timeline of building from scratch. It's a smart option if you've found a stock formula that's 80% of what you want.
+
+![Automated labeling machine applying labels to supplement bottles on production line](/images/blog/private-label-labeling-800.webp)
 
 ## Head-to-Head Comparison
 
@@ -500,6 +509,8 @@ Results:
 The higher positioning and unique formula justified the extra investment.
 
 ## Making Your Decision
+
+![Modern supplement warehouse with organized inventory ready for fulfillment](/images/blog/private-label-warehouse-800.webp)
 
 Here's the bottom line:
 
