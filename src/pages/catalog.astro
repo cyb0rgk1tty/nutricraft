@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PasswordGate from '../components/catalog/PasswordGate.astro';
+import CatalogHero from '../components/catalog/CatalogHero.astro';
+import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
+import FilterDrawer from '../components/catalog/FilterDrawer.astro';
+import CategorySection from '../components/catalog/CategorySection.astro';
+import { products, productCategories, getProductsByCategory } from '../data/products.js';
+
+// Get password from environment variable or use default
+const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD || 'nutricraft2025';
+
+// Get products organized by category
+const productsByCategory = productCategories.map(category => ({
+  ...category,
+  products: getProductsByCategory(category.id)
+})).filter(cat => cat.products.length > 0);
+
+// Get unique dosage forms with counts
+const dosageFormCounts = products.reduce((acc, product) => {
+  const form = product.dosageForm || 'capsules';
+  acc[form] = (acc[form] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+// Format dosage forms for the filter
+const dosageForms = Object.entries(dosageFormCounts)
+  .map(([id, count]) => ({
+    id,
+    name: id.charAt(0).toUpperCase() + id.slice(1),
+    count
+  }))
+  .sort((a, b) => b.count - a.count); // Sort by count descending
+---
+
+<BaseLayout
+  title="Product Catalog | Nutricraft Labs"
+  description="Browse our complete catalog of stock supplement formulas. GMP-certified, ready for private label or white label manufacturing."
+  noindex={true}
+>
+  <Header />
+
+  <PasswordGate password={CATALOG_PASSWORD}>
+    <CatalogHero />
+
+    <main id="catalog-products" class="pb-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {productsByCategory.map((category, index) => (
+          <CategorySection
+            category={category}
+            products={category.products}
+            isFirst={index === 0}
+          />
+        ))}
+      </div>
+    </main>
+
+    <!-- Floating Filter Button & Drawer -->
+    <FloatingFilterButton />
+    <FilterDrawer
+      categories={productCategories}
+      dosageForms={dosageForms}
+      totalProducts={products.length}
+    />
+  </PasswordGate>
+
+  <Footer />
+</BaseLayout>

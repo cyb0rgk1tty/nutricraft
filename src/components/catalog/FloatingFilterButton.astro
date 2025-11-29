@@ -1,0 +1,96 @@
+---
+/**
+ * FloatingFilterButton Component
+ * A tab on the left side that opens the filter drawer
+ * Shows badge with active filter count
+ */
+---
+
+<button
+  id="filter-fab"
+  type="button"
+  aria-label="Open filters"
+  aria-expanded="false"
+  aria-controls="filter-drawer"
+  class="filter-tab-button"
+>
+  <!-- Filter Icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+  </svg>
+  <span class="filter-tab-text">Filters</span>
+  <!-- Active Filter Badge -->
+  <span
+    id="filter-badge"
+    class="filter-badge hidden"
+  >
+    0
+  </span>
+</button>
+
+<style>
+  .filter-tab-button {
+    position: fixed;
+    left: 20rem; /* max-w-xs = 20rem, positioned at right edge of sidebar */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.5rem;
+    background-color: #00c16e;
+    color: white;
+    font-weight: 600;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* When sidebar is closed, tab moves to left edge */
+  .filter-tab-button.sidebar-closed {
+    left: 0;
+  }
+
+  .filter-tab-button:hover {
+    background-color: #00a059;
+    box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .filter-tab-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #0fa968;
+  }
+
+  .filter-tab-text {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  .filter-badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filter-badge.hidden {
+    display: none;
+  }
+</style>

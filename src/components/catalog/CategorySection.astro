@@ -1,0 +1,62 @@
+---
+/**
+ * CategorySection Component
+ * Groups products under a category header with product count
+ */
+
+import ProductCard from './ProductCard.astro';
+
+interface Product {
+  id: string;
+  name: string;
+  categoryId: string;
+  description: string;
+  servingSize: string;
+  servingsPerContainer: number | string;
+  keyIngredients?: string[];
+  dosageForm?: string;
+  labelImage?: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+}
+
+interface Props {
+  category: Category;
+  products: Product[];
+  isFirst?: boolean;
+}
+
+const { category, products, isFirst = false } = Astro.props;
+---
+
+<section
+  id={`category-${category.id}`}
+  class="category-section py-8 first:pt-0 scroll-mt-32"
+  data-category={category.id}
+>
+  <!-- Category Header -->
+  <header class="flex flex-wrap items-center gap-3 mb-6 pb-3 border-b-2 border-primary">
+    <h2 class="text-xl md:text-2xl font-bold text-primary">
+      {category.name}
+    </h2>
+    <span class="px-3 py-1 bg-mint-100 text-primary text-sm font-semibold rounded-full">
+      {products.length} {products.length === 1 ? 'product' : 'products'}
+    </span>
+  </header>
+
+  <!-- Products List -->
+  <div class="flex flex-col gap-6">
+    {products.map((product, index) => (
+      <ProductCard
+        product={product}
+        categoryName={category.name}
+        loading={isFirst && index < 2 ? 'eager' : 'lazy'}
+      />
+    ))}
+  </div>
+</section>
