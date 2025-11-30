@@ -586,13 +586,10 @@ export const products = [
     categoryId: 'cognitive-support',
     description: 'Advanced nootropic formula with herbal extracts, resveratrol, curcumin, and CoQ10 for cognitive enhancement.',
     servingSize: '2 capsules',
-    servingsPerContainer: 45,
-    keyIngredients: ['Proprietary Blend 1460mg', 'Resveratrol', 'Curcumin', 'Coenzyme Q10'],
+    servingsPerContainer: 30,
+    keyIngredients: ['Proprietary Blend 1460mg (Acerola, Phellodendron, Urena, Astragalus, Fractionated Colostrum, Maca, Reishi)'],
     ingredients: [
-      { name: 'Proprietary Blend', amount: '1460', unit: 'mg', dailyValue: '*' },
-      { name: 'Resveratrol', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Curcumin', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Coenzyme Q10', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Blend', amount: '1460', unit: 'mg', dailyValue: '*', source: '(Acerola/Ascorbate Bioflavonoid Extract 25%, Phellodendron/Berberine Extract 20%, Urena lobata/Urena Hexidroxyflav Extract, Astragalus Polysaccharide 50%, Fractionated Colostrum (bovine whey), Maca Root Extract/Rosavins, Quercetin)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1485,7 +1482,7 @@ export const products = [
       { name: 'Vitamin E', amount: '50', unit: 'mg', dailyValue: '*' },
       { name: 'Zinc', amount: '10', unit: 'mg', dailyValue: '*' },
       { name: 'MSM', amount: '400', unit: 'mg', dailyValue: '*' },
-      { name: 'Proprietary Blend', amount: '650', unit: 'mg', dailyValue: '*' }
+      { name: 'Proprietary Blend', amount: '650', unit: 'mg', dailyValue: '*', source: '(Contact for full ingredient list)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2533,12 +2530,18 @@ export const products = [
     sku: 'DUR-C085',
     name: 'Calm Bliss Capsules',
     categoryId: 'sleep-relaxation',
-    description: 'Relaxation and stress relief formula with calming herbs for a tranquil mind.',
+    description: 'Relaxation and stress relief formula with passion flower, magnesium, L-theanine, and calming botanicals for a tranquil mind.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Proprietary Calming Blend'],
+    keyIngredients: ['Passion Flower Extract 100mg', 'Magnesium Glycinate', 'L-Theanine', 'Valerian Root', 'GABA'],
     ingredients: [
-      { name: 'Proprietary Calming Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Passion Flower Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Passiflora incarnata)' },
+      { name: 'Magnesium', amount: '100', unit: 'mg', dailyValue: '*', source: '(as Magnesium Glycinate)' },
+      { name: 'L-Theanine', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Valerian Root Extract', amount: '75', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin B6', amount: '10', unit: 'mg', dailyValue: '*', source: '(as Pyridoxine HCl)' },
+      { name: 'GABA', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Chamomile Extract', amount: '50', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2548,12 +2551,18 @@ export const products = [
     sku: 'DUR-C086',
     name: 'Slumber Rest Capsules',
     categoryId: 'sleep-relaxation',
-    description: 'Deep sleep support formula with natural sleep-promoting botanicals.',
+    description: 'Deep sleep support formula with melatonin, 5-HTP, L-tryptophan, and natural sleep-promoting botanicals.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Proprietary Sleep Blend'],
+    keyIngredients: ['Melatonin 5mg', '5-HTP 50mg', 'L-Tryptophan 100mg', 'Valerian Root', 'Hops Extract'],
     ingredients: [
-      { name: 'Proprietary Sleep Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Melatonin', amount: '5', unit: 'mg', dailyValue: '*' },
+      { name: '5-HTP', amount: '50', unit: 'mg', dailyValue: '*', source: '(from Griffonia simplicifolia)' },
+      { name: 'L-Tryptophan', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Valerian Root Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Hops Extract', amount: '50', unit: 'mg', dailyValue: '*', source: '(Humulus lupulus)' },
+      { name: 'Chamomile Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Magnesium', amount: '50', unit: 'mg', dailyValue: '*', source: '(as Magnesium Glycinate)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2581,12 +2590,18 @@ export const products = [
     sku: 'DUR-C088',
     name: 'Vithaslim Capsules',
     categoryId: 'weight-management',
-    description: 'Comprehensive weight management support with metabolism-boosting ingredients.',
+    description: 'Comprehensive weight management support with chitosan, green tea, glucomannan, and metabolism-boosting ingredients.',
     servingSize: '2 capsules',
-    servingsPerContainer: 30,
-    keyIngredients: ['Proprietary Slimming Blend'],
+    servingsPerContainer: 45,
+    keyIngredients: ['Chitosan 150mg', 'Green Tea 75mg', 'Glucomannan 65mg', 'L-Carnitine 10mg'],
     ingredients: [
-      { name: 'Proprietary Slimming Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Chitosan', amount: '150', unit: 'mg', dailyValue: '*' },
+      { name: 'Green Tea Extract', amount: '75', unit: 'mg', dailyValue: '*' },
+      { name: 'Coconut Powder', amount: '45', unit: 'mg', dailyValue: '*' },
+      { name: 'Glucomannan', amount: '65', unit: 'mg', dailyValue: '*' },
+      { name: 'L-Carnitine', amount: '10', unit: 'mg', dailyValue: '*' },
+      { name: 'Caffeine', amount: '30', unit: 'mg', dailyValue: '*' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2596,12 +2611,12 @@ export const products = [
     sku: 'DUR-C089',
     name: 'Supreme Slimming Capsules',
     categoryId: 'weight-management',
-    description: 'Advanced weight management formula for enhanced metabolism and appetite control.',
-    servingSize: '2 capsules',
-    servingsPerContainer: 30,
-    keyIngredients: ['Proprietary Weight Management Blend'],
+    description: 'Advanced weight management formula with green tea extract, garcinia cambogia, CLA, and thermogenic compounds for enhanced metabolism.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 90,
+    keyIngredients: ['Proprietary Blend 800mg (Green Tea, Garcinia Cambogia, Glucomannan, Cayenne, CLA)'],
     ingredients: [
-      { name: 'Proprietary Weight Management Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Blend', amount: '800', unit: 'mg', dailyValue: '*', source: '(Green Tea Extract (Decaffeinated, 50% EGCG), Garcinia Cambogia Extract (50% HCA), Glucomannan, Cayenne Pepper Extract (40,000 SHU), CLA (Conjugated Linoleic Acid), Caffeine Anhydrous)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2722,7 +2737,7 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['6 Organ Proprietary Blend 600mg'],
     ingredients: [
-      { name: '6 Organ Proprietary Blend', amount: '600', unit: 'mg', dailyValue: '*' }
+      { name: '6 Organ Proprietary Blend', amount: '600', unit: 'mg', dailyValue: '*', source: '(Contact for full ingredient list)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2737,7 +2752,7 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Proprietary Women\'s Blend'],
     ingredients: [
-      { name: 'Proprietary Women\'s Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Women\'s Blend', amount: '', unit: '', dailyValue: '*', source: '(Contact for full ingredient list)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
