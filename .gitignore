@@ -52,3 +52,4 @@ coverage/
 # Google Sheets service account credentials (never commit!)
 *-credentials.json
 service-account*.json
+uploads/
