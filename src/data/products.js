@@ -2968,6 +2968,407 @@ export const products = [
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
+  },
+
+  // ----------------------------------------
+  // DURLEVEL CATALOG - NEW GUMMIES
+  // ----------------------------------------
+  {
+    id: 'acv-gummies-durlevel',
+    sku: 'DUR-G001',
+    name: 'Apple Cider Vinegar Gummies',
+    categoryId: 'gummies',
+    description: 'Premium apple cider vinegar gummies supporting digestive health, blood sugar control, and weight management with added B vitamins.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Apple Cider Vinegar 500mg', 'Vitamin B12', 'Vitamin B9 (Folate)', 'Pomegranate', 'Beetroot'],
+    ingredients: [
+      { name: 'Apple Cider Vinegar', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin B12', amount: '2.4', unit: 'mcg', dailyValue: '100%' },
+      { name: 'Folate', amount: '200', unit: 'mcg DFE', dailyValue: '50%' },
+      { name: 'Pomegranate Juice Powder', amount: '40', unit: 'mg', dailyValue: '*' },
+      { name: 'Beetroot Juice Powder', amount: '40', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, sodium citrate.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'bbl-gummies-01',
+    sku: 'DUR-G002',
+    name: 'BBL Gummies - Bigger, Firming & Lifting',
+    categoryId: 'gummies',
+    description: 'Body enhancement gummies with a proprietary blend of saw palmetto, wild yam, fenugreek, and blessed thistle designed to support natural curves.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Proprietary Blend (Saw Palmetto, Wild Yam Root, Fenugreek Extract, Blessed Thistle, Dong Quai)'],
+    ingredients: [
+      { name: 'Proprietary Blend', amount: '520', unit: 'mg', dailyValue: '*', source: '(Saw Palmetto, Wild Yam Root, Fenugreek Extract, Blessed Thistle, L-Tyrosine, Atlantic Kelp, Maca Root, Dong Quai Extract)' }
+    ],
+    otherIngredients: 'Hydroxypropyl methylcellulose, rice hull concentrate.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'pms-relief-gummies',
+    sku: 'DUR-G003',
+    name: 'PMS Relief Gummies',
+    categoryId: 'womens-health',
+    description: 'Women\'s formula with chasteberry extract, dong quai, dandelion, lavender, and vitamin B6 to help relieve PMS symptoms and support hormonal balance.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Chasteberry Extract', 'Dong Quai', 'Dandelion Root Extract', 'Lavender', 'Vitamin B6'],
+    ingredients: [
+      { name: 'Vitamin B6', amount: '1.4', unit: 'mg', dailyValue: '82%' },
+      { name: 'Chasteberry Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Dandelion Root Extract', amount: '4.35', unit: 'mg', dailyValue: '*' },
+      { name: 'Dong Quai', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Lavender', amount: '', unit: '', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'superfruits-gummies',
+    sku: 'DUR-G004',
+    name: 'Superfruits Gummies',
+    categoryId: 'gummies',
+    description: 'Antioxidant-rich superfruit blend with acai berry, goji berry, pomegranate, banana, and bamboo shoot extract for beauty and wellness support.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Vitamin A', 'Vitamin E', 'Superfruits Blend (Acai, Goji, Pomegranate, Banana)', 'Bamboo Shoot Extract'],
+    ingredients: [
+      { name: 'Vitamin A', amount: '90', unit: 'mcg', dailyValue: '10%' },
+      { name: 'Vitamin E', amount: '6.7', unit: 'mg', dailyValue: '45%' },
+      { name: 'Superfruits Blend', amount: '', unit: '', dailyValue: '*', source: '(Acai Berry, Goji Berry, Pomegranate, Banana, Apple)' },
+      { name: 'Bamboo Shoot Extract', amount: '22', unit: 'mg', dailyValue: '*', source: '(70% Silica)' }
+    ],
+    otherIngredients: 'Cane sugar, tapioca syrup, water, pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'supergreen-gummies',
+    sku: 'DUR-G005',
+    name: 'Supergreen Gummies',
+    categoryId: 'gummies',
+    description: 'Nutrient-dense green superfood gummies with spirulina, chlorella, wheatgrass, and barley grass for daily nutrition and detox support.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Vitamin A', 'Vitamin C', 'Vitamin D', 'Vitamin E', 'Supergreens Blend'],
+    ingredients: [
+      { name: 'Vitamin A', amount: '450', unit: 'mcg', dailyValue: '50%' },
+      { name: 'Vitamin C', amount: '45', unit: 'mg', dailyValue: '50%' },
+      { name: 'Vitamin D', amount: '10', unit: 'mcg', dailyValue: '50%' },
+      { name: 'Vitamin E', amount: '6', unit: 'mg', dailyValue: '40%' },
+      { name: 'Supergreens Blend', amount: '', unit: '', dailyValue: '*', source: '(Spirulina, Chlorella, Wheatgrass, Barley Grass)' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, sodium citrate.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'matcha-mind-gummies',
+    sku: 'DUR-G006',
+    name: 'Matcha Mind Cognitive Gummies',
+    categoryId: 'cognitive-support',
+    description: 'Cognitive support gummies featuring Cognizin citicoline, matcha green tea, ginkgo biloba, and phosphatidylserine for focus, memory, and mental clarity.',
+    servingSize: '3 gummies',
+    servingsPerContainer: 20,
+    keyIngredients: ['Cognizin Citicoline 250mg', 'Matcha 250mg', 'Ginkgo Biloba 100mg', 'Phosphatidylserine'],
+    ingredients: [
+      { name: 'Cognizin Citicoline', amount: '250', unit: 'mg', dailyValue: '*' },
+      { name: 'Matcha Green Tea', amount: '250', unit: 'mg', dailyValue: '*' },
+      { name: 'Ginkgo Biloba', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Phosphatidylserine', amount: '', unit: '', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'sleep-deep-5htp-gummies',
+    sku: 'DUR-G007',
+    name: 'Sleep Deep 5-HTP Gummies',
+    categoryId: 'sleep-relaxation',
+    description: 'Advanced sleep formula with 5-HTP, melatonin, L-theanine, and fruit pectin for deep, restorative sleep and relaxation.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['5-HTP', 'Melatonin', 'L-Theanine', 'Lemon Balm', 'Passionflower'],
+    ingredients: [
+      { name: '5-HTP', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Melatonin', amount: '3', unit: 'mg', dailyValue: '*' },
+      { name: 'L-Theanine', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Lemon Balm Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Passionflower Extract', amount: '50', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, fruit pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'pueraria-papaya-gummies',
+    sku: 'DUR-G008',
+    name: 'Pueraria Lobata Papaya Gummies',
+    categoryId: 'womens-health',
+    description: 'Natural breast enhancement formula with pueraria lobata (kudzu), papaya extract, and collagen for women\'s wellness and beauty support.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Pueraria Lobata Extract', 'Papaya Extract', 'Collagen', 'Vitamin E'],
+    ingredients: [
+      { name: 'Pueraria Lobata Extract', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'Papaya Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Collagen', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin E', amount: '10', unit: 'mg', dailyValue: '67%' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, sodium citrate.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'pre-post-probiotics-gummies',
+    sku: 'DUR-G009',
+    name: 'PRE+POST+PROBIOTICS Gummies',
+    categoryId: 'digestive-health',
+    description: 'Complete digestive support with prebiotics, postbiotics, and probiotics including Lactobacillus and DE111 Bacillus subtilis for gut health.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Prebiotic Fiber 10mg', 'Lactobacillus Acidophilus 20mg', 'DE111 Bacillus subtilis'],
+    ingredients: [
+      { name: 'Prebiotic Fiber', amount: '10', unit: 'mg', dailyValue: '*' },
+      { name: 'Lactobacillus Acidophilus', amount: '20', unit: 'mg', dailyValue: '*' },
+      { name: 'DE111 Bacillus subtilis', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Apple Cider Vinegar Powder', amount: '', unit: '', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'shilajit-gold-gummies',
+    sku: 'DUR-G010',
+    name: 'Shilajit Gold Gummies 3000mg',
+    categoryId: 'mens-health',
+    description: 'Premium high-potency Himalayan Shilajit gummies with gokshura, black musli, and ashwagandha for energy, vitality, and male wellness.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 60,
+    keyIngredients: ['Shilajit Extract 3000mg', 'Gokshura', 'Black Musli', 'Ashwagandha', 'Panax Ginseng'],
+    ingredients: [
+      { name: 'Purified Shilajit Extract', amount: '3000', unit: 'mg', dailyValue: '*', source: '(from 300mg of 10:1 extract)' },
+      { name: 'Withania Somnifera (Ashwagandha)', amount: '40', unit: 'mg', dailyValue: '*' },
+      { name: 'Zingiber Officinale (Ginger)', amount: '10', unit: 'mg', dailyValue: '*' },
+      { name: 'Curculigo Orchioides (Black Musli)', amount: '6', unit: 'mg', dailyValue: '*' },
+      { name: 'Tribulus Terrestris (Gokshura)', amount: '6', unit: 'mg', dailyValue: '*' },
+      { name: 'Mucuna Pruriens (Kaunch)', amount: '6', unit: 'mg', dailyValue: '*' },
+      { name: 'Panax Ginseng', amount: '4', unit: 'mg', dailyValue: '*' },
+      { name: 'Asparagus Racemosus (Shatavari)', amount: '4', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Fructooligosaccharides, pectin, acidity regulator, natural flavor (tamarind), guar gum, maize starch.',
+    dosageForm: 'gummies'
+  },
+
+  // ----------------------------------------
+  // DURLEVEL CATALOG - NEW CAPSULES
+  // ----------------------------------------
+  {
+    id: 'detox-fiber-cleanse',
+    sku: 'DUR-C110',
+    name: 'Detox Fiber Cleanse Capsules',
+    categoryId: 'liver-detox',
+    description: 'Comprehensive detox formula with CoQ10, vitamin E, L-carnitine, omega-3, alpha-lipoic acid, and turmeric for digestive health and gentle detoxification.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Coenzyme Q10 200mg', 'Vitamin E 30mg', 'L-Carnitine 100mg', 'Omega-3 Fish Oil 300mg', 'Alpha-Lipoic Acid 50mg'],
+    ingredients: [
+      { name: 'Coenzyme Q10', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin E', amount: '30', unit: 'mg', dailyValue: '200%', source: '(as Tocopherol)' },
+      { name: 'L-Carnitine', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Omega-3 Fish Oil', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 30% EPA and DHA)' },
+      { name: 'Alpha-Lipoic Acid', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Turmeric Extract', amount: '50', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% curcuminoids)' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% Piperine)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'graviola-immune-capsules',
+    sku: 'DUR-C111',
+    name: 'Graviola Immune Support Capsules',
+    categoryId: 'immunity-wellness',
+    description: 'Immune-boosting formula with graviola leaf extract, turmeric, echinacea, black pepper, and vitamin C for antioxidant and immune support.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Proprietary Immune Blend 750mg', 'Graviola Leaf Extract 500mg', 'Turmeric Root Extract 100mg', 'Echinacea 100mg'],
+    ingredients: [
+      { name: 'Proprietary Immune Support Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Graviola Leaf Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% annonacin)' },
+      { name: 'Turmeric Root Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% curcuminoids)' },
+      { name: 'Echinacea Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 4% echinacosides)' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' },
+      { name: 'Vitamin C', amount: '45', unit: 'mg', dailyValue: '50%', source: '(Ascorbic Acid)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'spermidine-longevity',
+    sku: 'DUR-C112',
+    name: 'Spermidine Longevity Capsules',
+    categoryId: 'specialty-formulas',
+    description: 'Cellular health formula with spermidine, B vitamins, zinc, and magnesium to support autophagy, cognitive function, and healthy aging.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Spermidine Extract 5mg', 'Vitamin B1 1.2mg', 'Vitamin B6 1.3mg', 'Zinc 1.4mg', 'Magnesium 8mg'],
+    ingredients: [
+      { name: 'Spermidine Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(1% Spermidine)' },
+      { name: 'Vitamin B1', amount: '1.2', unit: 'mg', dailyValue: '100%' },
+      { name: 'Vitamin B6', amount: '1.3', unit: 'mg', dailyValue: '100%' },
+      { name: 'Zinc', amount: '1.4', unit: 'mg', dailyValue: '13%', source: '(from Zinc Gluconate)' },
+      { name: 'Magnesium', amount: '8', unit: 'mg', dailyValue: '2%', source: '(from Magnesium Citrate)' },
+      { name: 'L-Theanine', amount: '50', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Gelatin (capsule), microcrystalline cellulose, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'ecdysterone-muscle',
+    sku: 'DUR-C113',
+    name: 'Ecdysterone Muscle Support Capsules',
+    categoryId: 'energy-performance',
+    description: 'Natural muscle-building support with beta-ecdysterone from cyanotis arachnoidea, plus hydroxypropyl-beta-cyclodextrin for enhanced absorption.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Beta-Ecdysterone 500mg', 'Hydroxypropyl-beta-cyclodextrin'],
+    ingredients: [
+      { name: 'Beta-Ecdysterone', amount: '500', unit: 'mg', dailyValue: '*', source: '(from Cyanotis Arachnoidea Extract, standardized to 95%)' },
+      { name: 'Hydroxypropyl-beta-cyclodextrin', amount: '100', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'ergothioneine-antioxidant',
+    sku: 'DUR-C114',
+    name: 'Ergothioneine Antioxidant Capsules',
+    categoryId: 'specialty-formulas',
+    description: 'Powerful antioxidant formula with L-ergothioneine, vitamin C, and zinc for cellular protection, skin health, and longevity support.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['L-Ergothioneine 25mg', 'Vitamin C 100mg', 'Vitamin E 15mg', 'Zinc 10mg'],
+    ingredients: [
+      { name: 'L-Ergothioneine', amount: '25', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin C', amount: '100', unit: 'mg', dailyValue: '111%', source: '(Ascorbic Acid)' },
+      { name: 'Vitamin E', amount: '15', unit: 'mg', dailyValue: '100%', source: '(as Tocopherol)' },
+      { name: 'Zinc', amount: '10', unit: 'mg', dailyValue: '91%' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'tribulus-male-vitality',
+    sku: 'DUR-C115',
+    name: 'Tribulus Male Vitality Capsules',
+    categoryId: 'mens-health',
+    description: 'Testosterone and libido support with tribulus terrestris, maca root, horny goat weed, fenugreek, and zinc for male performance and vitality.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Tribulus Terrestris 500mg', 'Maca Root 150mg', 'Horny Goat Weed 100mg', 'Fenugreek Seed 100mg', 'Zinc 10mg'],
+    ingredients: [
+      { name: 'Tribulus Terrestris Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% saponins)' },
+      { name: 'Maca Root Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 0.6% macamides)' },
+      { name: 'Horny Goat Weed Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% icariin)' },
+      { name: 'Fenugreek Seed Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 50% saponins)' },
+      { name: 'Zinc', amount: '10', unit: 'mg', dailyValue: '91%' },
+      { name: 'Vitamin B6', amount: '2', unit: 'mg', dailyValue: '118%', source: '(Pyridoxine)' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'ginkgo-cognitive-blend',
+    sku: 'DUR-C116',
+    name: 'Ginkgo Cognitive Blend Capsules',
+    categoryId: 'cognitive-support',
+    description: 'Advanced brain support with ginkgo biloba, bacopa monnieri, rhodiola rosea, and L-theanine for memory, focus, and mental performance.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Proprietary Cognitive Blend 750mg', 'Ginkgo Biloba 300mg', 'Bacopa Monnieri 200mg', 'Rhodiola Rosea 150mg'],
+    ingredients: [
+      { name: 'Proprietary Cognitive Support Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Ginkgo Biloba Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 24% flavone glycosides and 6% terpene lactones)' },
+      { name: 'Bacopa Monnieri Extract', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'Rhodiola Rosea Extract', amount: '150', unit: 'mg', dailyValue: '*' },
+      { name: 'L-Theanine', amount: '100', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'womens-probiotic-capsules',
+    sku: 'DUR-C117',
+    name: 'Women\'s Probiotic Capsules',
+    categoryId: 'womens-health',
+    description: 'Specialized probiotic for women with 30 billion CFU from 6 strains, cranberry extract, vitamin D3, and folic acid for digestive, urinary, and reproductive health.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Probiotic Blend 30 Billion CFU', 'Cranberry Extract 100mg', 'Vitamin D3 25mcg', 'Folic Acid 400mcg'],
+    ingredients: [
+      { name: 'Probiotic Blend', amount: '30', unit: 'Billion CFU', dailyValue: '*', source: '(Lactobacillus rhamnosus, L. reuteri, L. acidophilus, Bifidobacterium lactis, B. bifidum)' },
+      { name: 'Prebiotic Fiber', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Cranberry Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% proanthocyanidins)' },
+      { name: 'Vitamin D3', amount: '25', unit: 'mcg', dailyValue: '125%', source: '(1000 IU, Cholecalciferol)' },
+      { name: 'Folic Acid', amount: '400', unit: 'mcg', dailyValue: '100%' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'energy-cordyceps-blend',
+    sku: 'DUR-C118',
+    name: 'Energy Cordyceps Blend Capsules',
+    categoryId: 'energy-performance',
+    description: 'Natural energy formula with cordyceps sinensis, ginseng, and shilajit for sustained energy, endurance, and physical performance without jitters.',
+    servingSize: '1 capsule',
+    servingsPerContainer: 60,
+    keyIngredients: ['Proprietary Energy Blend 750mg', 'Cordyceps Sinensis 300mg', 'Ginseng Extract 200mg', 'Shilajit Extract 200mg'],
+    ingredients: [
+      { name: 'Proprietary Energy and Vitality Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Cordyceps Sinensis Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 7% cordycepic acid)' },
+      { name: 'Ginseng Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% ginsenosides)' },
+      { name: 'Shilajit Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 20% fulvic acid)' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
+    dosageForm: 'capsules'
+  },
+
+  // ----------------------------------------
+  // DURLEVEL CATALOG - SPECIALTY FORMATS
+  // ----------------------------------------
+  {
+    id: 'shilajit-resin-30g',
+    sku: 'DUR-S001',
+    name: 'Himalayan Shilajit Resin 30g',
+    categoryId: 'specialty-formats',
+    description: 'Pure Himalayan shilajit resin with 75% fulvic acid, lab tested for purity. Traditional Ayurvedic mineral supplement for energy, vitality, and rejuvenation.',
+    servingSize: '400mg (pea-sized amount)',
+    servingsPerContainer: 75,
+    keyIngredients: ['Pure Shilajit Resin 400mg', '75% Fulvic Acid', '85+ Trace Minerals'],
+    ingredients: [
+      { name: 'Pure Himalayan Shilajit Resin', amount: '400', unit: 'mg', dailyValue: '*', source: '(75% Fulvic Acid, 85+ Trace Minerals)' }
+    ],
+    otherIngredients: 'None - 100% pure shilajit resin.',
+    dosageForm: 'resin'
+  },
+  {
+    id: 'shilajit-resin-50g',
+    sku: 'DUR-S002',
+    name: 'Himalayan Shilajit Resin 50g',
+    categoryId: 'specialty-formats',
+    description: 'Premium grade pure Himalayan shilajit resin in larger 50g jar. Third party lab tested. Contains 75% fulvic acid and 85+ trace minerals for maximum efficacy.',
+    servingSize: '400mg (pea-sized amount)',
+    servingsPerContainer: 125,
+    keyIngredients: ['Pure Shilajit Resin 400mg', '75% Fulvic Acid', '85+ Trace Minerals'],
+    ingredients: [
+      { name: 'Pure Himalayan Shilajit Resin', amount: '400', unit: 'mg', dailyValue: '*', source: '(75% Fulvic Acid, 85+ Trace Minerals)' }
+    ],
+    otherIngredients: 'None - 100% pure shilajit resin.',
+    dosageForm: 'resin'
   }
 ];
 

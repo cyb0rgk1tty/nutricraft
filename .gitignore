@@ -53,3 +53,8 @@ coverage/
 *-credentials.json
 service-account*.json
 uploads/
+
+# Alibaba scraper (vendor import tool)
+scripts/alibaba-scraper/
+*.pyc
+__pycache__/
