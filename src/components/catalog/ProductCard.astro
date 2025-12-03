@@ -6,6 +6,7 @@
  */
 
 import SupplementFactsLabel from './SupplementFactsLabel.astro';
+import { getProductIngredientNames } from '../../data/products.js';
 
 interface Ingredient {
   name: string;
@@ -50,6 +51,9 @@ const formatDosageForm = (form?: string) => {
   data-product={product.id}
   data-category={product.categoryId}
   data-dosage={product.dosageForm || 'capsules'}
+  data-ingredients={JSON.stringify(getProductIngredientNames(product))}
+  data-sku={product.sku || ''}
+  data-name={product.name.toLowerCase()}
 >
   <!-- SKU Badge - hidden on mobile, shown on desktop -->
   {product.sku && (

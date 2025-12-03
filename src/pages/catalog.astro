@@ -7,7 +7,7 @@ import CatalogHero from '../components/catalog/CatalogHero.astro';
 import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
 import FilterDrawer from '../components/catalog/FilterDrawer.astro';
 import CategorySection from '../components/catalog/CategorySection.astro';
-import { products, productCategories, getProductsByCategory } from '../data/products.js';
+import { products, productCategories, getProductsByCategory, getUniqueIngredients } from '../data/products.js';
 
 // Get password from environment variable or use default
 const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD || 'nutricraft2025';
@@ -33,6 +33,9 @@ const dosageForms = Object.entries(dosageFormCounts)
     count
   }))
   .sort((a, b) => b.count - a.count); // Sort by count descending
+
+// Get unique ingredients for search autocomplete
+const uniqueIngredients = getUniqueIngredients();
 ---
 
 <BaseLayout
@@ -63,6 +66,7 @@ const dosageForms = Object.entries(dosageFormCounts)
       categories={productCategories}
       dosageForms={dosageForms}
       totalProducts={products.length}
+      uniqueIngredients={uniqueIngredients}
     />
   </PasswordGate>
 

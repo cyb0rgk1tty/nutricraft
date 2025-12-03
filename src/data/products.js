@@ -1870,16 +1870,18 @@ export const products = [
     sku: 'DUR-G007',
     name: "Women's Probiotic Gummies",
     categoryId: 'gummies',
-    description: 'Women-specific probiotic blend with lactobacillus strains and prebiotic fiber for digestive and vaginal health.',
+    description: 'Women-specific probiotic blend with cranberry extract, vitamin C, and 6 targeted lactobacillus strains for digestive, immune, and vaginal health support.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Probiotic Blend 5 Billion CFU', 'Lactobacillus', 'Prebiotic Fiber'],
+    keyIngredients: ['Probiotic Blend 5 Billion CFU', 'Cranberry Extract 100mg', 'Vitamin C 20mg', 'Prebiotic Fiber 300mg'],
     ingredients: [
-      { name: 'Probiotic Blend', amount: '5', unit: 'Billion CFU', dailyValue: '*' },
-      { name: 'Lactobacillus', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Prebiotic Fiber', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Sodium', amount: '15', unit: 'mg', dailyValue: '1%', source: '(as Sodium Citrate)' },
+      { name: 'Vitamin C', amount: '20', unit: 'mg', dailyValue: '22%', source: '(as Ascorbic Acid)' },
+      { name: 'Cranberry Extract (50:1)', amount: '100', unit: 'mg', dailyValue: '*', source: '(Vaccinium macrocarpon)(Fruit)' },
+      { name: 'Prebiotic Fiber Blend', amount: '300', unit: 'mg', dailyValue: '*', source: '(Fructooligosaccharides & Inulin)' },
+      { name: 'Probiotic Blend', amount: '5', unit: 'Billion CFU', dailyValue: '*', source: '(Bacillus coagulans 2B CFU, Lactobacillus acidophilus 1B CFU, L. rhamnosus 500M CFU, L. crispatus 500M CFU, L. reuteri 500M CFU, L. gasseri 500M CFU)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, colors from fruits and vegetables.',
     dosageForm: 'gummies'
   },
   {
@@ -2353,6 +2355,47 @@ export const products = [
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'powder'
   },
+  {
+    id: 'dragon-fruit-powder',
+    sku: 'DUR-P015',
+    name: 'Dragon Fruit Powder',
+    categoryId: 'powders',
+    description: 'Pure organic dragon fruit (pitaya) powder rich in antioxidants, fiber, and essential nutrients for smoothies and healthy recipes.',
+    servingSize: '1 tsp (4g)',
+    servingsPerContainer: 20,
+    keyIngredients: ['Dragon Fruit Powder', 'Vitamin D 0.11mcg', 'Calcium 0.88mg', 'Potassium 48mg'],
+    ingredients: [
+      { name: 'Calories', amount: '15', unit: '', dailyValue: '' },
+      { name: 'Total Carbohydrate', amount: '0', unit: 'g', dailyValue: '0%' },
+      { name: 'Dietary Fiber', amount: '0', unit: 'g', dailyValue: '0%' },
+      { name: 'Total Sugars', amount: '0', unit: 'g', dailyValue: '' },
+      { name: 'Protein', amount: '0', unit: 'g', dailyValue: '0%' },
+      { name: 'Vitamin D', amount: '0.11', unit: 'mcg', dailyValue: '0%' },
+      { name: 'Calcium', amount: '0.88', unit: 'mg', dailyValue: '0%' },
+      { name: 'Iron', amount: '0.01', unit: 'mg', dailyValue: '0%' },
+      { name: 'Potassium', amount: '48', unit: 'mg', dailyValue: '2%' }
+    ],
+    otherIngredients: '100% Organic Dragon Fruit Powder.',
+    dosageForm: 'powder'
+  },
+  {
+    id: 'supracalm-powder',
+    sku: 'DUR-P016',
+    name: 'Supracalm Relaxation Powder',
+    categoryId: 'powders',
+    description: 'Calming stress-relief powder with high-dose vitamin D, magnesium glycinate, L-theanine, and ashwagandha for relaxation and better sleep.',
+    servingSize: '1 packet (4.5g)',
+    servingsPerContainer: 20,
+    keyIngredients: ['Vitamin D 1000 IU', 'Magnesium Glycinate 100mg', 'L-Theanine 400mg', 'Ashwagandha 300mg'],
+    ingredients: [
+      { name: 'Vitamin D', amount: '1000', unit: 'IU', dailyValue: '250%' },
+      { name: 'Magnesium', amount: '100', unit: 'mg', dailyValue: '25%', source: '(as Magnesium Glycinate)' },
+      { name: 'L-Theanine', amount: '400', unit: 'mg', dailyValue: '*' },
+      { name: 'Ashwagandha Root Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Withania somnifera)' }
+    ],
+    otherIngredients: 'Natural flavors, citric acid, stevia leaf extract.',
+    dosageForm: 'powder'
+  },
 
   // ----------------------------------------
   // KIDS HEALTH
@@ -2791,6 +2834,63 @@ export const products = [
     dosageForm: 'capsules'
   },
   {
+    id: 'v-positiv-probiotic',
+    sku: 'DUR-C119',
+    name: 'V-Positiv Women\'s Probiotic',
+    categoryId: 'womens-health',
+    description: 'Targeted vaginal health probiotic with 5 billion CFU of four lactobacillus strains plus prebiotic XOS for optimal feminine flora balance.',
+    servingSize: '2 capsules',
+    servingsPerContainer: 45,
+    keyIngredients: ['V-Positiv Probiotic Blend 5 Billion CFU', 'Xylooligosaccharides (XOS) 400mg'],
+    ingredients: [
+      { name: 'V-Positiv Probiotic Blend', amount: '50', unit: 'mg', dailyValue: '*', source: '(5 Billion CFU) - Lactobacillus acidophilus, Lactobacillus rhamnosus, Lactobacillus reuteri, Lactobacillus fermentum' },
+      { name: 'Xylooligosaccharides (XOS)', amount: '400', unit: 'mg', dailyValue: '*' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'womens-hormone-multi',
+    sku: 'DUR-C120',
+    name: 'Women\'s Complete Hormone Support',
+    categoryId: 'womens-health',
+    description: 'Comprehensive women\'s formula with DIM precursor Indole-3-Carbinol, antioxidant-rich botanical extracts, essential vitamins, and 10 billion CFU probiotic blend for hormone metabolism and overall wellness.',
+    servingSize: '2 capsules',
+    servingsPerContainer: 45,
+    keyIngredients: ['Indole-3-Carbinol 400mg', 'Chromium 400mcg', 'Probiotic Blend 10 Billion CFU', 'Grape Seed & Melon Complex 150mg'],
+    ingredients: [
+      { name: 'Vitamin A', amount: '400', unit: 'mcg', dailyValue: '50%' },
+      { name: 'Vitamin D3', amount: '25', unit: 'mcg', dailyValue: '500%', source: '(1,000 IU)' },
+      { name: 'Vitamin C', amount: '12', unit: 'mg', dailyValue: '15%' },
+      { name: 'Zinc', amount: '4', unit: 'mg', dailyValue: '40%' },
+      { name: 'Chromium', amount: '400', unit: 'mcg', dailyValue: '1000%' },
+      { name: 'Indole-3-Carbinol', amount: '400', unit: 'mg', dailyValue: '*' },
+      { name: 'Grape Seed & Melon Complex', amount: '150', unit: 'mg', dailyValue: '*', source: '(Grape Seed Extract 114.75mg, Melon Concentrate 2.3mg)' },
+      { name: 'Inulin (Fibre)', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Blood Orange Extract', amount: '70', unit: 'mg', dailyValue: '*' },
+      { name: 'Broccoli Seed Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Rosemary Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Probiotic Blend', amount: '10', unit: 'Billion CFU', dailyValue: '*', source: '(Lactobacillus acidophilus, Bifidobacterium bifidum, Lactobacillus casei, Lactobacillus rhamnosus, Lactobacillus plantarum)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    dosageForm: 'capsules'
+  },
+  {
+    id: 'glycovibe-vascular',
+    sku: 'DUR-C121',
+    name: 'GlycoVibe Vascular Shield',
+    categoryId: 'womens-health',
+    description: 'Advanced antioxidant and endothelium support formula with L-Citrulline, hyaluronic acid, catalase, SOD enzymes, and botanical extracts for cardiovascular and skin health.',
+    servingSize: '4 capsules',
+    servingsPerContainer: 30,
+    keyIngredients: ['Proprietary Blend 2880mg', 'L-Citrulline', 'Hyaluronic Acid', 'Resveratrol', 'Quercetin'],
+    ingredients: [
+      { name: 'Proprietary Blend', amount: '2880', unit: 'mg', dailyValue: '*', source: '(L-Citrulline, Folate, Inner Leaf Aloe Vera Powder, Hyaluronic Acid, Catalase, Superoxide Dismutase, Resveratrol, Quercetin, Pomegranate Extract)' }
+    ],
+    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    dosageForm: 'capsules'
+  },
+  {
     id: 'brain-energy',
     sku: 'DUR-C100',
     name: 'Brain Energy Capsules',
@@ -3083,7 +3183,7 @@ export const products = [
   },
   {
     id: 'sleep-deep-5htp-gummies',
-    sku: 'DUR-G007',
+    sku: 'DUR-G025',
     name: 'Sleep Deep 5-HTP Gummies',
     categoryId: 'sleep-relaxation',
     description: 'Advanced sleep formula with 5-HTP, melatonin, L-theanine, and fruit pectin for deep, restorative sleep and relaxation.',
@@ -3098,6 +3198,23 @@ export const products = [
       { name: 'Passionflower Extract', amount: '50', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Glucose syrup, sugar, fruit pectin, citric acid, natural flavors.',
+    dosageForm: 'gummies'
+  },
+  {
+    id: 'cranberry-gummies',
+    sku: 'DUR-G026',
+    name: 'Cranberry Gummies',
+    categoryId: 'gummies',
+    description: 'UTI support gummies with high-potency cranberry extract, D-Mannose, and probiotic Bacillus coagulans for urinary tract and digestive health.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Cranberry 1000mg', 'D-Mannose 250mg', 'Bacillus Coagulans 1 Billion CFU'],
+    ingredients: [
+      { name: 'Cranberry', amount: '1000', unit: 'mg', dailyValue: '*', source: '(Vaccinium macrocarpon)(Fruit)' },
+      { name: 'D-Mannose', amount: '250', unit: 'mg', dailyValue: '*' },
+      { name: 'Bacillus Coagulans', amount: '1', unit: 'Billion CFU', dailyValue: '*' }
+    ],
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, colors from fruits and vegetables.',
     dosageForm: 'gummies'
   },
   {
@@ -3437,4 +3554,122 @@ export function searchProducts(query) {
     product.name.toLowerCase().includes(lowerQuery) ||
     product.description.toLowerCase().includes(lowerQuery)
   );
+}
+
+/**
+ * Ingredient aliases for grouped searching
+ * Maps common ingredient names to related terms
+ */
+const ingredientAliases = {
+  'vitamin d': ['vitamin d', 'vitamin d3', 'cholecalciferol', 'd3'],
+  'vitamin b12': ['vitamin b12', 'b12', 'methylcobalamin', 'cyanocobalamin'],
+  'vitamin b6': ['vitamin b6', 'b6', 'pyridoxine', 'p-5-p'],
+  'vitamin c': ['vitamin c', 'ascorbic acid', 'sodium ascorbate'],
+  'vitamin e': ['vitamin e', 'tocopherol', 'tocotrienol'],
+  'vitamin a': ['vitamin a', 'retinol', 'beta-carotene', 'beta carotene'],
+  'vitamin k': ['vitamin k', 'vitamin k2', 'mk-7', 'menaquinone'],
+  'magnesium': ['magnesium', 'magnesium citrate', 'magnesium glycinate', 'magnesium oxide', 'magnesium bisglycinate', 'magnesium l-threonate'],
+  'zinc': ['zinc', 'zinc picolinate', 'zinc citrate', 'zinc gluconate'],
+  'iron': ['iron', 'ferrous', 'iron bisglycinate'],
+  'calcium': ['calcium', 'calcium citrate', 'calcium carbonate'],
+  'omega': ['omega', 'omega-3', 'fish oil', 'dha', 'epa'],
+  'probiotics': ['probiotic', 'lactobacillus', 'bifidobacterium', 'cfu'],
+  'ashwagandha': ['ashwagandha', 'ksm-66', 'withania'],
+  'turmeric': ['turmeric', 'curcumin', 'curcuminoids'],
+  'collagen': ['collagen', 'hydrolyzed collagen', 'collagen peptides'],
+  'melatonin': ['melatonin'],
+  'biotin': ['biotin', 'vitamin b7'],
+  'folate': ['folate', 'folic acid', 'methylfolate', '5-mthf'],
+  'coq10': ['coq10', 'coenzyme q10', 'ubiquinol', 'ubiquinone'],
+  'ginseng': ['ginseng', 'panax ginseng', 'korean ginseng'],
+  'elderberry': ['elderberry', 'sambucus'],
+  'echinacea': ['echinacea'],
+  'saw palmetto': ['saw palmetto', 'serenoa repens'],
+  'maca': ['maca', 'maca root'],
+  'rhodiola': ['rhodiola', 'rhodiola rosea'],
+  'ginkgo': ['ginkgo', 'ginkgo biloba'],
+  'green tea': ['green tea', 'egcg', 'camellia sinensis'],
+  'milk thistle': ['milk thistle', 'silymarin'],
+  'valerian': ['valerian', 'valerian root'],
+  'chamomile': ['chamomile'],
+  'lavender': ['lavender'],
+  'passionflower': ['passionflower', 'passion flower'],
+  'l-theanine': ['l-theanine', 'theanine'],
+  'gaba': ['gaba', 'gamma-aminobutyric'],
+  'glucosamine': ['glucosamine'],
+  'chondroitin': ['chondroitin'],
+  'msm': ['msm', 'methylsulfonylmethane'],
+  'spirulina': ['spirulina'],
+  'chlorella': ['chlorella'],
+  'lions mane': ['lions mane', "lion's mane", 'hericium'],
+  'reishi': ['reishi', 'ganoderma'],
+  'cordyceps': ['cordyceps'],
+  'chaga': ['chaga'],
+  'turkey tail': ['turkey tail', 'trametes'],
+};
+
+/**
+ * Get alias group for an ingredient (returns array of related terms)
+ */
+export function getIngredientAliases(ingredient) {
+  const lower = ingredient.toLowerCase();
+  for (const [key, aliases] of Object.entries(ingredientAliases)) {
+    if (aliases.some(a => lower.includes(a) || a.includes(lower))) {
+      return aliases;
+    }
+  }
+  return [lower]; // No alias found, return original
+}
+
+/**
+ * Extract all unique ingredient names from the catalog (for autocomplete)
+ */
+export function getUniqueIngredients() {
+  const ingredientSet = new Set();
+  products.forEach(product => {
+    if (product.ingredients) {
+      product.ingredients.forEach(ing => {
+        // Skip "Proprietary Blend" as it's not a searchable ingredient name
+        if (ing.name && ing.name !== 'Proprietary Blend') {
+          ingredientSet.add(ing.name);
+        }
+        // Also extract individual ingredients from proprietary blend source fields
+        if (ing.name === 'Proprietary Blend' && ing.source) {
+          // Extract ingredients from format like "(Lemon Balm, L-Theanine, Magnesium)"
+          const sourceIngredients = ing.source
+            .replace(/[()]/g, '')
+            .split(',')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+          sourceIngredients.forEach(si => ingredientSet.add(si));
+        }
+      });
+    }
+  });
+  return Array.from(ingredientSet).sort();
+}
+
+/**
+ * Get ingredient data for a product (for client-side filtering)
+ * Returns array of lowercase ingredient names including proprietary blend contents
+ */
+export function getProductIngredientNames(product) {
+  const names = [];
+  if (product.ingredients) {
+    product.ingredients.forEach(ing => {
+      if (ing.name && ing.name !== 'Proprietary Blend') {
+        names.push(ing.name.toLowerCase());
+      }
+      // Include proprietary blend contents
+      if (ing.name === 'Proprietary Blend' && ing.source) {
+        const sourceIngredients = ing.source
+          .replace(/[()]/g, '')
+          .split(',')
+          .map(s => s.trim().toLowerCase())
+          .filter(s => s.length > 0);
+        names.push(...sourceIngredients);
+      }
+    });
+  }
+  return names;
 }
