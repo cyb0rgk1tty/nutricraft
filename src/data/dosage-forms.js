@@ -490,7 +490,7 @@ export const dosageForms = [
     ],
     manufacturingDetails: {
       process: 'Effervescent granulation and compression',
-      moq: '5,000 tubes (100,000-150,000 tablets)',
+      moq: '2,000 tubes (40,000 tablets)',
       leadTime: '4-6 weeks for first production',
       shelfLife: '2 years in moisture-proof packaging'
     },
