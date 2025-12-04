@@ -3073,7 +3073,7 @@ export const products = [
   // ----------------------------------------
   {
     id: 'acv-gummies-durlevel',
-    sku: 'DUR-G001',
+    sku: 'DUR-G028',
     name: 'Apple Cider Vinegar Gummies',
     categoryId: 'gummies',
     description: 'Premium apple cider vinegar gummies supporting digestive health, blood sugar control, and weight management with added B vitamins.',
@@ -3092,7 +3092,7 @@ export const products = [
   },
   {
     id: 'bbl-gummies-01',
-    sku: 'DUR-G002',
+    sku: 'DUR-G029',
     name: 'BBL Gummies - Bigger, Firming & Lifting',
     categoryId: 'gummies',
     description: 'Body enhancement gummies with a proprietary blend of saw palmetto, wild yam, fenugreek, and blessed thistle designed to support natural curves.',
@@ -3107,7 +3107,7 @@ export const products = [
   },
   {
     id: 'pms-relief-gummies',
-    sku: 'DUR-G003',
+    sku: 'DUR-G030',
     name: 'PMS Relief Gummies',
     categoryId: 'womens-health',
     description: 'Women\'s formula with chasteberry extract, dong quai, dandelion, lavender, and vitamin B6 to help relieve PMS symptoms and support hormonal balance.',
@@ -3126,7 +3126,7 @@ export const products = [
   },
   {
     id: 'superfruits-gummies',
-    sku: 'DUR-G004',
+    sku: 'DUR-G031',
     name: 'Superfruits Gummies',
     categoryId: 'gummies',
     description: 'Antioxidant-rich superfruit blend with acai berry, goji berry, pomegranate, banana, and bamboo shoot extract for beauty and wellness support.',
@@ -3144,7 +3144,7 @@ export const products = [
   },
   {
     id: 'supergreen-gummies',
-    sku: 'DUR-G005',
+    sku: 'DUR-G032',
     name: 'Supergreen Gummies',
     categoryId: 'gummies',
     description: 'Nutrient-dense green superfood gummies with spirulina, chlorella, wheatgrass, and barley grass for daily nutrition and detox support.',
@@ -3163,7 +3163,7 @@ export const products = [
   },
   {
     id: 'matcha-mind-gummies',
-    sku: 'DUR-G006',
+    sku: 'DUR-G033',
     name: 'Matcha Mind Cognitive Gummies',
     categoryId: 'cognitive-support',
     description: 'Cognitive support gummies featuring Cognizin citicoline, matcha green tea, ginkgo biloba, and phosphatidylserine for focus, memory, and mental clarity.',
@@ -3250,7 +3250,7 @@ export const products = [
   },
   {
     id: 'pueraria-papaya-gummies',
-    sku: 'DUR-G008',
+    sku: 'DUR-G034',
     name: 'Pueraria Lobata Papaya Gummies',
     categoryId: 'womens-health',
     description: 'Natural breast enhancement formula with pueraria lobata (kudzu), papaya extract, and collagen for women\'s wellness and beauty support.',
@@ -3268,7 +3268,7 @@ export const products = [
   },
   {
     id: 'pre-post-probiotics-gummies',
-    sku: 'DUR-G009',
+    sku: 'DUR-G035',
     name: 'PRE+POST+PROBIOTICS Gummies',
     categoryId: 'digestive-health',
     description: 'Complete digestive support with prebiotics, postbiotics, and probiotics including Lactobacillus and DE111 Bacillus subtilis for gut health.',
@@ -3286,7 +3286,7 @@ export const products = [
   },
   {
     id: 'shilajit-gold-gummies',
-    sku: 'DUR-G010',
+    sku: 'DUR-G036',
     name: 'Shilajit Gold Gummies 3000mg',
     categoryId: 'mens-health',
     description: 'Premium high-potency Himalayan Shilajit gummies with gokshura, black musli, and ashwagandha for energy, vitality, and male wellness.',
@@ -3490,7 +3490,7 @@ export const products = [
   // ----------------------------------------
   {
     id: 'shilajit-resin-30g',
-    sku: 'DUR-S001',
+    sku: 'DUR-SF001',
     name: 'Himalayan Shilajit Resin 30g',
     categoryId: 'specialty-formats',
     description: 'Pure Himalayan shilajit resin with 75% fulvic acid, lab tested for purity. Traditional Ayurvedic mineral supplement for energy, vitality, and rejuvenation.',
@@ -3505,7 +3505,7 @@ export const products = [
   },
   {
     id: 'shilajit-resin-50g',
-    sku: 'DUR-S002',
+    sku: 'DUR-SF002',
     name: 'Himalayan Shilajit Resin 50g',
     categoryId: 'specialty-formats',
     description: 'Premium grade pure Himalayan shilajit resin in larger 50g jar. Third party lab tested. Contains 75% fulvic acid and 85+ trace minerals for maximum efficacy.',

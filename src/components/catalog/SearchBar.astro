@@ -1,0 +1,617 @@
+---
+/**
+ * SearchBar Component
+ * Main search bar with autocomplete for the catalog page
+ * Uses /api/autocomplete and /api/search endpoints for server-side search
+ */
+---
+
+<div class="search-container relative w-full max-w-2xl mx-auto">
+  <!-- Search Input -->
+  <div class="relative">
+    <input
+      type="text"
+      id="catalog-search"
+      placeholder="Search products, ingredients, or SKU..."
+      autocomplete="off"
+      class="w-full px-5 py-3 pl-12 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all shadow-sm hover:border-gray-300"
+    />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <!-- Loading spinner -->
+    <div id="search-loading" class="hidden absolute right-4 top-1/2 -translate-y-1/2">
+      <svg class="animate-spin w-5 h-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </div>
+    <!-- Clear button -->
+    <button
+      id="search-clear"
+      type="button"
+      class="hidden absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+      aria-label="Clear search"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Autocomplete Dropdown -->
+  <div
+    id="search-dropdown"
+    class="hidden absolute z-50 left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden"
+  >
+    <!-- Product Suggestions -->
+    <div id="product-suggestions" class="divide-y divide-gray-100"></div>
+
+    <!-- Ingredient Suggestions -->
+    <div id="ingredient-suggestions-section" class="hidden border-t border-gray-200">
+      <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50">
+        Search by Ingredient
+      </div>
+      <div id="ingredient-suggestions-list" class="divide-y divide-gray-100"></div>
+    </div>
+
+    <!-- Search All Results Link -->
+    <div id="search-all-link" class="hidden border-t border-gray-200">
+      <button
+        id="search-all-btn"
+        type="button"
+        class="w-full px-4 py-3 text-left text-sm text-primary font-medium hover:bg-mint-50 transition-colors flex items-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span>Search all results for "<span id="search-query-text"></span>"</span>
+      </button>
+    </div>
+
+    <!-- No Results -->
+    <div id="no-results" class="hidden px-4 py-8 text-center text-gray-500">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <p class="text-sm">No products found</p>
+      <p class="text-xs text-gray-400 mt-1">Try a different search term</p>
+    </div>
+  </div>
+
+  <!-- Search Results Count (shown after full search) -->
+  <div id="search-results-banner" class="hidden mt-4 p-3 bg-mint-50 border border-mint-200 rounded-lg flex items-center justify-between">
+    <span class="text-sm text-gray-700">
+      Found <span id="search-results-count" class="font-semibold text-primary">0</span> results for "<span id="search-results-query" class="font-medium"></span>"
+    </span>
+    <button
+      id="clear-search-results"
+      type="button"
+      class="text-sm text-primary hover:text-primary-dark font-medium flex items-center gap-1"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+      Clear
+    </button>
+  </div>
+</div>
+
+<style>
+  .search-container {
+    position: relative;
+  }
+
+  /* Suggestion item styles */
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+  }
+
+  .suggestion-item:hover,
+  .suggestion-item.active {
+    background-color: #f0fef4;
+  }
+
+  .suggestion-item .product-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .suggestion-item.active .product-icon {
+    background-color: #e6fff0;
+  }
+
+  .suggestion-item .product-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .suggestion-item .product-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .suggestion-item .product-meta {
+    font-size: 0.75rem;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .suggestion-item .match {
+    background-color: #fef08a;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  .ingredient-suggestion {
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.1s ease;
+  }
+
+  .ingredient-suggestion:hover {
+    background-color: #f0fef4;
+    color: #00a059;
+  }
+
+  .ingredient-suggestion .match {
+    background-color: #fef08a;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+</style>
+
+<script>
+  // Elements
+  const searchInput = document.getElementById('catalog-search') as HTMLInputElement;
+  const searchDropdown = document.getElementById('search-dropdown');
+  const productSuggestions = document.getElementById('product-suggestions');
+  const ingredientSection = document.getElementById('ingredient-suggestions-section');
+  const ingredientList = document.getElementById('ingredient-suggestions-list');
+  const searchAllLink = document.getElementById('search-all-link');
+  const searchAllBtn = document.getElementById('search-all-btn');
+  const searchQueryText = document.getElementById('search-query-text');
+  const noResults = document.getElementById('no-results');
+  const loadingSpinner = document.getElementById('search-loading');
+  const clearBtn = document.getElementById('search-clear');
+  const resultsBanner = document.getElementById('search-results-banner');
+  const resultsCount = document.getElementById('search-results-count');
+  const resultsQuery = document.getElementById('search-results-query');
+  const clearResultsBtn = document.getElementById('clear-search-results');
+
+  // State
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  let activeSuggestionIndex = -1;
+  let suggestions: Array<{ id: number; name: string; slug: string; type: string }> = [];
+  let currentQuery = '';
+  let isSearchActive = false;
+
+  // Get product cards for filtering
+  const productCards = document.querySelectorAll('article[data-product]');
+  const categorySections = document.querySelectorAll('section[data-category]');
+
+  // Debounced autocomplete fetch
+  function fetchAutocomplete(query: string) {
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    if (query.length < 2) {
+      hideDropdown();
+      return;
+    }
+
+    showLoading();
+    debounceTimer = setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}&limit=6`);
+        const data = await response.json();
+
+        currentQuery = query;
+        renderSuggestions(data);
+      } catch (error) {
+        console.error('Autocomplete error:', error);
+        hideDropdown();
+      } finally {
+        hideLoading();
+      }
+    }, 200);
+  }
+
+  // Render autocomplete suggestions
+  function renderSuggestions(data: {
+    suggestions: Array<{ id: number; name: string; slug: string; type: string }>;
+    ingredients: Array<{ name: string; type: string }>;
+    count: number;
+  }) {
+    suggestions = data.suggestions;
+    activeSuggestionIndex = -1;
+
+    // Clear previous
+    if (productSuggestions) productSuggestions.innerHTML = '';
+    if (ingredientList) ingredientList.innerHTML = '';
+
+    const hasProducts = data.suggestions.length > 0;
+    const hasIngredients = data.ingredients && data.ingredients.length > 0;
+
+    if (!hasProducts && !hasIngredients) {
+      showNoResults();
+      return;
+    }
+
+    hideNoResults();
+
+    // Render product suggestions
+    if (hasProducts && productSuggestions) {
+      productSuggestions.innerHTML = data.suggestions.map((s, idx) => {
+        const highlightedName = highlightMatch(s.name, currentQuery);
+        return `
+          <div class="suggestion-item" data-index="${idx}" data-slug="${s.slug}" data-type="product">
+            <div class="product-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <div class="product-info">
+              <div class="product-name">${highlightedName}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render ingredient suggestions
+    if (hasIngredients && ingredientSection && ingredientList) {
+      ingredientSection.classList.remove('hidden');
+      ingredientList.innerHTML = data.ingredients.map((ing) => {
+        const highlightedName = highlightMatch(ing.name, currentQuery);
+        return `
+          <div class="ingredient-suggestion" data-ingredient="${ing.name}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            ${highlightedName}
+          </div>
+        `;
+      }).join('');
+    } else if (ingredientSection) {
+      ingredientSection.classList.add('hidden');
+    }
+
+    // Show "search all" link
+    if (searchAllLink && searchQueryText) {
+      searchAllLink.classList.remove('hidden');
+      searchQueryText.textContent = currentQuery;
+    }
+
+    showDropdown();
+    attachSuggestionHandlers();
+  }
+
+  // Highlight matching text
+  function highlightMatch(text: string, query: string): string {
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const matchIndex = lowerText.indexOf(lowerQuery);
+
+    if (matchIndex === -1) return text;
+
+    const before = text.slice(0, matchIndex);
+    const match = text.slice(matchIndex, matchIndex + query.length);
+    const after = text.slice(matchIndex + query.length);
+
+    return `${before}<span class="match">${match}</span>${after}`;
+  }
+
+  // Attach click handlers to suggestions
+  function attachSuggestionHandlers() {
+    // Product suggestions
+    productSuggestions?.querySelectorAll('.suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const slug = item.getAttribute('data-slug');
+        if (slug) {
+          scrollToProduct(slug);
+        }
+      });
+    });
+
+    // Ingredient suggestions
+    ingredientList?.querySelectorAll('.ingredient-suggestion').forEach(item => {
+      item.addEventListener('click', () => {
+        const ingredient = item.getAttribute('data-ingredient');
+        if (ingredient) {
+          filterByIngredient(ingredient);
+        }
+      });
+    });
+
+    // Search all button
+    searchAllBtn?.addEventListener('click', () => {
+      performFullSearch(currentQuery);
+    });
+  }
+
+  // Scroll to a specific product
+  function scrollToProduct(slug: string) {
+    const productCard = document.querySelector(`article[data-product="${slug}"]`);
+    if (productCard) {
+      // Show all products first
+      resetFilters();
+
+      // Scroll to product with offset for header
+      const yOffset = -120;
+      const y = productCard.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+
+      // Highlight the product briefly
+      productCard.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+      setTimeout(() => {
+        productCard.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+      }, 2000);
+    }
+    hideDropdown();
+    if (searchInput) searchInput.value = '';
+    showClearBtn(false);
+  }
+
+  // Filter products by ingredient
+  function filterByIngredient(ingredient: string) {
+    // Add to ingredient filter in sidebar
+    const ingredientSearchInput = document.getElementById('ingredient-search') as HTMLInputElement;
+    if (ingredientSearchInput) {
+      ingredientSearchInput.value = ingredient;
+      ingredientSearchInput.dispatchEvent(new Event('input'));
+
+      // Trigger selection after a brief delay
+      setTimeout(() => {
+        const suggestionItem = document.querySelector(`#ingredient-suggestions .suggestion-item[data-ingredient="${ingredient}"]`);
+        if (suggestionItem) {
+          (suggestionItem as HTMLElement).click();
+        }
+      }, 100);
+    }
+    hideDropdown();
+    if (searchInput) searchInput.value = '';
+    showClearBtn(false);
+  }
+
+  // Perform full-text search
+  async function performFullSearch(query: string) {
+    if (!query || query.length < 2) return;
+
+    showLoading();
+    hideDropdown();
+
+    try {
+      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=50`);
+      const data = await response.json();
+
+      if (data.error) {
+        console.error('Search error:', data.error);
+        return;
+      }
+
+      // Get matching product slugs
+      const matchingSlugs = new Set(data.results.map((r: { slug: string }) => r.slug));
+
+      // Filter products client-side
+      let visibleCount = 0;
+      productCards.forEach(card => {
+        const slug = card.getAttribute('data-product');
+        if (slug && matchingSlugs.has(slug)) {
+          (card as HTMLElement).style.display = 'grid';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      // Show/hide category sections
+      categorySections.forEach(section => {
+        let hasVisibleCards = false;
+        section.querySelectorAll('article[data-product]').forEach(card => {
+          if ((card as HTMLElement).style.display !== 'none') {
+            hasVisibleCards = true;
+          }
+        });
+        (section as HTMLElement).style.display = hasVisibleCards ? 'block' : 'none';
+      });
+
+      // Update drawer count if available
+      const drawerCount = document.getElementById('drawer-product-count');
+      if (drawerCount) {
+        drawerCount.textContent = visibleCount.toString();
+      }
+
+      // Show results banner
+      showResultsBanner(visibleCount, query);
+      isSearchActive = true;
+
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      hideLoading();
+    }
+  }
+
+  // Reset all filters and show all products
+  function resetFilters() {
+    productCards.forEach(card => {
+      (card as HTMLElement).style.display = 'grid';
+    });
+    categorySections.forEach(section => {
+      (section as HTMLElement).style.display = 'block';
+    });
+
+    // Reset drawer count
+    const drawerCount = document.getElementById('drawer-product-count');
+    if (drawerCount) {
+      drawerCount.textContent = productCards.length.toString();
+    }
+
+    hideResultsBanner();
+    isSearchActive = false;
+  }
+
+  // UI helper functions
+  function showDropdown() {
+    searchDropdown?.classList.remove('hidden');
+  }
+
+  function hideDropdown() {
+    searchDropdown?.classList.add('hidden');
+    activeSuggestionIndex = -1;
+  }
+
+  function showLoading() {
+    loadingSpinner?.classList.remove('hidden');
+    clearBtn?.classList.add('hidden');
+  }
+
+  function hideLoading() {
+    loadingSpinner?.classList.add('hidden');
+    if (searchInput && searchInput.value.length > 0) {
+      showClearBtn(true);
+    }
+  }
+
+  function showClearBtn(show: boolean) {
+    if (show) {
+      clearBtn?.classList.remove('hidden');
+    } else {
+      clearBtn?.classList.add('hidden');
+    }
+  }
+
+  function showNoResults() {
+    noResults?.classList.remove('hidden');
+    productSuggestions?.classList.add('hidden');
+    ingredientSection?.classList.add('hidden');
+    searchAllLink?.classList.add('hidden');
+    showDropdown();
+  }
+
+  function hideNoResults() {
+    noResults?.classList.add('hidden');
+    productSuggestions?.classList.remove('hidden');
+  }
+
+  function showResultsBanner(count: number, query: string) {
+    if (resultsBanner && resultsCount && resultsQuery) {
+      resultsCount.textContent = count.toString();
+      resultsQuery.textContent = query;
+      resultsBanner.classList.remove('hidden');
+    }
+  }
+
+  function hideResultsBanner() {
+    resultsBanner?.classList.add('hidden');
+  }
+
+  // Event listeners
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.trim();
+    showClearBtn(query.length > 0);
+
+    if (query.length === 0 && isSearchActive) {
+      resetFilters();
+    }
+
+    fetchAutocomplete(query);
+  });
+
+  searchInput?.addEventListener('keydown', (e) => {
+    const items = productSuggestions?.querySelectorAll('.suggestion-item');
+    if (!items || items.length === 0) {
+      if (e.key === 'Enter' && currentQuery.length >= 2) {
+        performFullSearch(currentQuery);
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeSuggestionIndex = Math.min(activeSuggestionIndex + 1, items.length - 1);
+      updateActiveSuggestion(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeSuggestionIndex = Math.max(activeSuggestionIndex - 1, -1);
+      updateActiveSuggestion(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeSuggestionIndex >= 0 && activeSuggestionIndex < items.length) {
+        const slug = items[activeSuggestionIndex].getAttribute('data-slug');
+        if (slug) scrollToProduct(slug);
+      } else {
+        performFullSearch(currentQuery);
+      }
+    } else if (e.key === 'Escape') {
+      hideDropdown();
+    }
+  });
+
+  function updateActiveSuggestion(items: NodeListOf<Element>) {
+    items.forEach((item, i) => {
+      item.classList.toggle('active', i === activeSuggestionIndex);
+    });
+  }
+
+  // Clear button
+  clearBtn?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    hideDropdown();
+    showClearBtn(false);
+    if (isSearchActive) resetFilters();
+    searchInput?.focus();
+  });
+
+  // Clear results button
+  clearResultsBtn?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    resetFilters();
+    showClearBtn(false);
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    if (!searchInput?.contains(target) && !searchDropdown?.contains(target)) {
+      hideDropdown();
+    }
+  });
+
+  // Focus search on keyboard shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === '/' || e.key === 'k' && (e.metaKey || e.ctrlKey)) && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput?.focus();
+    }
+  });
+</script>

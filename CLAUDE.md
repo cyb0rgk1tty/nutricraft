@@ -29,6 +29,7 @@ npx astro sync       # Generate TypeScript types for content collections
 ### Tech Stack
 - **Framework**: Astro.js v5 with SSR enabled (Vercel adapter)
 - **Styling**: Tailwind CSS with custom mint green theme
+- **Database**: Supabase (PostgreSQL) for product catalog
 - **Email**: Nodemailer for contact form submissions
 - **CRM**: Twenty CRM integration for automatic lead capture
 - **Newsletter**: Google Sheets API for subscriber management
@@ -57,8 +58,10 @@ src/
 │   └── dosage-forms/ # Dosage form content
 ├── utils/           # Utility functions
 │   ├── slugify.ts   # URL slugification for tags
-│   └── twentyCrm.ts # Twenty CRM API integration
-└── data/           # JS data files (services, formulations, etc.)
+│   ├── twentyCrm.ts # Twenty CRM API integration
+│   ├── supabase.ts  # Supabase client singleton
+│   └── db.ts        # Database access layer for product catalog
+└── data/           # JS data files (services, formulations, etc.) - legacy, migrating to Supabase
 ```
 
 ### Key Patterns
@@ -158,6 +161,56 @@ Contact form uses server-side processing with:
 - Tests directory exists but is currently empty
 - Public images should be placed in public/images/ with WebP versions for performance
 - The brand of this project is "Nutricraft Labs"
+
+### Supabase Database
+
+**IMPORTANT: Always use the Supabase MCP for any database operations.**
+
+When working with the database (viewing schema, querying data, running migrations, or planning database changes), use the Supabase MCP tools:
+- `mcp__supabase__list_tables` - View all tables in the database
+- `mcp__supabase__execute_sql` - Run SELECT queries to view data
+- `mcp__supabase__apply_migration` - Apply DDL changes (CREATE, ALTER, DROP)
+- `mcp__supabase__list_migrations` - View migration history
+- `mcp__supabase__get_logs` - Debug database issues
+- `mcp__supabase__search_docs` - Search Supabase documentation
+
+**Database Schema** (PostgreSQL with extensions):
+- `pg_trgm` - Fuzzy text search for typo tolerance
+- `pgvector` - AI semantic search with embeddings
+
+**Core Tables**:
+- `categories` - Product categories (Sleep & Relaxation, Energy, etc.)
+- `dosage_forms` - Supplement formats (tablets, capsules, gummies, etc.)
+- `products` - Main product catalog (200+ formulations)
+- `product_ingredients` - Ingredients per product with amounts
+- `ingredients` - Master ingredient list with aliases
+- `chat_sessions` - AI chatbot conversation sessions
+- `chat_messages` - Individual chat messages
+
+**Data Access Layer** (`src/utils/db.ts`):
+```typescript
+import { getProducts, searchProducts, getProductBySlug } from '../utils/db';
+
+// Get all products
+const products = await getProducts();
+
+// Search with filters
+const results = await searchProducts('melatonin', { categorySlug: 'sleep-relaxation' });
+
+// Get single product
+const product = await getProductBySlug('calm-focus-blend');
+```
+
+**Environment Variables** (required in `.env`):
+```
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_KEY=your-service-key
+```
+
+**Migration Scripts**:
+- `scripts/migrate-to-supabase.ts` - Migrate JS data to database
+- `supabase/migrations/` - SQL migration files
 
 ### Blog Writing Guidelines
 

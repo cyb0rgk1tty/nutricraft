@@ -7,35 +7,27 @@ import CatalogHero from '../components/catalog/CatalogHero.astro';
 import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
 import FilterDrawer from '../components/catalog/FilterDrawer.astro';
 import CategorySection from '../components/catalog/CategorySection.astro';
-import { products, productCategories, getProductsByCategory, getUniqueIngredients } from '../data/products.js';
+import {
+  getProductsByCategoryForCatalog,
+  getDosageFormCountsForCatalog,
+  getCategoriesForCatalog,
+  getUniqueIngredients,
+  type ComponentProduct
+} from '../utils/db';
 
 // Get password from environment variable (required)
 const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD;
 
-// Get products organized by category
-const productsByCategory = productCategories.map(category => ({
-  ...category,
-  products: getProductsByCategory(category.id)
-})).filter(cat => cat.products.length > 0);
+// Fetch data from Supabase
+const [productsByCategory, dosageForms, productCategories, uniqueIngredients] = await Promise.all([
+  getProductsByCategoryForCatalog(),
+  getDosageFormCountsForCatalog(),
+  getCategoriesForCatalog(),
+  getUniqueIngredients(),
+]);
 
-// Get unique dosage forms with counts
-const dosageFormCounts = products.reduce((acc, product) => {
-  const form = product.dosageForm || 'capsules';
-  acc[form] = (acc[form] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
-
-// Format dosage forms for the filter
-const dosageForms = Object.entries(dosageFormCounts)
-  .map(([id, count]) => ({
-    id,
-    name: id.charAt(0).toUpperCase() + id.slice(1),
-    count
-  }))
-  .sort((a, b) => b.count - a.count); // Sort by count descending
-
-// Get unique ingredients for search autocomplete
-const uniqueIngredients = getUniqueIngredients();
+// Calculate total products
+const totalProducts = productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
 ---
 
 <BaseLayout
@@ -65,7 +57,7 @@ const uniqueIngredients = getUniqueIngredients();
     <FilterDrawer
       categories={productCategories}
       dosageForms={dosageForms}
-      totalProducts={products.length}
+      totalProducts={totalProducts}
       uniqueIngredients={uniqueIngredients}
     />
   </PasswordGate>

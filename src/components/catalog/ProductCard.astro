@@ -6,7 +6,7 @@
  */
 
 import SupplementFactsLabel from './SupplementFactsLabel.astro';
-import { getProductIngredientNames } from '../../data/products.js';
+import { getProductIngredientNamesFromComponent, type ComponentProduct } from '../../utils/db';
 
 interface Ingredient {
   name: string;
@@ -51,7 +51,7 @@ const formatDosageForm = (form?: string) => {
   data-product={product.id}
   data-category={product.categoryId}
   data-dosage={product.dosageForm || 'capsules'}
-  data-ingredients={JSON.stringify(getProductIngredientNames(product))}
+  data-ingredients={JSON.stringify(getProductIngredientNamesFromComponent(product))}
   data-sku={product.sku || ''}
   data-name={product.name.toLowerCase()}
 >
