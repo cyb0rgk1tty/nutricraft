@@ -1,0 +1,348 @@
+---
+/**
+ * CatalogFilterState Component
+ *
+ * Centralized filter state manager for the catalog page.
+ * This is the SINGLE SOURCE OF TRUTH for all filter state.
+ *
+ * Both SearchBar and FilterDrawer use this component's global state
+ * via window.catalogFilterState to ensure consistent filtering.
+ */
+
+interface Props {
+  totalProducts: number;
+}
+
+const { totalProducts } = Astro.props;
+---
+
+<script define:vars={{ totalProducts }}>
+  // Store initial total for reference
+  window.catalogTotalProducts = totalProducts;
+</script>
+
+<script>
+  // TypeScript declarations
+  declare global {
+    interface Window {
+      catalogFilterState: CatalogFilterState;
+      catalogTotalProducts: number;
+    }
+  }
+
+  interface CatalogFilterState {
+    // State
+    searchQuery: string;
+    searchResultSlugs: Set<string> | null;
+    category: string;
+    dosageForm: string;
+    ingredients: string[];
+    matchAllIngredients: boolean;
+
+    // Methods
+    applyAllFilters(): number;
+    cardMatchesAllFilters(card: Element): boolean;
+    cardMatchesIngredientFilter(card: Element): boolean;
+    getIngredientAliases(ingredient: string): string[];
+
+    // Public API
+    setSearchResults(query: string, slugs: string[]): number;
+    clearSearch(): number;
+    setCategory(category: string): number;
+    setDosageForm(dosageForm: string): number;
+    addIngredient(ingredient: string): number;
+    removeIngredient(ingredient: string): number;
+    clearIngredients(): number;
+    setMatchAllIngredients(matchAll: boolean): number;
+    clearAll(): number;
+    getActiveFilters(): FilterState;
+  }
+
+  interface FilterState {
+    hasSearch: boolean;
+    searchQuery: string;
+    category: string;
+    dosageForm: string;
+    ingredients: string[];
+    matchAllIngredients: boolean;
+    activeFilterCount: number;
+  }
+
+  // Ingredient aliases for grouped searching
+  const ingredientAliases: Record<string, string[]> = {
+    'vitamin d': ['vitamin d', 'vitamin d3', 'cholecalciferol', 'd3'],
+    'vitamin b12': ['vitamin b12', 'b12', 'methylcobalamin', 'cyanocobalamin'],
+    'vitamin b6': ['vitamin b6', 'b6', 'pyridoxine', 'p-5-p'],
+    'vitamin c': ['vitamin c', 'ascorbic acid', 'sodium ascorbate'],
+    'vitamin e': ['vitamin e', 'tocopherol', 'tocotrienol'],
+    'vitamin a': ['vitamin a', 'retinol', 'beta-carotene', 'beta carotene'],
+    'vitamin k': ['vitamin k', 'vitamin k2', 'mk-7', 'menaquinone'],
+    'magnesium': ['magnesium', 'magnesium citrate', 'magnesium glycinate', 'magnesium oxide', 'magnesium bisglycinate', 'magnesium l-threonate'],
+    'zinc': ['zinc', 'zinc picolinate', 'zinc citrate', 'zinc gluconate'],
+    'iron': ['iron', 'ferrous', 'iron bisglycinate'],
+    'calcium': ['calcium', 'calcium citrate', 'calcium carbonate'],
+    'omega': ['omega', 'omega-3', 'fish oil', 'dha', 'epa'],
+    'probiotics': ['probiotic', 'lactobacillus', 'bifidobacterium', 'cfu'],
+    'ashwagandha': ['ashwagandha', 'ksm-66', 'withania'],
+    'turmeric': ['turmeric', 'curcumin', 'curcuminoids'],
+    'collagen': ['collagen', 'hydrolyzed collagen', 'collagen peptides'],
+    'melatonin': ['melatonin'],
+    'biotin': ['biotin', 'vitamin b7'],
+    'folate': ['folate', 'folic acid', 'methylfolate', '5-mthf'],
+    'coq10': ['coq10', 'coenzyme q10', 'ubiquinol', 'ubiquinone'],
+    'ginseng': ['ginseng', 'panax ginseng', 'korean ginseng'],
+    'elderberry': ['elderberry', 'sambucus'],
+    'echinacea': ['echinacea'],
+    'saw palmetto': ['saw palmetto', 'serenoa repens'],
+    'maca': ['maca', 'maca root'],
+    'rhodiola': ['rhodiola', 'rhodiola rosea'],
+    'ginkgo': ['ginkgo', 'ginkgo biloba'],
+    'green tea': ['green tea', 'egcg', 'camellia sinensis'],
+    'milk thistle': ['milk thistle', 'silymarin'],
+    'valerian': ['valerian', 'valerian root'],
+    'chamomile': ['chamomile'],
+    'lavender': ['lavender'],
+    'passionflower': ['passionflower', 'passion flower'],
+    'l-theanine': ['l-theanine', 'theanine'],
+    'gaba': ['gaba', 'gamma-aminobutyric'],
+    'glucosamine': ['glucosamine'],
+    'chondroitin': ['chondroitin'],
+    'msm': ['msm', 'methylsulfonylmethane'],
+    'spirulina': ['spirulina'],
+    'chlorella': ['chlorella'],
+    'lions mane': ['lions mane', "lion's mane", 'hericium'],
+    'reishi': ['reishi', 'ganoderma'],
+    'cordyceps': ['cordyceps'],
+    'chaga': ['chaga'],
+    'turkey tail': ['turkey tail', 'trametes'],
+  };
+
+  // Global filter state - SINGLE SOURCE OF TRUTH
+  window.catalogFilterState = {
+    // State
+    searchQuery: '',
+    searchResultSlugs: null,
+    category: 'all',
+    dosageForm: 'all',
+    ingredients: [],
+    matchAllIngredients: false,
+
+    // Apply all filters - THE ONLY place that manipulates product visibility
+    applyAllFilters(): number {
+      // Query DOM fresh each time (no caching)
+      const cards = document.querySelectorAll('article[data-product]');
+      const sections = document.querySelectorAll('section[data-category]');
+      let visibleCount = 0;
+
+      // Apply filters to all cards
+      cards.forEach(card => {
+        const visible = this.cardMatchesAllFilters(card);
+        (card as HTMLElement).style.display = visible ? 'grid' : 'none';
+        if (visible) visibleCount++;
+      });
+
+      // Update section visibility and counts
+      sections.forEach(section => {
+        const sectionCards = section.querySelectorAll('article[data-product]');
+        let visibleInSection = 0;
+
+        sectionCards.forEach(card => {
+          if ((card as HTMLElement).style.display !== 'none') {
+            visibleInSection++;
+          }
+        });
+
+        // Hide section if no visible cards
+        (section as HTMLElement).style.display = visibleInSection > 0 ? 'block' : 'none';
+
+        // Update section count badge
+        const countSpan = section.querySelector('.category-product-count');
+        if (countSpan) {
+          const countText = visibleInSection === 1 ? 'product' : 'products';
+          countSpan.innerHTML = `<span class="count-value">${visibleInSection}</span> ${countText}`;
+        }
+      });
+
+      // Emit event for UI components to update
+      window.dispatchEvent(new CustomEvent('catalogFiltersChanged', {
+        detail: {
+          visibleCount,
+          filters: this.getActiveFilters(),
+          totalProducts: window.catalogTotalProducts
+        }
+      }));
+
+      return visibleCount;
+    },
+
+    // Check if a card matches ALL active filters
+    cardMatchesAllFilters(card: Element): boolean {
+      // 1. Check search results (if active)
+      if (this.searchResultSlugs) {
+        const slug = card.getAttribute('data-product');
+        if (!slug || !this.searchResultSlugs.has(slug)) return false;
+      }
+
+      // 2. Check category
+      if (this.category !== 'all') {
+        const cardCategory = card.getAttribute('data-category');
+        if (cardCategory !== this.category) return false;
+      }
+
+      // 3. Check dosage form
+      if (this.dosageForm !== 'all') {
+        const cardDosage = card.getAttribute('data-dosage');
+        if (cardDosage !== this.dosageForm) return false;
+      }
+
+      // 4. Check ingredients
+      if (this.ingredients.length > 0) {
+        if (!this.cardMatchesIngredientFilter(card)) return false;
+      }
+
+      return true;
+    },
+
+    // Check if card matches ingredient filter
+    cardMatchesIngredientFilter(card: Element): boolean {
+      if (this.ingredients.length === 0) return true;
+
+      const ingredientsData = card.getAttribute('data-ingredients');
+      const productSku = (card.getAttribute('data-sku') || '').toLowerCase();
+      const productName = (card.getAttribute('data-name') || '').toLowerCase();
+
+      let productIngredients: string[] = [];
+      try {
+        if (ingredientsData) {
+          productIngredients = JSON.parse(ingredientsData);
+        }
+      } catch {
+        // Continue with empty ingredients array
+      }
+
+      // Helper function to check if a search term matches this product
+      const termMatchesProduct = (selected: string): boolean => {
+        const searchTerm = selected.toLowerCase();
+
+        // Check if it's a SKU search (starts with DUR- or matches SKU pattern)
+        if (searchTerm.startsWith('dur-') || /^dur-?[a-z]?\d+$/i.test(searchTerm)) {
+          if (productSku.includes(searchTerm)) return true;
+        }
+
+        // Check product name
+        if (productName.includes(searchTerm)) return true;
+
+        // Check ingredients with aliases (case-insensitive)
+        const aliases = this.getIngredientAliases(selected);
+        return productIngredients.some(prodIng => {
+          const lowerProdIng = prodIng.toLowerCase();
+          return aliases.some(alias => lowerProdIng.includes(alias));
+        });
+      };
+
+      if (this.matchAllIngredients) {
+        // ALL mode: product must match all selected terms
+        return this.ingredients.every(termMatchesProduct);
+      } else {
+        // ANY mode: product must match at least one selected term
+        return this.ingredients.some(termMatchesProduct);
+      }
+    },
+
+    // Get alias group for an ingredient
+    getIngredientAliases(ingredient: string): string[] {
+      const lower = ingredient.toLowerCase();
+      for (const [key, aliases] of Object.entries(ingredientAliases)) {
+        if (aliases.some(a => lower.includes(a) || a.includes(lower))) {
+          return aliases;
+        }
+      }
+      return [lower];
+    },
+
+    // === Public API Methods ===
+
+    setSearchResults(query: string, slugs: string[]): number {
+      this.searchQuery = query;
+      this.searchResultSlugs = slugs ? new Set(slugs) : null;
+      return this.applyAllFilters();
+    },
+
+    clearSearch(): number {
+      this.searchQuery = '';
+      this.searchResultSlugs = null;
+      return this.applyAllFilters();
+    },
+
+    setCategory(category: string): number {
+      this.category = category;
+      return this.applyAllFilters();
+    },
+
+    setDosageForm(dosageForm: string): number {
+      this.dosageForm = dosageForm;
+      return this.applyAllFilters();
+    },
+
+    addIngredient(ingredient: string): number {
+      if (!this.ingredients.includes(ingredient)) {
+        this.ingredients.push(ingredient);
+        return this.applyAllFilters();
+      }
+      return -1; // No change
+    },
+
+    removeIngredient(ingredient: string): number {
+      const idx = this.ingredients.indexOf(ingredient);
+      if (idx > -1) {
+        this.ingredients.splice(idx, 1);
+        return this.applyAllFilters();
+      }
+      return -1;
+    },
+
+    clearIngredients(): number {
+      this.ingredients = [];
+      return this.applyAllFilters();
+    },
+
+    setMatchAllIngredients(matchAll: boolean): number {
+      this.matchAllIngredients = matchAll;
+      if (this.ingredients.length > 0) {
+        return this.applyAllFilters();
+      }
+      return -1;
+    },
+
+    clearAll(): number {
+      this.searchQuery = '';
+      this.searchResultSlugs = null;
+      this.category = 'all';
+      this.dosageForm = 'all';
+      this.ingredients = [];
+      this.matchAllIngredients = false;
+      return this.applyAllFilters();
+    },
+
+    getActiveFilters(): FilterState {
+      let count = 0;
+      if (this.searchResultSlugs) count++;
+      if (this.category !== 'all') count++;
+      if (this.dosageForm !== 'all') count++;
+      count += this.ingredients.length;
+
+      return {
+        hasSearch: !!this.searchResultSlugs,
+        searchQuery: this.searchQuery,
+        category: this.category,
+        dosageForm: this.dosageForm,
+        ingredients: [...this.ingredients],
+        matchAllIngredients: this.matchAllIngredients,
+        activeFilterCount: count
+      };
+    }
+  };
+
+  // Log initialization for debugging
+  console.log('[CatalogFilterState] Initialized with', window.catalogTotalProducts, 'total products');
+</script>

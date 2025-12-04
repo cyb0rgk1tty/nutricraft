@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PasswordGate from '../components/catalog/PasswordGate.astro';
+import CatalogFilterState from '../components/catalog/CatalogFilterState.astro';
 import CatalogHero from '../components/catalog/CatalogHero.astro';
 import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
 import FilterDrawer from '../components/catalog/FilterDrawer.astro';
@@ -38,6 +39,9 @@ const totalProducts = productsByCategory.reduce((sum, cat) => sum + cat.products
   <Header />
 
   <PasswordGate password={CATALOG_PASSWORD}>
+    <!-- Centralized Filter State - must load first -->
+    <CatalogFilterState totalProducts={totalProducts} />
+
     <CatalogHero />
 
     <main id="catalog-products" class="pb-20 bg-gray-50">

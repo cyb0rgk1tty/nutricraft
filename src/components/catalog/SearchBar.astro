@@ -226,16 +226,11 @@
   const resultsQuery = document.getElementById('search-results-query');
   const clearResultsBtn = document.getElementById('clear-search-results');
 
-  // State
+  // State (minimal - centralized state handles filter state)
   let debounceTimer: ReturnType<typeof setTimeout>;
   let activeSuggestionIndex = -1;
   let suggestions: Array<{ id: number; name: string; slug: string; type: string }> = [];
   let currentQuery = '';
-  let isSearchActive = false;
-
-  // Get product cards for filtering
-  const productCards = document.querySelectorAll('article[data-product]');
-  const categorySections = document.querySelectorAll('section[data-category]');
 
   // Debounced autocomplete fetch
   function fetchAutocomplete(query: string) {
@@ -384,8 +379,8 @@
   function scrollToProduct(slug: string) {
     const productCard = document.querySelector(`article[data-product="${slug}"]`);
     if (productCard) {
-      // Show all products first
-      resetFilters();
+      // Clear all filters first to show all products
+      window.catalogFilterState.clearAll();
 
       // Scroll to product with offset for header
       const yOffset = -120;
@@ -401,30 +396,22 @@
     hideDropdown();
     if (searchInput) searchInput.value = '';
     showClearBtn(false);
+    hideResultsBanner();
   }
 
-  // Filter products by ingredient
+  // Filter products by ingredient using centralized state
   function filterByIngredient(ingredient: string) {
-    // Add to ingredient filter in sidebar
-    const ingredientSearchInput = document.getElementById('ingredient-search') as HTMLInputElement;
-    if (ingredientSearchInput) {
-      ingredientSearchInput.value = ingredient;
-      ingredientSearchInput.dispatchEvent(new Event('input'));
+    // Clear any active search and add ingredient filter via centralized state
+    window.catalogFilterState.clearSearch();
+    window.catalogFilterState.addIngredient(ingredient);
 
-      // Trigger selection after a brief delay
-      setTimeout(() => {
-        const suggestionItem = document.querySelector(`#ingredient-suggestions .suggestion-item[data-ingredient="${ingredient}"]`);
-        if (suggestionItem) {
-          (suggestionItem as HTMLElement).click();
-        }
-      }, 100);
-    }
     hideDropdown();
     if (searchInput) searchInput.value = '';
     showClearBtn(false);
+    hideResultsBanner();
   }
 
-  // Perform full-text search
+  // Perform full-text search using centralized state
   async function performFullSearch(query: string) {
     if (!query || query.length < 2) return;
 
@@ -440,48 +427,14 @@
         return;
       }
 
-      // Get matching product slugs
-      const matchingSlugs = new Set(data.results.map((r: { slug: string }) => r.slug));
+      // Get matching product slugs as array
+      const matchingSlugs = data.results.map((r: { slug: string }) => r.slug);
 
-      // Filter products client-side
-      let visibleCount = 0;
-      productCards.forEach(card => {
-        const slug = card.getAttribute('data-product');
-        if (slug && matchingSlugs.has(slug)) {
-          (card as HTMLElement).style.display = 'grid';
-          visibleCount++;
-        } else {
-          (card as HTMLElement).style.display = 'none';
-        }
-      });
-
-      // Show/hide category sections and update counts
-      categorySections.forEach(section => {
-        let visibleCardsInCategory = 0;
-        section.querySelectorAll('article[data-product]').forEach(card => {
-          if ((card as HTMLElement).style.display !== 'none') {
-            visibleCardsInCategory++;
-          }
-        });
-        (section as HTMLElement).style.display = visibleCardsInCategory > 0 ? 'block' : 'none';
-
-        // Update category count and plural text
-        const countSpan = section.querySelector('.category-product-count');
-        if (countSpan) {
-          const countText = visibleCardsInCategory === 1 ? 'product' : 'products';
-          countSpan.innerHTML = `<span class="count-value">${visibleCardsInCategory}</span> ${countText}`;
-        }
-      });
-
-      // Update drawer count if available
-      const drawerCount = document.getElementById('drawer-product-count');
-      if (drawerCount) {
-        drawerCount.textContent = visibleCount.toString();
-      }
+      // Use centralized state to filter - it handles all DOM manipulation
+      const visibleCount = window.catalogFilterState.setSearchResults(query, matchingSlugs);
 
       // Show results banner
       showResultsBanner(visibleCount, query);
-      isSearchActive = true;
 
     } catch (error) {
       console.error('Search error:', error);
@@ -490,31 +443,10 @@
     }
   }
 
-  // Reset all filters and show all products
-  function resetFilters() {
-    productCards.forEach(card => {
-      (card as HTMLElement).style.display = 'grid';
-    });
-    categorySections.forEach(section => {
-      (section as HTMLElement).style.display = 'block';
-
-      // Reset category count to original value
-      const countSpan = section.querySelector('.category-product-count');
-      if (countSpan) {
-        const total = parseInt(countSpan.getAttribute('data-total') || '0', 10);
-        const countText = total === 1 ? 'product' : 'products';
-        countSpan.innerHTML = `<span class="count-value">${total}</span> ${countText}`;
-      }
-    });
-
-    // Reset drawer count
-    const drawerCount = document.getElementById('drawer-product-count');
-    if (drawerCount) {
-      drawerCount.textContent = productCards.length.toString();
-    }
-
+  // Clear search via centralized state
+  function clearSearch() {
+    window.catalogFilterState.clearSearch();
     hideResultsBanner();
-    isSearchActive = false;
   }
 
   // UI helper functions
@@ -577,8 +509,9 @@
     const query = (e.target as HTMLInputElement).value.trim();
     showClearBtn(query.length > 0);
 
-    if (query.length === 0 && isSearchActive) {
-      resetFilters();
+    // Clear search results if query is emptied while search was active
+    if (query.length === 0 && window.catalogFilterState.getActiveFilters().hasSearch) {
+      clearSearch();
     }
 
     fetchAutocomplete(query);
@@ -625,14 +558,17 @@
     if (searchInput) searchInput.value = '';
     hideDropdown();
     showClearBtn(false);
-    if (isSearchActive) resetFilters();
+    // Clear search if active
+    if (window.catalogFilterState.getActiveFilters().hasSearch) {
+      clearSearch();
+    }
     searchInput?.focus();
   });
 
   // Clear results button
   clearResultsBtn?.addEventListener('click', () => {
     if (searchInput) searchInput.value = '';
-    resetFilters();
+    clearSearch();
     showClearBtn(false);
   });
 

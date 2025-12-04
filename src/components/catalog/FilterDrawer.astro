@@ -376,66 +376,6 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     }
   }
 
-  // Ingredient aliases for grouped searching (client-side copy)
-  const ingredientAliases: Record<string, string[]> = {
-    'vitamin d': ['vitamin d', 'vitamin d3', 'cholecalciferol', 'd3'],
-    'vitamin b12': ['vitamin b12', 'b12', 'methylcobalamin', 'cyanocobalamin'],
-    'vitamin b6': ['vitamin b6', 'b6', 'pyridoxine', 'p-5-p'],
-    'vitamin c': ['vitamin c', 'ascorbic acid', 'sodium ascorbate'],
-    'vitamin e': ['vitamin e', 'tocopherol', 'tocotrienol'],
-    'vitamin a': ['vitamin a', 'retinol', 'beta-carotene', 'beta carotene'],
-    'vitamin k': ['vitamin k', 'vitamin k2', 'mk-7', 'menaquinone'],
-    'magnesium': ['magnesium', 'magnesium citrate', 'magnesium glycinate', 'magnesium oxide', 'magnesium bisglycinate', 'magnesium l-threonate'],
-    'zinc': ['zinc', 'zinc picolinate', 'zinc citrate', 'zinc gluconate'],
-    'iron': ['iron', 'ferrous', 'iron bisglycinate'],
-    'calcium': ['calcium', 'calcium citrate', 'calcium carbonate'],
-    'omega': ['omega', 'omega-3', 'fish oil', 'dha', 'epa'],
-    'probiotics': ['probiotic', 'lactobacillus', 'bifidobacterium', 'cfu'],
-    'ashwagandha': ['ashwagandha', 'ksm-66', 'withania'],
-    'turmeric': ['turmeric', 'curcumin', 'curcuminoids'],
-    'collagen': ['collagen', 'hydrolyzed collagen', 'collagen peptides'],
-    'melatonin': ['melatonin'],
-    'biotin': ['biotin', 'vitamin b7'],
-    'folate': ['folate', 'folic acid', 'methylfolate', '5-mthf'],
-    'coq10': ['coq10', 'coenzyme q10', 'ubiquinol', 'ubiquinone'],
-    'ginseng': ['ginseng', 'panax ginseng', 'korean ginseng'],
-    'elderberry': ['elderberry', 'sambucus'],
-    'echinacea': ['echinacea'],
-    'saw palmetto': ['saw palmetto', 'serenoa repens'],
-    'maca': ['maca', 'maca root'],
-    'rhodiola': ['rhodiola', 'rhodiola rosea'],
-    'ginkgo': ['ginkgo', 'ginkgo biloba'],
-    'green tea': ['green tea', 'egcg', 'camellia sinensis'],
-    'milk thistle': ['milk thistle', 'silymarin'],
-    'valerian': ['valerian', 'valerian root'],
-    'chamomile': ['chamomile'],
-    'lavender': ['lavender'],
-    'passionflower': ['passionflower', 'passion flower'],
-    'l-theanine': ['l-theanine', 'theanine'],
-    'gaba': ['gaba', 'gamma-aminobutyric'],
-    'glucosamine': ['glucosamine'],
-    'chondroitin': ['chondroitin'],
-    'msm': ['msm', 'methylsulfonylmethane'],
-    'spirulina': ['spirulina'],
-    'chlorella': ['chlorella'],
-    'lions mane': ['lions mane', "lion's mane", 'hericium'],
-    'reishi': ['reishi', 'ganoderma'],
-    'cordyceps': ['cordyceps'],
-    'chaga': ['chaga'],
-    'turkey tail': ['turkey tail', 'trametes'],
-  };
-
-  // Get alias group for an ingredient
-  function getIngredientAliases(ingredient: string): string[] {
-    const lower = ingredient.toLowerCase();
-    for (const [key, aliases] of Object.entries(ingredientAliases)) {
-      if (aliases.some(a => lower.includes(a) || a.includes(lower))) {
-        return aliases;
-      }
-    }
-    return [lower];
-  }
-
   // Elements
   const fab = document.getElementById('filter-fab');
   const badge = document.getElementById('filter-badge');
@@ -455,17 +395,11 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
   const dosageRadios = document.querySelectorAll('input[name="dosage-filter"]');
   const categoryRadios = document.querySelectorAll('input[name="category-filter"]');
 
-  const categorySections = document.querySelectorAll('section[data-category]');
-  const productCards = document.querySelectorAll('article[data-product]');
-
-  // State - drawer starts OPEN
-  let currentDosage = 'all';
-  let currentCategory = 'all';
-  let selectedIngredients: string[] = [];
+  // UI state only - filter state managed by CatalogFilterState
   let isOpen = true;
   let activeSuggestionIndex = -1;
 
-  // Get available ingredients from injected data
+  // Get available ingredients from injected data (for autocomplete suggestions)
   const availableIngredients: string[] = window.catalogIngredients || [];
 
   // Open drawer
@@ -493,16 +427,11 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     }
   }
 
-  // Count active filters
-  function updateBadge() {
-    let count = 0;
-    if (currentDosage !== 'all') count++;
-    if (currentCategory !== 'all') count++;
-    count += selectedIngredients.length;
-
+  // Update badge based on centralized filter state
+  function updateBadge(activeFilterCount: number) {
     if (badge) {
-      if (count > 0) {
-        badge.textContent = count.toString();
+      if (activeFilterCount > 0) {
+        badge.textContent = activeFilterCount.toString();
         badge.classList.remove('hidden');
       } else {
         badge.classList.add('hidden');
@@ -510,103 +439,13 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     }
   }
 
-  // Check if product matches selected ingredients or SKU
-  function matchesIngredientFilter(card: Element): boolean {
-    if (selectedIngredients.length === 0) return true;
-
-    const ingredientsData = card.getAttribute('data-ingredients');
-    const productSku = (card.getAttribute('data-sku') || '').toLowerCase();
-    const productName = (card.getAttribute('data-name') || '').toLowerCase();
-
-    let productIngredients: string[] = [];
-    try {
-      if (ingredientsData) {
-        productIngredients = JSON.parse(ingredientsData);
-      }
-    } catch {
-      // Continue with empty ingredients array
-    }
-
-    const matchAll = matchAllCheckbox?.checked ?? false;
-
-    // Helper function to check if a search term matches this product
-    const termMatchesProduct = (selected: string): boolean => {
-      const searchTerm = selected.toLowerCase();
-
-      // Check if it's a SKU search (starts with DUR- or matches SKU pattern)
-      if (searchTerm.startsWith('dur-') || /^dur-?[a-z]?\d+$/i.test(searchTerm)) {
-        // SKU search - exact or partial match
-        if (productSku.includes(searchTerm)) return true;
-      }
-
-      // Check product name
-      if (productName.includes(searchTerm)) return true;
-
-      // Check ingredients with aliases
-      const aliases = getIngredientAliases(selected);
-      return productIngredients.some(prodIng =>
-        aliases.some(alias => prodIng.includes(alias))
-      );
-    };
-
-    if (matchAll) {
-      // ALL mode: product must match all selected terms
-      return selectedIngredients.every(termMatchesProduct);
-    } else {
-      // ANY mode: product must match at least one selected term
-      return selectedIngredients.some(termMatchesProduct);
-    }
-  }
-
-  // Apply filters to products
-  function applyFilters() {
-    let visibleCount = 0;
-
-    productCards.forEach(card => {
-      const cardCategory = card.getAttribute('data-category');
-      const cardDosage = card.getAttribute('data-dosage');
-
-      const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
-      const matchesDosage = currentDosage === 'all' || cardDosage === currentDosage;
-      const matchesIngredients = matchesIngredientFilter(card);
-
-      if (matchesCategory && matchesDosage && matchesIngredients) {
-        (card as HTMLElement).style.display = 'grid';
-        visibleCount++;
-      } else {
-        (card as HTMLElement).style.display = 'none';
-      }
-    });
-
-    // Show/hide category sections based on visible products
-    categorySections.forEach(section => {
-      let hasVisibleCards = false;
-      section.querySelectorAll('article[data-product]').forEach(card => {
-        if ((card as HTMLElement).style.display !== 'none') {
-          hasVisibleCards = true;
-        }
-      });
-      (section as HTMLElement).style.display = hasVisibleCards ? 'block' : 'none';
-    });
-
-    // Update count with animation
-    if (productCountEl) {
-      productCountEl.style.transition = 'opacity 150ms ease';
-      productCountEl.style.opacity = '0';
-      setTimeout(() => {
-        productCountEl.textContent = visibleCount.toString();
-        productCountEl.style.opacity = '1';
-      }, 150);
-    }
-
-    updateBadge();
-  }
-
-  // Render selected ingredient chips
+  // Render selected ingredient chips from centralized state
   function renderSelectedIngredients() {
     if (!selectedIngredientsContainer) return;
 
-    selectedIngredientsContainer.innerHTML = selectedIngredients.map(ing => `
+    const ingredients = window.catalogFilterState.getActiveFilters().ingredients;
+
+    selectedIngredientsContainer.innerHTML = ingredients.map(ing => `
       <span class="ingredient-chip">
         ${ing}
         <button type="button" data-ingredient="${ing}" aria-label="Remove ${ing}">
@@ -618,16 +457,14 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     `).join('');
 
     // Add clear all button if multiple ingredients selected
-    if (selectedIngredients.length >= 2) {
+    if (ingredients.length >= 2) {
       selectedIngredientsContainer.innerHTML += `
         <button type="button" id="clear-ingredients" class="text-xs text-gray-500 hover:text-primary underline ml-1">
           Clear all
         </button>
       `;
       document.getElementById('clear-ingredients')?.addEventListener('click', () => {
-        selectedIngredients = [];
-        renderSelectedIngredients();
-        applyFilters();
+        window.catalogFilterState.clearIngredients();
       });
     }
 
@@ -636,9 +473,7 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
       btn.addEventListener('click', () => {
         const ing = btn.getAttribute('data-ingredient');
         if (ing) {
-          selectedIngredients = selectedIngredients.filter(i => i !== ing);
-          renderSelectedIngredients();
-          applyFilters();
+          window.catalogFilterState.removeIngredient(ing);
         }
       });
     });
@@ -652,10 +487,11 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     }
 
     const lowerQuery = query.toLowerCase();
+    const currentIngredients = window.catalogFilterState.getActiveFilters().ingredients;
     const matches = availableIngredients
       .filter(ing =>
         ing.toLowerCase().includes(lowerQuery) &&
-        !selectedIngredients.includes(ing)
+        !currentIngredients.includes(ing)
       )
       .slice(0, 8);
 
@@ -695,24 +531,19 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     activeSuggestionIndex = -1;
   }
 
-  // Select an ingredient
+  // Select an ingredient via centralized state
   function selectIngredient(ingredient: string) {
-    if (!selectedIngredients.includes(ingredient)) {
-      selectedIngredients.push(ingredient);
-      renderSelectedIngredients();
-      applyFilters();
-    }
+    window.catalogFilterState.addIngredient(ingredient);
     if (ingredientSearch) ingredientSearch.value = '';
     hideSuggestions();
   }
 
-  // Clear all filters
+  // Clear all filters via centralized state
   function clearFilters() {
-    currentDosage = 'all';
-    currentCategory = 'all';
-    selectedIngredients = [];
+    // Clear centralized state (this will emit event and update DOM)
+    window.catalogFilterState.clearAll();
 
-    // Reset radio buttons
+    // Reset UI elements to match cleared state
     dosageRadios.forEach(radio => {
       (radio as HTMLInputElement).checked = (radio as HTMLInputElement).value === 'all';
     });
@@ -723,9 +554,6 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     // Reset ingredient search
     if (ingredientSearch) ingredientSearch.value = '';
     if (matchAllCheckbox) matchAllCheckbox.checked = false;
-    renderSelectedIngredients();
-
-    applyFilters();
   }
 
   // Event listeners for drawer
@@ -733,8 +561,8 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
   closeBtn?.addEventListener('click', closeDrawer);
   clearBtn?.addEventListener('click', clearFilters);
 
+  // Apply button - just close drawer on mobile (filters apply automatically)
   applyBtn?.addEventListener('click', () => {
-    applyFilters();
     if (window.innerWidth < 768) {
       closeDrawer();
     }
@@ -782,25 +610,21 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
     }
   });
 
-  // Match mode toggle
+  // Match mode toggle - use centralized state
   matchAllCheckbox?.addEventListener('change', () => {
-    if (selectedIngredients.length > 0) {
-      applyFilters();
-    }
+    window.catalogFilterState.setMatchAllIngredients(matchAllCheckbox.checked);
   });
 
-  // Handle radio changes
+  // Handle radio changes - use centralized state
   dosageRadios.forEach(radio => {
     radio.addEventListener('change', (e) => {
-      currentDosage = (e.target as HTMLInputElement).value;
-      applyFilters();
+      window.catalogFilterState.setDosageForm((e.target as HTMLInputElement).value);
     });
   });
 
   categoryRadios.forEach(radio => {
     radio.addEventListener('change', (e) => {
-      currentCategory = (e.target as HTMLInputElement).value;
-      applyFilters();
+      window.catalogFilterState.setCategory((e.target as HTMLInputElement).value);
     });
   });
 
@@ -815,6 +639,33 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 1024 && !isOpen) {
       openDrawer();
+    }
+  });
+
+  // Listen for centralized filter state changes and update UI
+  window.addEventListener('catalogFiltersChanged', (e: Event) => {
+    const event = e as CustomEvent;
+    const { visibleCount, filters } = event.detail;
+
+    // Update product count with animation
+    if (productCountEl) {
+      productCountEl.style.transition = 'opacity 150ms ease';
+      productCountEl.style.opacity = '0';
+      setTimeout(() => {
+        productCountEl.textContent = visibleCount.toString();
+        productCountEl.style.opacity = '1';
+      }, 150);
+    }
+
+    // Update badge
+    updateBadge(filters.activeFilterCount);
+
+    // Re-render ingredient chips
+    renderSelectedIngredients();
+
+    // Sync match all checkbox
+    if (matchAllCheckbox) {
+      matchAllCheckbox.checked = filters.matchAllIngredients;
     }
   });
 
