@@ -295,11 +295,11 @@ export const products = [
     description: 'Pre-workout and performance formula with L-citrulline, L-arginine, taurine, and stamina-boosting herbs for enhanced blood flow and endurance.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Nitric Oxide Complex 1.5g (L-Citrulline, L-Arginine AKG, L-Arginine HCL)', 'Amino Acid Support Blend', 'Stamina Surge Blend'],
+    keyIngredients: ['Nitric Oxide Complex 1.5g (L-Citrulline, L-Arginine AKG, L-Arginine HCL)', 'Amino Acid Support Blend 500mg', 'Stamina Surge Blend 250mg'],
     ingredients: [
       { name: 'Nitric Oxide Complex', amount: '1.5', unit: 'g', dailyValue: '*', source: '(L-Citrulline, L-Arginine AKG, L-Arginine HCL)' },
-      { name: 'Amino Acid Support Blend', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Stamina Surge Blend', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Amino Acid Support Blend', amount: '500', unit: 'mg', dailyValue: '*', source: '(Taurine, Beta-Alanine, L-Glutamine)' },
+      { name: 'Stamina Surge Blend', amount: '250', unit: 'mg', dailyValue: '*', source: '(Tribulus Terrestris, Maca Root, Horny Goat Weed)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -312,12 +312,13 @@ export const products = [
     description: 'Adaptogenic mushroom blend with cordyceps, rhodiola, ginseng, and astragalus for natural energy and endurance support.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Cordyceps Sinensis Extract 7% cordycepic acid', 'Rhodiola Rosea Extract', 'Ginseng Extract', 'Astragalus Root Extract'],
+    keyIngredients: ['Cordyceps Sinensis Extract 300mg', 'Rhodiola Rosea Extract 150mg', 'Ginseng Extract 100mg', 'Astragalus Root Extract 100mg'],
     ingredients: [
-      { name: 'Cordyceps Sinensis Extract 7% cordycepic acid', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Rhodiola Rosea Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginseng Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Astragalus Root Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Energy Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Cordyceps Sinensis Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 7% cordycepic acid)' },
+      { name: 'Rhodiola Rosea Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 3% rosavins)' },
+      { name: 'Panax Ginseng Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Astragalus Root Extract', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -330,12 +331,13 @@ export const products = [
     description: 'Comprehensive energy and vitality blend with cordyceps, ginseng, and shilajit for sustained natural energy.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Cordyceps Sinensis Extract', 'Ginseng Extract 10% ginsenosides', 'Shilajit Extract 20% fulvic acid', 'Black Pepper Extract 5mg'],
+    keyIngredients: ['Cordyceps Sinensis Extract 250mg', 'Ginseng Extract 200mg', 'Shilajit Extract 200mg', 'Black Pepper Extract 5mg'],
     ingredients: [
-      { name: 'Cordyceps Sinensis Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginseng Extract 10% ginsenosides', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Shilajit Extract 20% fulvic acid', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*' }
+      { name: 'Proprietary Energy Blend', amount: '700', unit: 'mg', dailyValue: '*' },
+      { name: 'Cordyceps Sinensis Extract', amount: '250', unit: 'mg', dailyValue: '*', source: '(Standardized to 7% cordycepic acid)' },
+      { name: 'Panax Ginseng Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% ginsenosides)' },
+      { name: 'Shilajit Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 20% fulvic acid)' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -386,12 +388,13 @@ export const products = [
     description: 'Proprietary strength and performance blend with ecdysterone, tribulus terrestris, ashwagandha, and rhodiola for athletic support.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Ecdysterone 98%', 'Tribulus Terrestris', 'Ashwagandha', 'Rhodiola Rosea Extract'],
+    keyIngredients: ['Ecdysterone 250mg', 'Tribulus Terrestris 200mg', 'Ashwagandha 150mg', 'Rhodiola Rosea Extract 100mg'],
     ingredients: [
-      { name: 'Ecdysterone 98%', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Tribulus Terrestris', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ashwagandha', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Rhodiola Rosea Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Performance Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Ecdysterone', amount: '250', unit: 'mg', dailyValue: '*', source: '(Standardized to 98%)' },
+      { name: 'Tribulus Terrestris', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% saponins)' },
+      { name: 'Ashwagandha Root Extract', amount: '150', unit: 'mg', dailyValue: '*' },
+      { name: 'Rhodiola Rosea Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 3% rosavins)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -408,16 +411,18 @@ export const products = [
     description: 'Powerful immune support blend with elderberry, vitamin C, zinc, echinacea, and astragalus for year-round wellness.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Elderberry Extract 500mg', 'Vitamin C', 'Zinc', 'Echinacea Extract', 'Astragalus Root Extract', 'Ginger Root Extract'],
+    keyIngredients: ['Elderberry Extract 300mg', 'Vitamin C 100mg', 'Zinc 10mg', 'Echinacea Extract 150mg', 'Astragalus Root Extract 100mg', 'Ginger Root Extract 50mg'],
     ingredients: [
-      { name: 'Elderberry Extract', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Echinacea Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Astragalus Root Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginger Root Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Immune Support Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Elderberry Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% anthocyanins)' },
+      { name: 'Vitamin C', amount: '100', unit: 'mg', dailyValue: '111%', source: '(Ascorbic Acid)' },
+      { name: 'Zinc', amount: '10', unit: 'mg', dailyValue: '91%' },
+      { name: 'Echinacea Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 4% echinacosides)' },
+      { name: 'Astragalus Root Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Ginger Root Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Black Pepper Extract', amount: '5', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% piperine)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
     dosageForm: 'capsules'
   },
   {
@@ -478,13 +483,14 @@ export const products = [
     description: 'Traditional sea moss blend with bladderwrack and burdock root for mineral-rich immune and thyroid support.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Sea Moss 500mg', 'Bladderwrack Extract', 'Burdock Root Extract'],
+    keyIngredients: ['Sea Moss 500mg', 'Bladderwrack Extract 150mg', 'Burdock Root Extract 100mg'],
     ingredients: [
+      { name: 'Proprietary Sea Moss Blend', amount: '750', unit: 'mg', dailyValue: '*' },
       { name: 'Sea Moss', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Bladderwrack Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Burdock Root Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Bladderwrack Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% iodine)' },
+      { name: 'Burdock Root Extract', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
     dosageForm: 'capsules'
   },
   {
@@ -537,8 +543,7 @@ export const products = [
     servingsPerContainer: 45,
     keyIngredients: ["Lion's Mane Mushroom Extract 500mg", 'Beta-(1,3)(1,6)-glucans >30%'],
     ingredients: [
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: "Lion's Mane Mushroom Extract", amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 30% Beta-(1,3)(1,6)-glucans)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -553,10 +558,7 @@ export const products = [
     servingsPerContainer: 60,
     keyIngredients: ["Lion's Mane Extract 30% polysaccharides", 'Ginkgo Biloba Extract', 'Bacopa Monnieri Extract', 'Rhodiola Rosea Extract'],
     ingredients: [
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Blend', amount: '700', unit: 'mg', dailyValue: '*', source: "(Lion's Mane Mushroom Extract 30% polysaccharides, Ginkgo Biloba Extract 24% flavone glycosides, Bacopa Monnieri Extract 20% bacosides, Rhodiola Rosea Extract 3% rosavins, Black Pepper Extract 95% piperine)" }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -569,11 +571,12 @@ export const products = [
     description: 'Traditional ginkgo biloba with bacopa, rhodiola, and L-theanine for enhanced memory, focus, and mental performance.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Ginkgo Biloba Extract 500mg', 'Bacopa Monnieri', 'Rhodiola Rosea Extract', 'L-Theanine 100mg'],
+    keyIngredients: ['Ginkgo Biloba Extract 300mg', 'Bacopa Monnieri Extract 200mg', 'Rhodiola Rosea Extract 150mg', 'L-Theanine 100mg'],
     ingredients: [
-      { name: 'Ginkgo Biloba Extract', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Bacopa Monnieri', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Rhodiola Rosea Extract', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Proprietary Cognitive Support Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Ginkgo Biloba Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 24% flavone glycosides, 6% terpene lactones)' },
+      { name: 'Bacopa Monnieri Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 20% bacosides)' },
+      { name: 'Rhodiola Rosea Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 3% rosavins, 1% salidroside)' },
       { name: 'L-Theanine', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
@@ -602,12 +605,12 @@ export const products = [
     description: 'Comprehensive brain health formula with B-vitamins, AnaGain, choline, and zinc for cognitive function support.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Vitamin C 50mg', 'B-Complex Vitamins', 'Choline 30mg', 'Zinc 20mg', 'AnaGain Nu 100mg', 'Inositol 30mg'],
+    keyIngredients: ['Vitamin C 50mg', 'B-Complex Vitamins 50mg', 'Choline 30mg', 'Zinc 20mg', 'AnaGain Nu 100mg', 'Inositol 30mg'],
     ingredients: [
-      { name: 'Vitamin C', amount: '50', unit: 'mg', dailyValue: '*' },
-      { name: 'B-Complex Vitamins', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Choline', amount: '30', unit: 'mg', dailyValue: '*' },
-      { name: 'Zinc', amount: '20', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin C', amount: '50', unit: 'mg', dailyValue: '56%' },
+      { name: 'B-Complex Vitamins', amount: '50', unit: 'mg', dailyValue: '*', source: '(Thiamine, Riboflavin, Niacin, B6, B12)' },
+      { name: 'Choline', amount: '30', unit: 'mg', dailyValue: '5%' },
+      { name: 'Zinc', amount: '20', unit: 'mg', dailyValue: '182%' },
       { name: 'AnaGain Nu', amount: '100', unit: 'mg', dailyValue: '*' },
       { name: 'Inositol', amount: '30', unit: 'mg', dailyValue: '*' }
     ],
@@ -749,7 +752,7 @@ export const products = [
       { name: 'Vitamin A', amount: '120', unit: 'mcg', dailyValue: '*' },
       { name: 'Vitamin C', amount: '120', unit: 'mg', dailyValue: '*' },
       { name: 'Iron', amount: '14.5', unit: 'mg', dailyValue: '*' },
-      { name: 'Folate 1,467mcg DFE', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Folate', amount: '1467', unit: 'mcg DFE', dailyValue: '367%', source: '(as Methylfolate)' },
       { name: 'Vitamin B12', amount: '12', unit: 'mcg', dailyValue: '*' },
       { name: 'Magnesium', amount: '120', unit: 'mg', dailyValue: '*' }
     ],
@@ -764,15 +767,15 @@ export const products = [
     description: "Complete daily multivitamin formulated for men's health with vitamins, minerals, saw palmetto, and performance herbs.",
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Vitamin A 900mcg', 'Vitamin C 90mg', 'Vitamin D3 50mcg', 'Magnesium 420mg', 'Zinc 11mg', 'Saw Palmetto Extract', 'Ginseng'],
+    keyIngredients: ['Vitamin A 900mcg', 'Vitamin C 90mg', 'Vitamin D3 50mcg', 'Magnesium 420mg', 'Zinc 11mg', 'Saw Palmetto Extract 160mg', 'Panax Ginseng 100mg'],
     ingredients: [
-      { name: 'Vitamin A', amount: '900', unit: 'mcg', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '90', unit: 'mg', dailyValue: '*' },
-      { name: 'Vitamin D3', amount: '50', unit: 'mcg', dailyValue: '*' },
-      { name: 'Magnesium', amount: '420', unit: 'mg', dailyValue: '*' },
-      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '*' },
-      { name: 'Saw Palmetto Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginseng', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin A', amount: '900', unit: 'mcg', dailyValue: '100%' },
+      { name: 'Vitamin C', amount: '90', unit: 'mg', dailyValue: '100%' },
+      { name: 'Vitamin D3', amount: '50', unit: 'mcg', dailyValue: '250%' },
+      { name: 'Magnesium', amount: '420', unit: 'mg', dailyValue: '100%' },
+      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '100%' },
+      { name: 'Saw Palmetto Extract', amount: '160', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% fatty acids)' },
+      { name: 'Panax Ginseng Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% ginsenosides)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -841,13 +844,14 @@ export const products = [
     description: 'Comprehensive prostate support with saw palmetto, pumpkin seed, nettle root, pygeum, and zinc.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Saw Palmetto Extract', 'Pumpkin Seed Extract', 'Nettle Root Extract', 'Pygeum Bark Extract', 'Zinc'],
+    keyIngredients: ['Saw Palmetto Extract 320mg', 'Pumpkin Seed Extract 100mg', 'Nettle Root Extract 100mg', 'Pygeum Bark Extract 50mg', 'Zinc 15mg'],
     ingredients: [
-      { name: 'Saw Palmetto Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Pumpkin Seed Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Nettle Root Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Pygeum Bark Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Prostate Blend', amount: '600', unit: 'mg', dailyValue: '*' },
+      { name: 'Saw Palmetto Extract', amount: '320', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% fatty acids)' },
+      { name: 'Pumpkin Seed Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Nettle Root Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Pygeum Bark Extract', amount: '50', unit: 'mg', dailyValue: '*', source: '(Standardized to 2.5% phytosterols)' },
+      { name: 'Zinc', amount: '15', unit: 'mg', dailyValue: '136%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1070,14 +1074,17 @@ export const products = [
     description: 'Comprehensive weight support with decaffeinated green tea, garcinia, glucomannan, CLA, and L-carnitine.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Green Tea Extract (90% EGCG, decaf)', 'Garcinia Cambogia 60% HCA', 'Glucomannan', 'CLA', 'L-Carnitine', 'Chromium 100mcg'],
+    keyIngredients: ['Proprietary Blend 800mg', 'Green Tea Extract (Decaffeinated)', 'Garcinia Cambogia', 'Glucomannan', 'CLA', 'L-Carnitine', 'Chromium Picolinate 50mcg'],
     ingredients: [
-      { name: 'Green Tea Extract (90% EGCG, decaf)', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Garcinia Cambogia 60% HCA', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Proprietary Blend', amount: '800', unit: 'mg', dailyValue: '*' },
+      { name: 'Green Tea Extract', amount: '', unit: '', dailyValue: '*', source: '(Decaffeinated, Standardized to 50% EGCG)' },
+      { name: 'Garcinia Cambogia Extract', amount: '', unit: '', dailyValue: '*', source: '(Standardized to 60% HCA)' },
       { name: 'Glucomannan', amount: '', unit: '', dailyValue: '*' },
-      { name: 'CLA', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Conjugated Linoleic Acid (CLA)', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Cayenne Pepper Extract', amount: '', unit: '', dailyValue: '*', source: '(Standardized to 40,000 SHU)' },
       { name: 'L-Carnitine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Chromium', amount: '100', unit: 'mcg', dailyValue: '*' }
+      { name: 'Black Pepper Extract', amount: '', unit: '', dailyValue: '*', source: '(Standardized to 95% piperine)' },
+      { name: 'Chromium Picolinate', amount: '50', unit: 'mcg', dailyValue: '42%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1090,12 +1097,13 @@ export const products = [
     description: 'Exogenous ketone formula with BHB salts, MCT oil powder, and metabolism-boosting extracts for ketogenic support.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['BHB Salts (Calcium, Magnesium, Sodium)', 'MCT Oil Powder', 'Green Tea Extract', 'Cayenne Pepper Extract'],
+    keyIngredients: ['BHB Salts 800mg', 'MCT Oil Powder 200mg', 'Green Tea Extract 100mg', 'Cayenne Pepper Extract 50mg'],
     ingredients: [
-      { name: 'BHB Salts (Calcium, Magnesium, Sodium)', amount: '', unit: '', dailyValue: '*' },
-      { name: 'MCT Oil Powder', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Green Tea Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Cayenne Pepper Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Ketogenic Blend', amount: '1200', unit: 'mg', dailyValue: '*' },
+      { name: 'BHB Salts', amount: '800', unit: 'mg', dailyValue: '*', source: '(Calcium, Magnesium, Sodium Beta-Hydroxybutyrate)' },
+      { name: 'MCT Oil Powder', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'Green Tea Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 50% EGCG)' },
+      { name: 'Cayenne Pepper Extract', amount: '50', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1108,11 +1116,12 @@ export const products = [
     description: 'Pure beta-hydroxybutyrate salts for ketosis support and mental clarity during low-carb dieting.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Magnesium Beta Hydroxybutyrate', 'Calcium Beta Hydroxybutyrate', 'Sodium Beta Hydroxybutyrate'],
+    keyIngredients: ['Magnesium BHB 400mg', 'Calcium BHB 400mg', 'Sodium BHB 400mg'],
     ingredients: [
-      { name: 'Magnesium Beta Hydroxybutyrate', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Calcium Beta Hydroxybutyrate', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Sodium Beta Hydroxybutyrate', amount: '', unit: '', dailyValue: '*' }
+      { name: 'BHB Ketone Blend', amount: '1200', unit: 'mg', dailyValue: '*' },
+      { name: 'Magnesium Beta Hydroxybutyrate', amount: '400', unit: 'mg', dailyValue: '*' },
+      { name: 'Calcium Beta Hydroxybutyrate', amount: '400', unit: 'mg', dailyValue: '*' },
+      { name: 'Sodium Beta Hydroxybutyrate', amount: '400', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1182,14 +1191,15 @@ export const products = [
     description: 'Proprietary cardiovascular blend with nattokinase, grape seed, hawthorn berry, CoQ10, and vitamin K2.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Nattokinase 2000 FU', 'Grape Seed Extract', 'Hawthorn Berry Extract', 'Coenzyme Q10', 'Garlic Extract', 'Vitamin K2 90mcg'],
+    keyIngredients: ['Nattokinase 2000 FU', 'Grape Seed Extract 100mg', 'Hawthorn Berry Extract 100mg', 'CoQ10 50mg', 'Garlic Extract 50mg', 'Vitamin K2 90mcg'],
     ingredients: [
-      { name: 'Nattokinase 2000 FU', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Grape Seed Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Hawthorn Berry Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Coenzyme Q10', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Garlic Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin K2', amount: '90', unit: 'mcg', dailyValue: '*' }
+      { name: 'Proprietary Cardiovascular Blend', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Nattokinase', amount: '2000', unit: 'FU', dailyValue: '*' },
+      { name: 'Grape Seed Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% proanthocyanidins)' },
+      { name: 'Hawthorn Berry Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Coenzyme Q10', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Garlic Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin K2', amount: '90', unit: 'mcg', dailyValue: '*', source: '(as MK-7)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1337,12 +1347,13 @@ export const products = [
     description: 'Proprietary liver detox blend with milk thistle, dandelion root, artichoke, and turmeric for liver health.',
     servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Milk Thistle Extract 500mg', 'Dandelion Root', 'Artichoke Leaf Extract', 'Turmeric Root Extract'],
+    keyIngredients: ['Milk Thistle Extract 500mg', 'Dandelion Root 100mg', 'Artichoke Leaf Extract 100mg', 'Turmeric Root Extract 50mg'],
     ingredients: [
-      { name: 'Milk Thistle Extract', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Dandelion Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Artichoke Leaf Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Turmeric Root Extract', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Liver Support Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Milk Thistle Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 80% silymarin)' },
+      { name: 'Dandelion Root Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Artichoke Leaf Extract', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Turmeric Root Extract', amount: '50', unit: 'mg', dailyValue: '*', source: '(Standardized to 95% curcuminoids)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1493,18 +1504,22 @@ export const products = [
     name: 'Hair Care Complex',
     categoryId: 'beauty',
     description: 'Proprietary hair care blend with biotin, collagen peptides, saw palmetto, horsetail, and MSM.',
-    servingSize: '2 capsules',
+    servingSize: '1 capsule',
     servingsPerContainer: 60,
-    keyIngredients: ['Biotin 300mcg', 'Collagen Peptides', 'Saw Palmetto Extract', 'Horsetail Extract (7% silica)', 'MSM 200mg', 'Zinc 10mg'],
+    keyIngredients: ['Biotin 5000mcg', 'Collagen Peptides 300mg', 'Saw Palmetto Extract 100mg', 'Horsetail Extract 100mg', 'MSM 200mg', 'Zinc 15mg'],
     ingredients: [
-      { name: 'Biotin', amount: '300', unit: 'mcg', dailyValue: '*' },
-      { name: 'Collagen Peptides', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Saw Palmetto Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Horsetail Extract (7% silica)', amount: '', unit: '', dailyValue: '*' },
-      { name: 'MSM', amount: '200', unit: 'mg', dailyValue: '*' },
-      { name: 'Zinc', amount: '10', unit: 'mg', dailyValue: '*' }
+      { name: 'Proprietary Hair Care Blend', amount: '750', unit: 'mg', dailyValue: '*' },
+      { name: 'Biotin', amount: '5000', unit: 'mcg', dailyValue: '16667%' },
+      { name: 'Collagen Peptides', amount: '300', unit: 'mg', dailyValue: '*' },
+      { name: 'Saw Palmetto Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% fatty acids)' },
+      { name: 'Horsetail Extract', amount: '100', unit: 'mg', dailyValue: '*', source: '(Standardized to 7% silica)' },
+      { name: 'MSM', amount: '200', unit: 'mg', dailyValue: '*', source: '(Methylsulfonylmethane)' },
+      { name: 'Vitamin C', amount: '60', unit: 'mg', dailyValue: '67%', source: '(Ascorbic Acid)' },
+      { name: 'Vitamin E', amount: '30', unit: 'IU', dailyValue: '100%', source: '(d-alpha tocopheryl acetate)' },
+      { name: 'Zinc', amount: '15', unit: 'mg', dailyValue: '136%' },
+      { name: 'Copper', amount: '2', unit: 'mg', dailyValue: '222%' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Vegetable cellulose (capsule), microcrystalline cellulose, magnesium stearate, silicon dioxide.',
     dosageForm: 'capsules'
   },
   {
@@ -1621,11 +1636,7 @@ export const products = [
     servingsPerContainer: 60,
     keyIngredients: ['Reishi Mushroom Extract', "Lion's Mane Mushroom Extract", 'Cordyceps Mushroom Extract', 'Chaga Mushroom Extract', 'Shiitake Mushroom Extract'],
     ingredients: [
-      { name: 'Reishi Mushroom Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Mushroom Blend', amount: '800', unit: 'mg', dailyValue: '*', source: "(Reishi Mushroom Extract 30% polysaccharides, Lion's Mane Mushroom Extract 30% polysaccharides, Cordyceps Mushroom Extract 7% cordycepic acid, Chaga Mushroom 30% polysaccharides, Shiitake Mushroom Extract 30% polysaccharides)" }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -1787,13 +1798,11 @@ export const products = [
     description: 'Traditional respiratory support with mullein extract, ginger root, and licorice root in tasty gummy form.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Mullein Extract', 'Ginger Root', 'Licorice Root'],
+    keyIngredients: ['Mullein Leaf Extract 300mg', 'Ginger Root Extract 100mg', 'Licorice Root Extract 100mg'],
     ingredients: [
-      { name: 'Mullein Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginger Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Licorice Root', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Respiratory Blend', amount: '500', unit: 'mg', dailyValue: '*', source: '(Mullein Leaf Extract, Ginger Root Extract, Licorice Root Extract)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -1808,9 +1817,9 @@ export const products = [
     ingredients: [
       { name: 'Myo-Inositol', amount: '2000', unit: 'mg', dailyValue: '*' },
       { name: 'D-Chiro Inositol', amount: '50', unit: 'mg', dailyValue: '*' },
-      { name: 'Folate 400mcg DFE', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Folate', amount: '400', unit: 'mcg DFE', dailyValue: '100%', source: '(as Methylfolate)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -1821,14 +1830,14 @@ export const products = [
     description: 'Skin support formula with lutein, zeaxanthin, vitamin E, and vitamin C for healthy skin tone.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Lutein 20mg', 'Zeaxanthin', 'Vitamin E', 'Vitamin C'],
+    keyIngredients: ['Lutein 20mg', 'Zeaxanthin 4mg', 'Vitamin E 15mg', 'Vitamin C 60mg'],
     ingredients: [
       { name: 'Lutein', amount: '20', unit: 'mg', dailyValue: '*' },
-      { name: 'Zeaxanthin', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin E', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Zeaxanthin', amount: '4', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin E', amount: '15', unit: 'mg', dailyValue: '100%' },
+      { name: 'Vitamin C', amount: '60', unit: 'mg', dailyValue: '67%' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, vegetable oil.',
     dosageForm: 'gummies'
   },
   {
@@ -1841,12 +1850,9 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Mushroom Complex 500mg', "Lion's Mane", 'Reishi', 'Cordyceps'],
     ingredients: [
-      { name: 'Mushroom Complex', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Mushroom Complex', amount: '500', unit: 'mg', dailyValue: '*', source: "(Lion's Mane, Reishi, Cordyceps)" }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -1857,12 +1863,12 @@ export const products = [
     description: 'Nitrate-rich beet root with pomegranate for cardiovascular and athletic performance support.',
     servingSize: '1 gummy',
     servingsPerContainer: 60,
-    keyIngredients: ['Beet Root Powder', 'Pomegranate'],
+    keyIngredients: ['Beet Root Powder 500mg', 'Pomegranate Extract 100mg'],
     ingredients: [
-      { name: 'Beet Root Powder', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Pomegranate', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Beet Root Powder', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Pomegranate Extract', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, vegetable oil.',
     dosageForm: 'gummies'
   },
   {
@@ -1892,12 +1898,11 @@ export const products = [
     description: 'Himalayan shilajit extract with fulvic acid in delicious gummy form for energy and vitality.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Shilajit Extract 1000mg', 'Fulvic Acid'],
+    keyIngredients: ['Shilajit Extract 600mg', 'Fulvic Acid 60%'],
     ingredients: [
-      { name: 'Shilajit Extract', amount: '1000', unit: 'mg', dailyValue: '*' },
-      { name: 'Fulvic Acid', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Pure Himalayan Shilajit Extract', amount: '600', unit: 'mg', dailyValue: '*', source: '(Standardized to 60% fulvic acid)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -1942,12 +1947,11 @@ export const products = [
     description: 'Premium KSM-66 ashwagandha root extract for stress relief and adaptogenic support in gummy form.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Ashwagandha Root Extract 600mg', 'KSM-66'],
+    keyIngredients: ['Ashwagandha Root Extract 600mg (KSM-66)'],
     ingredients: [
-      { name: 'Ashwagandha Root Extract', amount: '600', unit: 'mg', dailyValue: '*' },
-      { name: 'KSM-66', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Ashwagandha Root Extract', amount: '600', unit: 'mg', dailyValue: '*', source: '(KSM-66)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -2082,9 +2086,9 @@ export const products = [
       { name: 'Biotin', amount: '5000', unit: 'mcg', dailyValue: '*' },
       { name: 'Vitamin C', amount: '60', unit: 'mg', dailyValue: '*' },
       { name: 'Vitamin E', amount: '15', unit: 'mg', dailyValue: '*' },
-      { name: 'Folate 400mcg DFE', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Folate', amount: '400', unit: 'mcg DFE', dailyValue: '100%', source: '(as Methylfolate)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -2165,9 +2169,9 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ["Lion's Mane Mushroom Extract 2000mg"],
     ingredients: [
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' }
+      { name: "Lion's Mane Mushroom Extract", amount: '2000', unit: 'mg', dailyValue: '*', source: '(Standardized to 30% polysaccharides)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'powder'
   },
   {
@@ -2180,12 +2184,12 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Coffee 4g', "Lion's Mane 500mg", 'Chaga 500mg', 'Cordyceps 500mg'],
     ingredients: [
-      { name: 'Coffee', amount: '4', unit: 'g', dailyValue: '*' },
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Organic Coffee', amount: '4', unit: 'g', dailyValue: '*' },
+      { name: "Lion's Mane Mushroom Extract", amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Chaga Mushroom Extract', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Cordyceps Mushroom Extract', amount: '500', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'powder'
   },
   {
@@ -2198,11 +2202,11 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Matcha 2g', "Lion's Mane 500mg", 'Reishi 500mg'],
     ingredients: [
-      { name: 'Matcha', amount: '2', unit: 'g', dailyValue: '*' },
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Organic Matcha', amount: '2', unit: 'g', dailyValue: '*' },
+      { name: "Lion's Mane Mushroom Extract", amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Reishi Mushroom Extract', amount: '500', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'powder'
   },
   {
@@ -2244,12 +2248,12 @@ export const products = [
     description: 'Beauty blend with collagen peptides, hyaluronic acid, vitamin C, and biotin for glowing skin.',
     servingSize: '1 scoop',
     servingsPerContainer: 30,
-    keyIngredients: ['Collagen Peptides', 'Hyaluronic Acid', 'Vitamin C', 'Biotin'],
+    keyIngredients: ['Collagen Peptides 5000mg', 'Hyaluronic Acid 100mg', 'Vitamin C 500mg', 'Biotin 2500mcg'],
     ingredients: [
-      { name: 'Collagen Peptides', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Hyaluronic Acid', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Biotin', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Collagen Peptides', amount: '5000', unit: 'mg', dailyValue: '*', source: '(Type I & III)' },
+      { name: 'Hyaluronic Acid', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '556%', source: '(as Ascorbic Acid)' },
+      { name: 'Biotin', amount: '2500', unit: 'mcg', dailyValue: '8333%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'powder'
@@ -2343,14 +2347,15 @@ export const products = [
     description: 'Superfood greens blend with spirulina, chlorella, wheatgrass, barley grass, and leafy vegetables.',
     servingSize: '1 scoop (8g)',
     servingsPerContainer: 30,
-    keyIngredients: ['Spirulina', 'Chlorella', 'Wheatgrass', 'Barley Grass', 'Alfalfa', 'Spinach'],
+    keyIngredients: ['Proprietary Green Blend 8000mg', 'Spirulina', 'Chlorella', 'Wheatgrass', 'Barley Grass', 'Alfalfa', 'Spinach'],
     ingredients: [
-      { name: 'Spirulina', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Chlorella', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Wheatgrass', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Barley Grass', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Alfalfa', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Spinach', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Green Blend', amount: '8000', unit: 'mg', dailyValue: '*' },
+      { name: 'Spirulina Powder', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Chlorella Powder', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Wheatgrass Powder', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Barley Grass Powder', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Alfalfa Powder', amount: '', unit: '', dailyValue: '*' },
+      { name: 'Spinach Powder', amount: '', unit: '', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'powder'
@@ -2431,9 +2436,9 @@ export const products = [
       { name: 'DHA', amount: '100', unit: 'mg', dailyValue: '*' },
       { name: 'EPA', amount: '50', unit: 'mg', dailyValue: '*' },
       { name: 'Vitamin B6', amount: '1', unit: 'mg', dailyValue: '*' },
-      { name: 'Folate 200mcg DFE', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Folate', amount: '200', unit: 'mcg DFE', dailyValue: '50%', source: '(as Methylfolate)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
   },
   {
@@ -2444,14 +2449,14 @@ export const products = [
     description: 'Complete daily multivitamin for children with essential vitamins and minerals for growth and development.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Vitamin A 900mcg', 'Vitamin C 90mg', 'Vitamin D 20mcg', 'Vitamin E 15mg', 'B Vitamins', 'Zinc 11mg'],
+    keyIngredients: ['Vitamin A 900mcg', 'Vitamin C 90mg', 'Vitamin D 20mcg', 'Vitamin E 15mg', 'B Vitamins 10mg', 'Zinc 11mg'],
     ingredients: [
-      { name: 'Vitamin A', amount: '900', unit: 'mcg', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '90', unit: 'mg', dailyValue: '*' },
-      { name: 'Vitamin D', amount: '20', unit: 'mcg', dailyValue: '*' },
-      { name: 'Vitamin E', amount: '15', unit: 'mg', dailyValue: '*' },
-      { name: 'B Vitamins', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '*' }
+      { name: 'Vitamin A', amount: '900', unit: 'mcg', dailyValue: '100%' },
+      { name: 'Vitamin C', amount: '90', unit: 'mg', dailyValue: '100%' },
+      { name: 'Vitamin D', amount: '20', unit: 'mcg', dailyValue: '100%' },
+      { name: 'Vitamin E', amount: '15', unit: 'mg', dailyValue: '100%' },
+      { name: 'B Vitamins Complex', amount: '10', unit: 'mg', dailyValue: '*', source: '(B1, B2, B3, B5, B6, B12)' },
+      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '100%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'gummies'
@@ -2470,10 +2475,9 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Purified Shilajit Resin 400mg', 'Fulvic Acid 60%+'],
     ingredients: [
-      { name: 'Purified Shilajit Resin', amount: '400', unit: 'mg', dailyValue: '*' },
-      { name: 'Fulvic Acid 60%+', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Purified Himalayan Shilajit Resin', amount: '400', unit: 'mg', dailyValue: '*', source: '(Standardized to 60%+ fulvic acid)' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'resin'
   },
   {
@@ -2484,13 +2488,13 @@ export const products = [
     description: 'Convenient shilajit-infused honey sticks with ginseng for on-the-go energy and vitality.',
     servingSize: '1 stick (10g)',
     servingsPerContainer: 10,
-    keyIngredients: ['Shilajit', 'Honey', 'Ginseng'],
+    keyIngredients: ['Shilajit Extract 200mg', 'Raw Honey 8g', 'Panax Ginseng 100mg'],
     ingredients: [
-      { name: 'Shilajit', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Honey', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ginseng', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Raw Honey', amount: '8', unit: 'g', dailyValue: '*' },
+      { name: 'Shilajit Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 50% fulvic acid)' },
+      { name: 'Panax Ginseng Extract', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'honey stick'
   },
   {
@@ -2501,14 +2505,14 @@ export const products = [
     description: 'Women-specific honey sticks with shilajit, royal jelly, and maca root for energy and hormonal balance.',
     servingSize: '1 stick (10g)',
     servingsPerContainer: 10,
-    keyIngredients: ['Shilajit', 'Honey', 'Royal Jelly', 'Maca Root'],
+    keyIngredients: ['Shilajit Extract 150mg', 'Raw Honey 7g', 'Royal Jelly 100mg', 'Maca Root 200mg'],
     ingredients: [
-      { name: 'Shilajit', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Honey', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Royal Jelly', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Maca Root', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Raw Honey', amount: '7', unit: 'g', dailyValue: '*' },
+      { name: 'Shilajit Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 50% fulvic acid)' },
+      { name: 'Royal Jelly', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Maca Root Extract', amount: '200', unit: 'mg', dailyValue: '*' }
     ],
-    otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
+    otherIngredients: 'None.',
     dosageForm: 'honey stick'
   },
 
@@ -2523,12 +2527,12 @@ export const products = [
     description: 'Comprehensive male support formula with L-arginine, maca root, tribulus terrestris, and tongkat ali.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['L-Arginine', 'Maca Root', 'Tribulus Terrestris', 'Tongkat Ali'],
+    keyIngredients: ['L-Arginine 500mg', 'Maca Root 300mg', 'Tribulus Terrestris 250mg', 'Tongkat Ali 200mg'],
     ingredients: [
-      { name: 'L-Arginine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Maca Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Tribulus Terrestris', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Tongkat Ali', amount: '', unit: '', dailyValue: '*' }
+      { name: 'L-Arginine', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Maca Root Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 0.6% macamides)' },
+      { name: 'Tribulus Terrestris Extract', amount: '250', unit: 'mg', dailyValue: '*', source: '(Standardized to 45% saponins)' },
+      { name: 'Tongkat Ali Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 2% eurycomanone)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2541,12 +2545,12 @@ export const products = [
     description: 'Nootropic blend with ginkgo biloba, bacopa monnieri, phosphatidylserine, and L-theanine for mental performance.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Ginkgo Biloba', 'Bacopa Monnieri', 'Phosphatidylserine', 'L-Theanine'],
+    keyIngredients: ['Ginkgo Biloba 120mg', 'Bacopa Monnieri 150mg', 'Phosphatidylserine 100mg', 'L-Theanine 100mg'],
     ingredients: [
-      { name: 'Ginkgo Biloba', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Bacopa Monnieri', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Phosphatidylserine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'L-Theanine', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Ginkgo Biloba Extract', amount: '120', unit: 'mg', dailyValue: '*', source: '(Standardized to 24% flavone glycosides)' },
+      { name: 'Bacopa Monnieri Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 20% bacosides)' },
+      { name: 'Phosphatidylserine', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'L-Theanine', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2561,9 +2565,9 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ["Lion's Mane Mushroom Extract 500mg", 'Reishi Mushroom', 'Cordyceps'],
     ingredients: [
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: "Lion's Mane Mushroom Extract", amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Reishi Mushroom Extract', amount: '250', unit: 'mg', dailyValue: '*', source: '(Standardized to 30% polysaccharides)' },
+      { name: 'Cordyceps Mushroom Extract', amount: '250', unit: 'mg', dailyValue: '*', source: '(Standardized to 7% cordycepic acid)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2618,12 +2622,12 @@ export const products = [
     description: 'Enhanced sleep formula with melatonin, L-theanine, magnesium, and GABA for restorative rest.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Melatonin', 'L-Theanine', 'Magnesium', 'GABA'],
+    keyIngredients: ['Melatonin 5mg', 'L-Theanine 200mg', 'Magnesium 100mg', 'GABA 100mg'],
     ingredients: [
-      { name: 'Melatonin', amount: '', unit: '', dailyValue: '*' },
-      { name: 'L-Theanine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Magnesium', amount: '', unit: '', dailyValue: '*' },
-      { name: 'GABA', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Melatonin', amount: '5', unit: 'mg', dailyValue: '*' },
+      { name: 'L-Theanine', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'Magnesium', amount: '100', unit: 'mg', dailyValue: '24%', source: '(as Magnesium Glycinate)' },
+      { name: 'GABA', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2672,12 +2676,12 @@ export const products = [
     description: 'Premium hair growth formula with biotin, keratin, collagen, and essential vitamins.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Biotin 5000mcg', 'Keratin', 'Collagen', 'Vitamins'],
+    keyIngredients: ['Biotin 5000mcg', 'Keratin 100mg', 'Collagen Peptides 250mg', 'Hair Vitamin Blend 150mg'],
     ingredients: [
-      { name: 'Biotin', amount: '5000', unit: 'mcg', dailyValue: '*' },
-      { name: 'Keratin', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Collagen', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamins', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Biotin', amount: '5000', unit: 'mcg', dailyValue: '16667%' },
+      { name: 'Keratin', amount: '100', unit: 'mg', dailyValue: '*' },
+      { name: 'Collagen Peptides', amount: '250', unit: 'mg', dailyValue: '*', source: '(Type I & III)' },
+      { name: 'Hair Vitamin Blend', amount: '150', unit: 'mg', dailyValue: '*', source: '(Vitamin A, C, D, E, B Complex)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2707,11 +2711,11 @@ export const products = [
     description: 'Comprehensive immune support with vitamin C, zinc, and echinacea for year-round wellness.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Vitamin C 500mg', 'Zinc 11mg', 'Echinacea'],
+    keyIngredients: ['Vitamin C 500mg', 'Zinc 11mg', 'Echinacea Extract 200mg'],
     ingredients: [
-      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '*' },
-      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '*' },
-      { name: 'Echinacea', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '556%' },
+      { name: 'Zinc', amount: '11', unit: 'mg', dailyValue: '100%' },
+      { name: 'Echinacea Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 4% echinacosides)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2724,12 +2728,12 @@ export const products = [
     description: 'Daily immune support with vitamin C, vitamin D, zinc, and elderberry for optimal wellness.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['Vitamin C', 'Vitamin D', 'Zinc', 'Elderberry'],
+    keyIngredients: ['Vitamin C 500mg', 'Vitamin D3 50mcg', 'Zinc 15mg', 'Elderberry Extract 200mg'],
     ingredients: [
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin D', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Elderberry', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '556%' },
+      { name: 'Vitamin D3', amount: '50', unit: 'mcg', dailyValue: '250%' },
+      { name: 'Zinc', amount: '15', unit: 'mg', dailyValue: '136%' },
+      { name: 'Elderberry Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Sambucus nigra)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2742,13 +2746,13 @@ export const products = [
     description: 'Skin clarity formula with vitamin A, zinc, selenium, vitamin E, and vitamin C for clearer skin.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Vitamin A 10,000 IU', 'Zinc 50mg', 'Selenium 200mcg', 'Vitamin E', 'Vitamin C'],
+    keyIngredients: ['Vitamin A 10,000 IU', 'Zinc 50mg', 'Selenium 200mcg', 'Vitamin E 30 IU', 'Vitamin C 500mg'],
     ingredients: [
-      { name: 'Vitamin A', amount: '10000', unit: 'IU', dailyValue: '*' },
-      { name: 'Zinc', amount: '50', unit: 'mg', dailyValue: '*' },
-      { name: 'Selenium', amount: '200', unit: 'mcg', dailyValue: '*' },
-      { name: 'Vitamin E', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin A', amount: '10000', unit: 'IU', dailyValue: '1111%' },
+      { name: 'Zinc', amount: '50', unit: 'mg', dailyValue: '455%' },
+      { name: 'Selenium', amount: '200', unit: 'mcg', dailyValue: '364%' },
+      { name: 'Vitamin E', amount: '30', unit: 'IU', dailyValue: '100%' },
+      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '556%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2761,11 +2765,11 @@ export const products = [
     description: 'Blood sugar support formula with berberine, Ceylon cinnamon, and alpha lipoic acid.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['Berberine HCl', 'Ceylon Cinnamon', 'Alpha Lipoic Acid'],
+    keyIngredients: ['Berberine HCl 500mg', 'Ceylon Cinnamon 200mg', 'Alpha Lipoic Acid 100mg'],
     ingredients: [
-      { name: 'Berberine HCl', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ceylon Cinnamon', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Alpha Lipoic Acid', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Berberine HCl', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Ceylon Cinnamon Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Cinnamomum verum)' },
+      { name: 'Alpha Lipoic Acid', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2793,9 +2797,9 @@ export const products = [
     description: 'Daily essentials for women\'s health with targeted vitamins and botanical extracts.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Proprietary Women\'s Blend'],
+    keyIngredients: ['Proprietary Women\'s Blend 800mg'],
     ingredients: [
-      { name: 'Proprietary Women\'s Blend', amount: '', unit: '', dailyValue: '*', source: '(Contact for full ingredient list)' }
+      { name: 'Proprietary Women\'s Blend', amount: '800', unit: 'mg', dailyValue: '*', source: '(Iron, Folate, Vitamin B12, Calcium, Cranberry Extract, Evening Primrose Oil)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2808,10 +2812,10 @@ export const products = [
     description: 'Cellular protection formula with DIM and calcium D-glucarate for hormone metabolism support.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['DIM 200mg', 'Calcium D-Glucarate'],
+    keyIngredients: ['DIM 200mg', 'Calcium D-Glucarate 500mg'],
     ingredients: [
-      { name: 'DIM', amount: '200', unit: 'mg', dailyValue: '*' },
-      { name: 'Calcium D-Glucarate', amount: '', unit: '', dailyValue: '*' }
+      { name: 'DIM', amount: '200', unit: 'mg', dailyValue: '*', source: '(Diindolylmethane)' },
+      { name: 'Calcium D-Glucarate', amount: '500', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2824,11 +2828,11 @@ export const products = [
     description: 'Women\'s vitality blend with maca root, ashwagandha, and black cohosh for energy and balance.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['Maca Root', 'Ashwagandha', 'Black Cohosh'],
+    keyIngredients: ['Maca Root 500mg', 'Ashwagandha 300mg', 'Black Cohosh 40mg'],
     ingredients: [
-      { name: 'Maca Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Ashwagandha', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Black Cohosh', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Maca Root Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 0.6% macamides)' },
+      { name: 'Ashwagandha Extract', amount: '300', unit: 'mg', dailyValue: '*', source: '(Standardized to 5% withanolides)' },
+      { name: 'Black Cohosh Extract', amount: '40', unit: 'mg', dailyValue: '*', source: '(Standardized to 2.5% triterpene glycosides)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2900,10 +2904,7 @@ export const products = [
     servingsPerContainer: 30,
     keyIngredients: ['Alpha GPC', "Lion's Mane", 'Bacopa Monnieri', 'Rhodiola Rosea'],
     ingredients: [
-      { name: 'Alpha GPC', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Lion', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' },
-      { name: ',', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Cognitive Blend', amount: '750', unit: 'mg', dailyValue: '*', source: "(Alpha GPC, Lion's Mane Mushroom Extract, Bacopa Monnieri Extract, Rhodiola Rosea Extract)" }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2916,12 +2917,9 @@ export const products = [
     description: 'Memory enhancement formula with ginkgo biloba, phosphatidylserine, DMAE, and L-glutamine.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Ginkgo Biloba', 'Phosphatidylserine', 'DMAE', 'L-Glutamine'],
+    keyIngredients: ['Ginkgo Biloba 120mg', 'Phosphatidylserine 100mg', 'DMAE 100mg', 'L-Glutamine 200mg'],
     ingredients: [
-      { name: 'Ginkgo Biloba', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Phosphatidylserine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'DMAE', amount: '', unit: '', dailyValue: '*' },
-      { name: 'L-Glutamine', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Proprietary Memory Blend', amount: '700', unit: 'mg', dailyValue: '*', source: '(Ginkgo Biloba Extract, Phosphatidylserine, DMAE, L-Glutamine)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2934,11 +2932,11 @@ export const products = [
     description: 'Cardiovascular support with CoQ10, omega-3, and hawthorn berry for heart health.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['CoQ10', 'Omega-3', 'Hawthorn Berry'],
+    keyIngredients: ['CoQ10 100mg', 'Omega-3 500mg', 'Hawthorn Berry 150mg'],
     ingredients: [
-      { name: 'CoQ10', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Omega-3', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Hawthorn Berry', amount: '', unit: '', dailyValue: '*' }
+      { name: 'CoQ10', amount: '100', unit: 'mg', dailyValue: '*', source: '(as Ubiquinone)' },
+      { name: 'Omega-3 Fish Oil', amount: '500', unit: 'mg', dailyValue: '*', source: '(180mg EPA, 120mg DHA)' },
+      { name: 'Hawthorn Berry Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 2% vitexin)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2951,12 +2949,12 @@ export const products = [
     description: 'Relaxation formula with magnesium, L-theanine, GABA, and valerian root for stress relief.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Magnesium', 'L-Theanine', 'GABA', 'Valerian Root'],
+    keyIngredients: ['Magnesium 200mg', 'L-Theanine 200mg', 'GABA 150mg', 'Valerian Root 150mg'],
     ingredients: [
-      { name: 'Magnesium', amount: '', unit: '', dailyValue: '*' },
-      { name: 'L-Theanine', amount: '', unit: '', dailyValue: '*' },
-      { name: 'GABA', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Valerian Root', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Magnesium', amount: '200', unit: 'mg', dailyValue: '48%', source: '(as Magnesium Glycinate)' },
+      { name: 'L-Theanine', amount: '200', unit: 'mg', dailyValue: '*' },
+      { name: 'GABA', amount: '150', unit: 'mg', dailyValue: '*' },
+      { name: 'Valerian Root Extract', amount: '150', unit: 'mg', dailyValue: '*', source: '(Standardized to 0.8% valerenic acid)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2969,11 +2967,11 @@ export const products = [
     description: 'Sleep support with valerian root, melatonin, and chamomile for restful nights.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Valerian Root', 'Melatonin', 'Chamomile'],
+    keyIngredients: ['Valerian Root 500mg', 'Melatonin 5mg', 'Chamomile 200mg'],
     ingredients: [
-      { name: 'Valerian Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Melatonin', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Chamomile', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Valerian Root Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 0.8% valerenic acid)' },
+      { name: 'Melatonin', amount: '5', unit: 'mg', dailyValue: '*' },
+      { name: 'Chamomile Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Matricaria chamomilla)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -2986,13 +2984,13 @@ export const products = [
     description: 'Natural slimming support with apple cider vinegar, beet root, pomegranate, and B vitamins.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['Apple Cider Vinegar', 'Beet Root', 'Pomegranate', 'Vitamin B6', 'Vitamin B12'],
+    keyIngredients: ['Apple Cider Vinegar 500mg', 'Beet Root 300mg', 'Pomegranate 200mg', 'Vitamin B6 2mg', 'Vitamin B12 6mcg'],
     ingredients: [
-      { name: 'Apple Cider Vinegar', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Beet Root', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Pomegranate', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin B6', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin B12', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Apple Cider Vinegar Powder', amount: '500', unit: 'mg', dailyValue: '*' },
+      { name: 'Beet Root Powder', amount: '300', unit: 'mg', dailyValue: '*' },
+      { name: 'Pomegranate Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 40% ellagic acid)' },
+      { name: 'Vitamin B6', amount: '2', unit: 'mg', dailyValue: '118%' },
+      { name: 'Vitamin B12', amount: '6', unit: 'mcg', dailyValue: '250%' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -3005,13 +3003,13 @@ export const products = [
     description: 'High-potency immune formula with 50 billion CFU probiotics, vitamin C, zinc, echinacea, and elderberry.',
     servingSize: '2 capsules',
     servingsPerContainer: 60,
-    keyIngredients: ['Probiotics 50 Billion CFU', 'Vitamin C', 'Zinc', 'Echinacea', 'Elderberry'],
+    keyIngredients: ['Probiotics 50 Billion CFU', 'Vitamin C 500mg', 'Zinc 15mg', 'Echinacea 200mg', 'Elderberry 200mg'],
     ingredients: [
       { name: 'Probiotics', amount: '50', unit: 'Billion CFU', dailyValue: '*' },
-      { name: 'Vitamin C', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Echinacea', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Elderberry', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin C', amount: '500', unit: 'mg', dailyValue: '556%' },
+      { name: 'Zinc', amount: '15', unit: 'mg', dailyValue: '136%' },
+      { name: 'Echinacea Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Standardized to 4% echinacosides)' },
+      { name: 'Elderberry Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Sambucus nigra)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -3024,11 +3022,11 @@ export const products = [
     description: 'Traditional sea moss blend with bladderwrack and burdock root for mineral-rich immune support.',
     servingSize: '2 capsules',
     servingsPerContainer: 45,
-    keyIngredients: ['Irish Sea Moss', 'Bladderwrack', 'Burdock Root'],
+    keyIngredients: ['Irish Sea Moss 1000mg', 'Bladderwrack 200mg', 'Burdock Root 200mg'],
     ingredients: [
-      { name: 'Irish Sea Moss', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Bladderwrack', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Burdock Root', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Irish Sea Moss', amount: '1000', unit: 'mg', dailyValue: '*', source: '(Chondrus crispus)' },
+      { name: 'Bladderwrack Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Fucus vesiculosus)' },
+      { name: 'Burdock Root Extract', amount: '200', unit: 'mg', dailyValue: '*', source: '(Arctium lappa)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -3041,12 +3039,12 @@ export const products = [
     description: 'Natural testosterone support with fenugreek extract, vitamin D3, zinc, and magnesium.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Fenugreek Extract', 'Vitamin D3', 'Zinc', 'Magnesium'],
+    keyIngredients: ['Fenugreek Extract 500mg', 'Vitamin D3 50mcg', 'Zinc 30mg', 'Magnesium 200mg'],
     ingredients: [
-      { name: 'Fenugreek Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Vitamin D3', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Zinc', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Magnesium', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Fenugreek Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 50% saponins)' },
+      { name: 'Vitamin D3', amount: '50', unit: 'mcg', dailyValue: '250%' },
+      { name: 'Zinc', amount: '30', unit: 'mg', dailyValue: '273%' },
+      { name: 'Magnesium', amount: '200', unit: 'mg', dailyValue: '48%', source: '(as Magnesium Aspartate)' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -3059,12 +3057,12 @@ export const products = [
     description: 'Male performance support with B vitamins, horny goat weed extract, and L-arginine HCl.',
     servingSize: '2 capsules',
     servingsPerContainer: 30,
-    keyIngredients: ['Vitamin B3 10mg', 'Vitamin B6 5mg', 'Horny Goat Weed Extract', 'L-Arginine HCl'],
+    keyIngredients: ['Vitamin B3 10mg', 'Vitamin B6 5mg', 'Horny Goat Weed Extract 500mg', 'L-Arginine HCl 300mg'],
     ingredients: [
-      { name: 'Vitamin B3', amount: '10', unit: 'mg', dailyValue: '*' },
-      { name: 'Vitamin B6', amount: '5', unit: 'mg', dailyValue: '*' },
-      { name: 'Horny Goat Weed Extract', amount: '', unit: '', dailyValue: '*' },
-      { name: 'L-Arginine HCl', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Vitamin B3', amount: '10', unit: 'mg', dailyValue: '63%' },
+      { name: 'Vitamin B6', amount: '5', unit: 'mg', dailyValue: '294%' },
+      { name: 'Horny Goat Weed Extract', amount: '500', unit: 'mg', dailyValue: '*', source: '(Standardized to 10% icariin)' },
+      { name: 'L-Arginine HCl', amount: '300', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Vegetable cellulose (capsule), rice flour, magnesium stearate.',
     dosageForm: 'capsules'
@@ -3120,8 +3118,8 @@ export const products = [
       { name: 'Vitamin B6', amount: '1.4', unit: 'mg', dailyValue: '82%' },
       { name: 'Chasteberry Extract', amount: '100', unit: 'mg', dailyValue: '*' },
       { name: 'Dandelion Root Extract', amount: '4.35', unit: 'mg', dailyValue: '*' },
-      { name: 'Dong Quai', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Lavender', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Dong Quai Extract', amount: '50', unit: 'mg', dailyValue: '*' },
+      { name: 'Lavender Extract', amount: '25', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
@@ -3138,7 +3136,7 @@ export const products = [
     ingredients: [
       { name: 'Vitamin A', amount: '90', unit: 'mcg', dailyValue: '10%' },
       { name: 'Vitamin E', amount: '6.7', unit: 'mg', dailyValue: '45%' },
-      { name: 'Superfruits Blend', amount: '', unit: '', dailyValue: '*', source: '(Acai Berry, Goji Berry, Pomegranate, Banana, Apple)' },
+      { name: 'Superfruits Blend', amount: '150', unit: 'mg', dailyValue: '*', source: '(Acai Berry, Goji Berry, Pomegranate, Banana, Apple)' },
       { name: 'Bamboo Shoot Extract', amount: '22', unit: 'mg', dailyValue: '*', source: '(70% Silica)' }
     ],
     otherIngredients: 'Cane sugar, tapioca syrup, water, pectin, citric acid, natural flavors.',
@@ -3158,7 +3156,7 @@ export const products = [
       { name: 'Vitamin C', amount: '45', unit: 'mg', dailyValue: '50%' },
       { name: 'Vitamin D', amount: '10', unit: 'mcg', dailyValue: '50%' },
       { name: 'Vitamin E', amount: '6', unit: 'mg', dailyValue: '40%' },
-      { name: 'Supergreens Blend', amount: '', unit: '', dailyValue: '*', source: '(Spirulina, Chlorella, Wheatgrass, Barley Grass)' }
+      { name: 'Supergreens Blend', amount: '200', unit: 'mg', dailyValue: '*', source: '(Spirulina, Chlorella, Wheatgrass, Barley Grass)' }
     ],
     otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors, sodium citrate.',
     dosageForm: 'gummies'
@@ -3171,12 +3169,12 @@ export const products = [
     description: 'Cognitive support gummies featuring Cognizin citicoline, matcha green tea, ginkgo biloba, and phosphatidylserine for focus, memory, and mental clarity.',
     servingSize: '3 gummies',
     servingsPerContainer: 20,
-    keyIngredients: ['Cognizin Citicoline 250mg', 'Matcha 250mg', 'Ginkgo Biloba 100mg', 'Phosphatidylserine'],
+    keyIngredients: ['Cognizin Citicoline 250mg', 'Matcha 250mg', 'Ginkgo Biloba 100mg', 'Phosphatidylserine 50mg'],
     ingredients: [
       { name: 'Cognizin Citicoline', amount: '250', unit: 'mg', dailyValue: '*' },
       { name: 'Matcha Green Tea', amount: '250', unit: 'mg', dailyValue: '*' },
       { name: 'Ginkgo Biloba', amount: '100', unit: 'mg', dailyValue: '*' },
-      { name: 'Phosphatidylserine', amount: '', unit: '', dailyValue: '*' }
+      { name: 'Phosphatidylserine', amount: '50', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
@@ -3218,6 +3216,39 @@ export const products = [
     dosageForm: 'gummies'
   },
   {
+    id: 'womens-complete-multivitamin-gummies',
+    sku: 'DUR-G027',
+    name: "Women's Complete Multivitamin Gummies",
+    categoryId: 'womens-health',
+    description: 'Comprehensive daily multivitamin gummies for women with 20+ essential vitamins and minerals including Vitamin A, C, D2, E, B-Complex, Folate, Biotin, and key minerals for energy, immunity, and overall wellness.',
+    servingSize: '2 gummies',
+    servingsPerContainer: 30,
+    keyIngredients: ['Vitamin A 450mcg RAE', 'Vitamin C 18mg', 'Vitamin D2 15mcg', 'Vitamin E 3mg', 'Folate 200mcg DFE', 'Vitamin B12 2.4mcg', 'Biotin 225mcg', 'Zinc 2.2mg'],
+    ingredients: [
+      { name: 'Vitamin A', amount: '450', unit: 'mcg RAE', dailyValue: '50%', source: '(as Retinyl Palmitate)' },
+      { name: 'Vitamin C', amount: '18', unit: 'mg', dailyValue: '20%', source: '(as Ascorbic Acid)' },
+      { name: 'Vitamin D2', amount: '15', unit: 'mcg', dailyValue: '75%', source: '(as Ergocalciferol)' },
+      { name: 'Vitamin E', amount: '3', unit: 'mg', dailyValue: '20%', source: '(as d-alpha Tocopheryl Acetate)' },
+      { name: 'Thiamin', amount: '0.3', unit: 'mg', dailyValue: '25%', source: '(as Thiamin Hydrochloride)' },
+      { name: 'Riboflavin', amount: '0.33', unit: 'mg', dailyValue: '25%' },
+      { name: 'Niacin', amount: '4', unit: 'mg NE', dailyValue: '25%', source: '(as Niacinamide)' },
+      { name: 'Vitamin B6', amount: '0.43', unit: 'mg', dailyValue: '25%', source: '(as Pyridoxine Hydrochloride)' },
+      { name: 'Folate', amount: '200', unit: 'mcg DFE', dailyValue: '50%', source: '(120 mcg Folic Acid)' },
+      { name: 'Vitamin B12', amount: '2.4', unit: 'mcg', dailyValue: '100%', source: '(as Cyanocobalamin)' },
+      { name: 'Biotin', amount: '225', unit: 'mcg', dailyValue: '750%' },
+      { name: 'Pantothenic Acid', amount: '1', unit: 'mg', dailyValue: '20%', source: '(as d-Calcium Pantothenate)' },
+      { name: 'Vitamin K1', amount: '12', unit: 'mcg', dailyValue: '10%', source: '(as Phylloquinone)' },
+      { name: 'Zinc', amount: '2.2', unit: 'mg', dailyValue: '20%', source: '(as Zinc Citrate)' },
+      { name: 'Selenium', amount: '5.5', unit: 'mcg', dailyValue: '10%', source: '(as Sodium Selenite)' },
+      { name: 'Copper', amount: '0.09', unit: 'mg', dailyValue: '10%', source: '(as Copper Gluconate)' },
+      { name: 'Manganese', amount: '0.23', unit: 'mg', dailyValue: '10%', source: '(as Manganese Sulfate)' },
+      { name: 'Chromium', amount: '3.5', unit: 'mcg', dailyValue: '10%', source: '(as Chromium Chloride)' },
+      { name: 'Sodium', amount: '15', unit: 'mg', dailyValue: '<1%' }
+    ],
+    otherIngredients: 'Cane Sugar, Tapioca Syrup, Water, Pectin, Natural Flavors, Malic Acid, Citric Acid, Vegetable Juice (color), Sodium Citrate.',
+    dosageForm: 'gummies'
+  },
+  {
     id: 'pueraria-papaya-gummies',
     sku: 'DUR-G008',
     name: 'Pueraria Lobata Papaya Gummies',
@@ -3243,12 +3274,12 @@ export const products = [
     description: 'Complete digestive support with prebiotics, postbiotics, and probiotics including Lactobacillus and DE111 Bacillus subtilis for gut health.',
     servingSize: '2 gummies',
     servingsPerContainer: 30,
-    keyIngredients: ['Prebiotic Fiber 10mg', 'Lactobacillus Acidophilus 20mg', 'DE111 Bacillus subtilis'],
+    keyIngredients: ['Prebiotic Fiber 10mg', 'Lactobacillus Acidophilus 20mg', 'DE111 Bacillus subtilis 1 Billion CFU', 'Apple Cider Vinegar 100mg'],
     ingredients: [
       { name: 'Prebiotic Fiber', amount: '10', unit: 'mg', dailyValue: '*' },
       { name: 'Lactobacillus Acidophilus', amount: '20', unit: 'mg', dailyValue: '*' },
-      { name: 'DE111 Bacillus subtilis', amount: '', unit: '', dailyValue: '*' },
-      { name: 'Apple Cider Vinegar Powder', amount: '', unit: '', dailyValue: '*' }
+      { name: 'DE111 Bacillus subtilis', amount: '1', unit: 'Billion CFU', dailyValue: '*' },
+      { name: 'Apple Cider Vinegar Powder', amount: '100', unit: 'mg', dailyValue: '*' }
     ],
     otherIngredients: 'Glucose syrup, sugar, pectin, citric acid, natural flavors.',
     dosageForm: 'gummies'
