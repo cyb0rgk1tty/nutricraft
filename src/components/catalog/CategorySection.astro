@@ -44,8 +44,8 @@ const { category, products, isFirst = false } = Astro.props;
     <h2 class="text-xl md:text-2xl font-bold text-primary">
       {category.name}
     </h2>
-    <span class="px-3 py-1 bg-mint-100 text-primary text-sm font-semibold rounded-full">
-      {products.length} {products.length === 1 ? 'product' : 'products'}
+    <span class="category-product-count px-3 py-1 bg-mint-100 text-primary text-sm font-semibold rounded-full" data-total={products.length}>
+      <span class="count-value">{products.length}</span> {products.length === 1 ? 'product' : 'products'}
     </span>
   </header>
 

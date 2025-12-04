@@ -433,15 +433,22 @@
         }
       });
 
-      // Show/hide category sections
+      // Show/hide category sections and update counts
       categorySections.forEach(section => {
-        let hasVisibleCards = false;
+        let visibleCardsInCategory = 0;
         section.querySelectorAll('article[data-product]').forEach(card => {
           if ((card as HTMLElement).style.display !== 'none') {
-            hasVisibleCards = true;
+            visibleCardsInCategory++;
           }
         });
-        (section as HTMLElement).style.display = hasVisibleCards ? 'block' : 'none';
+        (section as HTMLElement).style.display = visibleCardsInCategory > 0 ? 'block' : 'none';
+
+        // Update category count and plural text
+        const countSpan = section.querySelector('.category-product-count');
+        if (countSpan) {
+          const countText = visibleCardsInCategory === 1 ? 'product' : 'products';
+          countSpan.innerHTML = `<span class="count-value">${visibleCardsInCategory}</span> ${countText}`;
+        }
       });
 
       // Update drawer count if available
@@ -468,6 +475,14 @@
     });
     categorySections.forEach(section => {
       (section as HTMLElement).style.display = 'block';
+
+      // Reset category count to original value
+      const countSpan = section.querySelector('.category-product-count');
+      if (countSpan) {
+        const total = parseInt(countSpan.getAttribute('data-total') || '0', 10);
+        const countText = total === 1 ? 'product' : 'products';
+        countSpan.innerHTML = `<span class="count-value">${total}</span> ${countText}`;
+      }
     });
 
     // Reset drawer count
