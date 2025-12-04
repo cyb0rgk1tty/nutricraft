@@ -19,6 +19,33 @@
 
 import type { APIRoute } from 'astro';
 import { searchProducts, searchProductsSimple, type SearchResult } from '../../utils/db';
+import { getSupabaseClient } from '../../utils/supabase';
+
+// Log search to analytics table (non-blocking, fire-and-forget)
+function logSearchAnalytics(
+  searchTerm: string,
+  resultCount: number,
+  filters: { category?: string; dosageForm?: string }
+): void {
+  const supabase = getSupabaseClient();
+
+  // Fire and forget - don't await, don't block the response
+  supabase
+    .from('search_analytics')
+    .insert({
+      search_term: searchTerm.toLowerCase(),
+      result_count: resultCount,
+      search_type: 'full',
+      filters: JSON.stringify(filters),
+    })
+    .then(() => {
+      // Successfully logged
+    })
+    .catch((error) => {
+      // Log error but don't fail the request
+      console.warn('Failed to log search analytics:', error);
+    });
+}
 
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
@@ -78,6 +105,9 @@ export const GET: APIRoute = async ({ request }) => {
         rank: 1, // No ranking for simple search
       }));
     }
+
+    // Log search to analytics (non-blocking)
+    logSearchAnalytics(query, results.length, { category, dosageForm });
 
     return new Response(
       JSON.stringify({

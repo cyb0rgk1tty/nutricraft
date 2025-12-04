@@ -18,6 +18,133 @@ import type { APIRoute } from 'astro';
 import { autocompleteProducts, type AutocompleteResult } from '../../utils/db';
 import { getSupabaseClient } from '../../utils/supabase';
 
+// Helper to get total count of matching products (without limit)
+async function getTotalMatchCount(term: string): Promise<number> {
+  const supabase = getSupabaseClient();
+  const { count, error } = await supabase
+    .from('products')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_active', true)
+    .or(`name.ilike.%${term}%,description.ilike.%${term}%,sku.ilike.%${term}%`);
+
+  if (error) {
+    console.warn('Count query failed:', error);
+    return 0;
+  }
+  return count || 0;
+}
+
+// Helper to find spell correction suggestions using trigram similarity
+async function findSpellCorrection(term: string): Promise<string | null> {
+  const supabase = getSupabaseClient();
+
+  // Use raw SQL to leverage pg_trgm similarity function
+  const { data, error } = await supabase.rpc('find_similar_term', {
+    search_term: term,
+    min_similarity: 0.3,
+  });
+
+  if (error) {
+    // Function might not exist, try fallback approach
+    console.warn('Spell correction RPC failed:', error);
+    return await findSpellCorrectionFallback(term);
+  }
+
+  return data?.[0]?.suggestion || null;
+}
+
+// Fallback spell correction using simple pattern matching
+async function findSpellCorrectionFallback(term: string): Promise<string | null> {
+  const supabase = getSupabaseClient();
+
+  // Common misspellings map
+  const commonFixes: Record<string, string> = {
+    melatonen: 'melatonin',
+    melatonon: 'melatonin',
+    vitamine: 'vitamin',
+    vitamn: 'vitamin',
+    magnesim: 'magnesium',
+    magnezium: 'magnesium',
+    calicum: 'calcium',
+    calcuim: 'calcium',
+    ashwaganda: 'ashwagandha',
+    ashwagandah: 'ashwagandha',
+    tumeric: 'turmeric',
+    tumric: 'turmeric',
+    colegen: 'collagen',
+    colagan: 'collagen',
+    probiotc: 'probiotic',
+    probioitc: 'probiotic',
+    gummie: 'gummies',
+    gummys: 'gummies',
+    capsuls: 'capsules',
+    capusle: 'capsules',
+    softgel: 'softgels',
+    sofgel: 'softgels',
+    immunty: 'immunity',
+    imunity: 'immunity',
+    enrgy: 'energy',
+    energey: 'energy',
+    slep: 'sleep',
+    sleap: 'sleep',
+  };
+
+  const lowerTerm = term.toLowerCase();
+
+  // Check common misspellings first
+  if (commonFixes[lowerTerm]) {
+    return commonFixes[lowerTerm];
+  }
+
+  // Try to find a similar product name using ILIKE with wildcards
+  const { data } = await supabase
+    .from('products')
+    .select('name')
+    .eq('is_active', true)
+    .limit(100);
+
+  if (!data || data.length === 0) return null;
+
+  // Find the closest match using simple string distance
+  let bestMatch: string | null = null;
+  let bestScore = 0;
+
+  for (const product of data) {
+    const words = product.name.toLowerCase().split(/\s+/);
+    for (const word of words) {
+      if (word.length >= 3) {
+        const score = calculateSimilarity(lowerTerm, word);
+        if (score > bestScore && score >= 0.4 && word !== lowerTerm) {
+          bestScore = score;
+          bestMatch = word;
+        }
+      }
+    }
+  }
+
+  return bestMatch;
+}
+
+// Simple string similarity calculation (Dice coefficient)
+function calculateSimilarity(str1: string, str2: string): number {
+  if (str1 === str2) return 1;
+  if (str1.length < 2 || str2.length < 2) return 0;
+
+  const bigrams1 = new Set<string>();
+  for (let i = 0; i < str1.length - 1; i++) {
+    bigrams1.add(str1.substring(i, i + 2));
+  }
+
+  let matches = 0;
+  for (let i = 0; i < str2.length - 1; i++) {
+    if (bigrams1.has(str2.substring(i, i + 2))) {
+      matches++;
+    }
+  }
+
+  return (2.0 * matches) / (str1.length - 1 + str2.length - 1);
+}
+
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
   const term = url.searchParams.get('q')?.trim() || '';
@@ -83,6 +210,15 @@ export const GET: APIRoute = async ({ request }) => {
       ? [...new Set(ingredientMatches.map((i) => i.ingredient_name))].slice(0, 3)
       : [];
 
+    // Get total count of matching products (for "Showing X of Y" UI)
+    const totalCount = await getTotalMatchCount(term);
+
+    // If no results, try to find spell correction
+    let didYouMean: string | null = null;
+    if (suggestions.length === 0 && ingredientSuggestions.length === 0) {
+      didYouMean = await findSpellCorrection(term);
+    }
+
     return new Response(
       JSON.stringify({
         suggestions: suggestions.map((s) => ({
@@ -96,6 +232,8 @@ export const GET: APIRoute = async ({ request }) => {
           type: 'ingredient',
         })),
         count: suggestions.length,
+        totalCount,
+        didYouMean,
         term,
       }),
       {

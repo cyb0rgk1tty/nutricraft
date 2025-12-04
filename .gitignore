@@ -58,3 +58,4 @@ uploads/
 scripts/alibaba-scraper/
 *.pyc
 __pycache__/
+.mcp.json
