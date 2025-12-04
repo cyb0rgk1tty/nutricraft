@@ -87,10 +87,10 @@ async function graphqlRequest(
 function parseBudgetToMicros(budget: string | undefined): number | null {
   if (!budget) return null;
 
-  // Map budget selections to upper dollar values
+  // Map budget selections to upper dollar values (must match form option values)
   const budgetMap: Record<string, number> = {
-    '$0-5,000': 5000,
-    '$5,000-10,000': 10000,
+    '$0 - $5,000': 5000,
+    '$5,000 - $10,000': 10000,
     '$10,000+': 0, // No upper bound - return null
   };
 

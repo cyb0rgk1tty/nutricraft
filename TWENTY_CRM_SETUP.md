@@ -211,8 +211,8 @@ The integration is **non-blocking**, meaning:
 
 | Form Selection | CRM Amount (USD) | Notes |
 |----------------|------------------|-------|
-| $0-5,000 | $5,000 | Upper value |
-| $5,000-10,000 | $10,000 | Upper value |
+| $0 - $5,000 | $5,000 | Upper value |
+| $5,000 - $10,000 | $10,000 | Upper value |
 | $10,000+ | *(empty)* | No upper bound |
 | Not provided | *(empty)* | - |
 
