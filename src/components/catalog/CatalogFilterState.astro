@@ -220,6 +220,10 @@ const { totalProducts } = Astro.props;
         // Continue with empty ingredients array
       }
 
+      // Short aliases that need word-boundary matching to avoid false positives
+      // e.g., "dha" should not match "ashwagandha"
+      const shortAliases = new Set(['dha', 'epa', 'd3', 'b6', 'b12', 'k2']);
+
       // Helper function to check if a search term matches this product
       const termMatchesProduct = (selected: string): boolean => {
         const searchTerm = selected.toLowerCase();
@@ -236,7 +240,16 @@ const { totalProducts } = Astro.props;
         const aliases = this.getIngredientAliases(selected);
         return productIngredients.some(prodIng => {
           const lowerProdIng = prodIng.toLowerCase();
-          return aliases.some(alias => lowerProdIng.includes(alias));
+          return aliases.some(alias => {
+            // For short aliases, require word boundary match
+            if (shortAliases.has(alias)) {
+              // Check if alias appears as a standalone word or at word boundaries
+              const wordBoundaryRegex = new RegExp(`(^|[^a-z])${alias}($|[^a-z])`, 'i');
+              return wordBoundaryRegex.test(lowerProdIng);
+            }
+            // For longer aliases, simple includes is fine
+            return lowerProdIng.includes(alias);
+          });
         });
       };
 
