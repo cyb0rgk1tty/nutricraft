@@ -9,8 +9,8 @@ import FilterDrawer from '../components/catalog/FilterDrawer.astro';
 import CategorySection from '../components/catalog/CategorySection.astro';
 import { products, productCategories, getProductsByCategory, getUniqueIngredients } from '../data/products.js';
 
-// Get password from environment variable or use default
-const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD || 'nutricraft2025';
+// Get password from environment variable (required)
+const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD;
 
 // Get products organized by category
 const productsByCategory = productCategories.map(category => ({

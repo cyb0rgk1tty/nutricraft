@@ -1,7 +1,105 @@
 /**
  * Twenty CRM Integration Utility
- * Handles creation of Person records in Twenty CRM from contact form submissions
+ * Handles creation of Person, Company, and Opportunity records in Twenty CRM
+ * from contact form submissions
  */
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+interface TwentyCrmConfig {
+  apiUrl: string;
+  apiKey: string;
+}
+
+interface TwentyCrmResponse {
+  success: boolean;
+  personId?: string;
+  companyId?: string;
+  opportunityId?: string;
+  error?: string;
+}
+
+interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  phoneCountryCode?: string;
+  company?: string;
+  targetMarket?: string;
+  orderQuantity?: string;
+  budget?: string;
+  timeline?: string;
+  projectType: string;
+  message: string;
+}
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Gets Twenty CRM API configuration from environment variables
+ */
+function getCrmConfig(): TwentyCrmConfig | null {
+  const apiUrl = process.env.TWENTY_API_URL || import.meta.env.TWENTY_API_URL;
+  const apiKey = process.env.TWENTY_API_KEY || import.meta.env.TWENTY_API_KEY;
+
+  if (!apiUrl || !apiKey) {
+    console.error('Twenty CRM: Missing API URL or API Key');
+    return null;
+  }
+
+  return { apiUrl, apiKey };
+}
+
+/**
+ * Makes a GraphQL request to Twenty CRM
+ */
+async function graphqlRequest(
+  config: TwentyCrmConfig,
+  query: string,
+  variables: Record<string, any>
+): Promise<{ data?: any; errors?: any[] }> {
+  const response = await fetch(config.apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.apiKey}`,
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Twenty CRM API error:', response.status, errorText);
+    throw new Error(`API returned status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Parses budget string to micros (multiply by 1,000,000)
+ * Returns upper value of the range
+ */
+function parseBudgetToMicros(budget: string | undefined): number | null {
+  if (!budget) return null;
+
+  // Map budget selections to upper dollar values
+  const budgetMap: Record<string, number> = {
+    '$0-5,000': 5000,
+    '$5,000-10,000': 10000,
+    '$10,000+': 0, // No upper bound - return null
+  };
+
+  const dollarValue = budgetMap[budget];
+  if (dollarValue === undefined || dollarValue === 0) return null;
+
+  // Convert to micros (multiply by 1,000,000)
+  return dollarValue * 1000000;
+}
 
 /**
  * Normalizes phone number to E.164 format
@@ -38,54 +136,156 @@ function normalizePhoneNumber(phone: string): string | null {
   return null;
 }
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone?: string;
-  phoneCountryCode?: string;
-  company?: string;
-  targetMarket?: string;
-  orderQuantity?: string;
-  budget?: string;
-  timeline?: string;
-  projectType: string;
-  message: string;
+// =============================================================================
+// COMPANY FUNCTIONS
+// =============================================================================
+
+/**
+ * Searches for a company by name (case-insensitive)
+ * @param companyName - Name to search for
+ * @returns Company ID if found, null otherwise
+ */
+export async function findCompanyByName(companyName: string): Promise<string | null> {
+  try {
+    const config = getCrmConfig();
+    if (!config) return null;
+
+    const query = `
+      query FindCompany($filter: CompanyFilterInput) {
+        companies(filter: $filter) {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      filter: {
+        name: {
+          ilike: `%${companyName}%`,
+        },
+      },
+    };
+
+    const result = await graphqlRequest(config, query, variables);
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error searching for company:', result.errors);
+      return null;
+    }
+
+    const companies = result.data?.companies?.edges || [];
+
+    // Find exact match (case-insensitive)
+    const exactMatch = companies.find(
+      (edge: any) => edge.node.name.toLowerCase() === companyName.toLowerCase()
+    );
+
+    if (exactMatch) {
+      console.log(`Twenty CRM: Found existing company ${exactMatch.node.id} for "${companyName}"`);
+      return exactMatch.node.id;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Twenty CRM: Error finding company:', error);
+    return null;
+  }
 }
 
-interface TwentyCrmResponse {
-  success: boolean;
-  personId?: string;
-  error?: string;
+/**
+ * Creates a Company record in Twenty CRM
+ * @param companyName - Name of the company
+ * @param emailDomain - Optional domain extracted from email
+ * @returns Response with success status and company ID
+ */
+export async function createCompanyInTwentyCrm(
+  companyName: string,
+  emailDomain?: string
+): Promise<TwentyCrmResponse> {
+  try {
+    const config = getCrmConfig();
+    if (!config) {
+      return { success: false, error: 'Missing CRM configuration' };
+    }
+
+    const mutation = `
+      mutation CreateCompany($data: CompanyCreateInput!) {
+        createCompany(data: $data) {
+          id
+          name
+        }
+      }
+    `;
+
+    const variables: any = {
+      data: {
+        name: companyName,
+      },
+    };
+
+    // Add domain if provided
+    if (emailDomain) {
+      variables.data.domainName = {
+        primaryLinkUrl: emailDomain,
+      };
+    }
+
+    const result = await graphqlRequest(config, mutation, variables);
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error creating company:', result.errors);
+      return {
+        success: false,
+        error: result.errors[0]?.message || 'GraphQL error',
+      };
+    }
+
+    const companyId = result.data?.createCompany?.id;
+
+    if (!companyId) {
+      console.error('Twenty CRM: No company ID returned', result);
+      return { success: false, error: 'No company ID returned' };
+    }
+
+    console.log(`Twenty CRM: Created company ${companyId} for "${companyName}"`);
+
+    return {
+      success: true,
+      companyId,
+    };
+  } catch (error) {
+    console.error('Twenty CRM: Unexpected error creating company:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
 }
+
+// =============================================================================
+// PERSON FUNCTIONS
+// =============================================================================
 
 /**
  * Creates a Person record in Twenty CRM
  * @param formData - Contact form submission data
+ * @param companyId - Optional company ID to link the person to
  * @returns Promise with success status and person ID or error
  */
 export async function createPersonInTwentyCrm(
-  formData: ContactFormData
+  formData: ContactFormData,
+  companyId?: string
 ): Promise<TwentyCrmResponse> {
   try {
-    const apiUrl = process.env.TWENTY_API_URL || import.meta.env.TWENTY_API_URL;
-    const apiKey = process.env.TWENTY_API_KEY || import.meta.env.TWENTY_API_KEY;
-
-    if (!apiUrl || !apiKey) {
-      console.error('Twenty CRM: Missing API URL or API Key');
+    const config = getCrmConfig();
+    if (!config) {
       return { success: false, error: 'Missing CRM configuration' };
     }
-
-    // Build additional notes with lead qualification data
-    const leadNotes = [
-      formData.targetMarket && `Target Market: ${formData.targetMarket}`,
-      formData.orderQuantity && `Order Quantity: ${formData.orderQuantity}`,
-      formData.budget && `Budget: ${formData.budget}`,
-      formData.timeline && `Timeline: ${formData.timeline}`,
-      `Project Type: ${formData.projectType}`,
-      `Message: ${formData.message}`,
-    ]
-      .filter(Boolean)
-      .join('\n');
 
     // GraphQL mutation to create a person
     const mutation = `
@@ -106,7 +306,7 @@ export async function createPersonInTwentyCrm(
     const lastName = nameParts.slice(1).join(' ') || '';
 
     // Build input data - Twenty CRM uses object structures for emails and phones
-    const variables = {
+    const variables: any = {
       data: {
         name: {
           firstName,
@@ -115,9 +315,14 @@ export async function createPersonInTwentyCrm(
       },
     };
 
+    // Link to company if provided
+    if (companyId) {
+      variables.data.companyId = companyId;
+    }
+
     // Add emails if provided (Twenty CRM expects an object with primaryEmail and additionalEmails)
     if (formData.email) {
-      (variables.data as any).emails = {
+      variables.data.emails = {
         primaryEmail: formData.email,
         additionalEmails: null,
       };
@@ -128,12 +333,9 @@ export async function createPersonInTwentyCrm(
       const normalizedPhone = normalizePhoneNumber(formData.phone);
       if (normalizedPhone) {
         // Use ISO country code from intl-tel-input (e.g., "CA", "US", "GB")
-        // This is much simpler than parsing dial codes from E.164 numbers
-        const countryCode = formData.phoneCountryCode || ''; // e.g., "CA", "US"
+        const countryCode = formData.phoneCountryCode || '';
 
-        // Send the full E.164 number to Twenty CRM
-        // Let Twenty CRM handle parsing based on the country code
-        (variables.data as any).phones = {
+        variables.data.phones = {
           primaryPhoneNumber: normalizedPhone,
           primaryPhoneCountryCode: countryCode,
           additionalPhones: null,
@@ -141,31 +343,8 @@ export async function createPersonInTwentyCrm(
       }
     }
 
-    // Make API request to Twenty CRM
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        query: mutation,
-        variables,
-      }),
-    });
+    const result = await graphqlRequest(config, mutation, variables);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Twenty CRM API error:', response.status, errorText);
-      return {
-        success: false,
-        error: `API returned status ${response.status}`,
-      };
-    }
-
-    const result = await response.json();
-
-    // Check for GraphQL errors
     if (result.errors) {
       console.error('Twenty CRM GraphQL errors:', result.errors);
       return {
@@ -181,10 +360,7 @@ export async function createPersonInTwentyCrm(
       return { success: false, error: 'No person ID returned' };
     }
 
-    console.log(`Twenty CRM: Created person ${personId} for ${formData.email}`);
-
-    // TODO: In the future, we could also create a Note record attached to this person
-    // with the leadNotes content to store the additional lead qualification data
+    console.log(`Twenty CRM: Created person ${personId} for ${formData.email}${companyId ? ` (company: ${companyId})` : ''}`);
 
     return {
       success: true,
@@ -192,6 +368,104 @@ export async function createPersonInTwentyCrm(
     };
   } catch (error) {
     console.error('Twenty CRM: Unexpected error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+// =============================================================================
+// OPPORTUNITY FUNCTIONS
+// =============================================================================
+
+/**
+ * Creates an Opportunity record in Twenty CRM
+ * @param formData - Contact form submission data
+ * @param personId - Person ID to link as point of contact
+ * @param companyId - Optional company ID to link
+ * @returns Promise with success status and opportunity ID or error
+ */
+export async function createOpportunityInTwentyCrm(
+  formData: ContactFormData,
+  personId: string,
+  companyId?: string
+): Promise<TwentyCrmResponse> {
+  try {
+    const config = getCrmConfig();
+    if (!config) {
+      return { success: false, error: 'Missing CRM configuration' };
+    }
+
+    const mutation = `
+      mutation CreateOpportunity($data: OpportunityCreateInput!) {
+        createOpportunity(data: $data) {
+          id
+          name
+          stage
+        }
+      }
+    `;
+
+    // Format project type for display (e.g., "private-label" -> "Private Label")
+    const projectTypeDisplay = formData.projectType
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    // Build opportunity name: "Project Type - Contact Name"
+    const opportunityName = `${projectTypeDisplay} - ${formData.name}`;
+
+    // Parse budget to micros
+    const amountMicros = parseBudgetToMicros(formData.budget);
+
+    const variables: any = {
+      data: {
+        name: opportunityName,
+        stage: 'NEW',
+        pointOfContactId: personId,
+        details: formData.message || '',
+      },
+    };
+
+    // Add company link if provided
+    if (companyId) {
+      variables.data.companyId = companyId;
+    }
+
+    // Add amount if budget was provided and parsed
+    if (amountMicros !== null) {
+      variables.data.amount = {
+        amountMicros: amountMicros,
+        currencyCode: 'USD',
+      };
+    }
+
+    const result = await graphqlRequest(config, mutation, variables);
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error creating opportunity:', result.errors);
+      return {
+        success: false,
+        error: result.errors[0]?.message || 'GraphQL error',
+      };
+    }
+
+    const opportunityId = result.data?.createOpportunity?.id;
+
+    if (!opportunityId) {
+      console.error('Twenty CRM: No opportunity ID returned', result);
+      return { success: false, error: 'No opportunity ID returned' };
+    }
+
+    console.log(`Twenty CRM: Created opportunity ${opportunityId} "${opportunityName}"`);
+
+    return {
+      success: true,
+      opportunityId,
+    };
+  } catch (error) {
+    console.error('Twenty CRM: Unexpected error creating opportunity:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

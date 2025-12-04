@@ -2,7 +2,12 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
-import { createPersonInTwentyCrm } from '../../utils/twentyCrm';
+import {
+  createPersonInTwentyCrm,
+  createCompanyInTwentyCrm,
+  createOpportunityInTwentyCrm,
+  findCompanyByName,
+} from '../../utils/twentyCrm';
 
 /**
  * Escape HTML special characters to prevent XSS in email templates
@@ -171,9 +176,10 @@ ${message}
       html: htmlContent,
     });
 
-    // Create person in Twenty CRM (non-blocking - don't fail form if CRM fails)
+    // Create records in Twenty CRM (non-blocking - don't fail form if CRM fails)
+    // Flow: Company (if provided) → Person → Opportunity
     try {
-      const crmResult = await createPersonInTwentyCrm({
+      const formData = {
         name,
         email,
         phone,
@@ -185,16 +191,53 @@ ${message}
         timeline,
         projectType,
         message,
-      });
+      };
 
-      if (crmResult.success) {
-        console.log('Twenty CRM: Person created successfully:', crmResult.personId);
-      } else {
-        console.error('Twenty CRM: Failed to create person:', crmResult.error);
+      let companyId: string | undefined;
+      let personId: string | undefined;
+
+      // Step 1: Handle Company (if company name provided)
+      if (company) {
+        // Check if company already exists
+        const existingCompanyId = await findCompanyByName(company);
+
+        if (existingCompanyId) {
+          companyId = existingCompanyId;
+        } else {
+          // Create new company
+          const companyResult = await createCompanyInTwentyCrm(company);
+          if (companyResult.success && companyResult.companyId) {
+            companyId = companyResult.companyId;
+          } else {
+            console.error('Twenty CRM: Failed to create company:', companyResult.error);
+          }
+        }
       }
+
+      // Step 2: Create Person (linked to company if available)
+      const personResult = await createPersonInTwentyCrm(formData, companyId);
+      if (personResult.success && personResult.personId) {
+        personId = personResult.personId;
+        console.log('Twenty CRM: Person created successfully:', personId);
+      } else {
+        console.error('Twenty CRM: Failed to create person:', personResult.error);
+      }
+
+      // Step 3: Create Opportunity (linked to person and company)
+      if (personId) {
+        const opportunityResult = await createOpportunityInTwentyCrm(formData, personId, companyId);
+        if (opportunityResult.success) {
+          console.log('Twenty CRM: Opportunity created successfully:', opportunityResult.opportunityId);
+        } else {
+          console.error('Twenty CRM: Failed to create opportunity:', opportunityResult.error);
+        }
+      } else {
+        console.error('Twenty CRM: Skipping opportunity creation - no person ID');
+      }
+
     } catch (crmError) {
       // Log CRM errors but don't fail the form submission
-      console.error('Twenty CRM: Error creating person:', crmError);
+      console.error('Twenty CRM: Error in CRM integration:', crmError);
     }
 
     return new Response(JSON.stringify({

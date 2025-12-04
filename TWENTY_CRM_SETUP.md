@@ -155,16 +155,21 @@ If you don't see the People section, contact your Twenty CRM administrator.
 When someone submits your contact form:
 
 1. **Email sent** (primary notification) ✅
-2. **Person created in Twenty CRM** automatically with:
+2. **Company created/found in Twenty CRM** (if company name provided):
+   - Searches for existing company by name (case-insensitive)
+   - Creates new Company record if not found
+3. **Person created in Twenty CRM** automatically with:
    - **Name** (split into firstName/lastName)
    - **Email** (stored in emails.primaryEmail)
    - **Phone** (stored in phones.primaryPhoneNumber, if provided)
-3. **Additional lead data** captured in logs:
-   - Company name
-   - Target market
-   - Order quantity
-   - Project type
-   - Message/inquiry details
+   - **Company link** (if company was created/found)
+4. **Opportunity created in Twenty CRM** with:
+   - **Name**: "Project Type - Contact Name" (e.g., "Private Label - John Smith")
+   - **Stage**: NEW (initial pipeline stage)
+   - **Amount**: Budget upper value (if provided)
+   - **Details**: Project details/message from form
+   - **Point of Contact**: Linked to the Person record
+   - **Company**: Linked to the Company record (if applicable)
 
 The integration is **non-blocking**, meaning:
 - If CRM fails, email still sends
@@ -175,20 +180,41 @@ The integration is **non-blocking**, meaning:
 
 ## Data Mapping
 
-Here's how form fields map to Twenty CRM Person fields:
+### Person Fields
 
 | Contact Form Field | Twenty CRM Field | Notes |
 |-------------------|------------------|-------|
 | Name | name.firstName<br>name.lastName | Automatically split |
 | Email | emails.primaryEmail | Object structure with primaryEmail |
 | Phone | phones.primaryPhoneNumber | Object structure with phone details |
-| Company | *(not currently stored)* | Requires companyId relationship |
-| Target Market | *(future: note)* | Currently logged |
-| Order Quantity | *(future: note)* | Currently logged |
-| Project Type | *(future: note)* | Currently logged |
-| Message | *(future: note)* | Currently logged |
+| Company | companyId | Links to Company record |
 
-**Note**: Additional lead qualification data (target market, order quantity, project type, message) is captured in the system logs and can be attached as notes in future updates.
+### Company Fields
+
+| Contact Form Field | Twenty CRM Field | Notes |
+|-------------------|------------------|-------|
+| Company | name | Company name from form |
+
+### Opportunity Fields
+
+| Contact Form Field | Twenty CRM Field | Notes |
+|-------------------|------------------|-------|
+| Project Type + Name | name | e.g., "Private Label - John Smith" |
+| - | stage | Set to "NEW" |
+| Budget | amount.amountMicros | Upper value × 1,000,000 |
+| Budget | amount.currencyCode | Set to "USD" |
+| Message | details | Project details from form |
+| Person ID | pointOfContactId | Links to Person record |
+| Company ID | companyId | Links to Company record |
+
+### Budget Conversion
+
+| Form Selection | CRM Amount (USD) | Notes |
+|----------------|------------------|-------|
+| $0-5,000 | $5,000 | Upper value |
+| $5,000-10,000 | $10,000 | Upper value |
+| $10,000+ | *(empty)* | No upper bound |
+| Not provided | *(empty)* | - |
 
 ---
 
@@ -300,13 +326,17 @@ If you hit rate limits, the form will still work (email sends), but CRM sync may
 2. ✅ Environment variables configured
 3. ✅ Dev server restarted
 4. ✅ Test form submitted locally
-5. ✅ Person appears in Twenty CRM People section
-6. ✅ All fields populated correctly (name, email, phone)
-7. ✅ Console logs show success message
-8. ✅ Environment variables added to Vercel
-9. ✅ Production deployment successful
-10. ✅ Test form submitted on live site
-11. ✅ Person created in CRM from production
+5. ✅ Company appears in Twenty CRM Companies section (if company name provided)
+6. ✅ Person appears in Twenty CRM People section
+7. ✅ Person is linked to Company (if applicable)
+8. ✅ Opportunity appears in Twenty CRM Opportunities section
+9. ✅ Opportunity is linked to Person and Company
+10. ✅ All fields populated correctly (name, email, phone, budget, details)
+11. ✅ Console logs show success messages for Company, Person, and Opportunity
+12. ✅ Environment variables added to Vercel
+13. ✅ Production deployment successful
+14. ✅ Test form submitted on live site
+15. ✅ All records created in CRM from production
 
 ---
 
@@ -314,14 +344,15 @@ If you hit rate limits, the form will still work (email sends), but CRM sync may
 
 Potential improvements to the integration:
 
-1. **Company Support**: Auto-create/link Company records from company name field
-2. **Notes/Activities**: Attach lead qualification data as notes
-3. **Custom Fields**: Store target market, order quantity in custom fields
-4. **Lead Scoring**: Calculate lead quality based on form data
-5. **Webhooks**: Trigger workflows in Twenty when forms submitted
-6. **Duplicate Detection**: Check for existing people before creating
-7. **Lead Assignment**: Auto-assign to sales reps based on criteria
-8. **Country Code Detection**: Auto-detect phone country codes from phone numbers
+1. ~~**Company Support**: Auto-create/link Company records from company name field~~ ✅ **Implemented**
+2. ~~**Opportunity Creation**: Auto-create Opportunity records for each lead~~ ✅ **Implemented**
+3. **Notes/Activities**: Attach additional lead data (target market, order quantity) as notes
+4. **Custom Fields**: Store target market, order quantity in custom fields
+5. **Lead Scoring**: Calculate lead quality based on form data
+6. **Webhooks**: Trigger workflows in Twenty when forms submitted
+7. **Duplicate Detection**: Check for existing people before creating
+8. **Lead Assignment**: Auto-assign to sales reps based on criteria
+9. **Country Code Detection**: Auto-detect phone country codes from phone numbers
 
 ---
 
