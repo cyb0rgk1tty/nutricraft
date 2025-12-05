@@ -617,6 +617,14 @@
       // Use centralized state to filter - it handles all DOM manipulation
       const visibleCount = window.catalogFilterState.setSearchResults(query, matchingSlugs);
 
+      // GTM: Track catalog search
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'catalog_search',
+        'search_term': query,
+        'result_count': visibleCount
+      });
+
       // Show results banner
       showResultsBanner(visibleCount, query);
 

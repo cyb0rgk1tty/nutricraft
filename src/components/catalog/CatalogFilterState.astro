@@ -288,19 +288,55 @@ const { totalProducts } = Astro.props;
     },
 
     setCategory(category: string): number {
+      const prevCategory = this.category;
       this.category = category;
-      return this.applyAllFilters();
+      const count = this.applyAllFilters();
+
+      // GTM: Track category filter change
+      if (category !== prevCategory) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'catalog_filter',
+          'filter_type': 'category',
+          'filter_value': category,
+          'result_count': count
+        });
+      }
+      return count;
     },
 
     setDosageForm(dosageForm: string): number {
+      const prevDosage = this.dosageForm;
       this.dosageForm = dosageForm;
-      return this.applyAllFilters();
+      const count = this.applyAllFilters();
+
+      // GTM: Track dosage form filter change
+      if (dosageForm !== prevDosage) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'catalog_filter',
+          'filter_type': 'dosage_form',
+          'filter_value': dosageForm,
+          'result_count': count
+        });
+      }
+      return count;
     },
 
     addIngredient(ingredient: string): number {
       if (!this.ingredients.includes(ingredient)) {
         this.ingredients.push(ingredient);
-        return this.applyAllFilters();
+        const count = this.applyAllFilters();
+
+        // GTM: Track ingredient filter added
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'catalog_filter_ingredient',
+          'action': 'add',
+          'ingredient': ingredient,
+          'result_count': count
+        });
+        return count;
       }
       return -1; // No change
     },
@@ -309,7 +345,17 @@ const { totalProducts } = Astro.props;
       const idx = this.ingredients.indexOf(ingredient);
       if (idx > -1) {
         this.ingredients.splice(idx, 1);
-        return this.applyAllFilters();
+        const count = this.applyAllFilters();
+
+        // GTM: Track ingredient filter removed
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'catalog_filter_ingredient',
+          'action': 'remove',
+          'ingredient': ingredient,
+          'result_count': count
+        });
+        return count;
       }
       return -1;
     },
