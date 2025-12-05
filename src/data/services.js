@@ -56,12 +56,12 @@ export const services = [
   },
   {
     id: 'quality-testing',
-    title: 'Quality & Testing',
-    description: 'Third-party laboratory testing ensures product safety, potency, and regulatory compliance.',
+    title: 'Quality Testing (Included)',
+    description: 'Comprehensive third-party testing included with all manufacturing orders. COA, safety testing, and compliance verification.',
     features: [
-      'Certificate of Analysis (COA) management',
-      'Microbial and heavy metal testing',
-      'Stability and shelf-life verification'
+      'Included with every manufacturing order',
+      'ISO 17025 accredited lab partners',
+      'COA, microbial, heavy metals, potency'
     ],
     icon: '🔬'
   },
