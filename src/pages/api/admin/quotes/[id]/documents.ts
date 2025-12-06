@@ -2,10 +2,12 @@
  * API Endpoint: /api/admin/quotes/[id]/documents
  * GET - List all documents for a quote
  * POST - Upload a new document
+ * Protected by session authentication
  */
 
 import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../../../utils/supabase';
+import { verifySession } from '../../../../../utils/adminAuth';
 
 // Magic bytes for file type validation
 const FILE_SIGNATURES: Record<string, number[][]> = {
@@ -52,8 +54,17 @@ function sanitizeFilename(filename: string): string {
 /**
  * GET - List all documents for a quote
  */
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({ params, request }) => {
   try {
+    // Verify authentication
+    const authResult = await verifySession(request);
+    if (!authResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id } = params;
 
     if (!id) {
@@ -100,6 +111,15 @@ export const GET: APIRoute = async ({ params }) => {
  */
 export const POST: APIRoute = async ({ params, request }) => {
   try {
+    // Verify authentication
+    const authResult = await verifySession(request);
+    if (!authResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id } = params;
 
     if (!id) {

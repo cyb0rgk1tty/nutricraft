@@ -1,16 +1,27 @@
 /**
  * API Endpoint: GET /api/admin/quotes/[id]/documents/[docId]/url
  * Generates a signed URL for viewing/downloading a document
+ * Protected by session authentication
  */
 
 import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../../../../../utils/supabase';
+import { verifySession } from '../../../../../../../utils/adminAuth';
 
 // Signed URL expiry time in seconds (1 hour)
 const SIGNED_URL_EXPIRY = 3600;
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({ params, request }) => {
   try {
+    // Verify authentication
+    const authResult = await verifySession(request);
+    if (!authResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id, docId } = params;
 
     if (!id || !docId) {

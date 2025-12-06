@@ -1,13 +1,24 @@
 /**
  * API Endpoint: GET /api/admin/quotes
  * Fetches quote requests from Twenty CRM
+ * Protected by session authentication
  */
 
 import type { APIRoute } from 'astro';
 import { fetchQuotesFromCRM } from '../../../utils/twentyCrmQuotes';
+import { verifySession } from '../../../utils/adminAuth';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
+    // Verify authentication
+    const authResult = await verifySession(request);
+    if (!authResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Fetch quotes from CRM
     const result = await fetchQuotesFromCRM();
 

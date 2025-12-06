@@ -10,10 +10,11 @@ export const translations = {
     pageDescription: 'Internal dashboard for managing manufacturer price quotes',
 
     // Auth
-    enterPassword: 'Enter your password to continue',
-    passwordPlaceholder: 'Enter admin password',
+    enterCredentials: 'Enter your credentials to continue',
+    usernamePlaceholder: 'Username',
+    passwordPlaceholder: 'Password',
     accessDashboard: 'Access Dashboard',
-    invalidPassword: 'Invalid password. Please try again.',
+    invalidCredentials: 'Invalid username or password. Please try again.',
     togglePasswordVisibility: 'Toggle password visibility',
 
     // Header
@@ -119,10 +120,11 @@ export const translations = {
     pageDescription: '管理制造商报价请求的内部仪表板',
 
     // Auth
-    enterPassword: '请输入密码继续',
-    passwordPlaceholder: '输入管理员密码',
+    enterCredentials: '请输入您的凭据以继续',
+    usernamePlaceholder: '用户名',
+    passwordPlaceholder: '密码',
     accessDashboard: '访问仪表板',
-    invalidPassword: '密码无效，请重试。',
+    invalidCredentials: '用户名或密码无效，请重试。',
     togglePasswordVisibility: '切换密码可见性',
 
     // Header

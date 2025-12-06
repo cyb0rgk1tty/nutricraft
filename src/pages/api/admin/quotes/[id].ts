@@ -1,13 +1,24 @@
 /**
  * API Endpoint: PATCH /api/admin/quotes/[id]
  * Updates a quote in Twenty CRM
+ * Protected by session authentication
  */
 
 import type { APIRoute } from 'astro';
 import { updateQuoteInCRM } from '../../../../utils/twentyCrmQuotes';
+import { verifySession } from '../../../../utils/adminAuth';
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   try {
+    // Verify authentication
+    const authResult = await verifySession(request);
+    if (!authResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id } = params;
 
     if (!id) {

@@ -1,7 +1,7 @@
 ---
 /**
  * Manufacturer Dashboard - Quote Management
- * Password-protected admin page for tracking and pricing quote requests from Twenty CRM
+ * Username/password protected admin page for tracking and pricing quote requests from Twenty CRM
  * Supports English and Chinese languages
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -9,9 +9,11 @@ import QuoteTable from '../../components/admin/QuoteTable.astro';
 import QuoteDetailPanel from '../../components/admin/QuoteDetailPanel.astro';
 import StatusStrip from '../../components/admin/StatusStrip.astro';
 import LanguageSelector from '../../components/admin/LanguageSelector.astro';
+import { verifySession } from '../../utils/adminAuth';
 
-// Get admin password from environment
-const adminPassword = process.env.ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD || 'admin123';
+// Check if user is already authenticated via cookie
+const authResult = await verifySession(Astro.request);
+const isAuthenticated = !!authResult;
 
 // SEO metadata
 const title = 'Manufacture Dashboard | Nutricraft Labs';
@@ -19,8 +21,8 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 ---
 
 <BaseLayout title={title} description={description} noindex={true} noChat={true}>
-  <!-- Password Gate -->
-  <div id="password-gate" class="min-h-[calc(100vh-5rem)] bg-gradient-to-br from-mint-50 via-white to-primary/5 flex items-center justify-center py-16">
+  <!-- Login Gate -->
+  <div id="login-gate" class:list={["min-h-[calc(100vh-5rem)] bg-gradient-to-br from-mint-50 via-white to-primary/5 flex items-center justify-center py-16", { "hidden": isAuthenticated }]}>
     <div class="max-w-md mx-auto px-4 sm:px-6 text-center">
       <!-- Lock Icon -->
       <div class="w-20 h-20 bg-gradient-to-br from-primary to-mint-500 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-primary/30">
@@ -30,17 +32,30 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       </div>
 
       <h1 id="gate-title" class="text-3xl md:text-4xl font-bold text-gray-900 mb-3" data-i18n="pageTitle">Manufacture Dashboard</h1>
-      <p id="gate-subtitle" class="text-lg text-gray-600 mb-8" data-i18n="enterPassword">Enter your password to continue</p>
+      <p id="gate-subtitle" class="text-lg text-gray-600 mb-8" data-i18n="enterCredentials">Enter your credentials to continue</p>
 
-      <form id="password-form" class="space-y-4">
+      <form id="login-form" class="space-y-4">
+        <!-- Username Field -->
+        <div>
+          <input
+            type="text"
+            id="username-input"
+            data-i18n-placeholder="usernamePlaceholder"
+            placeholder="Username"
+            autocomplete="username"
+            class="w-full px-4 py-4 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors duration-300 text-center text-lg"
+          />
+        </div>
+
+        <!-- Password Field -->
         <div class="relative">
           <input
             type="password"
             id="password-input"
             data-i18n-placeholder="passwordPlaceholder"
-            placeholder="Enter admin password"
-            autocomplete="off"
-            class="w-full px-4 py-4 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors duration-300 text-center text-lg tracking-widest"
+            placeholder="Password"
+            autocomplete="current-password"
+            class="w-full px-4 py-4 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors duration-300 text-center text-lg"
           />
           <button
             type="button"
@@ -62,24 +77,24 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
         <button
           type="submit"
           id="access-btn"
-          class="w-full bg-primary text-white font-semibold py-4 px-8 rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          class="w-full bg-primary text-white font-semibold py-4 px-8 rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           data-i18n="accessDashboard"
         >
           Access Dashboard
         </button>
 
-        <div id="password-error" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
+        <div id="login-error" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
           <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
-          <p id="error-text" class="text-sm text-red-700" data-i18n="invalidPassword">Invalid password. Please try again.</p>
+          <p id="error-text" class="text-sm text-red-700" data-i18n="invalidCredentials">Invalid username or password. Please try again.</p>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Dashboard Content (hidden until authenticated) -->
-  <div id="dashboard-content" class="hidden">
+  <div id="dashboard-content" class:list={[{ "hidden": !isAuthenticated }]}>
     <!-- Header -->
     <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -183,12 +198,9 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
 <script>
   import { t, getLanguage } from '../../utils/i18n';
-
-  // Store for admin password (injected from server)
-  declare const adminPassword: string;
 </script>
 
-<script define:vars={{ adminPassword }}>
+<script>
   // Import i18n functions dynamically
   let i18n = null;
 
@@ -243,33 +255,29 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
   // Initialize i18n on load
   initI18n();
 
-  const CORRECT_PASSWORD = adminPassword;
-  const STORAGE_KEY = 'admin_authenticated';
-
   // Elements
-  const passwordGate = document.getElementById('password-gate');
+  const loginGate = document.getElementById('login-gate');
   const dashboardContent = document.getElementById('dashboard-content');
-  const passwordForm = document.getElementById('password-form');
-  const passwordInput = document.getElementById('password-input');
-  const passwordError = document.getElementById('password-error');
+  const loginForm = document.getElementById('login-form');
+  const usernameInput = document.getElementById('username-input') as HTMLInputElement;
+  const passwordInput = document.getElementById('password-input') as HTMLInputElement;
+  const loginError = document.getElementById('login-error');
+  const accessBtn = document.getElementById('access-btn') as HTMLButtonElement;
   const togglePassword = document.getElementById('toggle-password');
   const eyeOpen = document.getElementById('eye-open');
   const eyeClosed = document.getElementById('eye-closed');
   const logoutBtn = document.getElementById('logout-btn');
 
-  // Check if already authenticated
-  function checkAuth() {
-    return sessionStorage.getItem(STORAGE_KEY) === 'true';
-  }
-
-  // Show dashboard
+  // Show dashboard with animation
   function showDashboard() {
-    passwordGate.style.transition = 'opacity 300ms ease, transform 300ms ease';
-    passwordGate.style.opacity = '0';
-    passwordGate.style.transform = 'scale(0.98)';
+    if (!loginGate || !dashboardContent) return;
+
+    loginGate.style.transition = 'opacity 300ms ease, transform 300ms ease';
+    loginGate.style.opacity = '0';
+    loginGate.style.transform = 'scale(0.98)';
 
     setTimeout(() => {
-      passwordGate.classList.add('hidden');
+      loginGate.classList.add('hidden');
       dashboardContent.classList.remove('hidden');
       dashboardContent.style.opacity = '0';
       dashboardContent.style.transition = 'opacity 300ms ease';
@@ -282,56 +290,109 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     }, 300);
   }
 
-  // Check if already authenticated on load
-  if (checkAuth()) {
-    passwordGate.classList.add('hidden');
-    dashboardContent.classList.remove('hidden');
-    // Load quotes
+  // If already authenticated (server-side check), load quotes
+  if (!loginGate?.classList.contains('hidden') === false) {
+    loadQuotes();
+  } else if (dashboardContent && !dashboardContent.classList.contains('hidden')) {
+    // User is authenticated, load quotes
     loadQuotes();
   }
 
   // Toggle password visibility
   togglePassword?.addEventListener('click', () => {
+    if (!passwordInput) return;
     const type = passwordInput.type === 'password' ? 'text' : 'password';
     passwordInput.type = type;
-    eyeOpen.classList.toggle('hidden');
-    eyeClosed.classList.toggle('hidden');
+    eyeOpen?.classList.toggle('hidden');
+    eyeClosed?.classList.toggle('hidden');
   });
 
   // Handle form submission
-  passwordForm?.addEventListener('submit', (e) => {
+  loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const input = passwordInput.value;
 
-    if (input === CORRECT_PASSWORD) {
-      sessionStorage.setItem(STORAGE_KEY, 'true');
-      showDashboard();
-    } else {
-      passwordError.classList.remove('hidden');
-      passwordInput.classList.add('border-red-300');
-      passwordInput.focus();
+    const username = usernameInput?.value?.trim();
+    const password = passwordInput?.value;
 
-      // Shake animation
-      passwordInput.style.animation = 'shake 0.5s ease-in-out';
-      setTimeout(() => {
-        passwordInput.style.animation = '';
-      }, 500);
+    if (!username || !password) {
+      showError('Please enter both username and password');
+      return;
+    }
+
+    // Disable button during login
+    if (accessBtn) {
+      accessBtn.disabled = true;
+      accessBtn.textContent = 'Logging in...';
+    }
+
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        showDashboard();
+      } else {
+        showError(data.error || 'Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      showError('An error occurred. Please try again.');
+    } finally {
+      // Re-enable button
+      if (accessBtn) {
+        accessBtn.disabled = false;
+        accessBtn.textContent = i18n?.t('accessDashboard') || 'Access Dashboard';
+      }
     }
   });
 
+  function showError(message: string) {
+    if (loginError) {
+      loginError.classList.remove('hidden');
+      const errorText = document.getElementById('error-text');
+      if (errorText) {
+        errorText.textContent = message;
+      }
+    }
+
+    // Shake animation on inputs
+    [usernameInput, passwordInput].forEach(input => {
+      if (input) {
+        input.classList.add('border-red-300');
+        input.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          input.style.animation = '';
+        }, 500);
+      }
+    });
+  }
+
   // Clear error on input
-  passwordInput?.addEventListener('input', () => {
-    passwordError.classList.add('hidden');
-    passwordInput.classList.remove('border-red-300');
+  [usernameInput, passwordInput].forEach(input => {
+    input?.addEventListener('input', () => {
+      loginError?.classList.add('hidden');
+      usernameInput?.classList.remove('border-red-300');
+      passwordInput?.classList.remove('border-red-300');
+    });
   });
 
   // Logout
-  logoutBtn?.addEventListener('click', () => {
-    sessionStorage.removeItem(STORAGE_KEY);
+  logoutBtn?.addEventListener('click', async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    // Reload page to show login form
     window.location.reload();
   });
 
-  // Load quotes function (will be connected to API)
+  // Load quotes function
   async function loadQuotes() {
     const loadingState = document.getElementById('loading-state');
     const errorState = document.getElementById('error-state');
@@ -346,6 +407,12 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
     try {
       const response = await fetch('/api/admin/quotes');
+
+      // If unauthorized, redirect to login
+      if (response.status === 401) {
+        window.location.reload();
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -374,8 +441,6 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
       const errorMessage = document.getElementById('error-message');
       if (errorMessage && i18n) {
-        // Keep the default error message from translations
-        // Only override if we have a specific error
         if (error instanceof Error && error.message !== 'HTTP 500') {
           errorMessage.textContent = i18n.t('error', { message: error.message });
         }
