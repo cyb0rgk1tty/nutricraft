@@ -130,7 +130,7 @@ async function graphqlRequest(
  * Maps CRM data to dashboard Quote format
  */
 function mapCrmToQuote(crmData: Record<string, any>): Quote {
-  const { fieldMappings, reverseStatusMappings } = CRM_CONFIG;
+  const { fieldMappings } = CRM_CONFIG;
 
   // Extract mapped fields
   const quote: Quote = {
@@ -145,7 +145,7 @@ function mapCrmToQuote(crmData: Record<string, any>): Quote {
     orderQuantity: crmData[fieldMappings.orderQuantity] || '',
     timeline: crmData[fieldMappings.timeline] || '',
     message: crmData[fieldMappings.message] || crmData.details || '',
-    status: reverseStatusMappings[crmData[fieldMappings.status]] || crmData[fieldMappings.status]?.toLowerCase() || 'new',
+    status: crmData[fieldMappings.status]?.toLowerCase() || 'new',
     totalPrice: parseAmountFromCrm(crmData[fieldMappings.totalPrice]),
     notes: crmData[fieldMappings.notes] || '',
     createdAt: crmData[fieldMappings.createdAt] || crmData.createdAt,
@@ -454,7 +454,7 @@ export async function updateQuoteInCRM(
       quote: {
         id: updatedProduct.id,
         name: updatedProduct.name || '',
-        status: CRM_CONFIG.reverseStatusMappings[stageValue] || stageValue?.toLowerCase() || 'new',
+        status: stageValue?.toLowerCase() || 'new',
         updatedAt: updatedProduct.updatedAt,
       },
     };

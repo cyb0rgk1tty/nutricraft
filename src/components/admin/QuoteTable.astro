@@ -30,13 +30,6 @@
     <table class="w-full">
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <th class="w-10 px-4 py-3">
-            <input
-              type="checkbox"
-              id="select-all"
-              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/30"
-            />
-          </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
             <div class="flex items-center gap-1">
               Created
@@ -60,6 +53,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            Formula
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
             <div class="flex items-center gap-1">
@@ -102,9 +98,6 @@
   }
   tbody tr:hover {
     background-color: #f0fef4;
-  }
-  tbody tr.selected {
-    background-color: #d1fae5;
   }
 
   /* Sort icon active state - primary mint */
@@ -210,6 +203,62 @@
   .inline-input[type=number] {
     -moz-appearance: textfield;
   }
+
+  /* Quantity input - narrower for 5 digits max */
+  .qty-input {
+    width: 60px;
+  }
+
+  /* Formula thumbnail styles */
+  .formula-thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+  .formula-thumbnail img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .formula-thumbnail img:hover {
+    border-color: #00c16e;
+    box-shadow: 0 0 0 2px rgba(0, 193, 110, 0.15);
+    transform: scale(1.05);
+  }
+  .formula-thumbnail .pdf-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .formula-thumbnail .pdf-icon:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+  .formula-thumbnail .pdf-icon span {
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+  }
+  .formula-thumbnail .no-doc {
+    width: 40px;
+    height: 40px;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+  }
 </style>
 
 <script>
@@ -222,7 +271,6 @@
   // Elements
   const tableBody = document.getElementById('quote-table-body');
   const searchInput = document.getElementById('quote-search') as HTMLInputElement;
-  const selectAllCheckbox = document.getElementById('select-all') as HTMLInputElement;
   const visibleCount = document.getElementById('visible-count');
   const noResults = document.getElementById('no-results');
 
@@ -237,6 +285,37 @@
   window.addEventListener('statusFilterChanged', (e: Event) => {
     const event = e as CustomEvent;
     applyFiltersAndRender();
+  });
+
+  // Listen for quote updates (from inline edits or side panel)
+  window.addEventListener('quoteUpdated', (e: Event) => {
+    const event = e as CustomEvent;
+    const updatedQuote = event.detail?.quote;
+    if (!updatedQuote) return;
+
+    // Update the quote in allQuotes array
+    const index = allQuotes.findIndex(q => q.id === updatedQuote.id);
+    if (index !== -1) {
+      allQuotes[index] = { ...allQuotes[index], ...updatedQuote };
+    }
+
+    // Update the specific row's inputs without full re-render
+    const row = document.querySelector(`tr[data-quote-id="${updatedQuote.id}"]`);
+    if (row) {
+      const priceInput = row.querySelector('.price-input') as HTMLInputElement;
+      const qtyInput = row.querySelector('.qty-input') as HTMLInputElement;
+
+      if (priceInput && updatedQuote.ourCost !== undefined) {
+        priceInput.value = updatedQuote.ourCost != null && updatedQuote.ourCost !== 0
+          ? formatPrice(updatedQuote.ourCost)
+          : '';
+      }
+      if (qtyInput && updatedQuote.orderQuantity !== undefined) {
+        qtyInput.value = updatedQuote.orderQuantity != null && updatedQuote.orderQuantity !== 0
+          ? String(updatedQuote.orderQuantity)
+          : '';
+      }
+    }
   });
 
   // Search input handler
@@ -266,16 +345,6 @@
       th.classList.add(`sort-${currentSort.direction}`);
 
       applyFiltersAndRender();
-    });
-  });
-
-  // Select all handler
-  selectAllCheckbox?.addEventListener('change', () => {
-    const checkboxes = tableBody?.querySelectorAll('input[type="checkbox"]');
-    checkboxes?.forEach(cb => {
-      (cb as HTMLInputElement).checked = selectAllCheckbox.checked;
-      const row = cb.closest('tr');
-      row?.classList.toggle('selected', selectAllCheckbox.checked);
     });
   });
 
@@ -371,13 +440,6 @@
 
       return `
         <tr data-quote-id="${quote.id}" class="cursor-pointer">
-          <td class="px-4 py-3">
-            <input
-              type="checkbox"
-              class="row-checkbox w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/30"
-              onclick="event.stopPropagation()"
-            />
-          </td>
           <td class="px-4 py-3 text-gray-500 text-sm">
             ${createdDate}
           </td>
@@ -388,6 +450,11 @@
             <span class="status-badge" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
               ${statusLabel}
             </span>
+          </td>
+          <td class="px-4 py-3">
+            <div class="formula-thumbnail" data-quote-id="${quote.id}" onclick="event.stopPropagation()">
+              <div class="formula-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse"></div>
+            </div>
           </td>
           <td class="px-4 py-3">
             <div class="price-cell inline-block">
@@ -434,27 +501,12 @@
     tbody.querySelectorAll('tr[data-quote-id]').forEach(row => {
       row.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        // Don't open panel if clicking checkbox, status badge, or inline inputs
-        if (target.closest('.row-checkbox') || target.closest('.status-badge') || target.closest('.inline-input')) return;
+        // Don't open panel if clicking status badge or inline inputs
+        if (target.closest('.status-badge') || target.closest('.inline-input')) return;
 
         const quoteId = row.getAttribute('data-quote-id');
         if (quoteId) {
           openQuotePanel(quoteId);
-        }
-      });
-    });
-
-    // Add checkbox handlers
-    tbody.querySelectorAll('.row-checkbox').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const row = cb.closest('tr');
-        row?.classList.toggle('selected', (cb as HTMLInputElement).checked);
-
-        // Update select all state
-        const allCheckboxes = tbody.querySelectorAll('.row-checkbox');
-        const allChecked = Array.from(allCheckboxes).every(c => (c as HTMLInputElement).checked);
-        if (selectAllCheckbox) {
-          selectAllCheckbox.checked = allChecked;
         }
       });
     });
@@ -521,6 +573,118 @@
         }
       });
     });
+
+    // Load formula thumbnails for all visible quotes
+    loadFormulaThumbnails();
+  }
+
+  // Document cache to avoid re-fetching
+  const documentCache: Map<string, any[]> = new Map();
+
+  // Load formula thumbnails for visible quotes
+  async function loadFormulaThumbnails() {
+    const thumbnails = document.querySelectorAll('.formula-thumbnail[data-quote-id]');
+
+    for (const thumbnail of thumbnails) {
+      const quoteId = thumbnail.getAttribute('data-quote-id');
+      if (!quoteId) continue;
+
+      // Check cache first
+      if (documentCache.has(quoteId)) {
+        renderThumbnail(thumbnail as HTMLElement, documentCache.get(quoteId)!, quoteId);
+        continue;
+      }
+
+      try {
+        const response = await fetch(`/api/admin/quotes/${quoteId}/documents`);
+        if (response.ok) {
+          const data = await response.json();
+          const documents = data.documents || [];
+          documentCache.set(quoteId, documents);
+          renderThumbnail(thumbnail as HTMLElement, documents, quoteId);
+        } else {
+          renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+        }
+      } catch (error) {
+        console.error('Failed to load documents for quote:', quoteId, error);
+        renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+      }
+    }
+  }
+
+  // Render a single thumbnail
+  function renderThumbnail(container: HTMLElement, documents: any[], quoteId: string) {
+    if (documents.length === 0) {
+      container.innerHTML = `
+        <div class="no-doc" title="No formula uploaded">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+      `;
+      return;
+    }
+
+    const doc = documents[0]; // Show first document
+    const fileType = doc.file_type;
+
+    if (fileType === 'application/pdf') {
+      container.innerHTML = `
+        <div class="pdf-icon" title="${escapeHtml(doc.file_name)}" data-doc-id="${doc.id}" data-quote-id="${quoteId}">
+          <span>PDF</span>
+        </div>
+      `;
+    } else {
+      // For images, we need to get a signed URL
+      container.innerHTML = `
+        <div class="img-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse" data-doc-id="${doc.id}" data-quote-id="${quoteId}"></div>
+      `;
+      loadImageThumbnail(container, doc.id, quoteId, doc.file_name);
+    }
+
+    // Add click handler to open document
+    container.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const docId = doc.id;
+      await openDocument(quoteId, docId);
+    });
+  }
+
+  // Load image thumbnail with signed URL
+  async function loadImageThumbnail(container: HTMLElement, docId: string, quoteId: string, fileName: string) {
+    try {
+      const response = await fetch(`/api/admin/quotes/${quoteId}/documents/${docId}/url`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          container.innerHTML = `<img src="${data.url}" alt="${escapeHtml(fileName)}" title="${escapeHtml(fileName)}" />`;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load image thumbnail:', error);
+      container.innerHTML = `
+        <div class="no-doc" title="Failed to load">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+      `;
+    }
+  }
+
+  // Open document in new tab
+  async function openDocument(quoteId: string, docId: string) {
+    try {
+      const response = await fetch(`/api/admin/quotes/${quoteId}/documents/${docId}/url`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          window.open(data.url, '_blank');
+        }
+      }
+    } catch (error) {
+      console.error('Failed to open document:', error);
+    }
   }
 
   // Save inline field with visual feedback
@@ -548,6 +712,13 @@
       // Update local data
       quote[field] = value;
 
+      // Update the input value to reflect saved value
+      if (field === 'ourCost') {
+        inputEl.value = value ? formatPrice(value) : '';
+      } else {
+        inputEl.value = value ? String(value) : '';
+      }
+
       // Show saved state
       inputEl.classList.remove('saving');
       inputEl.classList.add('saved');
@@ -555,8 +726,8 @@
         inputEl.classList.remove('saved');
       }, 1500);
 
-      // Notify panel if open
-      window.dispatchEvent(new CustomEvent('quoteUpdated', { detail: { quote } }));
+      // Notify panel if open - use different event name to avoid triggering our own listener
+      window.dispatchEvent(new CustomEvent('quoteUpdatedFromTable', { detail: { quote } }));
     } catch (error) {
       console.error('Failed to save field:', error);
       inputEl.classList.remove('saving');
