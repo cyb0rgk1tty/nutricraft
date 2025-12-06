@@ -16,7 +16,7 @@
 <!-- Panel -->
 <aside
   id="quote-panel"
-  class="fixed top-0 right-0 h-full w-full max-w-lg bg-white z-[70] shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col border-l border-gray-200"
+  class="fixed top-0 right-0 h-full w-full max-w-full sm:max-w-lg bg-white z-[70] shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col border-l border-gray-200"
   role="dialog"
   aria-modal="true"
   aria-label="Quote details"
@@ -48,7 +48,7 @@
     <!-- Status Section -->
     <div class="p-4 border-b border-gray-100">
       <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3" data-i18n="stage">Stage</h3>
-      <div class="flex gap-2 flex-wrap">
+      <div class="grid grid-cols-2 sm:flex gap-2 sm:flex-wrap">
         <button type="button" class="status-btn" data-status="planning" data-i18n="priceQuote">Price Quote</button>
         <button type="button" class="status-btn" data-status="order_samples" data-i18n="orderSamples">Order Samples</button>
         <button type="button" class="status-btn" data-status="client_review_samples" data-i18n="sampleDelivered">Sample Delivered</button>
@@ -59,14 +59,14 @@
     <!-- Product Details Section -->
     <div class="p-4 border-b border-gray-100">
       <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3" data-i18n="productDetails">Product Details</h3>
-      <div class="grid grid-cols-2 gap-4 text-sm">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
         <div>
-          <span class="text-gray-500" data-i18n="created">Created</span>
-          <p id="panel-created" class="font-medium text-gray-900">—</p>
+          <span class="text-gray-500 text-xs sm:text-sm" data-i18n="created">Created</span>
+          <p id="panel-created" class="font-medium text-gray-900 text-sm">—</p>
         </div>
         <div>
-          <span class="text-gray-500" data-i18n="updated">Updated</span>
-          <p id="panel-updated" class="font-medium text-gray-900">—</p>
+          <span class="text-gray-500 text-xs sm:text-sm" data-i18n="updated">Updated</span>
+          <p id="panel-updated" class="font-medium text-gray-900 text-sm">—</p>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
           <span class="saved hidden text-green-600" data-i18n="saved">Saved</span>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="price-input-wrapper">
           <label class="block text-sm text-gray-600 mb-2" data-i18n="price">Price</label>
           <input
@@ -194,19 +194,19 @@
     </div>
 
     <!-- Image Zoom Controls (shown only for images) -->
-    <div id="zoom-controls" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/70 rounded-full px-4 py-2 flex items-center gap-3">
-      <button id="zoom-out" type="button" class="text-white hover:text-gray-300 transition-colors w-8 h-8 flex items-center justify-center">
+    <div id="zoom-controls" class="hidden absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 bg-black/70 rounded-full px-3 sm:px-4 py-2 flex items-center gap-2 sm:gap-3">
+      <button id="zoom-out" type="button" class="text-white hover:text-gray-300 transition-colors w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
         </svg>
       </button>
       <span id="zoom-level" class="text-white text-sm font-medium min-w-[50px] text-center">100%</span>
-      <button id="zoom-in" type="button" class="text-white hover:text-gray-300 transition-colors w-8 h-8 flex items-center justify-center">
+      <button id="zoom-in" type="button" class="text-white hover:text-gray-300 transition-colors w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
       </button>
-      <button id="zoom-reset" type="button" class="text-white hover:text-gray-300 transition-colors text-xs px-2 py-1 rounded hover:bg-white/10" data-i18n="reset">
+      <button id="zoom-reset" type="button" class="text-white hover:text-gray-300 transition-colors text-xs px-3 py-2 sm:px-2 sm:py-1 rounded hover:bg-white/10" data-i18n="reset">
         Reset
       </button>
     </div>
@@ -241,14 +241,23 @@
 
   /* Status buttons */
   .status-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.625rem 0.75rem;
     border-radius: 0.5rem;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     background-color: #f3f4f6;
     color: #6b7280;
     border: 2px solid transparent;
     transition: all 0.15s ease;
+    min-height: 44px;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .status-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
   }
 
   .status-btn:hover {
@@ -279,15 +288,26 @@
 
   /* Price input */
   .price-input {
-    width: 120px;
-    padding: 0.5rem 0.75rem;
+    width: 100%;
+    padding: 0.75rem 0.75rem;
     padding-left: 1.5rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 500;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
     text-align: right;
     transition: all 0.15s ease;
+    min-height: 48px;
+  }
+
+  @media (min-width: 640px) {
+    .price-input {
+      width: 120px;
+      padding: 0.5rem 0.75rem;
+      padding-left: 1.5rem;
+      font-size: 0.875rem;
+      min-height: auto;
+    }
   }
 
   .price-input:focus {
@@ -312,12 +332,21 @@
 
   /* Quantity input */
   .quantity-input {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.75rem 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
     transition: all 0.15s ease;
+    min-height: 48px;
+  }
+
+  @media (min-width: 640px) {
+    .quantity-input {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      min-height: auto;
+    }
   }
 
   .quantity-input:focus {

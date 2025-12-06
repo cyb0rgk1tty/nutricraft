@@ -39,7 +39,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.75rem 0.5rem;
+    padding: 1rem 0.625rem;
     background-color: #00c16e;
     color: white;
     font-weight: 600;
@@ -48,6 +48,7 @@
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    min-width: 44px; /* Touch-friendly width */
   }
 
   /* When sidebar is closed, tab moves to left edge */
@@ -92,5 +93,24 @@
 
   .filter-badge.hidden {
     display: none;
+  }
+
+  /* Mobile: larger touch target and better positioning */
+  @media (max-width: 1023px) {
+    .filter-tab-button {
+      padding: 1.25rem 0.75rem;
+      top: auto;
+      bottom: 6rem;
+      transform: none;
+    }
+
+    .filter-tab-button.sidebar-closed {
+      animation: pulse-attention 2s infinite;
+    }
+  }
+
+  @keyframes pulse-attention {
+    0%, 100% { box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15); }
+    50% { box-shadow: 2px 2px 16px rgba(0, 193, 110, 0.4); }
   }
 </style>

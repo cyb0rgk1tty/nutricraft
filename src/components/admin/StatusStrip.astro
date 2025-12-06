@@ -9,18 +9,18 @@
 ---
 
 <div class="bg-gradient-to-b from-gray-50 to-white border-b border-gray-200">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+    <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-hide scroll-smooth snap-x snap-mandatory">
       <!-- Pipeline visualization - dynamically populated -->
-      <div id="status-buttons-container" class="flex items-center gap-2 flex-nowrap">
+      <div id="status-buttons-container" class="flex items-center gap-1.5 sm:gap-2 flex-nowrap pr-4">
         <!-- "All" button is always present -->
         <button
           type="button"
           data-status="all"
-          class="status-filter-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap bg-primary text-white shadow-sm"
+          class="status-filter-btn active flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap bg-primary text-white shadow-sm snap-start min-h-[40px] sm:min-h-[44px]"
         >
           <span class="status-label" data-i18n="all">All</span>
-          <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white" data-count="all">0</span>
+          <span class="status-count px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold bg-white/20 text-white" data-count="all">0</span>
         </button>
         <!-- Dynamic status buttons will be inserted here -->
       </div>
@@ -122,11 +122,11 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.status = status;
-      button.className = 'status-filter-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap bg-white text-gray-600 border border-gray-200 hover:bg-gray-50';
+      button.className = 'status-filter-btn flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 snap-start min-h-[40px] sm:min-h-[44px]';
 
       button.innerHTML = `
         <span class="status-label">${label}</span>
-        <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold" data-count="${status}" style="background-color: ${color.bg}; color: ${color.text};">${count}</span>
+        <span class="status-count px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold" data-count="${status}" style="background-color: ${color.bg}; color: ${color.text};">${count}</span>
       `;
 
       // Add click handler

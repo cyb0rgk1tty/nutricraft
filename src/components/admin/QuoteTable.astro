@@ -31,7 +31,8 @@
     <table class="w-full">
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
+          <!-- Created - hidden on mobile -->
+          <th class="hidden sm:table-cell px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
             <div class="flex items-center gap-1">
               <span data-i18n="created">Created</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +40,8 @@
               </svg>
             </div>
           </th>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="name">
+          <!-- Name - always visible -->
+          <th class="px-3 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="name">
             <div class="flex items-center gap-1">
               <span data-i18n="name">Name</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +49,8 @@
               </svg>
             </div>
           </th>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="status">
+          <!-- Stage - always visible -->
+          <th class="px-3 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="status">
             <div class="flex items-center gap-1">
               <span data-i18n="stage">Stage</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,26 +58,30 @@
               </svg>
             </div>
           </th>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <!-- Formula - hidden on mobile and tablet -->
+          <th class="hidden lg:table-cell px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <span data-i18n="formula">Formula</span>
           </th>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
+          <!-- Price - always visible -->
+          <th class="px-2 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
             <div class="flex items-center gap-1">
               <span data-i18n="price">Price</span>
-              <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 sort-icon hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
           </th>
-          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="orderQuantity">
+          <!-- Qty - hidden on small mobile -->
+          <th class="hidden xs:table-cell px-2 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="orderQuantity">
             <div class="flex items-center gap-1">
               <span data-i18n="qty">Qty</span>
-              <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 sort-icon hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
           </th>
-          <th class="w-20 px-4 py-3"></th>
+          <!-- Actions -->
+          <th class="w-12 sm:w-20 px-2 sm:px-4 py-3"></th>
         </tr>
       </thead>
       <tbody id="quote-table-body" class="divide-y divide-gray-100">
@@ -146,14 +153,25 @@
 
   /* Inline editable input styles - mint theme */
   .inline-input {
-    width: 80px;
-    padding: 0.375rem 0.5rem;
+    width: 100%;
+    max-width: 80px;
+    padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     border: 1px solid transparent;
     border-radius: 0.5rem;
     background-color: transparent;
     transition: all 0.15s ease;
     text-align: right;
+    min-height: 44px; /* Touch-friendly height */
+  }
+
+  /* On mobile, allow full width inputs */
+  @media (max-width: 639px) {
+    .inline-input {
+      max-width: 70px;
+      padding: 0.5rem 0.375rem;
+      font-size: 0.8125rem;
+    }
   }
   .inline-input:hover {
     background-color: #f0fef4;
@@ -207,7 +225,13 @@
 
   /* Quantity input - narrower for 5 digits max */
   .qty-input {
-    width: 60px;
+    max-width: 60px;
+  }
+
+  @media (max-width: 639px) {
+    .qty-input {
+      max-width: 55px;
+    }
   }
 
   /* Formula thumbnail styles */
@@ -446,23 +470,28 @@
 
       return `
         <tr data-quote-id="${quote.id}" class="cursor-pointer">
-          <td class="px-4 py-3 text-gray-500 text-sm">
+          <!-- Created - hidden on mobile -->
+          <td class="hidden sm:table-cell px-4 py-3 text-gray-500 text-sm">
             ${createdDate}
           </td>
-          <td class="px-4 py-3">
-            <div class="font-medium text-gray-900">${escapeHtml(quote.name || unnamedText)}</div>
+          <!-- Name - always visible -->
+          <td class="px-3 sm:px-4 py-3">
+            <div class="font-medium text-gray-900 text-sm sm:text-base">${escapeHtml(quote.name || unnamedText)}</div>
           </td>
-          <td class="px-4 py-3">
-            <span class="status-badge" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
+          <!-- Stage - always visible -->
+          <td class="px-3 sm:px-4 py-3">
+            <span class="status-badge text-[10px] sm:text-xs" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
               ${statusLabel}
             </span>
           </td>
-          <td class="px-4 py-3">
+          <!-- Formula - hidden on mobile and tablet -->
+          <td class="hidden lg:table-cell px-4 py-3">
             <div class="formula-thumbnail" data-quote-id="${quote.id}" onclick="event.stopPropagation()">
               <div class="formula-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse"></div>
             </div>
           </td>
-          <td class="px-4 py-3">
+          <!-- Price - always visible -->
+          <td class="px-2 sm:px-4 py-3">
             <div class="price-cell inline-block">
               <input
                 type="text"
@@ -475,7 +504,8 @@
               />
             </div>
           </td>
-          <td class="px-4 py-3">
+          <!-- Qty - hidden on small mobile -->
+          <td class="hidden xs:table-cell px-2 sm:px-4 py-3">
             <input
               type="number"
               class="inline-input qty-input"
@@ -487,10 +517,11 @@
               onclick="event.stopPropagation()"
             />
           </td>
-          <td class="px-4 py-3">
+          <!-- Actions -->
+          <td class="px-2 sm:px-4 py-3">
             <button
               type="button"
-              class="view-quote-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+              class="view-quote-btn p-2.5 sm:p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               data-quote-id="${quote.id}"
               title="${viewDetailsText}"
             >

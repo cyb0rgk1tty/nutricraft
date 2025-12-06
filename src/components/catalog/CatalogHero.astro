@@ -16,7 +16,8 @@ import SearchBar from './SearchBar.astro';
       <!-- Search Bar -->
       <div class="mt-6">
         <SearchBar />
-        <p class="text-sm text-gray-500 mt-3">
+        <!-- Keyboard shortcuts - hidden on mobile (no keyboard) -->
+        <p class="hidden sm:block text-sm text-gray-500 mt-3">
           <kbd class="px-2 py-1 bg-gray-100 rounded text-xs font-mono">/</kbd> or
           <kbd class="px-2 py-1 bg-gray-100 rounded text-xs font-mono">Ctrl+K</kbd> to search
         </p>
