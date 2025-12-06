@@ -25,6 +25,8 @@ export const CRM_CONFIG = {
     status: 'stages',  // Note: Twenty CRM uses "stages" (plural)
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    ourCost: 'ourCost',  // Currency type in CRM
+    orderQuantity: 'orderQuantity',  // Float type in CRM
   } as Record<string, string>,
 
   // Stages to show in the dashboard (CRM stage value -> Dashboard display label)
@@ -62,6 +64,8 @@ export interface Quote {
   lastSyncedAt?: string;
   crmId?: string;
   rawData?: Record<string, any>;
+  ourCost?: number;  // Manufacturer's cost (Currency in CRM)
+  orderQuantity?: number;  // Order quantity (Float in CRM)
 }
 
 export interface FetchQuotesResponse {
@@ -163,27 +167,23 @@ function mapCrmToQuote(crmData: Record<string, any>): Quote {
  * Maps dashboard Quote to CRM update format
  */
 function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
-  const { fieldMappings, statusMappings } = CRM_CONFIG;
+  const { fieldMappings } = CRM_CONFIG;
   const crmData: Record<string, any> = {};
 
   if (quote.status !== undefined) {
-    crmData[fieldMappings.status] = statusMappings[quote.status] || quote.status.toUpperCase();
+    // Use the status value directly (lowercase) as Twenty CRM expects
+    crmData[fieldMappings.status] = quote.status;
   }
 
-  if (quote.totalPrice !== undefined) {
-    crmData[fieldMappings.totalPrice] = {
-      amountMicros: Math.round(quote.totalPrice * 1000000),
+  if (quote.ourCost !== undefined) {
+    crmData[fieldMappings.ourCost] = {
+      amountMicros: Math.round(quote.ourCost * 1000000),
       currencyCode: 'USD',
     };
   }
 
-  if (quote.notes !== undefined) {
-    crmData[fieldMappings.notes] = quote.notes;
-  }
-
-  // Add products if the CRM supports it
-  if (quote.products !== undefined) {
-    crmData[fieldMappings.products] = JSON.stringify(quote.products);
+  if (quote.orderQuantity !== undefined) {
+    crmData[fieldMappings.orderQuantity] = quote.orderQuantity;
   }
 
   return crmData;
@@ -310,6 +310,11 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               stages
               createdAt
               updatedAt
+              ourCost {
+                amountMicros
+                currencyCode
+              }
+              orderQuantity
             }
           }
         }
@@ -337,6 +342,12 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
       // Normalize to lowercase for matching
       const normalizedStage = stageValue?.toLowerCase() || '';
 
+      // Parse ourCost from Currency type (amountMicros)
+      let ourCost: number | undefined;
+      if (product.ourCost?.amountMicros) {
+        ourCost = product.ourCost.amountMicros / 1000000;
+      }
+
       return {
         id: product.id,
         name: product.name || 'Unnamed Product',
@@ -344,6 +355,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         crmId: product.id,
+        ourCost,
+        orderQuantity: product.orderQuantity || undefined,
       };
     });
 
@@ -402,6 +415,11 @@ export async function updateQuoteInCRM(
           name
           stages
           updatedAt
+          ourCost {
+            amountMicros
+            currencyCode
+          }
+          orderQuantity
         }
       }
     `;

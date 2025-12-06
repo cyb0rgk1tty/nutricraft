@@ -116,6 +116,18 @@ export interface ChatMessage {
   created_at: string;
 }
 
+export interface QuoteDocument {
+  id: string;
+  crm_product_id: string;
+  file_name: string;
+  file_type: string;
+  file_size: number;
+  storage_path: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // Database schema type
 export interface Database {
   public: {
@@ -154,6 +166,11 @@ export interface Database {
         Row: ChatMessage;
         Insert: Omit<ChatMessage, 'id' | 'created_at'>;
         Update: Partial<Omit<ChatMessage, 'id'>>;
+      };
+      quote_documents: {
+        Row: QuoteDocument;
+        Insert: Omit<QuoteDocument, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<QuoteDocument, 'id'>>;
       };
     };
   };
