@@ -2,11 +2,13 @@
 /**
  * Manufacturer Dashboard - Quote Management
  * Password-protected admin page for tracking and pricing quote requests from Twenty CRM
+ * Supports English and Chinese languages
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import QuoteTable from '../../components/admin/QuoteTable.astro';
 import QuoteDetailPanel from '../../components/admin/QuoteDetailPanel.astro';
 import StatusStrip from '../../components/admin/StatusStrip.astro';
+import LanguageSelector from '../../components/admin/LanguageSelector.astro';
 
 // Get admin password from environment
 const adminPassword = process.env.ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD || 'admin123';
@@ -27,14 +29,15 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
         </svg>
       </div>
 
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Manufacture Dashboard</h1>
-      <p class="text-lg text-gray-600 mb-8">Enter your password to continue</p>
+      <h1 id="gate-title" class="text-3xl md:text-4xl font-bold text-gray-900 mb-3" data-i18n="pageTitle">Manufacture Dashboard</h1>
+      <p id="gate-subtitle" class="text-lg text-gray-600 mb-8" data-i18n="enterPassword">Enter your password to continue</p>
 
       <form id="password-form" class="space-y-4">
         <div class="relative">
           <input
             type="password"
             id="password-input"
+            data-i18n-placeholder="passwordPlaceholder"
             placeholder="Enter admin password"
             autocomplete="off"
             class="w-full px-4 py-4 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors duration-300 text-center text-lg tracking-widest"
@@ -43,6 +46,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
             type="button"
             id="toggle-password"
             class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            data-i18n-aria="togglePasswordVisibility"
             aria-label="Toggle password visibility"
           >
             <svg id="eye-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +61,9 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
         <button
           type="submit"
+          id="access-btn"
           class="w-full bg-primary text-white font-semibold py-4 px-8 rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          data-i18n="accessDashboard"
         >
           Access Dashboard
         </button>
@@ -66,7 +72,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
           <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
-          <p class="text-sm text-red-700">Invalid password. Please try again.</p>
+          <p id="error-text" class="text-sm text-red-700" data-i18n="invalidPassword">Invalid password. Please try again.</p>
         </div>
       </form>
     </div>
@@ -85,19 +91,22 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
             </div>
-            <h1 class="text-2xl font-bold text-gray-900">Manufacture Dashboard</h1>
+            <h1 id="dashboard-title" class="text-2xl font-bold text-gray-900" data-i18n="pageTitle">Manufacture Dashboard</h1>
           </div>
           <div class="flex items-center gap-3">
             <!-- Sync Status -->
             <div id="sync-status" class="flex items-center gap-2 text-sm text-gray-500">
               <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-              <span>Connected</span>
+              <span id="sync-status-text" data-i18n="connected">Connected</span>
             </div>
+            <!-- Language Selector -->
+            <LanguageSelector />
             <!-- Refresh Button -->
             <button
               id="refresh-btn"
               type="button"
               class="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+              data-i18n-title="refreshQuotes"
               title="Refresh quotes"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,6 +118,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
               id="logout-btn"
               type="button"
               class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
+              data-i18n="logout"
             >
               Logout
             </button>
@@ -126,7 +136,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       <div id="loading-state" class="flex items-center justify-center py-20">
         <div class="text-center">
           <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-          <p class="text-gray-500">Loading quotes from Twenty CRM...</p>
+          <p id="loading-text" class="text-gray-500" data-i18n="loadingQuotes">Loading quotes from Twenty CRM...</p>
         </div>
       </div>
 
@@ -136,12 +146,13 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
           <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Quotes</h3>
-          <p id="error-message" class="text-red-600 mb-4">Unable to connect to Twenty CRM</p>
+          <h3 id="error-title" class="text-lg font-semibold text-red-800 mb-2" data-i18n="failedToLoad">Failed to Load Quotes</h3>
+          <p id="error-message" class="text-red-600 mb-4" data-i18n="unableToConnect">Unable to connect to Twenty CRM</p>
           <button
             id="retry-btn"
             type="button"
             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            data-i18n="tryAgain"
           >
             Try Again
           </button>
@@ -154,8 +165,8 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
           <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 class="text-lg font-semibold text-gray-700 mb-2">No Quote Requests</h3>
-          <p class="text-gray-500">Quote requests from Twenty CRM will appear here</p>
+          <h3 id="empty-title" class="text-lg font-semibold text-gray-700 mb-2" data-i18n="noQuoteRequests">No Quote Requests</h3>
+          <p id="empty-message" class="text-gray-500" data-i18n="quotesWillAppear">Quote requests from Twenty CRM will appear here</p>
         </div>
       </div>
 
@@ -170,7 +181,68 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
   </div>
 </BaseLayout>
 
+<script>
+  import { t, getLanguage } from '../../utils/i18n';
+
+  // Store for admin password (injected from server)
+  declare const adminPassword: string;
+</script>
+
 <script define:vars={{ adminPassword }}>
+  // Import i18n functions dynamically
+  let i18n = null;
+
+  // Initialize i18n module
+  async function initI18n() {
+    i18n = await import('/src/utils/i18n/index.ts');
+    updateAllText();
+  }
+
+  // Update all translatable text on the page
+  function updateAllText() {
+    if (!i18n) return;
+
+    // Update elements with data-i18n attribute (text content)
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        el.textContent = i18n.t(key);
+      }
+    });
+
+    // Update elements with data-i18n-placeholder attribute
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key && el instanceof HTMLInputElement) {
+        el.placeholder = i18n.t(key);
+      }
+    });
+
+    // Update elements with data-i18n-title attribute
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      if (key) {
+        el.setAttribute('title', i18n.t(key));
+      }
+    });
+
+    // Update elements with data-i18n-aria attribute
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      if (key) {
+        el.setAttribute('aria-label', i18n.t(key));
+      }
+    });
+  }
+
+  // Listen for language changes
+  window.addEventListener('languageChanged', () => {
+    updateAllText();
+  });
+
+  // Initialize i18n on load
+  initI18n();
+
   const CORRECT_PASSWORD = adminPassword;
   const STORAGE_KEY = 'admin_authenticated';
 
@@ -301,8 +373,12 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       errorState?.classList.remove('hidden');
 
       const errorMessage = document.getElementById('error-message');
-      if (errorMessage) {
-        errorMessage.textContent = error instanceof Error ? error.message : 'Unknown error';
+      if (errorMessage && i18n) {
+        // Keep the default error message from translations
+        // Only override if we have a specific error
+        if (error instanceof Error && error.message !== 'HTTP 500') {
+          errorMessage.textContent = i18n.t('error', { message: error.message });
+        }
       }
     }
   }

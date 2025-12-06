@@ -19,7 +19,7 @@
           data-status="all"
           class="status-filter-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap bg-primary text-white shadow-sm"
         >
-          <span class="status-label">All</span>
+          <span class="status-label" data-i18n="all">All</span>
           <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white" data-count="all">0</span>
         </button>
         <!-- Dynamic status buttons will be inserted here -->
@@ -60,17 +60,10 @@
 </style>
 
 <script>
+  import { t, getStageLabel as i18nGetStageLabel, stageOrder as i18nStageOrder } from '../../utils/i18n';
+
   // Global state for current filter
   let currentStatusFilter = 'all';
-
-  // Stage mappings (CRM stage key -> Dashboard display label)
-  // Must match CRM_CONFIG.allowedStages in twentyCrmQuotes.ts
-  const stageLabels: Record<string, string> = {
-    'planning': 'Price Quote',
-    'order_samples': 'Order Samples',
-    'client_review_samples': 'Sample Delivered',
-    'full_batch_order': 'Full Batch Order',
-  };
 
   // Fixed color assignments for each stage (for visual consistency)
   const stageColors: Record<string, { bg: string; text: string }> = {
@@ -80,9 +73,9 @@
     'full_batch_order': { bg: '#d1fae5', text: '#047857' },   // green - Full Batch Order
   };
 
-  // Get display label for a stage
+  // Get display label for a stage (using i18n)
   function getStageLabel(status: string): string {
-    return stageLabels[status] || status;
+    return i18nGetStageLabel(status);
   }
 
   // Get color for a stage
@@ -107,11 +100,8 @@
       container.appendChild(allButton);
     }
 
-    // Define the order of stages (pipeline order)
-    const stageOrder = ['planning', 'order_samples', 'client_review_samples', 'full_batch_order'];
-
-    // Show all stages in pipeline order (even if count is 0)
-    const sortedStatuses = stageOrder
+    // Show all stages in pipeline order (even if count is 0) - use i18n stageOrder
+    const sortedStatuses = i18nStageOrder
       .map(stage => [stage, statusCounts[stage] || 0] as [string, number]);
 
     // Create buttons for each status
@@ -203,6 +193,36 @@
     if (statusCounts && quotes) {
       generateStatusButtons(statusCounts, quotes.length);
     }
+  });
+
+  // Listen for language changes and re-render buttons
+  window.addEventListener('languageChanged', () => {
+    // Update "All" button label
+    const allLabel = document.querySelector('[data-status="all"] .status-label');
+    if (allLabel) {
+      allLabel.textContent = t('all');
+    }
+
+    // Re-generate status buttons with new language
+    // We need to get current counts from the buttons
+    const buttons = document.querySelectorAll('.status-filter-btn[data-status]');
+    const statusCounts: Record<string, number> = {};
+    let totalCount = 0;
+
+    buttons.forEach(btn => {
+      const status = btn.getAttribute('data-status');
+      const countEl = btn.querySelector('.status-count');
+      const count = parseInt(countEl?.textContent || '0', 10);
+
+      if (status === 'all') {
+        totalCount = count;
+      } else if (status) {
+        statusCounts[status] = count;
+      }
+    });
+
+    // Re-generate buttons with new labels
+    generateStatusButtons(statusCounts, totalCount);
   });
 
   // Export current filter for other components

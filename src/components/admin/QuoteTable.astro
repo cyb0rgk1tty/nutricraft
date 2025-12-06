@@ -14,6 +14,7 @@
         type="text"
         id="quote-search"
         placeholder="Search quotes..."
+        data-i18n-placeholder="searchQuotes"
         class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors bg-white"
       />
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +22,7 @@
       </svg>
     </div>
     <div class="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-      <span id="visible-count" class="font-semibold text-primary">0</span> quotes
+      <span id="visible-count" class="font-semibold text-primary">0</span> <span data-i18n="quotes">quotes</span>
     </div>
   </div>
 
@@ -32,7 +33,7 @@
         <tr>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
             <div class="flex items-center gap-1">
-              Created
+              <span data-i18n="created">Created</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
@@ -40,7 +41,7 @@
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="name">
             <div class="flex items-center gap-1">
-              Name
+              <span data-i18n="name">Name</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
@@ -48,18 +49,18 @@
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="status">
             <div class="flex items-center gap-1">
-              Stage
+              <span data-i18n="stage">Stage</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Formula
+            <span data-i18n="formula">Formula</span>
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
             <div class="flex items-center gap-1">
-              Price
+              <span data-i18n="price">Price</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
@@ -67,7 +68,7 @@
           </th>
           <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="orderQuantity">
             <div class="flex items-center gap-1">
-              Qty
+              <span data-i18n="qty">Qty</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
@@ -87,7 +88,7 @@
     <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
-    <p class="text-gray-500">No quotes match your search</p>
+    <p class="text-gray-500" data-i18n="noMatchingQuotes">No quotes match your search</p>
   </div>
 </div>
 
@@ -262,6 +263,8 @@
 </style>
 
 <script>
+  import { t, getStageLabel as i18nGetStageLabel, formatRelativeDate as i18nFormatRelativeDate, getLanguage } from '../../utils/i18n';
+
   // Quote data store
   let allQuotes: any[] = [];
   let filteredQuotes: any[] = [];
@@ -428,6 +431,9 @@
     noResults?.classList.add('hidden');
 
     // Render rows
+    const unnamedText = t('unnamed');
+    const viewDetailsText = t('viewDetails');
+
     tbody.innerHTML = filteredQuotes.map(quote => {
       const createdDate = quote.createdAt
         ? formatRelativeDate(new Date(quote.createdAt))
@@ -444,7 +450,7 @@
             ${createdDate}
           </td>
           <td class="px-4 py-3">
-            <div class="font-medium text-gray-900">${escapeHtml(quote.name || 'Unnamed')}</div>
+            <div class="font-medium text-gray-900">${escapeHtml(quote.name || unnamedText)}</div>
           </td>
           <td class="px-4 py-3">
             <span class="status-badge" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
@@ -486,7 +492,7 @@
               type="button"
               class="view-quote-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
               data-quote-id="${quote.id}"
-              title="View details"
+              title="${viewDetailsText}"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -615,8 +621,9 @@
   // Render a single thumbnail
   function renderThumbnail(container: HTMLElement, documents: any[], quoteId: string) {
     if (documents.length === 0) {
+      const noFormulaText = t('noFormulaUploaded');
       container.innerHTML = `
-        <div class="no-doc" title="No formula uploaded">
+        <div class="no-doc" title="${noFormulaText}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -662,8 +669,9 @@
       }
     } catch (error) {
       console.error('Failed to load image thumbnail:', error);
+      const failedText = t('failedToLoadImage');
       container.innerHTML = `
-        <div class="no-doc" title="Failed to load">
+        <div class="no-doc" title="${failedText}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -836,15 +844,6 @@
     }
   }
 
-  // Stage mappings (CRM stage key -> Dashboard display label)
-  // Must match CRM_CONFIG.allowedStages in twentyCrmQuotes.ts
-  const stageLabels: Record<string, string> = {
-    'planning': 'Price Quote',
-    'order_samples': 'Order Samples',
-    'client_review_samples': 'Sample Delivered',
-    'full_batch_order': 'Full Batch Order',
-  };
-
   // Fixed color assignments for each stage (for visual consistency)
   const stageColors: Record<string, { bg: string; text: string }> = {
     'planning': { bg: '#dbeafe', text: '#1d4ed8' },           // blue - Price Quote
@@ -858,21 +857,13 @@
     return stageColors[status] || { bg: '#f3f4f6', text: '#374151' };
   }
 
-  // Helper functions
+  // Helper functions - use i18n
   function getStatusLabel(status: string): string {
-    return stageLabels[status] || status || 'Unknown';
+    return i18nGetStageLabel(status);
   }
 
   function formatRelativeDate(date: Date): string {
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return i18nFormatRelativeDate(date);
   }
 
   function formatPrice(value: number): string {
@@ -884,4 +875,30 @@
     div.textContent = text;
     return div.innerHTML;
   }
+
+  // Update text elements with data-i18n attributes
+  function updateI18nText() {
+    // Update placeholder
+    const searchEl = document.getElementById('quote-search') as HTMLInputElement;
+    if (searchEl) {
+      searchEl.placeholder = t('searchQuotes');
+    }
+
+    // Update data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        el.textContent = t(key as any);
+      }
+    });
+  }
+
+  // Listen for language changes
+  window.addEventListener('languageChanged', () => {
+    // Update static text
+    updateI18nText();
+
+    // Re-render the table to update dynamic content
+    applyFiltersAndRender();
+  });
 </script>

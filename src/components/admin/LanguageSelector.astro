@@ -1,0 +1,75 @@
+---
+/**
+ * Language Selector Component
+ * Toggle between English and Chinese for the dashboard
+ */
+---
+
+<div class="language-selector flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
+  <button
+    type="button"
+    id="lang-en"
+    class="lang-btn px-2.5 py-1 text-xs font-medium rounded-md transition-all"
+    data-lang="en"
+  >
+    EN
+  </button>
+  <button
+    type="button"
+    id="lang-zh"
+    class="lang-btn px-2.5 py-1 text-xs font-medium rounded-md transition-all"
+    data-lang="zh"
+  >
+    中文
+  </button>
+</div>
+
+<style>
+  .lang-btn {
+    color: #6b7280;
+    background-color: transparent;
+  }
+  .lang-btn:hover {
+    color: #374151;
+    background-color: #e5e7eb;
+  }
+  .lang-btn.active {
+    color: white;
+    background-color: #00c16e;
+    box-shadow: 0 1px 2px rgba(0, 193, 110, 0.2);
+  }
+</style>
+
+<script>
+  import { getLanguage, setLanguage, type Language } from '../../utils/i18n';
+
+  // Elements
+  const btnEn = document.getElementById('lang-en');
+  const btnZh = document.getElementById('lang-zh');
+
+  // Initialize button states based on current language
+  function updateButtonStates() {
+    const currentLang = getLanguage();
+    btnEn?.classList.toggle('active', currentLang === 'en');
+    btnZh?.classList.toggle('active', currentLang === 'zh');
+  }
+
+  // Set initial state
+  updateButtonStates();
+
+  // Handle button clicks
+  btnEn?.addEventListener('click', () => {
+    setLanguage('en');
+    updateButtonStates();
+  });
+
+  btnZh?.addEventListener('click', () => {
+    setLanguage('zh');
+    updateButtonStates();
+  });
+
+  // Listen for language changes from other sources
+  window.addEventListener('languageChanged', () => {
+    updateButtonStates();
+  });
+</script>
