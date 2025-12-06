@@ -25,8 +25,9 @@ export const CRM_CONFIG = {
     status: 'stages',  // Note: Twenty CRM uses "stages" (plural)
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    ourCost: 'ourCost',  // Currency type in CRM
+    ourCost: 'ourCost',  // Number type in CRM
     orderQuantity: 'orderQuantity',  // Float type in CRM
+    tldr: 'tldr',  // Text type in CRM - displayed as "Notes"
   } as Record<string, string>,
 
   // Stages to show in the dashboard (CRM stage value -> Dashboard display label)
@@ -64,8 +65,9 @@ export interface Quote {
   lastSyncedAt?: string;
   crmId?: string;
   rawData?: Record<string, any>;
-  ourCost?: number;  // Manufacturer's cost (Currency in CRM)
+  ourCost?: number;  // Manufacturer's cost (Number in CRM)
   orderQuantity?: number;  // Order quantity (Float in CRM)
+  tldr?: string;  // Notes/TLDR (Text in CRM)
 }
 
 export interface FetchQuotesResponse {
@@ -176,10 +178,8 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
   }
 
   if (quote.ourCost !== undefined) {
-    crmData[fieldMappings.ourCost] = {
-      amountMicros: Math.round(quote.ourCost * 1000000),
-      currencyCode: 'USD',
-    };
+    // ourCost is now a Number field, not Currency - send raw value
+    crmData[fieldMappings.ourCost] = quote.ourCost;
   }
 
   if (quote.orderQuantity !== undefined) {
@@ -310,11 +310,9 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               stages
               createdAt
               updatedAt
-              ourCost {
-                amountMicros
-                currencyCode
-              }
+              ourCost
               orderQuantity
+              tldr
             }
           }
         }
@@ -342,9 +340,12 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
       // Normalize to lowercase for matching
       const normalizedStage = stageValue?.toLowerCase() || '';
 
-      // Parse ourCost from Currency type (amountMicros)
+      // Parse ourCost - now a Number field (was Currency with amountMicros)
       let ourCost: number | undefined;
-      if (product.ourCost?.amountMicros) {
+      if (typeof product.ourCost === 'number') {
+        ourCost = product.ourCost;
+      } else if (product.ourCost?.amountMicros) {
+        // Fallback for legacy Currency format
         ourCost = product.ourCost.amountMicros / 1000000;
       }
 
@@ -357,6 +358,7 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         crmId: product.id,
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
+        tldr: product.tldr || undefined,
       };
     });
 
@@ -415,11 +417,9 @@ export async function updateQuoteInCRM(
           name
           stages
           updatedAt
-          ourCost {
-            amountMicros
-            currencyCode
-          }
+          ourCost
           orderQuantity
+          tldr
         }
       }
     `;

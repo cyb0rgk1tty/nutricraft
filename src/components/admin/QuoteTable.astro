@@ -28,11 +28,11 @@
 
   <!-- Table -->
   <div class="overflow-x-auto">
-    <table class="w-full">
+    <table class="w-full" style="table-layout: fixed;">
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
-          <!-- Created - hidden on mobile -->
-          <th class="hidden sm:table-cell px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
+          <!-- Created: 90px, left-aligned -->
+          <th class="hidden sm:table-cell w-[90px] px-2 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="created">
             <div class="flex items-center gap-1">
               <span data-i18n="created">Created</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,8 +40,8 @@
               </svg>
             </div>
           </th>
-          <!-- Name - always visible -->
-          <th class="px-3 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="name">
+          <!-- Name: flexible, left-aligned -->
+          <th class="px-2 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="name">
             <div class="flex items-center gap-1">
               <span data-i18n="name">Name</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,8 +49,8 @@
               </svg>
             </div>
           </th>
-          <!-- Stage - always visible -->
-          <th class="px-3 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="status">
+          <!-- Stage: 125px, left-aligned -->
+          <th class="w-[125px] px-2 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="status">
             <div class="flex items-center gap-1">
               <span data-i18n="stage">Stage</span>
               <svg class="w-3 h-3 sort-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,30 +58,34 @@
               </svg>
             </div>
           </th>
-          <!-- Formula - hidden on mobile and tablet -->
-          <th class="hidden lg:table-cell px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <!-- Formula: 65px, centered -->
+          <th class="hidden lg:table-cell w-[65px] px-1 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <span data-i18n="formula">Formula</span>
           </th>
-          <!-- Price - always visible -->
-          <th class="px-2 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
-            <div class="flex items-center gap-1">
+          <!-- Price: 85px, centered -->
+          <th class="w-[85px] px-1 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="ourCost">
+            <div class="flex items-center justify-center gap-1">
               <span data-i18n="price">Price</span>
               <svg class="w-3 h-3 sort-icon hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
           </th>
-          <!-- Qty - hidden on small mobile -->
-          <th class="hidden xs:table-cell px-2 sm:px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="orderQuantity">
-            <div class="flex items-center gap-1">
+          <!-- Qty: 55px, centered -->
+          <th class="hidden xs:table-cell w-[55px] px-1 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700" data-sort="orderQuantity">
+            <div class="flex items-center justify-center gap-1">
               <span data-i18n="qty">Qty</span>
               <svg class="w-3 h-3 sort-icon hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
           </th>
-          <!-- Actions -->
-          <th class="w-12 sm:w-20 px-2 sm:px-4 py-3"></th>
+          <!-- Notes: flexible, left-aligned -->
+          <th class="hidden md:table-cell px-2 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <span data-i18n="notes">Notes</span>
+          </th>
+          <!-- Actions: 36px -->
+          <th class="w-[36px] px-1 py-3"></th>
         </tr>
       </thead>
       <tbody id="quote-table-body" class="divide-y divide-gray-100">
@@ -153,25 +157,24 @@
 
   /* Inline editable input styles - mint theme */
   .inline-input {
+    display: block;
     width: 100%;
-    max-width: 80px;
-    padding: 0.5rem 0.5rem;
-    font-size: 0.875rem;
+    padding: 0.25rem 0.25rem;
+    font-size: 0.875rem; /* text-sm = 14px */
+    text-align: center;
     border: 1px solid transparent;
-    border-radius: 0.5rem;
+    border-radius: 0.25rem;
     background-color: transparent;
-    transition: all 0.15s ease;
-    text-align: right;
-    min-height: 44px; /* Touch-friendly height */
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    box-sizing: border-box;
   }
-
-  /* On mobile, allow full width inputs */
-  @media (max-width: 639px) {
-    .inline-input {
-      max-width: 70px;
-      padding: 0.5rem 0.375rem;
-      font-size: 0.8125rem;
-    }
+  /* Price input: fits in 85px column minus 8px cell padding = 77px max */
+  .price-input {
+    max-width: 75px;
+  }
+  /* Qty input: fits in 55px column minus 8px cell padding = 47px max */
+  .qty-input {
+    max-width: 45px;
   }
   .inline-input:hover {
     background-color: #f0fef4;
@@ -181,7 +184,6 @@
     outline: none;
     background-color: white;
     border-color: #00c16e;
-    box-shadow: 0 0 0 3px rgba(0, 193, 110, 0.15);
   }
   .inline-input.saving {
     background-color: #fef3c7;
@@ -195,44 +197,6 @@
     color: #9ca3af;
   }
 
-  /* Price input with dollar sign */
-  .price-cell {
-    position: relative;
-  }
-  .price-cell::before {
-    content: '$';
-    position: absolute;
-    left: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    font-size: 0.875rem;
-    pointer-events: none;
-  }
-  .price-cell .inline-input {
-    padding-left: 1rem;
-  }
-
-  /* Hide number input spinners */
-  .inline-input::-webkit-outer-spin-button,
-  .inline-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  .inline-input[type=number] {
-    -moz-appearance: textfield;
-  }
-
-  /* Quantity input - narrower for 5 digits max */
-  .qty-input {
-    max-width: 60px;
-  }
-
-  @media (max-width: 639px) {
-    .qty-input {
-      max-width: 55px;
-    }
-  }
 
   /* Formula thumbnail styles */
   .formula-thumbnail {
@@ -284,6 +248,18 @@
     justify-content: center;
     color: #9ca3af;
   }
+
+  /* Notes cell - wrap text appropriately */
+  .notes-cell {
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+    max-height: 3.5em; /* ~2.5 lines */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 </style>
 
 <script>
@@ -334,7 +310,7 @@
 
       if (priceInput && updatedQuote.ourCost !== undefined) {
         priceInput.value = updatedQuote.ourCost != null && updatedQuote.ourCost !== 0
-          ? formatPrice(updatedQuote.ourCost)
+          ? '$' + formatPrice(updatedQuote.ourCost)
           : '';
       }
       if (qtyInput && updatedQuote.orderQuantity !== undefined) {
@@ -470,62 +446,65 @@
 
       return `
         <tr data-quote-id="${quote.id}" class="cursor-pointer">
-          <!-- Created - hidden on mobile -->
-          <td class="hidden sm:table-cell px-4 py-3 text-gray-500 text-sm">
+          <!-- Created: 90px, left-aligned -->
+          <td class="hidden sm:table-cell w-[90px] px-2 py-3 text-left text-gray-500 text-sm whitespace-nowrap">
             ${createdDate}
           </td>
-          <!-- Name - always visible -->
-          <td class="px-3 sm:px-4 py-3">
-            <div class="font-medium text-gray-900 text-sm sm:text-base">${escapeHtml(quote.name || unnamedText)}</div>
+          <!-- Name: flexible, left-aligned -->
+          <td class="px-2 py-3 text-left">
+            <div class="font-medium text-gray-900 text-sm truncate">${escapeHtml(quote.name || unnamedText)}</div>
           </td>
-          <!-- Stage - always visible -->
-          <td class="px-3 sm:px-4 py-3">
-            <span class="status-badge text-[10px] sm:text-xs" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
+          <!-- Stage: 125px, left-aligned -->
+          <td class="w-[125px] px-2 py-3 text-left">
+            <span class="status-badge text-sm whitespace-nowrap" data-quote-id="${quote.id}" style="background-color: ${statusColor.bg}; color: ${statusColor.text};">
               ${statusLabel}
             </span>
           </td>
-          <!-- Formula - hidden on mobile and tablet -->
-          <td class="hidden lg:table-cell px-4 py-3">
-            <div class="formula-thumbnail" data-quote-id="${quote.id}" onclick="event.stopPropagation()">
+          <!-- Formula: 65px, centered -->
+          <td class="hidden lg:table-cell w-[65px] px-1 py-3 text-center">
+            <div class="formula-thumbnail inline-block" data-quote-id="${quote.id}" onclick="event.stopPropagation()">
               <div class="formula-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse"></div>
             </div>
           </td>
-          <!-- Price - always visible -->
-          <td class="px-2 sm:px-4 py-3">
-            <div class="price-cell inline-block">
-              <input
-                type="text"
-                class="inline-input price-input"
-                data-quote-id="${quote.id}"
-                data-field="ourCost"
-                value="${priceValue}"
-                placeholder="0.00"
-                onclick="event.stopPropagation()"
-              />
-            </div>
-          </td>
-          <!-- Qty - hidden on small mobile -->
-          <td class="hidden xs:table-cell px-2 sm:px-4 py-3">
+          <!-- Price: 85px, centered -->
+          <td class="w-[85px] px-1 py-3 text-center">
             <input
-              type="number"
+              type="text"
+              class="inline-input price-input"
+              data-quote-id="${quote.id}"
+              data-field="ourCost"
+              value="${priceValue ? '$' + priceValue : ''}"
+              placeholder="$0.00"
+              onclick="event.stopPropagation()"
+            />
+          </td>
+          <!-- Qty: 55px, centered -->
+          <td class="hidden xs:table-cell w-[55px] px-1 py-3 text-center">
+            <input
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
               class="inline-input qty-input"
               data-quote-id="${quote.id}"
               data-field="orderQuantity"
               value="${qtyValue}"
               placeholder="0"
-              min="0"
               onclick="event.stopPropagation()"
             />
           </td>
-          <!-- Actions -->
-          <td class="px-2 sm:px-4 py-3">
+          <!-- Notes: flexible, left-aligned -->
+          <td class="hidden md:table-cell px-2 py-3 text-left">
+            <div class="notes-cell text-sm text-gray-600">${escapeHtml(quote.tldr || '')}</div>
+          </td>
+          <!-- Actions: 36px, centered -->
+          <td class="w-[36px] px-1 py-3 text-center">
             <button
               type="button"
-              class="view-quote-btn p-2.5 sm:p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              class="view-quote-btn p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 rounded transition-colors"
               data-quote-id="${quote.id}"
               title="${viewDetailsText}"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -563,8 +542,13 @@
     tbody.querySelectorAll('.price-input').forEach(input => {
       const inputEl = input as HTMLInputElement;
 
-      inputEl.addEventListener('input', (e) => {
-        // Format input - allow only numbers and decimal
+      inputEl.addEventListener('focus', () => {
+        // Remove $ for editing
+        inputEl.value = inputEl.value.replace(/[$,]/g, '');
+      });
+
+      inputEl.addEventListener('input', () => {
+        // Allow only numbers and decimal
         let value = inputEl.value.replace(/[^0-9.]/g, '');
         const parts = value.split('.');
         if (parts.length > 2) {
@@ -579,7 +563,7 @@
       inputEl.addEventListener('blur', () => {
         const quoteId = inputEl.getAttribute('data-quote-id');
         const value = parseFloat(inputEl.value) || 0;
-        inputEl.value = value ? formatPrice(value) : '';
+        inputEl.value = value ? '$' + formatPrice(value) : '';
         if (quoteId) {
           saveInlineField(quoteId, 'ourCost', value, inputEl);
         }
@@ -596,9 +580,15 @@
     tbody.querySelectorAll('.qty-input').forEach(input => {
       const inputEl = input as HTMLInputElement;
 
+      inputEl.addEventListener('input', () => {
+        // Allow only numbers
+        inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
+      });
+
       inputEl.addEventListener('blur', () => {
         const quoteId = inputEl.getAttribute('data-quote-id');
         const value = parseInt(inputEl.value, 10) || 0;
+        inputEl.value = value ? String(value) : '';
         if (quoteId) {
           saveInlineField(quoteId, 'orderQuantity', value, inputEl);
         }
@@ -753,7 +743,7 @@
 
       // Update the input value to reflect saved value
       if (field === 'ourCost') {
-        inputEl.value = value ? formatPrice(value) : '';
+        inputEl.value = value ? '$' + formatPrice(value) : '';
       } else {
         inputEl.value = value ? String(value) : '';
       }
@@ -772,7 +762,7 @@
       inputEl.classList.remove('saving');
       // Revert value
       if (field === 'ourCost') {
-        inputEl.value = oldValue ? formatPrice(oldValue) : '';
+        inputEl.value = oldValue ? '$' + formatPrice(oldValue) : '';
       } else {
         inputEl.value = oldValue ? String(oldValue) : '';
       }
