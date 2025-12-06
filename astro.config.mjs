@@ -10,6 +10,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     sitemap({
+      filter: (page) => !page.includes('/admin/') && !page.includes('/catalog'),
       customPages: [
         // Dosage Forms
         'https://nutricraftlabs.com/dosage-forms/tablets',
@@ -54,7 +55,15 @@ export default defineConfig({
         // Blog posts and tag pages auto-discovered via getStaticPaths()
       ]
     }),
-    robotsTxt()
+    robotsTxt({
+      policy: [
+        {
+          userAgent: '*',
+          allow: '/',
+          disallow: ['/admin/', '/api/', '/catalog']
+        }
+      ]
+    })
   ],
   output: 'server',
   adapter: vercel(),

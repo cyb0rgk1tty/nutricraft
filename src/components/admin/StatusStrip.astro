@@ -8,16 +8,16 @@
  */
 ---
 
-<div class="bg-white border-b border-gray-200">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+<div class="bg-gradient-to-b from-gray-50 to-white border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
       <!-- Pipeline visualization - dynamically populated -->
-      <div id="status-buttons-container" class="flex items-center gap-1 flex-nowrap">
+      <div id="status-buttons-container" class="flex items-center gap-2 flex-nowrap">
         <!-- "All" button is always present -->
         <button
           type="button"
           data-status="all"
-          class="status-filter-btn active flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-gray-900 text-white"
+          class="status-filter-btn active flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap bg-primary text-white shadow-sm"
         >
           <span class="status-label">All</span>
           <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white" data-count="all">0</span>
@@ -38,23 +38,25 @@
     display: none;
   }
 
-  /* Active state */
+  /* Active state - mint green theme */
   .status-filter-btn.active {
-    background-color: #1f2937 !important;
+    background-color: #00c16e !important;
     color: white !important;
+    box-shadow: 0 1px 3px rgba(0, 193, 110, 0.3);
   }
   .status-filter-btn.active .status-count {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.25) !important;
     color: white !important;
   }
 
+  /* Hover state for inactive buttons */
+  .status-filter-btn:not(.active):hover {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+  }
+
   /* Color classes for counts */
-  .status-count[data-count="new"] { background-color: #dbeafe; color: #1d4ed8; }
-  .status-count[data-count="in_progress"] { background-color: #fef3c7; color: #b45309; }
-  .status-count[data-count="sent"] { background-color: #ede9fe; color: #7c3aed; }
-  .status-count[data-count="won"] { background-color: #d1fae5; color: #047857; }
-  .status-count[data-count="lost"] { background-color: #fee2e2; color: #b91c1c; }
-  .status-count[data-count="all"] { background-color: #f3f4f6; color: #374151; }
+  .status-count[data-count="all"] { background-color: #d1fae5; color: #047857; }
 </style>
 
 <script>
@@ -130,7 +132,7 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.status = status;
-      button.className = 'status-filter-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200';
+      button.className = 'status-filter-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap bg-white text-gray-600 border border-gray-200 hover:bg-gray-50';
 
       button.innerHTML = `
         <span class="status-label">${label}</span>
@@ -162,17 +164,26 @@
     // Update active state
     document.querySelectorAll('.status-filter-btn').forEach(b => {
       b.classList.remove('active');
-      b.classList.remove('bg-gray-900', 'text-white');
-      b.classList.add('bg-gray-100', 'text-gray-600');
+      b.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+      b.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+      // Reset count badge style
+      const badge = b.querySelector('.status-count');
+      if (badge) {
+        const countStatus = badge.getAttribute('data-count');
+        if (countStatus) {
+          const color = getStageColor(countStatus);
+          badge.setAttribute('style', `background-color: ${color.bg}; color: ${color.text};`);
+        }
+      }
     });
     btn.classList.add('active');
-    btn.classList.remove('bg-gray-100', 'text-gray-600');
-    btn.classList.add('bg-gray-900', 'text-white');
+    btn.classList.remove('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+    btn.classList.add('bg-primary', 'text-white', 'shadow-sm');
 
     // Update count badge style for active
     const countBadge = btn.querySelector('.status-count');
     if (countBadge) {
-      countBadge.setAttribute('style', 'background-color: rgba(255,255,255,0.2); color: white;');
+      countBadge.setAttribute('style', 'background-color: rgba(255,255,255,0.25); color: white;');
     }
 
     // Update current filter
