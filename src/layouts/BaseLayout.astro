@@ -8,6 +8,7 @@ export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  noChat?: boolean;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
   description = "Full-service supplement manufacturing through our GMP partner network. From formulation to fulfillment with NPN/FDA compliance. 1000-unit MOQ. Free consultation.",
   image = "/images/nutricraftbottle-optimized.png",
   noindex = false,
+  noChat = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -344,7 +346,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     >
     <!-- End Google Tag Manager (noscript) -->
     <slot />
-    <ChatSupport />
+    {!noChat && <ChatSupport />}
     <Analytics />
 
     <!-- Calendar Booking Conversion Tracking for GTM -->

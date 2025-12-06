@@ -46,13 +46,12 @@
   <div class="flex-1 overflow-y-auto">
     <!-- Status Section -->
     <div class="p-4 border-b border-gray-100">
-      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Status</h3>
+      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Stage</h3>
       <div class="flex gap-2 flex-wrap">
-        <button type="button" class="status-btn" data-status="new">New</button>
-        <button type="button" class="status-btn" data-status="in_progress">In Progress</button>
-        <button type="button" class="status-btn" data-status="sent">Quote Sent</button>
-        <button type="button" class="status-btn" data-status="won">Won</button>
-        <button type="button" class="status-btn" data-status="lost">Lost</button>
+        <button type="button" class="status-btn" data-status="planning">Price Quote</button>
+        <button type="button" class="status-btn" data-status="order_samples">Order Samples</button>
+        <button type="button" class="status-btn" data-status="client_review_samples">Sample Delivered</button>
+        <button type="button" class="status-btn" data-status="full_batch_order">Full Batch Order</button>
       </div>
     </div>
 
@@ -267,11 +266,10 @@
     border-color: currentColor;
   }
 
-  .status-btn[data-status="new"].active { background-color: #dbeafe; color: #1d4ed8; }
-  .status-btn[data-status="in_progress"].active { background-color: #fef3c7; color: #b45309; }
-  .status-btn[data-status="sent"].active { background-color: #ede9fe; color: #7c3aed; }
-  .status-btn[data-status="won"].active { background-color: #d1fae5; color: #047857; }
-  .status-btn[data-status="lost"].active { background-color: #fee2e2; color: #b91c1c; }
+  .status-btn[data-status="planning"].active { background-color: #dbeafe; color: #1d4ed8; }
+  .status-btn[data-status="order_samples"].active { background-color: #fef3c7; color: #b45309; }
+  .status-btn[data-status="client_review_samples"].active { background-color: #ede9fe; color: #7c3aed; }
+  .status-btn[data-status="full_batch_order"].active { background-color: #d1fae5; color: #047857; }
 
   /* Product card */
   .product-card {

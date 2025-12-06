@@ -108,10 +108,9 @@
     // Define the order of stages (pipeline order)
     const stageOrder = ['planning', 'order_samples', 'client_review_samples', 'full_batch_order'];
 
-    // Sort statuses by pipeline order
+    // Show all stages in pipeline order (even if count is 0)
     const sortedStatuses = stageOrder
-      .filter(stage => statusCounts.hasOwnProperty(stage))
-      .map(stage => [stage, statusCounts[stage]] as [string, number]);
+      .map(stage => [stage, statusCounts[stage] || 0] as [string, number]);
 
     // Create buttons for each status
     sortedStatuses.forEach(([status, count], index) => {
