@@ -1,0 +1,322 @@
+---
+/**
+ * Manufacturer Dashboard - Quote Management
+ * Password-protected admin page for tracking and pricing quote requests from Twenty CRM
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuoteTable from '../../components/admin/QuoteTable.astro';
+import QuoteDetailPanel from '../../components/admin/QuoteDetailPanel.astro';
+import StatusStrip from '../../components/admin/StatusStrip.astro';
+
+// Get admin password from environment
+const adminPassword = process.env.ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD || 'admin123';
+
+// SEO metadata
+const title = 'Quote Dashboard | Nutricraft Labs Admin';
+const description = 'Internal dashboard for managing manufacturer price quotes';
+---
+
+<BaseLayout title={title} description={description} noIndex={true}>
+  <!-- Password Gate -->
+  <div id="password-gate" class="min-h-[calc(100vh-5rem)] bg-gradient-to-b from-gray-50 to-white flex items-center justify-center py-16">
+    <div class="max-w-md mx-auto px-4 sm:px-6 text-center">
+      <!-- Lock Icon -->
+      <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Quote Dashboard</h1>
+      <p class="text-lg text-gray-600 mb-8">Enter your admin password to access the dashboard</p>
+
+      <form id="password-form" class="space-y-4">
+        <div class="relative">
+          <input
+            type="password"
+            id="password-input"
+            placeholder="Enter admin password"
+            autocomplete="off"
+            class="w-full px-4 py-4 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors duration-300 text-center text-lg tracking-widest"
+          />
+          <button
+            type="button"
+            id="toggle-password"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Toggle password visibility"
+          >
+            <svg id="eye-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+            <svg id="eye-closed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+            </svg>
+          </button>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-primary text-white font-semibold py-4 px-8 rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Access Dashboard
+        </button>
+
+        <div id="password-error" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
+          <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <p class="text-sm text-red-700">Invalid password. Please try again.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Content (hidden until authenticated) -->
+  <div id="dashboard-content" class="hidden">
+    <!-- Header -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Quote Dashboard</h1>
+            <p class="text-sm text-gray-500 mt-1">Manage price quotes from Twenty CRM</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- Sync Status -->
+            <div id="sync-status" class="flex items-center gap-2 text-sm text-gray-500">
+              <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              <span>Connected</span>
+            </div>
+            <!-- Refresh Button -->
+            <button
+              id="refresh-btn"
+              type="button"
+              class="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+              title="Refresh quotes"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </button>
+            <!-- Logout Button -->
+            <button
+              id="logout-btn"
+              type="button"
+              class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Strip -->
+    <StatusStrip />
+
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <!-- Loading State -->
+      <div id="loading-state" class="flex items-center justify-center py-20">
+        <div class="text-center">
+          <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+          <p class="text-gray-500">Loading quotes from Twenty CRM...</p>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="hidden">
+        <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Quotes</h3>
+          <p id="error-message" class="text-red-600 mb-4">Unable to connect to Twenty CRM</p>
+          <button
+            id="retry-btn"
+            type="button"
+            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden">
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
+          <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-700 mb-2">No Quote Requests</h3>
+          <p class="text-gray-500">Quote requests from Twenty CRM will appear here</p>
+        </div>
+      </div>
+
+      <!-- Quote Table -->
+      <div id="table-container" class="hidden">
+        <QuoteTable />
+      </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <QuoteDetailPanel />
+  </div>
+</BaseLayout>
+
+<script define:vars={{ adminPassword }}>
+  const CORRECT_PASSWORD = adminPassword;
+  const STORAGE_KEY = 'admin_authenticated';
+
+  // Elements
+  const passwordGate = document.getElementById('password-gate');
+  const dashboardContent = document.getElementById('dashboard-content');
+  const passwordForm = document.getElementById('password-form');
+  const passwordInput = document.getElementById('password-input');
+  const passwordError = document.getElementById('password-error');
+  const togglePassword = document.getElementById('toggle-password');
+  const eyeOpen = document.getElementById('eye-open');
+  const eyeClosed = document.getElementById('eye-closed');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  // Check if already authenticated
+  function checkAuth() {
+    return sessionStorage.getItem(STORAGE_KEY) === 'true';
+  }
+
+  // Show dashboard
+  function showDashboard() {
+    passwordGate.style.transition = 'opacity 300ms ease, transform 300ms ease';
+    passwordGate.style.opacity = '0';
+    passwordGate.style.transform = 'scale(0.98)';
+
+    setTimeout(() => {
+      passwordGate.classList.add('hidden');
+      dashboardContent.classList.remove('hidden');
+      dashboardContent.style.opacity = '0';
+      dashboardContent.style.transition = 'opacity 300ms ease';
+
+      requestAnimationFrame(() => {
+        dashboardContent.style.opacity = '1';
+        // Load quotes after showing dashboard
+        loadQuotes();
+      });
+    }, 300);
+  }
+
+  // Check if already authenticated on load
+  if (checkAuth()) {
+    passwordGate.classList.add('hidden');
+    dashboardContent.classList.remove('hidden');
+    // Load quotes
+    loadQuotes();
+  }
+
+  // Toggle password visibility
+  togglePassword?.addEventListener('click', () => {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    eyeOpen.classList.toggle('hidden');
+    eyeClosed.classList.toggle('hidden');
+  });
+
+  // Handle form submission
+  passwordForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = passwordInput.value;
+
+    if (input === CORRECT_PASSWORD) {
+      sessionStorage.setItem(STORAGE_KEY, 'true');
+      showDashboard();
+    } else {
+      passwordError.classList.remove('hidden');
+      passwordInput.classList.add('border-red-300');
+      passwordInput.focus();
+
+      // Shake animation
+      passwordInput.style.animation = 'shake 0.5s ease-in-out';
+      setTimeout(() => {
+        passwordInput.style.animation = '';
+      }, 500);
+    }
+  });
+
+  // Clear error on input
+  passwordInput?.addEventListener('input', () => {
+    passwordError.classList.add('hidden');
+    passwordInput.classList.remove('border-red-300');
+  });
+
+  // Logout
+  logoutBtn?.addEventListener('click', () => {
+    sessionStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  });
+
+  // Load quotes function (will be connected to API)
+  async function loadQuotes() {
+    const loadingState = document.getElementById('loading-state');
+    const errorState = document.getElementById('error-state');
+    const emptyState = document.getElementById('empty-state');
+    const tableContainer = document.getElementById('table-container');
+
+    // Show loading
+    loadingState?.classList.remove('hidden');
+    errorState?.classList.add('hidden');
+    emptyState?.classList.add('hidden');
+    tableContainer?.classList.add('hidden');
+
+    try {
+      const response = await fetch('/api/admin/quotes');
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Hide loading
+      loadingState?.classList.add('hidden');
+
+      if (data.quotes && data.quotes.length > 0) {
+        // Show table with data
+        tableContainer?.classList.remove('hidden');
+        // Dispatch event with quotes data (use setTimeout to ensure listeners are ready)
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('quotesLoaded', { detail: data }));
+        }, 50);
+      } else {
+        // Show empty state
+        emptyState?.classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('Failed to load quotes:', error);
+      loadingState?.classList.add('hidden');
+      errorState?.classList.remove('hidden');
+
+      const errorMessage = document.getElementById('error-message');
+      if (errorMessage) {
+        errorMessage.textContent = error instanceof Error ? error.message : 'Unknown error';
+      }
+    }
+  }
+
+  // Refresh button
+  document.getElementById('refresh-btn')?.addEventListener('click', () => {
+    loadQuotes();
+  });
+
+  // Retry button
+  document.getElementById('retry-btn')?.addEventListener('click', () => {
+    loadQuotes();
+  });
+</script>
+
+<style>
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+</style>

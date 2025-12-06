@@ -1,0 +1,200 @@
+---
+/**
+ * StatusStrip Component
+ * Kanban-style summary strip showing quote counts by status
+ * Clicking a status filters the table
+ *
+ * DYNAMIC: Status buttons are generated from actual CRM data
+ */
+---
+
+<div class="bg-white border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      <!-- Pipeline visualization - dynamically populated -->
+      <div id="status-buttons-container" class="flex items-center gap-1 flex-nowrap">
+        <!-- "All" button is always present -->
+        <button
+          type="button"
+          data-status="all"
+          class="status-filter-btn active flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-gray-900 text-white"
+        >
+          <span class="status-label">All</span>
+          <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white" data-count="all">0</span>
+        </button>
+        <!-- Dynamic status buttons will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Active state */
+  .status-filter-btn.active {
+    background-color: #1f2937 !important;
+    color: white !important;
+  }
+  .status-filter-btn.active .status-count {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+  }
+
+  /* Color classes for counts */
+  .status-count[data-count="new"] { background-color: #dbeafe; color: #1d4ed8; }
+  .status-count[data-count="in_progress"] { background-color: #fef3c7; color: #b45309; }
+  .status-count[data-count="sent"] { background-color: #ede9fe; color: #7c3aed; }
+  .status-count[data-count="won"] { background-color: #d1fae5; color: #047857; }
+  .status-count[data-count="lost"] { background-color: #fee2e2; color: #b91c1c; }
+  .status-count[data-count="all"] { background-color: #f3f4f6; color: #374151; }
+</style>
+
+<script>
+  // Global state for current filter
+  let currentStatusFilter = 'all';
+
+  // Stage mappings (CRM stage key -> Dashboard display label)
+  // Must match CRM_CONFIG.allowedStages in twentyCrmQuotes.ts
+  const stageLabels: Record<string, string> = {
+    'planning': 'Price Quote',
+    'order_samples': 'Order Samples',
+    'client_review_samples': 'Sample Delivered',
+    'full_batch_order': 'Full Batch Order',
+  };
+
+  // Fixed color assignments for each stage (for visual consistency)
+  const stageColors: Record<string, { bg: string; text: string }> = {
+    'planning': { bg: '#dbeafe', text: '#1d4ed8' },           // blue - Price Quote
+    'order_samples': { bg: '#fef3c7', text: '#b45309' },      // yellow - Order Samples
+    'client_review_samples': { bg: '#ede9fe', text: '#7c3aed' }, // purple - Sample Delivered
+    'full_batch_order': { bg: '#d1fae5', text: '#047857' },   // green - Full Batch Order
+  };
+
+  // Get display label for a stage
+  function getStageLabel(status: string): string {
+    return stageLabels[status] || status;
+  }
+
+  // Get color for a stage
+  function getStageColor(status: string): { bg: string; text: string } {
+    return stageColors[status] || { bg: '#f3f4f6', text: '#374151' };
+  }
+
+  // Generate dynamic status buttons
+  function generateStatusButtons(statusCounts: Record<string, number>, totalCount: number) {
+    const container = document.getElementById('status-buttons-container');
+    if (!container) return;
+
+    // Keep the "All" button, remove other dynamic buttons
+    const allButton = container.querySelector('[data-status="all"]');
+    container.innerHTML = '';
+    if (allButton) {
+      // Update All count
+      const allCountEl = allButton.querySelector('.status-count');
+      if (allCountEl) {
+        allCountEl.textContent = String(totalCount);
+      }
+      container.appendChild(allButton);
+    }
+
+    // Define the order of stages (pipeline order)
+    const stageOrder = ['planning', 'order_samples', 'client_review_samples', 'full_batch_order'];
+
+    // Sort statuses by pipeline order
+    const sortedStatuses = stageOrder
+      .filter(stage => statusCounts.hasOwnProperty(stage))
+      .map(stage => [stage, statusCounts[stage]] as [string, number]);
+
+    // Create buttons for each status
+    sortedStatuses.forEach(([status, count], index) => {
+      const color = getStageColor(status);
+      const label = getStageLabel(status);
+
+      // Add arrow separator
+      const arrow = document.createElement('svg');
+      arrow.className = 'w-4 h-4 text-gray-300 flex-shrink-0';
+      arrow.setAttribute('fill', 'none');
+      arrow.setAttribute('stroke', 'currentColor');
+      arrow.setAttribute('viewBox', '0 0 24 24');
+      arrow.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />';
+      container.appendChild(arrow);
+
+      // Create button
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.status = status;
+      button.className = 'status-filter-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-gray-100 text-gray-600 hover:bg-gray-200';
+
+      button.innerHTML = `
+        <span class="status-label">${label}</span>
+        <span class="status-count px-2 py-0.5 rounded-full text-xs font-semibold" data-count="${status}" style="background-color: ${color.bg}; color: ${color.text};">${count}</span>
+      `;
+
+      // Add click handler
+      button.addEventListener('click', () => {
+        handleFilterClick(button);
+      });
+
+      container.appendChild(button);
+    });
+
+    // Re-add click handler to All button
+    const newAllButton = container.querySelector('[data-status="all"]');
+    if (newAllButton) {
+      newAllButton.addEventListener('click', () => {
+        handleFilterClick(newAllButton as HTMLButtonElement);
+      });
+    }
+  }
+
+  // Handle filter button click
+  function handleFilterClick(btn: HTMLButtonElement) {
+    const status = btn.getAttribute('data-status');
+    if (!status) return;
+
+    // Update active state
+    document.querySelectorAll('.status-filter-btn').forEach(b => {
+      b.classList.remove('active');
+      b.classList.remove('bg-gray-900', 'text-white');
+      b.classList.add('bg-gray-100', 'text-gray-600');
+    });
+    btn.classList.add('active');
+    btn.classList.remove('bg-gray-100', 'text-gray-600');
+    btn.classList.add('bg-gray-900', 'text-white');
+
+    // Update count badge style for active
+    const countBadge = btn.querySelector('.status-count');
+    if (countBadge) {
+      countBadge.setAttribute('style', 'background-color: rgba(255,255,255,0.2); color: white;');
+    }
+
+    // Update current filter
+    currentStatusFilter = status;
+
+    // Dispatch filter event
+    window.dispatchEvent(new CustomEvent('statusFilterChanged', {
+      detail: { status }
+    }));
+  }
+
+  // Listen for quotes data to update counts and generate buttons
+  window.addEventListener('quotesLoaded', (e: Event) => {
+    const event = e as CustomEvent;
+    const { quotes, statusCounts } = event.detail;
+
+    if (statusCounts && quotes) {
+      generateStatusButtons(statusCounts, quotes.length);
+    }
+  });
+
+  // Export current filter for other components
+  (window as any).getStatusFilter = () => currentStatusFilter;
+</script>
