@@ -158,6 +158,57 @@
   </div>
 </div>
 
+<!-- Document Viewer Modal -->
+<div id="doc-viewer-modal" class="doc-viewer-modal">
+  <div class="doc-viewer-backdrop"></div>
+  <div class="doc-viewer-container">
+    <!-- Header -->
+    <div class="doc-viewer-header">
+      <div class="doc-viewer-title">
+        <span id="doc-viewer-filename" class="doc-filename"></span>
+        <span id="doc-viewer-counter" class="doc-counter"></span>
+      </div>
+      <div class="doc-viewer-actions">
+        <button type="button" id="doc-viewer-download" class="doc-viewer-btn" title="Download">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+        </button>
+        <button type="button" id="doc-viewer-close" class="doc-viewer-btn" title="Close">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="doc-viewer-content">
+      <!-- Navigation buttons -->
+      <button type="button" id="doc-viewer-prev" class="doc-nav-btn doc-nav-prev" title="Previous">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div id="doc-viewer-display" class="doc-viewer-display">
+        <!-- Document content rendered here -->
+      </div>
+
+      <button type="button" id="doc-viewer-next" class="doc-nav-btn doc-nav-next" title="Next">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Footer with thumbnails -->
+    <div id="doc-viewer-thumbnails" class="doc-viewer-thumbnails">
+      <!-- Thumbnail strip rendered here -->
+    </div>
+  </div>
+</div>
+
 <style is:global>
   /*
    * IMPORTANT: Using is:global because inputs are dynamically generated via JS
@@ -395,6 +446,187 @@
     justify-content: center;
     background: #f9fafb;
     border-radius: 0.5rem;
+  }
+
+  /* Document Viewer Modal */
+  .doc-viewer-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+  }
+  .doc-viewer-modal.open {
+    display: block;
+  }
+  .doc-viewer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(4px);
+  }
+  .doc-viewer-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc-viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    z-index: 1;
+  }
+  .doc-viewer-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+  }
+  .doc-filename {
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+  }
+  .doc-counter {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+  }
+  .doc-viewer-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .doc-viewer-btn {
+    padding: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+  }
+  .doc-viewer-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  .doc-viewer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+  }
+  .doc-viewer-display {
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .doc-viewer-display img {
+    max-width: 90vw;
+    max-height: calc(100vh - 200px);
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  .doc-viewer-display iframe {
+    width: 90vw;
+    height: calc(100vh - 200px);
+    border: none;
+    border-radius: 0.5rem;
+    background: white;
+  }
+  .doc-viewer-display .loading-spinner {
+    color: white;
+  }
+
+  /* Navigation buttons */
+  .doc-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 50%;
+    transition: all 0.15s ease;
+    z-index: 2;
+  }
+  .doc-nav-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .doc-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .doc-nav-btn:disabled:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .doc-nav-prev {
+    left: 1rem;
+  }
+  .doc-nav-next {
+    right: 1rem;
+  }
+
+  /* Thumbnail strip */
+  .doc-viewer-thumbnails {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-x: auto;
+  }
+  .doc-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    background: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .doc-thumb:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  .doc-thumb.active {
+    border-color: #00c16e;
+    box-shadow: 0 0 0 2px rgba(0, 193, 110, 0.3);
+  }
+  .doc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .doc-thumb .pdf-thumb {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ef4444;
+    background: #fee2e2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Notes cell - wrap text appropriately */
@@ -1227,19 +1459,250 @@
     }
   }
 
-  // Open document in new tab
-  async function openDocument(quoteId: string, docId: string) {
-    try {
-      const response = await fetch(`/api/admin/quotes/${quoteId}/documents/${docId}/url`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.url) {
-          window.open(data.url, '_blank');
+  // ============================================================================
+  // DOCUMENT VIEWER MODAL
+  // ============================================================================
+
+  // Document viewer state
+  let viewerQuoteId: string | null = null;
+  let viewerDocuments: any[] = [];
+  let viewerCurrentIndex = 0;
+
+  // Document viewer elements
+  const docViewerModal = document.getElementById('doc-viewer-modal');
+  const docViewerBackdrop = docViewerModal?.querySelector('.doc-viewer-backdrop');
+  const docViewerClose = document.getElementById('doc-viewer-close');
+  const docViewerDownload = document.getElementById('doc-viewer-download');
+  const docViewerPrev = document.getElementById('doc-viewer-prev') as HTMLButtonElement;
+  const docViewerNext = document.getElementById('doc-viewer-next') as HTMLButtonElement;
+  const docViewerFilename = document.getElementById('doc-viewer-filename');
+  const docViewerCounter = document.getElementById('doc-viewer-counter');
+  const docViewerDisplay = document.getElementById('doc-viewer-display');
+  const docViewerThumbnails = document.getElementById('doc-viewer-thumbnails');
+
+  // Open document viewer with all documents for a quote
+  async function openDocumentViewer(quoteId: string, startDocId?: string) {
+    const docs = getCachedDocuments(quoteId);
+    if (!docs || docs.length === 0) return;
+
+    viewerQuoteId = quoteId;
+    viewerDocuments = docs;
+
+    // Find starting index
+    if (startDocId) {
+      const idx = docs.findIndex(d => d.id === startDocId);
+      viewerCurrentIndex = idx >= 0 ? idx : 0;
+    } else {
+      viewerCurrentIndex = 0;
+    }
+
+    // Hide hover preview if showing
+    hidePreview();
+
+    // Show modal
+    docViewerModal?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Render thumbnails
+    renderViewerThumbnails();
+
+    // Load current document
+    await loadViewerDocument();
+  }
+
+  // Close document viewer
+  function closeDocumentViewer() {
+    docViewerModal?.classList.remove('open');
+    document.body.style.overflow = '';
+    viewerQuoteId = null;
+    viewerDocuments = [];
+    viewerCurrentIndex = 0;
+    if (docViewerDisplay) docViewerDisplay.innerHTML = '';
+    if (docViewerThumbnails) docViewerThumbnails.innerHTML = '';
+  }
+
+  // Navigate to previous document
+  function viewerPrevious() {
+    if (viewerCurrentIndex > 0) {
+      viewerCurrentIndex--;
+      loadViewerDocument();
+      updateViewerThumbnails();
+    }
+  }
+
+  // Navigate to next document
+  function viewerNext() {
+    if (viewerCurrentIndex < viewerDocuments.length - 1) {
+      viewerCurrentIndex++;
+      loadViewerDocument();
+      updateViewerThumbnails();
+    }
+  }
+
+  // Go to specific document by index
+  function viewerGoTo(index: number) {
+    if (index >= 0 && index < viewerDocuments.length) {
+      viewerCurrentIndex = index;
+      loadViewerDocument();
+      updateViewerThumbnails();
+    }
+  }
+
+  // Load and display current document
+  async function loadViewerDocument() {
+    if (!viewerQuoteId || !docViewerDisplay) return;
+
+    const doc = viewerDocuments[viewerCurrentIndex];
+    if (!doc) return;
+
+    // Update header
+    if (docViewerFilename) {
+      docViewerFilename.textContent = doc.file_name;
+    }
+    if (docViewerCounter) {
+      docViewerCounter.textContent = `${viewerCurrentIndex + 1} / ${viewerDocuments.length}`;
+    }
+
+    // Update navigation buttons
+    if (docViewerPrev) {
+      docViewerPrev.disabled = viewerCurrentIndex === 0;
+    }
+    if (docViewerNext) {
+      docViewerNext.disabled = viewerCurrentIndex === viewerDocuments.length - 1;
+    }
+
+    // Show loading
+    docViewerDisplay.innerHTML = `
+      <div class="loading-spinner">
+        <svg class="w-10 h-10 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    `;
+
+    // Get document URL
+    const url = await getDocumentUrl(viewerQuoteId, doc.id);
+    if (!url) {
+      docViewerDisplay.innerHTML = `
+        <div class="text-white text-center">
+          <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <p>Failed to load document</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Display based on file type
+    if (doc.file_type === 'application/pdf') {
+      docViewerDisplay.innerHTML = `<iframe src="${url}" title="${escapeHtml(doc.file_name)}"></iframe>`;
+    } else {
+      docViewerDisplay.innerHTML = `<img src="${url}" alt="${escapeHtml(doc.file_name)}" />`;
+    }
+  }
+
+  // Render thumbnail strip
+  async function renderViewerThumbnails() {
+    if (!docViewerThumbnails || !viewerQuoteId) return;
+
+    docViewerThumbnails.innerHTML = viewerDocuments.map((doc, index) => {
+      const isActive = index === viewerCurrentIndex;
+      const isPdf = doc.file_type === 'application/pdf';
+
+      return `
+        <div class="doc-thumb ${isActive ? 'active' : ''}" data-index="${index}">
+          ${isPdf
+            ? '<div class="pdf-thumb">PDF</div>'
+            : '<div class="thumb-loading w-full h-full bg-gray-600 animate-pulse"></div>'
+          }
+        </div>
+      `;
+    }).join('');
+
+    // Load image thumbnails
+    for (let i = 0; i < viewerDocuments.length; i++) {
+      const doc = viewerDocuments[i];
+      if (doc.file_type !== 'application/pdf') {
+        const thumb = docViewerThumbnails.querySelector(`[data-index="${i}"]`);
+        if (thumb) {
+          const url = await getDocumentUrl(viewerQuoteId, doc.id);
+          if (url) {
+            thumb.innerHTML = `<img src="${url}" alt="${escapeHtml(doc.file_name)}" />`;
+          }
         }
       }
-    } catch (error) {
-      console.error('Failed to open document:', error);
     }
+
+    // Add click handlers
+    docViewerThumbnails.querySelectorAll('.doc-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const index = parseInt(thumb.getAttribute('data-index') || '0', 10);
+        viewerGoTo(index);
+      });
+    });
+  }
+
+  // Update active thumbnail
+  function updateViewerThumbnails() {
+    if (!docViewerThumbnails) return;
+
+    docViewerThumbnails.querySelectorAll('.doc-thumb').forEach((thumb, index) => {
+      if (index === viewerCurrentIndex) {
+        thumb.classList.add('active');
+      } else {
+        thumb.classList.remove('active');
+      }
+    });
+  }
+
+  // Download current document
+  async function downloadCurrentDocument() {
+    if (!viewerQuoteId) return;
+
+    const doc = viewerDocuments[viewerCurrentIndex];
+    if (!doc) return;
+
+    const url = await getDocumentUrl(viewerQuoteId, doc.id);
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.file_name;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  // Event listeners for document viewer
+  docViewerClose?.addEventListener('click', closeDocumentViewer);
+  docViewerBackdrop?.addEventListener('click', closeDocumentViewer);
+  docViewerDownload?.addEventListener('click', downloadCurrentDocument);
+  docViewerPrev?.addEventListener('click', viewerPrevious);
+  docViewerNext?.addEventListener('click', viewerNext);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!docViewerModal?.classList.contains('open')) return;
+
+    switch (e.key) {
+      case 'Escape':
+        closeDocumentViewer();
+        break;
+      case 'ArrowLeft':
+        viewerPrevious();
+        break;
+      case 'ArrowRight':
+        viewerNext();
+        break;
+    }
+  });
+
+  // Legacy function - now opens viewer instead of new tab
+  async function openDocument(quoteId: string, docId: string) {
+    await openDocumentViewer(quoteId, docId);
   }
 
   // Save inline field with visual feedback
