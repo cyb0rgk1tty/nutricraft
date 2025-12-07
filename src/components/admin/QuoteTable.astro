@@ -310,6 +310,71 @@
     padding: 1px;
   }
 
+  /* Document hover preview popup */
+  .doc-preview-popup {
+    position: fixed;
+    z-index: 100;
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    max-width: 320px;
+    max-height: 400px;
+    overflow: hidden;
+  }
+  .doc-preview-popup.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .doc-preview-popup img {
+    max-width: 300px;
+    max-height: 380px;
+    border-radius: 0.5rem;
+    object-fit: contain;
+  }
+  .doc-preview-popup .pdf-preview {
+    width: 300px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-radius: 0.5rem;
+    color: #dc2626;
+  }
+  .doc-preview-popup .pdf-preview svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+  }
+  .doc-preview-popup .pdf-preview .filename {
+    font-size: 0.875rem;
+    font-weight: 500;
+    max-width: 280px;
+    text-align: center;
+    word-break: break-word;
+    padding: 0 0.5rem;
+  }
+  .doc-preview-popup .pdf-preview .hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 0.5rem;
+  }
+  .doc-preview-popup .loading {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+  }
+
   /* Notes cell - wrap text appropriately */
   .notes-cell {
     white-space: normal;
@@ -804,6 +869,157 @@
   const documentCache: Map<string, CacheEntry> = new Map();
   const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
   const MAX_CACHE_SIZE = 200;
+
+  // URL cache for preview popup
+  const urlCache: Map<string, { url: string; timestamp: number }> = new Map();
+  const URL_CACHE_TTL = 10 * 60 * 1000; // 10 minutes (signed URLs typically valid longer)
+
+  // Preview popup element
+  let previewPopup: HTMLElement | null = null;
+  let previewTimeout: ReturnType<typeof setTimeout> | null = null;
+  let currentPreviewDocId: string | null = null;
+
+  // Create preview popup element
+  function getPreviewPopup(): HTMLElement {
+    if (!previewPopup) {
+      previewPopup = document.createElement('div');
+      previewPopup.className = 'doc-preview-popup';
+      document.body.appendChild(previewPopup);
+    }
+    return previewPopup;
+  }
+
+  // Get cached URL or fetch new one
+  async function getDocumentUrl(quoteId: string, docId: string): Promise<string | null> {
+    const cacheKey = `${quoteId}:${docId}`;
+    const cached = urlCache.get(cacheKey);
+
+    if (cached && Date.now() - cached.timestamp < URL_CACHE_TTL) {
+      return cached.url;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/quotes/${quoteId}/documents/${docId}/url`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          urlCache.set(cacheKey, { url: data.url, timestamp: Date.now() });
+          return data.url;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to get document URL:', error);
+    }
+    return null;
+  }
+
+  // Show preview popup
+  async function showPreview(thumbnail: HTMLElement, quoteId: string, doc: any) {
+    const popup = getPreviewPopup();
+    currentPreviewDocId = doc.id;
+
+    // Position popup near thumbnail
+    const rect = thumbnail.getBoundingClientRect();
+    const popupWidth = 320;
+    const popupHeight = 400;
+
+    // Calculate position - prefer right side, fallback to left
+    let left = rect.right + 12;
+    if (left + popupWidth > window.innerWidth - 20) {
+      left = rect.left - popupWidth - 12;
+    }
+
+    // Vertical position - center on thumbnail, but stay in viewport
+    let top = rect.top + rect.height / 2 - popupHeight / 2;
+    top = Math.max(20, Math.min(top, window.innerHeight - popupHeight - 20));
+
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+
+    // Show loading state
+    popup.innerHTML = `
+      <div class="loading">
+        <svg class="w-6 h-6 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    `;
+    popup.classList.add('visible');
+
+    // Check if this is still the current preview
+    if (currentPreviewDocId !== doc.id) return;
+
+    if (doc.file_type === 'application/pdf') {
+      // PDF preview - show icon and filename
+      popup.innerHTML = `
+        <div class="pdf-preview">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <div class="filename">${escapeHtml(doc.file_name)}</div>
+          <div class="hint">Click to open PDF</div>
+        </div>
+      `;
+    } else {
+      // Image preview - load and display
+      const url = await getDocumentUrl(quoteId, doc.id);
+
+      // Check if this is still the current preview
+      if (currentPreviewDocId !== doc.id) return;
+
+      if (url) {
+        popup.innerHTML = `<img src="${url}" alt="${escapeHtml(doc.file_name)}" />`;
+      } else {
+        popup.innerHTML = `
+          <div class="pdf-preview">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div class="filename">Failed to load preview</div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  // Hide preview popup
+  function hidePreview() {
+    if (previewTimeout) {
+      clearTimeout(previewTimeout);
+      previewTimeout = null;
+    }
+    currentPreviewDocId = null;
+    if (previewPopup) {
+      previewPopup.classList.remove('visible');
+    }
+  }
+
+  // Setup hover handlers for thumbnails (using event delegation on tbody)
+  tbodyElement?.addEventListener('mouseenter', (e) => {
+    const target = e.target as HTMLElement;
+    const thumbnail = target.closest('.formula-thumbnail.has-documents');
+    if (!thumbnail) return;
+
+    const quoteId = thumbnail.getAttribute('data-quote-id');
+    if (!quoteId) return;
+
+    const docs = getCachedDocuments(quoteId);
+    if (!docs || docs.length === 0) return;
+
+    // Delay showing preview slightly to avoid flicker
+    previewTimeout = setTimeout(() => {
+      showPreview(thumbnail as HTMLElement, quoteId, docs[0]);
+    }, 200);
+  }, true);
+
+  tbodyElement?.addEventListener('mouseleave', (e) => {
+    const target = e.target as HTMLElement;
+    const thumbnail = target.closest('.formula-thumbnail.has-documents');
+    if (thumbnail) {
+      hidePreview();
+    }
+  }, true);
 
   // Get cached documents if not expired
   function getCachedDocuments(quoteId: string): any[] | null {
