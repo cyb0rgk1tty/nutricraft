@@ -308,6 +308,27 @@
     border: 2px solid #00c16e;
     border-radius: 0.5rem;
     padding: 1px;
+    position: relative;
+  }
+
+  /* Document count badge */
+  .formula-thumbnail .doc-count-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background-color: #00c16e;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
   }
 
   /* Document hover preview popup */
@@ -1152,9 +1173,16 @@
     container.classList.add('has-documents');
     const doc = documents[0]; // Show first document
     const fileType = doc.file_type;
+    const docCount = documents.length;
+
+    // Create count badge HTML (only show if more than 1 document)
+    const countBadge = docCount > 1
+      ? `<span class="doc-count-badge">${docCount}</span>`
+      : '';
 
     if (fileType === 'application/pdf') {
       container.innerHTML = `
+        ${countBadge}
         <div class="pdf-icon" title="${escapeHtml(doc.file_name)}" data-doc-id="${doc.id}" data-quote-id="${quoteId}">
           <span>PDF</span>
         </div>
@@ -1162,6 +1190,7 @@
     } else {
       // For images, we need to get a signed URL
       container.innerHTML = `
+        ${countBadge}
         <div class="img-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse" data-doc-id="${doc.id}" data-quote-id="${quoteId}"></div>
       `;
       loadImageThumbnail(container, doc.id, quoteId, doc.file_name);
