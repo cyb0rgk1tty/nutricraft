@@ -284,8 +284,9 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
       requestAnimationFrame(() => {
         dashboardContent.style.opacity = '1';
-        // Load quotes after showing dashboard
+        // Load quotes after showing dashboard and start polling
         loadQuotes();
+        startPolling();
       });
     }, 300);
   }
@@ -298,12 +299,46 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
   let currentSortField = 'createdAt';
   let currentSortDirection = 'desc';
 
-  // If already authenticated (server-side check), load quotes
+  // Auto-refresh polling configuration
+  const POLL_INTERVAL = 60000; // 60 seconds
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+  // Start polling when authenticated
+  function startPolling() {
+    if (pollTimer) return;
+    pollTimer = setInterval(() => {
+      if (!document.hidden) {
+        loadQuotes({ silent: true });
+      }
+    }, POLL_INTERVAL);
+  }
+
+  // Stop polling
+  function stopPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  // Handle tab visibility changes
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopPolling();
+    } else {
+      startPolling();
+      loadQuotes({ silent: true }); // Refresh when returning to tab
+    }
+  });
+
+  // If already authenticated (server-side check), load quotes and start polling
   if (!loginGate?.classList.contains('hidden') === false) {
     loadQuotes();
+    startPolling();
   } else if (dashboardContent && !dashboardContent.classList.contains('hidden')) {
-    // User is authenticated, load quotes
+    // User is authenticated, load quotes and start polling
     loadQuotes();
+    startPolling();
   }
 
   // Toggle password visibility
@@ -413,7 +448,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
   }
 
   // Load quotes function with pagination
-  async function loadQuotes(options?: { resetPage?: boolean }) {
+  async function loadQuotes(options?: { resetPage?: boolean; silent?: boolean }) {
     const loadingState = document.getElementById('loading-state');
     const errorState = document.getElementById('error-state');
     const emptyState = document.getElementById('empty-state');
@@ -424,11 +459,13 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       currentPage = 1;
     }
 
-    // Show loading
-    loadingState?.classList.remove('hidden');
-    errorState?.classList.add('hidden');
-    emptyState?.classList.add('hidden');
-    tableContainer?.classList.add('hidden');
+    // Show loading only if not a silent refresh (background poll)
+    if (!options?.silent) {
+      loadingState?.classList.remove('hidden');
+      errorState?.classList.add('hidden');
+      emptyState?.classList.add('hidden');
+      tableContainer?.classList.add('hidden');
+    }
 
     try {
       const response = await fetch(`/api/admin/quotes?${buildQueryString()}`);
@@ -445,8 +482,10 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
 
       const data = await response.json();
 
-      // Hide loading
-      loadingState?.classList.add('hidden');
+      // Hide loading (only if we showed it)
+      if (!options?.silent) {
+        loadingState?.classList.add('hidden');
+      }
 
       if (data.quotes && data.quotes.length > 0) {
         // Show table with data
@@ -496,13 +535,16 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       }
     } catch (error) {
       console.error('Failed to load quotes:', error);
-      loadingState?.classList.add('hidden');
-      errorState?.classList.remove('hidden');
+      // Only show error state if not a silent refresh
+      if (!options?.silent) {
+        loadingState?.classList.add('hidden');
+        errorState?.classList.remove('hidden');
 
-      const errorMessage = document.getElementById('error-message');
-      if (errorMessage && i18n) {
-        if (error instanceof Error && error.message !== 'HTTP 500') {
-          errorMessage.textContent = i18n.t('error', { message: error.message });
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage && i18n) {
+          if (error instanceof Error && error.message !== 'HTTP 500') {
+            errorMessage.textContent = i18n.t('error', { message: error.message });
+          }
         }
       }
     }
