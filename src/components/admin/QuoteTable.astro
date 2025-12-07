@@ -303,6 +303,13 @@
     color: #9ca3af;
   }
 
+  /* Formula thumbnail with documents indicator - green border */
+  .formula-thumbnail.has-documents {
+    border: 2px solid #00c16e;
+    border-radius: 0.5rem;
+    padding: 1px;
+  }
+
   /* Notes cell - wrap text appropriately */
   .notes-cell {
     white-space: normal;
@@ -908,6 +915,7 @@
   // Render a single thumbnail
   function renderThumbnail(container: HTMLElement, documents: any[], quoteId: string) {
     if (documents.length === 0) {
+      container.classList.remove('has-documents');
       const noFormulaText = t('noFormulaUploaded');
       container.innerHTML = `
         <div class="no-doc" title="${noFormulaText}">
@@ -919,6 +927,7 @@
       return;
     }
 
+    container.classList.add('has-documents');
     const doc = documents[0]; // Show first document
     const fileType = doc.file_type;
 
