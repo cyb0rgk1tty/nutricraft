@@ -196,8 +196,8 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
   const crmData: Record<string, any> = {};
 
   if (quote.status !== undefined) {
-    // Use the status value directly (lowercase) as Twenty CRM expects
-    crmData[fieldMappings.status] = quote.status;
+    // Twenty CRM expects UPPER_CASE enum values (e.g., ORDER_SAMPLES, PLANNING)
+    crmData[fieldMappings.status] = quote.status.toUpperCase();
   }
 
   if (quote.ourCost !== undefined) {
@@ -455,10 +455,11 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
     const orderByDirection = orderByMap[sortField] || 'DescNullsLast';
 
     // Build filter clause for status if provided
-    // Twenty CRM filter format: filter: { stages: { eq: "planning" } }
+    // Twenty CRM filter format: filter: { stages: { eq: PLANNING } }
+    // GraphQL enums must NOT be quoted - they are bare identifiers
     let filterClause = '';
     if (status && CRM_CONFIG.allowedStages.hasOwnProperty(status)) {
-      filterClause = `filter: { stages: { eq: "${status}" } }`;
+      filterClause = `filter: { stages: { eq: ${status.toUpperCase()} } }`;
     }
 
     // For search, we need to fetch more and filter client-side since Twenty CRM
