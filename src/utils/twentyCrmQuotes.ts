@@ -454,27 +454,21 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
     const orderByField = sortField;
     const orderByDirection = orderByMap[sortField] || 'DescNullsLast';
 
-    // Build filter clause for status if provided
-    // Twenty CRM filter format: filter: { stages: { eq: PLANNING } }
-    // GraphQL enums must NOT be quoted - they are bare identifiers
-    let filterClause = '';
-    if (status && CRM_CONFIG.allowedStages.hasOwnProperty(status)) {
-      filterClause = `filter: { stages: { eq: ${status.toUpperCase()} } }`;
-    }
+    // Note: We always fetch ALL quotes (no status filter in GraphQL) to calculate accurate
+    // status counts for the top bar. Status filtering is done client-side after counting.
+    // This ensures the counts are always correct regardless of which filter is active.
 
     // For search, we need to fetch more and filter client-side since Twenty CRM
     // may not support text search on name field directly
-    // We'll fetch a larger set and filter
-    const fetchLimit = search ? 500 : limit * 3; // Fetch more for search or to get accurate counts
+    const fetchLimit = 500; // Fetch all to get accurate counts
 
-    // Build the query with pagination
+    // Build the query with pagination (no status filter - we filter client-side for accurate counts)
     const query = `
       query FetchProductsPaginated($first: Int!, $after: String) {
         products(
           first: $first
           after: $after
           orderBy: { ${orderByField}: ${orderByDirection} }
-          ${filterClause}
         ) {
           edges {
             node {
@@ -544,11 +538,21 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
       };
     });
 
-    // Filter to only include allowed stages (if not already filtered by status)
-    if (!status) {
-      allQuotes = allQuotes.filter(quote =>
-        CRM_CONFIG.allowedStages.hasOwnProperty(quote.status)
-      );
+    // Filter to only include allowed stages
+    allQuotes = allQuotes.filter(quote =>
+      CRM_CONFIG.allowedStages.hasOwnProperty(quote.status)
+    );
+
+    // Calculate status counts from ALL quotes BEFORE applying status filter
+    // This ensures the top bar always shows correct counts for all stages
+    const statusCounts = allQuotes.reduce((acc, quote) => {
+      acc[quote.status] = (acc[quote.status] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Apply status filter AFTER counting (client-side)
+    if (status && CRM_CONFIG.allowedStages.hasOwnProperty(status)) {
+      allQuotes = allQuotes.filter(quote => quote.status === status);
     }
 
     // Apply search filter (client-side)
@@ -558,12 +562,6 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         quote.name.toLowerCase().includes(searchLower)
       );
     }
-
-    // Calculate status counts from all matching quotes
-    const statusCounts = allQuotes.reduce((acc, quote) => {
-      acc[quote.status] = (acc[quote.status] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
 
     // Apply pagination
     const totalFiltered = allQuotes.length;

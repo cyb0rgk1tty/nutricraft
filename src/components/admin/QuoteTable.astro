@@ -1367,6 +1367,9 @@
     // Batch fetch uncached documents
     if (uncachedIds.length === 0) return;
 
+    // Collect all image documents that need URLs for batch fetch
+    const imagesToFetch: Array<{ quoteId: string; docId: string; container: HTMLElement; fileName: string }> = [];
+
     // Fetch in batches of 20
     const chunks = chunkArray(uncachedIds, 20);
 
@@ -1391,7 +1394,22 @@
           // Find and render the thumbnail
           const thumbnail = document.querySelector(`.formula-thumbnail[data-quote-id="${quoteId}"]`);
           if (thumbnail) {
-            renderThumbnail(thumbnail as HTMLElement, docs as any[], quoteId);
+            const docArray = docs as any[];
+            // Render thumbnail (may show loading for images)
+            renderThumbnailSync(thumbnail as HTMLElement, docArray, quoteId);
+
+            // Collect image documents for batch URL fetch
+            if (docArray.length > 0) {
+              const doc = docArray[0];
+              if (doc.file_type !== 'application/pdf') {
+                imagesToFetch.push({
+                  quoteId,
+                  docId: doc.id,
+                  container: thumbnail as HTMLElement,
+                  fileName: doc.file_name,
+                });
+              }
+            }
           }
         });
       } catch (error) {
@@ -1401,15 +1419,76 @@
           setCachedDocuments(quoteId, []);
           const thumbnail = document.querySelector(`.formula-thumbnail[data-quote-id="${quoteId}"]`);
           if (thumbnail) {
-            renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+            renderThumbnailSync(thumbnail as HTMLElement, [], quoteId);
           }
         });
       }
     }
+
+    // Batch fetch signed URLs for all images
+    if (imagesToFetch.length > 0) {
+      await batchFetchImageUrls(imagesToFetch);
+    }
   }
 
-  // Render a single thumbnail
+  // Batch fetch signed URLs for multiple images
+  async function batchFetchImageUrls(images: Array<{ quoteId: string; docId: string; container: HTMLElement; fileName: string }>) {
+    try {
+      const response = await fetch('/api/admin/quotes/documents-urls-batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          documents: images.map(img => ({ quoteId: img.quoteId, docId: img.docId })),
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Batch URL fetch failed:', response.status);
+        return;
+      }
+
+      const data = await response.json();
+      if (!data.success) {
+        console.error('Batch URL fetch error:', data.error);
+        return;
+      }
+
+      // Update each image with its signed URL
+      images.forEach(({ quoteId, docId, container, fileName }) => {
+        const key = `${quoteId}:${docId}`;
+        const urlData = data.urls[key];
+
+        if (urlData?.url) {
+          // Cache the URL
+          urlCache.set(key, { url: urlData.url, timestamp: Date.now() });
+
+          // Update the thumbnail
+          const badge = container.querySelector('.doc-count-badge');
+          const badgeHtml = badge ? badge.outerHTML : '';
+          container.innerHTML = `${badgeHtml}<img src="${urlData.url}" alt="${escapeHtml(fileName)}" title="${escapeHtml(fileName)}" />`;
+        }
+      });
+    } catch (error) {
+      console.error('Batch URL fetch failed:', error);
+    }
+  }
+
+  // Render a single thumbnail (triggers individual image fetch)
   function renderThumbnail(container: HTMLElement, documents: any[], quoteId: string) {
+    renderThumbnailSync(container, documents, quoteId);
+
+    // For images, trigger individual fetch (used for cached thumbnails)
+    if (documents.length > 0) {
+      const doc = documents[0];
+      if (doc.file_type !== 'application/pdf') {
+        loadImageThumbnail(container, doc.id, quoteId, doc.file_name);
+      }
+    }
+  }
+
+  // Render a single thumbnail synchronously (without triggering individual image fetch)
+  // Used by batch loading to show loading state, then batch fetch URLs
+  function renderThumbnailSync(container: HTMLElement, documents: any[], quoteId: string) {
     if (documents.length === 0) {
       container.classList.remove('has-documents');
       const noFormulaText = t('noFormulaUploaded');
@@ -1441,12 +1520,11 @@
         </div>
       `;
     } else {
-      // For images, we need to get a signed URL
+      // For images, show loading state (URL will be fetched by batch)
       container.innerHTML = `
         ${countBadge}
         <div class="img-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse" data-doc-id="${doc.id}" data-quote-id="${quoteId}"></div>
       `;
-      loadImageThumbnail(container, doc.id, quoteId, doc.file_name);
     }
 
     // Add click handler to open document
@@ -1457,20 +1535,25 @@
     });
   }
 
-  // Load image thumbnail with signed URL
+  // Load image thumbnail with signed URL (uses URL cache for performance)
   async function loadImageThumbnail(container: HTMLElement, docId: string, quoteId: string, fileName: string) {
     try {
-      const response = await fetch(`/api/admin/quotes/${quoteId}/documents/${docId}/url`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.url) {
-          container.innerHTML = `<img src="${data.url}" alt="${escapeHtml(fileName)}" title="${escapeHtml(fileName)}" />`;
-        }
+      // Use cached URL function to avoid redundant API calls
+      const url = await getDocumentUrl(quoteId, docId);
+      if (url) {
+        // Preserve the count badge when replacing loading state with image
+        const badge = container.querySelector('.doc-count-badge');
+        const badgeHtml = badge ? badge.outerHTML : '';
+        container.innerHTML = `${badgeHtml}<img src="${url}" alt="${escapeHtml(fileName)}" title="${escapeHtml(fileName)}" />`;
       }
     } catch (error) {
       console.error('Failed to load image thumbnail:', error);
       const failedText = t('failedToLoadImage');
+      // Preserve the count badge on error too
+      const badge = container.querySelector('.doc-count-badge');
+      const badgeHtml = badge ? badge.outerHTML : '';
       container.innerHTML = `
+        ${badgeHtml}
         <div class="no-doc" title="${failedText}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

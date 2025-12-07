@@ -80,7 +80,7 @@ export const GET: APIRoute = async ({ params, request }) => {
       .from('quote_documents')
       .select('*')
       .eq('crm_product_id', id)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: true }); // Order by upload time (oldest first)
 
     if (error) {
       console.error('Error fetching documents:', error);

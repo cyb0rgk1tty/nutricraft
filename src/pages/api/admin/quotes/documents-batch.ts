@@ -59,7 +59,7 @@ export const GET: APIRoute = async ({ request }) => {
       .from('quote_documents')
       .select('id, crm_product_id, file_name, file_type, file_size, created_at')
       .in('crm_product_id', ids)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: true }); // Order by upload time (oldest first)
 
     if (error) {
       console.error('Error fetching batch documents:', error);

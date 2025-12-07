@@ -73,7 +73,14 @@ export const GET: APIRoute = async ({ params, request }) => {
           file_size: document.file_size,
         },
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          // Cache for 30 minutes (half the signed URL validity)
+          'Cache-Control': 'private, max-age=1800',
+        },
+      }
     );
   } catch (error) {
     console.error('API /admin/quotes/[id]/documents/[docId]/url GET error:', error);
