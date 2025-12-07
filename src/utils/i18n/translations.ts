@@ -110,6 +110,8 @@ export const translations = {
     uploadComplete: 'Upload complete!',
     uploadFailed: 'Upload failed',
     error: 'Error: {message}',
+    dropFilesHere: 'Drop files here',
+    dragDropHint: 'Drag & drop or click Upload',
 
     // Pagination
     showing: 'Showing',
@@ -229,6 +231,14 @@ export const translations = {
     uploadComplete: '上传完成！',
     uploadFailed: '上传失败',
     error: '错误：{message}',
+    dropFilesHere: '拖放文件到此处',
+    dragDropHint: '拖放或点击上传',
+
+    // Pagination
+    showing: '显示',
+    of: '/',
+    previous: '上一页',
+    next: '下一页',
 
     // Language
     language: '语言',
