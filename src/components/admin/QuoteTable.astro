@@ -640,6 +640,12 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+
+  /* Notes inline input - left aligned */
+  .inline-input.notes-input {
+    text-align: left;
+    padding: 0.25rem 0.5rem;
+  }
 </style>
 
 <script>
@@ -721,6 +727,11 @@
         qtyInput.value = updatedQuote.orderQuantity != null && updatedQuote.orderQuantity !== 0
           ? String(updatedQuote.orderQuantity)
           : '';
+      }
+
+      const notesInput = row.querySelector('.notes-input') as HTMLInputElement;
+      if (notesInput && updatedQuote.publicNotes !== undefined) {
+        notesInput.value = updatedQuote.publicNotes || '';
       }
     }
   });
@@ -987,8 +998,15 @@
             />
           </td>
           <!-- Notes: flexible, left-aligned (Public Notes) -->
-          <td class="hidden md:table-cell px-2 py-3 text-left">
-            <div class="notes-cell text-sm text-gray-600">${escapeHtml(quote.publicNotes || '')}</div>
+          <td class="hidden md:table-cell px-2 py-3 text-left overflow-hidden">
+            <input
+              type="text"
+              class="inline-input notes-input"
+              data-quote-id="${quote.id}"
+              data-field="publicNotes"
+              value="${escapeHtml(quote.publicNotes || '')}"
+              placeholder="Add notes..."
+            />
           </td>
           <!-- Actions: 36px, centered -->
           <td class="w-[36px] px-1 py-3 text-center">
@@ -1104,6 +1122,9 @@
       const value = parseInt(target.value, 10) || 0;
       target.value = value ? String(value) : '';
       saveInlineField(quoteId, 'orderQuantity', value, target);
+    } else if (target.classList.contains('notes-input')) {
+      const value = target.value.trim();
+      saveInlineTextField(quoteId, 'publicNotes', value, target);
     }
   }, true); // Use capture phase for blur
 
@@ -1755,6 +1776,48 @@
       } else {
         inputEl.value = oldValue ? String(oldValue) : '';
       }
+    }
+  }
+
+  // Save inline text field with visual feedback (for string fields)
+  async function saveInlineTextField(quoteId: string, field: string, value: string, inputEl: HTMLInputElement) {
+    // Find quote and check if value changed
+    const quote = currentQuotes.find(q => q.id === quoteId);
+    if (!quote) return;
+
+    const oldValue = quote[field] || '';
+    if (oldValue === value) return; // No change
+
+    // Show saving state
+    inputEl.classList.add('saving');
+    inputEl.classList.remove('saved');
+
+    try {
+      const response = await fetch(`/api/admin/quotes/${quoteId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [field]: value }),
+      });
+
+      if (!response.ok) throw new Error('Failed to save');
+
+      // Update local data
+      quote[field] = value;
+
+      // Show saved state
+      inputEl.classList.remove('saving');
+      inputEl.classList.add('saved');
+      setTimeout(() => {
+        inputEl.classList.remove('saved');
+      }, 1500);
+
+      // Notify panel if open
+      window.dispatchEvent(new CustomEvent('quoteUpdatedFromTable', { detail: { quote } }));
+    } catch (error) {
+      console.error('Failed to save field:', error);
+      inputEl.classList.remove('saving');
+      // Revert value
+      inputEl.value = oldValue;
     }
   }
 

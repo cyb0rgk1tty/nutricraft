@@ -818,6 +818,29 @@
     populatePanel(event.detail.quote);
   });
 
+  // Listen for updates from table inline edits
+  window.addEventListener('quoteUpdatedFromTable', (e: Event) => {
+    const event = e as CustomEvent;
+    const updatedQuote = event.detail?.quote;
+    if (!updatedQuote || !currentQuote || updatedQuote.id !== currentQuote.id) return;
+
+    // Update local quote data
+    Object.assign(currentQuote, updatedQuote);
+
+    // Update form fields if panel is open
+    if (panel?.classList.contains('panel-open')) {
+      if (updatedQuote.ourCost !== undefined && ourCostInput) {
+        ourCostInput.value = updatedQuote.ourCost ? formatPrice(updatedQuote.ourCost) : '';
+      }
+      if (updatedQuote.orderQuantity !== undefined && orderQuantityInput) {
+        orderQuantityInput.value = updatedQuote.orderQuantity ? String(updatedQuote.orderQuantity) : '';
+      }
+      if (updatedQuote.publicNotes !== undefined && publicNotesTextarea) {
+        publicNotesTextarea.value = updatedQuote.publicNotes || '';
+      }
+    }
+  });
+
   // Helper functions
   function formatPrice(value: number): string {
     return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
