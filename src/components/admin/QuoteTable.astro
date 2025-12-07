@@ -317,13 +317,13 @@
     background: white;
     border-radius: 0.75rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
-    padding: 0.5rem;
+    padding: 0.75rem;
     pointer-events: none;
     opacity: 0;
     transform: scale(0.95);
     transition: opacity 0.15s ease, transform 0.15s ease;
-    max-width: 320px;
-    max-height: 400px;
+    max-width: 90vw;
+    max-height: 85vh;
     overflow: hidden;
   }
   .doc-preview-popup.visible {
@@ -331,14 +331,15 @@
     transform: scale(1);
   }
   .doc-preview-popup img {
-    max-width: 300px;
-    max-height: 380px;
+    max-width: min(600px, 80vw);
+    max-height: min(700px, 75vh);
     border-radius: 0.5rem;
     object-fit: contain;
+    display: block;
   }
   .doc-preview-popup .pdf-preview {
-    width: 300px;
-    height: 380px;
+    width: min(500px, 70vw);
+    height: min(400px, 50vh);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -348,26 +349,26 @@
     color: #dc2626;
   }
   .doc-preview-popup .pdf-preview svg {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1rem;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
   }
   .doc-preview-popup .pdf-preview .filename {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 500;
-    max-width: 280px;
+    max-width: 90%;
     text-align: center;
     word-break: break-word;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
   }
   .doc-preview-popup .pdf-preview .hint {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: #9ca3af;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
   }
   .doc-preview-popup .loading {
-    width: 300px;
-    height: 200px;
+    width: min(400px, 60vw);
+    height: min(300px, 40vh);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -918,20 +919,25 @@
     const popup = getPreviewPopup();
     currentPreviewDocId = doc.id;
 
-    // Position popup near thumbnail
+    // Position popup near thumbnail - estimate size based on content type
     const rect = thumbnail.getBoundingClientRect();
-    const popupWidth = 320;
-    const popupHeight = 400;
+    const isPdf = doc.file_type === 'application/pdf';
+    const estimatedWidth = isPdf ? Math.min(500, window.innerWidth * 0.7) : Math.min(600, window.innerWidth * 0.8);
+    const estimatedHeight = isPdf ? Math.min(400, window.innerHeight * 0.5) : Math.min(700, window.innerHeight * 0.75);
 
     // Calculate position - prefer right side, fallback to left
-    let left = rect.right + 12;
-    if (left + popupWidth > window.innerWidth - 20) {
-      left = rect.left - popupWidth - 12;
+    let left = rect.right + 16;
+    if (left + estimatedWidth > window.innerWidth - 20) {
+      left = rect.left - estimatedWidth - 16;
+    }
+    // If still doesn't fit, center it
+    if (left < 20) {
+      left = Math.max(20, (window.innerWidth - estimatedWidth) / 2);
     }
 
-    // Vertical position - center on thumbnail, but stay in viewport
-    let top = rect.top + rect.height / 2 - popupHeight / 2;
-    top = Math.max(20, Math.min(top, window.innerHeight - popupHeight - 20));
+    // Vertical position - align top with thumbnail, but stay in viewport
+    let top = rect.top;
+    top = Math.max(20, Math.min(top, window.innerHeight - estimatedHeight - 20));
 
     popup.style.left = `${left}px`;
     popup.style.top = `${top}px`;
