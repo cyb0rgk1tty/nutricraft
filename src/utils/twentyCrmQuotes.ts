@@ -27,7 +27,7 @@ export const CRM_CONFIG = {
     updatedAt: 'updatedAt',
     ourCost: 'ourCost',  // Number type in CRM
     orderQuantity: 'orderQuantity',  // Float type in CRM
-    tldr: 'tldr',  // Text type in CRM - displayed as "Notes"
+    publicNotes: 'publicNotes',  // Text type in CRM - displayed on dashboard
   } as Record<string, string>,
 
   // Stages to show in the dashboard (CRM stage value -> Dashboard display label)
@@ -67,7 +67,7 @@ export interface Quote {
   rawData?: Record<string, any>;
   ourCost?: number;  // Manufacturer's cost (Number in CRM)
   orderQuantity?: number;  // Order quantity (Float in CRM)
-  tldr?: string;  // Notes/TLDR (Text in CRM)
+  publicNotes?: string;  // Public Notes - displayed on dashboard
 }
 
 export interface FetchQuotesResponse {
@@ -75,6 +75,29 @@ export interface FetchQuotesResponse {
   quotes: Quote[];
   statusCounts: Record<string, number>;
   error?: string;
+}
+
+export interface PaginatedQuotesResponse {
+  success: boolean;
+  quotes: Quote[];
+  statusCounts: Record<string, number>;
+  pagination: {
+    page: number;
+    limit: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    totalFiltered: number;
+  };
+  error?: string;
+}
+
+export interface FetchQuotesOptions {
+  page?: number;      // 1-based page number (default: 1)
+  limit?: number;     // Items per page (default: 50)
+  status?: string;    // Filter by status (optional)
+  search?: string;    // Search by name (optional)
+  sortField?: 'createdAt' | 'name' | 'ourCost' | 'orderQuantity';
+  sortDirection?: 'asc' | 'desc';
 }
 
 export interface UpdateQuoteResponse {
@@ -184,6 +207,10 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
 
   if (quote.orderQuantity !== undefined) {
     crmData[fieldMappings.orderQuantity] = quote.orderQuantity;
+  }
+
+  if (quote.publicNotes !== undefined) {
+    crmData[fieldMappings.publicNotes] = quote.publicNotes;
   }
 
   return crmData;
@@ -312,7 +339,7 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               updatedAt
               ourCost
               orderQuantity
-              tldr
+              publicNotes
             }
           }
         }
@@ -358,7 +385,7 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         crmId: product.id,
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
-        tldr: product.tldr || undefined,
+        publicNotes: product.publicNotes || undefined,
       };
     });
 
@@ -392,6 +419,187 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
 }
 
 /**
+ * Fetches products from Twenty CRM with server-side pagination
+ * Supports filtering by status, search, and sorting
+ */
+export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Promise<PaginatedQuotesResponse> {
+  const {
+    page = 1,
+    limit = 50,
+    status,
+    search,
+    sortField = 'createdAt',
+    sortDirection = 'desc',
+  } = options;
+
+  try {
+    const config = getCrmConfig();
+    if (!config) {
+      return {
+        success: false,
+        quotes: [],
+        statusCounts: {},
+        pagination: { page, limit, hasNextPage: false, hasPreviousPage: false, totalFiltered: 0 },
+        error: 'Missing CRM configuration',
+      };
+    }
+
+    // Build orderBy clause based on sort options
+    const orderByMap: Record<string, string> = {
+      createdAt: sortDirection === 'desc' ? 'DescNullsLast' : 'AscNullsLast',
+      name: sortDirection === 'desc' ? 'DescNullsLast' : 'AscNullsLast',
+      ourCost: sortDirection === 'desc' ? 'DescNullsLast' : 'AscNullsLast',
+      orderQuantity: sortDirection === 'desc' ? 'DescNullsLast' : 'AscNullsLast',
+    };
+    const orderByField = sortField;
+    const orderByDirection = orderByMap[sortField] || 'DescNullsLast';
+
+    // Build filter clause for status if provided
+    // Twenty CRM filter format: filter: { stages: { eq: "planning" } }
+    let filterClause = '';
+    if (status && CRM_CONFIG.allowedStages.hasOwnProperty(status)) {
+      filterClause = `filter: { stages: { eq: "${status}" } }`;
+    }
+
+    // For search, we need to fetch more and filter client-side since Twenty CRM
+    // may not support text search on name field directly
+    // We'll fetch a larger set and filter
+    const fetchLimit = search ? 500 : limit * 3; // Fetch more for search or to get accurate counts
+
+    // Build the query with pagination
+    const query = `
+      query FetchProductsPaginated($first: Int!, $after: String) {
+        products(
+          first: $first
+          after: $after
+          orderBy: { ${orderByField}: ${orderByDirection} }
+          ${filterClause}
+        ) {
+          edges {
+            node {
+              id
+              name
+              stages
+              createdAt
+              updatedAt
+              ourCost
+              orderQuantity
+              publicNotes
+            }
+            cursor
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    `;
+
+    // For page > 1, we need to skip items. Since Twenty CRM uses cursor pagination,
+    // we need to fetch all prior items to get the cursor. For simplicity, we'll
+    // fetch all and slice client-side (acceptable for < 2000 items).
+    // A more efficient approach would be to cache cursors per page.
+    const result = await graphqlRequest(config, query, {
+      first: fetchLimit,
+      after: null,
+    });
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error fetching products:', result.errors);
+      return {
+        success: false,
+        quotes: [],
+        statusCounts: {},
+        pagination: { page, limit, hasNextPage: false, hasPreviousPage: false, totalFiltered: 0 },
+        error: result.errors[0]?.message || 'GraphQL error',
+      };
+    }
+
+    // Parse products into quotes
+    const products = result.data?.products?.edges || [];
+    let allQuotes: Quote[] = products.map((edge: any) => {
+      const product = edge.node;
+      const stageValue = Array.isArray(product.stages) ? product.stages[0] : product.stages;
+      const normalizedStage = stageValue?.toLowerCase() || '';
+
+      let ourCost: number | undefined;
+      if (typeof product.ourCost === 'number') {
+        ourCost = product.ourCost;
+      } else if (product.ourCost?.amountMicros) {
+        ourCost = product.ourCost.amountMicros / 1000000;
+      }
+
+      return {
+        id: product.id,
+        name: product.name || 'Unnamed Product',
+        status: normalizedStage,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        crmId: product.id,
+        ourCost,
+        orderQuantity: product.orderQuantity || undefined,
+        publicNotes: product.publicNotes || undefined,
+      };
+    });
+
+    // Filter to only include allowed stages (if not already filtered by status)
+    if (!status) {
+      allQuotes = allQuotes.filter(quote =>
+        CRM_CONFIG.allowedStages.hasOwnProperty(quote.status)
+      );
+    }
+
+    // Apply search filter (client-side)
+    if (search) {
+      const searchLower = search.toLowerCase();
+      allQuotes = allQuotes.filter(quote =>
+        quote.name.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Calculate status counts from all matching quotes
+    const statusCounts = allQuotes.reduce((acc, quote) => {
+      acc[quote.status] = (acc[quote.status] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Apply pagination
+    const totalFiltered = allQuotes.length;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedQuotes = allQuotes.slice(startIndex, endIndex);
+
+    const hasNextPage = endIndex < totalFiltered;
+    const hasPreviousPage = page > 1;
+
+    console.log(`Twenty CRM: Fetched page ${page} (${paginatedQuotes.length} of ${totalFiltered} products)`);
+
+    return {
+      success: true,
+      quotes: paginatedQuotes,
+      statusCounts,
+      pagination: {
+        page,
+        limit,
+        hasNextPage,
+        hasPreviousPage,
+        totalFiltered,
+      },
+    };
+  } catch (error) {
+    console.error('Twenty CRM: Unexpected error fetching products:', error);
+    return {
+      success: false,
+      quotes: [],
+      statusCounts: {},
+      pagination: { page: 1, limit: 50, hasNextPage: false, hasPreviousPage: false, totalFiltered: 0 },
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
  * Updates a product in Twenty CRM
  */
 export async function updateQuoteInCRM(
@@ -419,7 +627,7 @@ export async function updateQuoteInCRM(
           updatedAt
           ourCost
           orderQuantity
-          tldr
+          publicNotes
         }
       }
     `;

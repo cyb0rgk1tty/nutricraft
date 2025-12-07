@@ -290,6 +290,14 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     }, 300);
   }
 
+  // Pagination state - declare early so it's available when loadQuotes is called
+  let currentPage = 1;
+  let currentLimit = 50;
+  let currentStatus: string | null = null;
+  let currentSearch = '';
+  let currentSortField = 'createdAt';
+  let currentSortDirection = 'desc';
+
   // If already authenticated (server-side check), load quotes
   if (!loginGate?.classList.contains('hidden') === false) {
     loadQuotes();
@@ -392,12 +400,29 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     window.location.reload();
   });
 
-  // Load quotes function
-  async function loadQuotes() {
+  // Build query string for API
+  function buildQueryString(): string {
+    const params = new URLSearchParams();
+    params.set('page', String(currentPage));
+    params.set('limit', String(currentLimit));
+    params.set('sortField', currentSortField);
+    params.set('sortDirection', currentSortDirection);
+    if (currentStatus) params.set('status', currentStatus);
+    if (currentSearch) params.set('search', currentSearch);
+    return params.toString();
+  }
+
+  // Load quotes function with pagination
+  async function loadQuotes(options?: { resetPage?: boolean }) {
     const loadingState = document.getElementById('loading-state');
     const errorState = document.getElementById('error-state');
     const emptyState = document.getElementById('empty-state');
     const tableContainer = document.getElementById('table-container');
+
+    // Reset to page 1 if requested (e.g., on filter change)
+    if (options?.resetPage) {
+      currentPage = 1;
+    }
 
     // Show loading
     loadingState?.classList.remove('hidden');
@@ -406,7 +431,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     tableContainer?.classList.add('hidden');
 
     try {
-      const response = await fetch('/api/admin/quotes');
+      const response = await fetch(`/api/admin/quotes?${buildQueryString()}`);
 
       // If unauthorized, redirect to login
       if (response.status === 401) {
@@ -428,10 +453,45 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
         tableContainer?.classList.remove('hidden');
         // Dispatch event with quotes data (use setTimeout to ensure listeners are ready)
         setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('quotesLoaded', { detail: data }));
+          window.dispatchEvent(new CustomEvent('quotesLoaded', {
+            detail: {
+              ...data,
+              // Add pagination handlers for the table component
+              onPageChange: (page: number) => {
+                currentPage = page;
+                loadQuotes();
+              },
+              onSortChange: (field: string, direction: string) => {
+                currentSortField = field;
+                currentSortDirection = direction;
+                currentPage = 1; // Reset to first page on sort change
+                loadQuotes();
+              },
+            }
+          }));
+        }, 50);
+      } else if (data.pagination?.totalFiltered === 0 && (currentSearch || currentStatus)) {
+        // No results but filters are active - show table with empty state
+        tableContainer?.classList.remove('hidden');
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('quotesLoaded', {
+            detail: {
+              ...data,
+              onPageChange: (page: number) => {
+                currentPage = page;
+                loadQuotes();
+              },
+              onSortChange: (field: string, direction: string) => {
+                currentSortField = field;
+                currentSortDirection = direction;
+                currentPage = 1;
+                loadQuotes();
+              },
+            }
+          }));
         }, 50);
       } else {
-        // Show empty state
+        // Show empty state (no quotes at all)
         emptyState?.classList.remove('hidden');
       }
     } catch (error) {
@@ -447,6 +507,34 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
       }
     }
   }
+
+  // Listen for pagination events from QuoteTable
+  window.addEventListener('pageChange', ((e: CustomEvent) => {
+    currentPage = e.detail.page;
+    loadQuotes();
+  }) as EventListener);
+
+  // Listen for sort change events from QuoteTable
+  window.addEventListener('sortChange', ((e: CustomEvent) => {
+    currentSortField = e.detail.field;
+    currentSortDirection = e.detail.direction;
+    currentPage = 1; // Reset to first page on sort change
+    loadQuotes();
+  }) as EventListener);
+
+  // Listen for search events from QuoteTable
+  window.addEventListener('searchChange', ((e: CustomEvent) => {
+    currentSearch = e.detail.search || '';
+    currentPage = 1; // Reset to first page on search
+    loadQuotes();
+  }) as EventListener);
+
+  // Listen for status filter events from StatusStrip
+  window.addEventListener('statusFilterChanged', ((e: CustomEvent) => {
+    currentStatus = e.detail.status === 'all' ? null : e.detail.status;
+    currentPage = 1; // Reset to first page on filter change
+    loadQuotes();
+  }) as EventListener);
 
   // Refresh button
   document.getElementById('refresh-btn')?.addEventListener('click', () => {

@@ -104,13 +104,13 @@
       </div>
     </div>
 
-    <!-- Notes Section -->
+    <!-- Public Notes Section (displayed on dashboard) -->
     <div class="p-4 border-b border-gray-100">
-      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3" data-i18n="internalNotes">Internal Notes</h3>
+      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3" data-i18n="publicNotes">Public Notes</h3>
       <textarea
-        id="panel-notes"
-        placeholder="Add internal notes about this quote..."
-        data-i18n-placeholder="addNotesPlaceholder"
+        id="panel-public-notes"
+        placeholder="Add notes visible on the dashboard..."
+        data-i18n-placeholder="addPublicNotesPlaceholder"
         rows="4"
         class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none"
       ></textarea>
@@ -494,7 +494,7 @@
   const backdrop = document.getElementById('panel-backdrop');
   const closeBtn = document.getElementById('close-panel');
   const saveBtn = document.getElementById('panel-save-btn');
-  const notesTextarea = document.getElementById('panel-notes') as HTMLTextAreaElement;
+  const publicNotesTextarea = document.getElementById('panel-public-notes') as HTMLTextAreaElement;
   const ourCostInput = document.getElementById('panel-our-cost-input') as HTMLInputElement;
   const orderQuantityInput = document.getElementById('panel-order-quantity-input') as HTMLInputElement;
   const autoSaveIndicator = document.getElementById('auto-save-indicator');
@@ -571,9 +571,9 @@
       orderQuantityInput.value = quote.orderQuantity ? String(quote.orderQuantity) : '';
     }
 
-    // Notes
-    if (notesTextarea) {
-      notesTextarea.value = quote.notes || '';
+    // Public Notes
+    if (publicNotesTextarea) {
+      publicNotesTextarea.value = quote.publicNotes || '';
     }
 
     // Sync status
@@ -672,6 +672,7 @@
           status: currentQuote.status,
           ourCost: currentQuote.ourCost,
           orderQuantity: currentQuote.orderQuantity,
+          publicNotes: currentQuote.publicNotes,
         }),
       });
 
@@ -710,6 +711,7 @@
           status: currentQuote.status,
           ourCost: currentQuote.ourCost,
           orderQuantity: currentQuote.orderQuantity,
+          publicNotes: currentQuote.publicNotes,
         }),
       });
 
@@ -768,8 +770,11 @@
     });
   });
 
-  // Notes auto-save
-  notesTextarea?.addEventListener('input', () => {
+  // Public Notes auto-save
+  publicNotesTextarea?.addEventListener('input', () => {
+    if (currentQuote) {
+      currentQuote.publicNotes = publicNotesTextarea.value;
+    }
     scheduleAutoSave();
   });
 

@@ -38,6 +38,8 @@ export const translations = {
     price: 'Price (USD)',
     qty: 'Qty',
     notes: 'Notes',
+    publicNotes: 'Public Notes',
+    addPublicNotesPlaceholder: 'Add notes visible on the dashboard...',
     searchQuotes: 'Search quotes...',
     quotes: 'quotes',
     noMatchingQuotes: 'No quotes match your search',
@@ -109,6 +111,12 @@ export const translations = {
     uploadFailed: 'Upload failed',
     error: 'Error: {message}',
 
+    // Pagination
+    showing: 'Showing',
+    of: 'of',
+    previous: 'Previous',
+    next: 'Next',
+
     // Language
     language: 'Language',
     english: 'EN',
@@ -149,6 +157,8 @@ export const translations = {
     price: '价格 (USD)',
     qty: '数量',
     notes: '备注',
+    publicNotes: '公开备注',
+    addPublicNotesPlaceholder: '添加显示在仪表板上的备注...',
     searchQuotes: '搜索报价...',
     quotes: '条报价',
     noMatchingQuotes: '没有匹配的报价',

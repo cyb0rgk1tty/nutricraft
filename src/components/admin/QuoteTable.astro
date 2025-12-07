@@ -111,6 +111,51 @@
     </svg>
     <p class="text-gray-500" data-i18n="noMatchingQuotes">No quotes match your search</p>
   </div>
+
+  <!-- Pagination Controls -->
+  <div id="pagination-controls" class="hidden px-5 py-4 border-t border-gray-100 bg-gray-50/50">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+      <!-- Page Info -->
+      <div class="text-sm text-gray-500">
+        <span data-i18n="showing">Showing</span>
+        <span id="page-start" class="font-medium text-gray-700">1</span>-<span id="page-end" class="font-medium text-gray-700">50</span>
+        <span data-i18n="of">of</span>
+        <span id="total-items" class="font-medium text-gray-700">0</span>
+        <span data-i18n="quotes">quotes</span>
+      </div>
+
+      <!-- Pagination Buttons -->
+      <div class="flex items-center gap-2">
+        <button
+          id="prev-page-btn"
+          type="button"
+          disabled
+          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+        >
+          <span class="hidden sm:inline" data-i18n="previous">Previous</span>
+          <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div id="page-numbers" class="flex items-center gap-1">
+          <!-- Page numbers will be inserted here -->
+        </div>
+
+        <button
+          id="next-page-btn"
+          type="button"
+          disabled
+          class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
+        >
+          <span class="hidden sm:inline" data-i18n="next">Next</span>
+          <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style is:global>
@@ -274,29 +319,53 @@
 <script>
   import { t, getStageLabel as i18nGetStageLabel, formatRelativeDate as i18nFormatRelativeDate, getLanguage } from '../../utils/i18n';
 
-  // Quote data store
-  let allQuotes: any[] = [];
-  let filteredQuotes: any[] = [];
-  let currentSort = { field: 'created', direction: 'desc' };
+  // Quote data store - now receives paginated data from server
+  let currentQuotes: any[] = [];  // Current page quotes only
+  let currentSort = { field: 'createdAt', direction: 'desc' };
   let searchQuery = '';
+  let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // Pagination state from server
+  let pagination = {
+    page: 1,
+    limit: 50,
+    hasNextPage: false,
+    hasPreviousPage: false,
+    totalFiltered: 0,
+  };
 
   // Elements
   const tableBody = document.getElementById('quote-table-body');
   const searchInput = document.getElementById('quote-search') as HTMLInputElement;
   const visibleCount = document.getElementById('visible-count');
   const noResults = document.getElementById('no-results');
+  const paginationControls = document.getElementById('pagination-controls');
+  const prevPageBtn = document.getElementById('prev-page-btn') as HTMLButtonElement;
+  const nextPageBtn = document.getElementById('next-page-btn') as HTMLButtonElement;
+  const pageNumbers = document.getElementById('page-numbers');
+  const pageStart = document.getElementById('page-start');
+  const pageEnd = document.getElementById('page-end');
+  const totalItems = document.getElementById('total-items');
 
-  // Listen for quotes data
+  // Listen for quotes data (now paginated from server)
   window.addEventListener('quotesLoaded', (e: Event) => {
     const event = e as CustomEvent;
-    allQuotes = event.detail.quotes || [];
-    applyFiltersAndRender();
-  });
+    currentQuotes = event.detail.quotes || [];
 
-  // Listen for status filter changes
-  window.addEventListener('statusFilterChanged', (e: Event) => {
-    const event = e as CustomEvent;
-    applyFiltersAndRender();
+    // Update pagination state if provided
+    if (event.detail.pagination) {
+      pagination = event.detail.pagination;
+    }
+
+    // Update status counts in StatusStrip
+    if (event.detail.statusCounts) {
+      window.dispatchEvent(new CustomEvent('statusCountsUpdated', {
+        detail: { statusCounts: event.detail.statusCounts }
+      }));
+    }
+
+    renderTable();
+    updatePaginationUI();
   });
 
   // Listen for quote updates (from inline edits or side panel)
@@ -305,10 +374,10 @@
     const updatedQuote = event.detail?.quote;
     if (!updatedQuote) return;
 
-    // Update the quote in allQuotes array
-    const index = allQuotes.findIndex(q => q.id === updatedQuote.id);
+    // Update the quote in currentQuotes array (current page only)
+    const index = currentQuotes.findIndex(q => q.id === updatedQuote.id);
     if (index !== -1) {
-      allQuotes[index] = { ...allQuotes[index], ...updatedQuote };
+      currentQuotes[index] = { ...currentQuotes[index], ...updatedQuote };
     }
 
     // Update the specific row's inputs without full re-render
@@ -330,23 +399,48 @@
     }
   });
 
-  // Search input handler
+  // Search input handler - debounced server-side search
   searchInput?.addEventListener('input', (e) => {
-    searchQuery = (e.target as HTMLInputElement).value.toLowerCase();
-    applyFiltersAndRender();
+    const newQuery = (e.target as HTMLInputElement).value.trim();
+
+    // Clear existing timer
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+
+    // Debounce search to avoid too many API calls
+    searchDebounceTimer = setTimeout(() => {
+      if (newQuery !== searchQuery) {
+        searchQuery = newQuery;
+        // Dispatch event to trigger server-side search
+        window.dispatchEvent(new CustomEvent('searchChange', {
+          detail: { search: searchQuery }
+        }));
+      }
+    }, 300);
   });
 
-  // Sort handlers
+  // Sort handlers - dispatch to server
   document.querySelectorAll('th[data-sort]').forEach(th => {
     th.addEventListener('click', () => {
-      const field = th.getAttribute('data-sort');
+      let field = th.getAttribute('data-sort');
       if (!field) return;
 
+      // Map client field names to server field names
+      const fieldMap: Record<string, string> = {
+        'created': 'createdAt',
+        'name': 'name',
+        'status': 'createdAt', // Sort by created date for status (server doesn't support status sort)
+        'ourCost': 'ourCost',
+        'orderQuantity': 'orderQuantity',
+      };
+      const serverField = fieldMap[field] || 'createdAt';
+
       // Toggle direction if same field
-      if (currentSort.field === field) {
+      if (currentSort.field === serverField) {
         currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
       } else {
-        currentSort.field = field;
+        currentSort.field = serverField;
         currentSort.direction = 'asc';
       }
 
@@ -356,67 +450,132 @@
       });
       th.classList.add(`sort-${currentSort.direction}`);
 
-      applyFiltersAndRender();
+      // Dispatch sort change event to trigger server request
+      window.dispatchEvent(new CustomEvent('sortChange', {
+        detail: {
+          field: currentSort.field,
+          direction: currentSort.direction
+        }
+      }));
     });
   });
 
-  // Apply filters, sorting, and render
-  function applyFiltersAndRender() {
-    const statusFilter = (window as any).getStatusFilter?.() || 'all';
+  // Update pagination UI
+  function updatePaginationUI() {
+    if (!paginationControls) return;
 
-    // Filter by status
-    filteredQuotes = allQuotes.filter(quote => {
-      if (statusFilter !== 'all' && quote.status !== statusFilter) return false;
+    const { page, limit, hasNextPage, hasPreviousPage, totalFiltered } = pagination;
+    const totalPages = Math.ceil(totalFiltered / limit);
 
-      // Filter by search query
-      if (searchQuery) {
-        const searchableText = [
-          quote.name,
-        ].join(' ').toLowerCase();
+    // Show/hide pagination controls
+    if (totalFiltered > limit) {
+      paginationControls.classList.remove('hidden');
+    } else {
+      paginationControls.classList.add('hidden');
+      return;
+    }
 
-        if (!searchableText.includes(searchQuery)) return false;
+    // Update page info text
+    const start = (page - 1) * limit + 1;
+    const end = Math.min(page * limit, totalFiltered);
+    if (pageStart) pageStart.textContent = String(start);
+    if (pageEnd) pageEnd.textContent = String(end);
+    if (totalItems) totalItems.textContent = String(totalFiltered);
+
+    // Update prev/next buttons
+    if (prevPageBtn) {
+      prevPageBtn.disabled = !hasPreviousPage;
+    }
+    if (nextPageBtn) {
+      nextPageBtn.disabled = !hasNextPage;
+    }
+
+    // Generate page numbers
+    if (pageNumbers) {
+      const pages: (number | string)[] = [];
+      const maxVisiblePages = 5;
+
+      if (totalPages <= maxVisiblePages) {
+        // Show all pages
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Show first, last, current, and surrounding pages
+        pages.push(1);
+
+        if (page > 3) {
+          pages.push('...');
+        }
+
+        for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) {
+          if (!pages.includes(i)) {
+            pages.push(i);
+          }
+        }
+
+        if (page < totalPages - 2) {
+          pages.push('...');
+        }
+
+        if (!pages.includes(totalPages)) {
+          pages.push(totalPages);
+        }
       }
 
-      return true;
-    });
-
-    // Sort
-    filteredQuotes.sort((a, b) => {
-      let aVal, bVal;
-
-      switch (currentSort.field) {
-        case 'name':
-          aVal = a.name?.toLowerCase() || '';
-          bVal = b.name?.toLowerCase() || '';
-          break;
-        case 'status':
-          aVal = a.status || '';
-          bVal = b.status || '';
-          break;
-        case 'ourCost':
-          aVal = a.ourCost || 0;
-          bVal = b.ourCost || 0;
-          break;
-        case 'orderQuantity':
-          aVal = a.orderQuantity || 0;
-          bVal = b.orderQuantity || 0;
-          break;
-        case 'created':
-        default:
-          aVal = new Date(a.createdAt || 0).getTime();
-          bVal = new Date(b.createdAt || 0).getTime();
-          break;
-      }
-
-      if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
-      if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    renderTable();
+      pageNumbers.innerHTML = pages.map(p => {
+        if (p === '...') {
+          return '<span class="px-2 py-1 text-gray-400">...</span>';
+        }
+        const isActive = p === page;
+        return `
+          <button
+            type="button"
+            class="page-num-btn px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+              isActive
+                ? 'bg-primary text-white'
+                : 'text-gray-700 hover:bg-gray-100'
+            }"
+            data-page="${p}"
+            ${isActive ? 'disabled' : ''}
+          >
+            ${p}
+          </button>
+        `;
+      }).join('');
+    }
   }
 
-  // Render table rows
+  // Pagination button handlers (using event delegation)
+  prevPageBtn?.addEventListener('click', () => {
+    if (pagination.hasPreviousPage) {
+      window.dispatchEvent(new CustomEvent('pageChange', {
+        detail: { page: pagination.page - 1 }
+      }));
+    }
+  });
+
+  nextPageBtn?.addEventListener('click', () => {
+    if (pagination.hasNextPage) {
+      window.dispatchEvent(new CustomEvent('pageChange', {
+        detail: { page: pagination.page + 1 }
+      }));
+    }
+  });
+
+  pageNumbers?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains('page-num-btn')) {
+      const page = parseInt(target.getAttribute('data-page') || '1', 10);
+      if (page !== pagination.page) {
+        window.dispatchEvent(new CustomEvent('pageChange', {
+          detail: { page }
+        }));
+      }
+    }
+  });
+
+  // Render table rows - uses currentQuotes which is already paginated from server
   function renderTable() {
     // Re-find tableBody in case it wasn't available at script initialization
     const tbody = tableBody || document.getElementById('quote-table-body');
@@ -425,13 +584,13 @@
       return;
     }
 
-    // Update count
+    // Update count - show current page count
     if (visibleCount) {
-      visibleCount.textContent = String(filteredQuotes.length);
+      visibleCount.textContent = String(currentQuotes.length);
     }
 
     // Show/hide no results
-    if (filteredQuotes.length === 0) {
+    if (currentQuotes.length === 0) {
       tbody.innerHTML = '';
       noResults?.classList.remove('hidden');
       return;
@@ -443,7 +602,7 @@
     const unnamedText = t('unnamed');
     const viewDetailsText = t('viewDetails');
 
-    tbody.innerHTML = filteredQuotes.map(quote => {
+    tbody.innerHTML = currentQuotes.map(quote => {
       const createdDate = quote.createdAt
         ? formatRelativeDate(new Date(quote.createdAt))
         : '—';
@@ -471,7 +630,7 @@
           </td>
           <!-- Formula: 65px, centered -->
           <td class="hidden lg:table-cell w-[65px] px-1 py-3 text-center">
-            <div class="formula-thumbnail inline-block" data-quote-id="${quote.id}" onclick="event.stopPropagation()">
+            <div class="formula-thumbnail inline-block" data-quote-id="${quote.id}">
               <div class="formula-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse"></div>
             </div>
           </td>
@@ -485,7 +644,6 @@
               data-field="ourCost"
               value="${priceValue ? '$' + priceValue : ''}"
               placeholder="$0.00"
-              onclick="event.stopPropagation()"
             />
           </td>
           <!-- Qty: 65px, centered -->
@@ -500,12 +658,11 @@
               data-field="orderQuantity"
               value="${qtyValue}"
               placeholder="0"
-              onclick="event.stopPropagation()"
             />
           </td>
-          <!-- Notes: flexible, left-aligned -->
+          <!-- Notes: flexible, left-aligned (Public Notes) -->
           <td class="hidden md:table-cell px-2 py-3 text-left">
-            <div class="notes-cell text-sm text-gray-600">${escapeHtml(quote.tldr || '')}</div>
+            <div class="notes-cell text-sm text-gray-600">${escapeHtml(quote.publicNotes || '')}</div>
           </td>
           <!-- Actions: 36px, centered -->
           <td class="w-[36px] px-1 py-3 text-center">
@@ -524,128 +681,226 @@
       `;
     }).join('');
 
-    // Add row click handlers
-    tbody.querySelectorAll('tr[data-quote-id]').forEach(row => {
-      row.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        // Don't open panel if clicking status badge or inline inputs
-        if (target.closest('.status-badge') || target.closest('.inline-input')) return;
-
-        const quoteId = row.getAttribute('data-quote-id');
-        if (quoteId) {
-          openQuotePanel(quoteId);
-        }
-      });
-    });
-
-    // Add status badge click handlers (for inline status change)
-    tbody.querySelectorAll('.status-badge').forEach(badge => {
-      badge.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const quoteId = badge.getAttribute('data-quote-id');
-        if (quoteId) {
-          showStatusDropdown(badge as HTMLElement, quoteId);
-        }
-      });
-    });
-
-    // Add inline input handlers for price
-    tbody.querySelectorAll('.price-input').forEach(input => {
-      const inputEl = input as HTMLInputElement;
-
-      inputEl.addEventListener('focus', () => {
-        // Remove $ for editing
-        inputEl.value = inputEl.value.replace(/[$,]/g, '');
-      });
-
-      inputEl.addEventListener('input', () => {
-        // Allow only numbers and decimal
-        let value = inputEl.value.replace(/[^0-9.]/g, '');
-        const parts = value.split('.');
-        if (parts.length > 2) {
-          value = parts[0] + '.' + parts.slice(1).join('');
-        }
-        if (parts[1]?.length > 2) {
-          value = parts[0] + '.' + parts[1].slice(0, 2);
-        }
-        inputEl.value = value;
-      });
-
-      inputEl.addEventListener('blur', () => {
-        const quoteId = inputEl.getAttribute('data-quote-id');
-        const value = parseFloat(inputEl.value) || 0;
-        inputEl.value = value ? '$' + formatPrice(value) : '';
-        if (quoteId) {
-          saveInlineField(quoteId, 'ourCost', value, inputEl);
-        }
-      });
-
-      inputEl.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          inputEl.blur();
-        }
-      });
-    });
-
-    // Add inline input handlers for quantity
-    tbody.querySelectorAll('.qty-input').forEach(input => {
-      const inputEl = input as HTMLInputElement;
-
-      inputEl.addEventListener('input', () => {
-        // Allow only numbers
-        inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
-      });
-
-      inputEl.addEventListener('blur', () => {
-        const quoteId = inputEl.getAttribute('data-quote-id');
-        const value = parseInt(inputEl.value, 10) || 0;
-        inputEl.value = value ? String(value) : '';
-        if (quoteId) {
-          saveInlineField(quoteId, 'orderQuantity', value, inputEl);
-        }
-      });
-
-      inputEl.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          inputEl.blur();
-        }
-      });
-    });
-
     // Load formula thumbnails for all visible quotes
     loadFormulaThumbnails();
   }
 
-  // Document cache to avoid re-fetching
-  const documentCache: Map<string, any[]> = new Map();
+  // ============================================================================
+  // EVENT DELEGATION - Single listeners on tbody for better performance
+  // ============================================================================
 
-  // Load formula thumbnails for visible quotes
+  // Set up event delegation once (not on every render)
+  const tbodyElement = document.getElementById('quote-table-body');
+
+  // Click handler for rows, status badges, and buttons
+  tbodyElement?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const row = target.closest('tr[data-quote-id]');
+    if (!row) return;
+
+    const quoteId = row.getAttribute('data-quote-id');
+    if (!quoteId) return;
+
+    // Status badge click - show dropdown
+    const statusBadge = target.closest('.status-badge');
+    if (statusBadge) {
+      e.stopPropagation();
+      showStatusDropdown(statusBadge as HTMLElement, quoteId);
+      return;
+    }
+
+    // Formula thumbnail click - open document
+    const thumbnail = target.closest('.formula-thumbnail');
+    if (thumbnail) {
+      e.stopPropagation();
+      const docEl = thumbnail.querySelector('[data-doc-id]');
+      if (docEl) {
+        const docId = docEl.getAttribute('data-doc-id');
+        if (docId) {
+          openDocument(quoteId, docId);
+        }
+      }
+      return;
+    }
+
+    // View button click or inline input click - don't open panel
+    if (target.closest('.inline-input')) {
+      e.stopPropagation();
+      return;
+    }
+
+    // Row click - open detail panel
+    openQuotePanel(quoteId);
+  });
+
+  // Focus handler for price inputs (remove $ for editing)
+  tbodyElement?.addEventListener('focus', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.classList.contains('price-input')) {
+      target.value = target.value.replace(/[$,]/g, '');
+    }
+  }, true); // Use capture phase for focus
+
+  // Input handler for validation
+  tbodyElement?.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+
+    if (target.classList.contains('price-input')) {
+      // Allow only numbers and decimal
+      let value = target.value.replace(/[^0-9.]/g, '');
+      const parts = value.split('.');
+      if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+      if (parts[1]?.length > 2) {
+        value = parts[0] + '.' + parts[1].slice(0, 2);
+      }
+      target.value = value;
+    } else if (target.classList.contains('qty-input')) {
+      // Allow only numbers
+      target.value = target.value.replace(/[^0-9]/g, '');
+    }
+  });
+
+  // Blur handler for saving inline edits
+  tbodyElement?.addEventListener('blur', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.classList.contains('inline-input')) return;
+
+    const quoteId = target.getAttribute('data-quote-id');
+    if (!quoteId) return;
+
+    if (target.classList.contains('price-input')) {
+      const value = parseFloat(target.value) || 0;
+      target.value = value ? '$' + formatPrice(value) : '';
+      saveInlineField(quoteId, 'ourCost', value, target);
+    } else if (target.classList.contains('qty-input')) {
+      const value = parseInt(target.value, 10) || 0;
+      target.value = value ? String(value) : '';
+      saveInlineField(quoteId, 'orderQuantity', value, target);
+    }
+  }, true); // Use capture phase for blur
+
+  // Keydown handler for Enter key
+  tbodyElement?.addEventListener('keydown', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target.classList.contains('inline-input') && (e as KeyboardEvent).key === 'Enter') {
+      target.blur();
+    }
+  });
+
+  // Document cache with TTL to avoid re-fetching
+  interface CacheEntry {
+    data: any[];
+    timestamp: number;
+  }
+  const documentCache: Map<string, CacheEntry> = new Map();
+  const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+  const MAX_CACHE_SIZE = 200;
+
+  // Get cached documents if not expired
+  function getCachedDocuments(quoteId: string): any[] | null {
+    const entry = documentCache.get(quoteId);
+    if (!entry) return null;
+
+    if (Date.now() - entry.timestamp > CACHE_TTL) {
+      documentCache.delete(quoteId);
+      return null;
+    }
+
+    return entry.data;
+  }
+
+  // Cache documents with TTL
+  function setCachedDocuments(quoteId: string, docs: any[]) {
+    // Limit cache size - evict oldest entries
+    if (documentCache.size >= MAX_CACHE_SIZE) {
+      const entries = Array.from(documentCache.entries());
+      entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+      // Remove oldest 25%
+      const toRemove = Math.floor(MAX_CACHE_SIZE * 0.25);
+      entries.slice(0, toRemove).forEach(([key]) => documentCache.delete(key));
+    }
+
+    documentCache.set(quoteId, { data: docs, timestamp: Date.now() });
+  }
+
+  // Chunk array helper
+  function chunkArray<T>(arr: T[], size: number): T[][] {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, (i + 1) * size)
+    );
+  }
+
+  // Load formula thumbnails using batch API
   async function loadFormulaThumbnails() {
     const thumbnails = document.querySelectorAll('.formula-thumbnail[data-quote-id]');
 
-    for (const thumbnail of thumbnails) {
+    // Collect IDs that need fetching (not in cache)
+    const uncachedIds: string[] = [];
+    const cachedThumbnails: { thumbnail: Element; quoteId: string }[] = [];
+
+    thumbnails.forEach(thumbnail => {
       const quoteId = thumbnail.getAttribute('data-quote-id');
-      if (!quoteId) continue;
+      if (!quoteId) return;
 
-      // Check cache first
-      if (documentCache.has(quoteId)) {
-        renderThumbnail(thumbnail as HTMLElement, documentCache.get(quoteId)!, quoteId);
-        continue;
+      const cachedDocs = getCachedDocuments(quoteId);
+      if (cachedDocs !== null) {
+        // Render from cache immediately
+        cachedThumbnails.push({ thumbnail, quoteId });
+      } else {
+        uncachedIds.push(quoteId);
       }
+    });
 
+    // Render cached thumbnails first
+    cachedThumbnails.forEach(({ thumbnail, quoteId }) => {
+      const docs = getCachedDocuments(quoteId);
+      if (docs !== null) {
+        renderThumbnail(thumbnail as HTMLElement, docs, quoteId);
+      }
+    });
+
+    // Batch fetch uncached documents
+    if (uncachedIds.length === 0) return;
+
+    // Fetch in batches of 20
+    const chunks = chunkArray(uncachedIds, 20);
+
+    for (const chunk of chunks) {
       try {
-        const response = await fetch(`/api/admin/quotes/${quoteId}/documents`);
-        if (response.ok) {
-          const data = await response.json();
-          const documents = data.documents || [];
-          documentCache.set(quoteId, documents);
-          renderThumbnail(thumbnail as HTMLElement, documents, quoteId);
-        } else {
-          renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+        const response = await fetch(`/api/admin/quotes/documents-batch?ids=${chunk.join(',')}`);
+        if (!response.ok) {
+          console.error('Batch document fetch failed:', response.status);
+          continue;
         }
+
+        const data = await response.json();
+        if (!data.success) {
+          console.error('Batch document fetch error:', data.error);
+          continue;
+        }
+
+        // Cache and render each quote's documents
+        Object.entries(data.documents).forEach(([quoteId, docs]) => {
+          setCachedDocuments(quoteId, docs as any[]);
+
+          // Find and render the thumbnail
+          const thumbnail = document.querySelector(`.formula-thumbnail[data-quote-id="${quoteId}"]`);
+          if (thumbnail) {
+            renderThumbnail(thumbnail as HTMLElement, docs as any[], quoteId);
+          }
+        });
       } catch (error) {
-        console.error('Failed to load documents for quote:', quoteId, error);
-        renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+        console.error('Batch document load failed:', error);
+        // Render empty state for failed quotes
+        chunk.forEach(quoteId => {
+          setCachedDocuments(quoteId, []);
+          const thumbnail = document.querySelector(`.formula-thumbnail[data-quote-id="${quoteId}"]`);
+          if (thumbnail) {
+            renderThumbnail(thumbnail as HTMLElement, [], quoteId);
+          }
+        });
       }
     }
   }
@@ -730,7 +985,7 @@
   // Save inline field with visual feedback
   async function saveInlineField(quoteId: string, field: string, value: number, inputEl: HTMLInputElement) {
     // Find quote and check if value changed
-    const quote = allQuotes.find(q => q.id === quoteId);
+    const quote = currentQuotes.find(q => q.id === quoteId);
     if (!quote) return;
 
     const oldValue = quote[field] || 0;
@@ -782,7 +1037,7 @@
 
   // Open quote detail panel
   function openQuotePanel(quoteId: string) {
-    const quote = allQuotes.find(q => q.id === quoteId);
+    const quote = currentQuotes.find(q => q.id === quoteId);
     if (quote) {
       window.dispatchEvent(new CustomEvent('openQuotePanel', { detail: { quote } }));
     }
@@ -854,22 +1109,20 @@
 
       if (!response.ok) throw new Error('Failed to update');
 
-      // Update local data
-      const quote = allQuotes.find(q => q.id === quoteId);
+      // Update local data for immediate UI feedback
+      const quote = currentQuotes.find(q => q.id === quoteId);
       if (quote) {
         quote.status = status;
-        applyFiltersAndRender();
-
-        // Update status counts
-        const statusCounts = allQuotes.reduce((acc, q) => {
-          acc[q.status] = (acc[q.status] || 0) + 1;
-          return acc;
-        }, {} as Record<string, number>);
-
-        window.dispatchEvent(new CustomEvent('quotesLoaded', {
-          detail: { quotes: allQuotes, statusCounts }
-        }));
+        renderTable();
       }
+
+      // Trigger a reload to get fresh data and updated status counts
+      // Use a short delay to allow the UI to update first
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('pageChange', {
+          detail: { page: pagination.page }
+        }));
+      }, 100);
     } catch (error) {
       console.error('Failed to update status:', error);
       // Show error toast or notification
@@ -930,7 +1183,8 @@
     // Update static text
     updateI18nText();
 
-    // Re-render the table to update dynamic content
-    applyFiltersAndRender();
+    // Re-render the table to update dynamic content (dates, status labels, etc.)
+    renderTable();
+    updatePaginationUI();
   });
 </script>
