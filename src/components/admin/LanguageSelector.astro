@@ -8,16 +8,14 @@
 <div class="language-selector flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
   <button
     type="button"
-    id="lang-en"
-    class="lang-btn px-2.5 py-1 text-xs font-medium rounded-md transition-all"
+    class="lang-btn lang-btn-en px-2.5 py-1 text-xs font-medium rounded-md transition-all"
     data-lang="en"
   >
     EN
   </button>
   <button
     type="button"
-    id="lang-zh"
-    class="lang-btn px-2.5 py-1 text-xs font-medium rounded-md transition-all"
+    class="lang-btn lang-btn-zh px-2.5 py-1 text-xs font-medium rounded-md transition-all"
     data-lang="zh"
   >
     中文
@@ -43,33 +41,41 @@
 <script>
   import { getLanguage, setLanguage, type Language } from '../../utils/i18n';
 
-  // Elements
-  const btnEn = document.getElementById('lang-en');
-  const btnZh = document.getElementById('lang-zh');
+  // Get all language selector instances on the page
+  const selectors = document.querySelectorAll('.language-selector');
 
-  // Initialize button states based on current language
-  function updateButtonStates() {
+  // Initialize button states for all selectors
+  function updateAllButtonStates() {
     const currentLang = getLanguage();
-    btnEn?.classList.toggle('active', currentLang === 'en');
-    btnZh?.classList.toggle('active', currentLang === 'zh');
+    document.querySelectorAll('.lang-btn-en').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'en');
+    });
+    document.querySelectorAll('.lang-btn-zh').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'zh');
+    });
   }
 
   // Set initial state
-  updateButtonStates();
+  updateAllButtonStates();
 
-  // Handle button clicks
-  btnEn?.addEventListener('click', () => {
-    setLanguage('en');
-    updateButtonStates();
-  });
+  // Handle button clicks for all instances
+  selectors.forEach(selector => {
+    const btnEn = selector.querySelector('.lang-btn-en');
+    const btnZh = selector.querySelector('.lang-btn-zh');
 
-  btnZh?.addEventListener('click', () => {
-    setLanguage('zh');
-    updateButtonStates();
+    btnEn?.addEventListener('click', () => {
+      setLanguage('en');
+      updateAllButtonStates();
+    });
+
+    btnZh?.addEventListener('click', () => {
+      setLanguage('zh');
+      updateAllButtonStates();
+    });
   });
 
   // Listen for language changes from other sources
   window.addEventListener('languageChanged', () => {
-    updateButtonStates();
+    updateAllButtonStates();
   });
 </script>

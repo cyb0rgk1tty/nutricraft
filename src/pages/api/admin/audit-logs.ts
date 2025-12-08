@@ -19,6 +19,14 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
+    // Only nutricraftadmin can view audit logs
+    if (authResult.user.username !== 'nutricraftadmin') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Access denied' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Parse query parameters
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1', 10);

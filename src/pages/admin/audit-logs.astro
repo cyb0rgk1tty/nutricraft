@@ -15,6 +15,11 @@ if (!authResult) {
   return Astro.redirect('/admin/quotes');
 }
 
+// Only nutricraftadmin can view audit logs
+if (authResult.user.username !== 'nutricraftadmin') {
+  return Astro.redirect('/admin/quotes');
+}
+
 // SEO metadata
 const title = 'Audit Logs | Nutricraft Labs';
 const description = 'View audit logs for the manufacturer dashboard';
