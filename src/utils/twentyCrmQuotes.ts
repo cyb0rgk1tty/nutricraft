@@ -14,6 +14,9 @@
  * Configuration for the Twenty CRM custom object
  * Using the "Products" custom object with fields: Name, Creation date, Stages
  */
+// Hardcoded manufacturer filter - only show products from this manufacturer
+const MANUFACTURER_FILTER = 'Durlevel';
+
 export const CRM_CONFIG = {
   // The name of the custom object in Twenty CRM
   objectName: 'product',
@@ -340,6 +343,9 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               ourCost
               orderQuantity
               publicNotes
+              manufacturer {
+                name
+              }
             }
           }
         }
@@ -386,11 +392,18 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         publicNotes: product.publicNotes || undefined,
+        rawData: product,  // Store full product for manufacturer filtering
       };
     });
 
+    // Filter to only include products from the specified manufacturer
+    let filteredQuotes = allQuotes.filter(quote => {
+      const manufacturerName = quote.rawData?.manufacturer?.name;
+      return manufacturerName === MANUFACTURER_FILTER;
+    });
+
     // Filter to only include allowed stages
-    const quotes = allQuotes.filter(quote =>
+    const quotes = filteredQuotes.filter(quote =>
       CRM_CONFIG.allowedStages.hasOwnProperty(quote.status)
     );
 
@@ -480,6 +493,9 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               ourCost
               orderQuantity
               publicNotes
+              manufacturer {
+                name
+              }
             }
             cursor
           }
@@ -535,7 +551,14 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         publicNotes: product.publicNotes || undefined,
+        rawData: product,  // Store full product for manufacturer filtering
       };
+    });
+
+    // Filter to only include products from the specified manufacturer
+    allQuotes = allQuotes.filter(quote => {
+      const manufacturerName = quote.rawData?.manufacturer?.name;
+      return manufacturerName === MANUFACTURER_FILTER;
     });
 
     // Filter to only include allowed stages

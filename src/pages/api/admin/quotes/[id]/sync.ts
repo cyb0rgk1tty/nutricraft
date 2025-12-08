@@ -7,6 +7,7 @@
 import type { APIRoute } from 'astro';
 import { syncQuoteToCRM } from '../../../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../../../utils/adminAuth';
+import { logAuditAction } from '../../../../../utils/auditLog';
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
@@ -55,6 +56,11 @@ export const POST: APIRoute = async ({ params, request }) => {
         }
       );
     }
+
+    // Log the sync action
+    logAuditAction(request, authResult.user, 'QUOTE_SYNCED', {
+      quoteId: id,
+    });
 
     return new Response(
       JSON.stringify({

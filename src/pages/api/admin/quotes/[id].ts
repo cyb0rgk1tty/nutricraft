@@ -7,6 +7,7 @@
 import type { APIRoute } from 'astro';
 import { updateQuoteInCRM } from '../../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../../utils/adminAuth';
+import { logAuditAction } from '../../../../utils/auditLog';
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   try {
@@ -60,6 +61,15 @@ export const PATCH: APIRoute = async ({ params, request }) => {
         }
       );
     }
+
+    // Log the update action
+    logAuditAction(request, authResult.user, 'QUOTE_UPDATED', {
+      quoteId: id,
+      details: {
+        fields: Object.keys(updates),
+        updates: updates,
+      },
+    });
 
     return new Response(
       JSON.stringify({

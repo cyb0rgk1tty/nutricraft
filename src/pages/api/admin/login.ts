@@ -9,6 +9,7 @@ import {
   createSession,
   createSessionCookie,
 } from '../../../utils/adminAuth';
+import { logAuditAction } from '../../../utils/auditLog';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -35,6 +36,11 @@ export const POST: APIRoute = async ({ request }) => {
     const user = await verifyCredentials(username, password);
 
     if (!user) {
+      // Log failed login attempt
+      logAuditAction(request, null, 'LOGIN_FAILED', {
+        details: { username: username.trim() },
+      });
+
       return new Response(
         JSON.stringify({ success: false, error: 'Invalid username or password' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -43,6 +49,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Create session
     const token = await createSession(user.id);
+
+    // Log successful login
+    logAuditAction(request, user, 'LOGIN');
 
     // Return success with session cookie
     return new Response(

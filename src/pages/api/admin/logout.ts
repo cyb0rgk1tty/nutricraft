@@ -8,16 +8,26 @@ import {
   getSessionToken,
   deleteSession,
   clearSessionCookie,
+  verifySession,
 } from '../../../utils/adminAuth';
+import { logAuditAction } from '../../../utils/auditLog';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Get user info before logging out (for audit log)
+    const authResult = await verifySession(request);
+
     // Get session token from cookie
     const token = getSessionToken(request);
 
     if (token) {
       // Delete session from database
       await deleteSession(token);
+    }
+
+    // Log logout action
+    if (authResult?.user) {
+      logAuditAction(request, authResult.user, 'LOGOUT');
     }
 
     // Return success with cleared cookie

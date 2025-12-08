@@ -8,6 +8,7 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../../../utils/supabase';
 import { verifySession } from '../../../../../utils/adminAuth';
+import { logAuditAction } from '../../../../../utils/auditLog';
 
 // Magic bytes for file type validation
 const FILE_SIGNATURES: Record<string, number[][]> = {
@@ -213,6 +214,17 @@ export const POST: APIRoute = async ({ params, request }) => {
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    // Log the document upload
+    logAuditAction(request, authResult.user, 'DOCUMENT_UPLOADED', {
+      quoteId: id,
+      resourceId: document.id,
+      details: {
+        filename: file.name,
+        fileType: declaredType,
+        fileSize: file.size,
+      },
+    });
 
     return new Response(
       JSON.stringify({ success: true, document }),

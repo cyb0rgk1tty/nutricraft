@@ -7,6 +7,7 @@
 import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../../../../utils/supabase';
 import { verifySession } from '../../../../../../utils/adminAuth';
+import { logAuditAction } from '../../../../../../utils/auditLog';
 
 export const DELETE: APIRoute = async ({ params, request }) => {
   try {
@@ -69,6 +70,15 @@ export const DELETE: APIRoute = async ({ params, request }) => {
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    // Log the document deletion
+    logAuditAction(request, authResult.user, 'DOCUMENT_DELETED', {
+      quoteId: id,
+      resourceId: docId,
+      details: {
+        filename: document.file_name,
+      },
+    });
 
     return new Response(
       JSON.stringify({ success: true, deleted: docId }),
