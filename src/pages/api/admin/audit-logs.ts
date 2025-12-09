@@ -36,6 +36,7 @@ export const GET: APIRoute = async ({ request }) => {
     const dateFrom = url.searchParams.get('date_from');
     const dateTo = url.searchParams.get('date_to');
     const quoteId = url.searchParams.get('quote_id');
+    const field = url.searchParams.get('field'); // Filter by modified field
 
     const offset = (page - 1) * limit;
 
@@ -58,6 +59,11 @@ export const GET: APIRoute = async ({ request }) => {
 
     if (quoteId) {
       query = query.eq('quote_id', quoteId);
+    }
+
+    // Filter by modified field (check if field exists in details.fields array)
+    if (field) {
+      query = query.contains('details', { fields: [field] });
     }
 
     if (dateFrom) {
