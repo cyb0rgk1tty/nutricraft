@@ -125,6 +125,15 @@ export const translations = {
     of: 'of',
     previous: 'Previous',
     next: 'Next',
+    page: 'Page',
+
+    // Table Actions
+    actions: 'Actions',
+    copyId: 'Copy ID',
+    clearSearch: 'Clear search',
+    noQuotesFound: 'No quotes found',
+    noQuotesMatchSearch: 'No quotes match your search criteria',
+    noQuotesAvailable: 'No quotes available yet',
 
     // Language
     language: 'Language',
@@ -253,6 +262,15 @@ export const translations = {
     of: '/',
     previous: '上一页',
     next: '下一页',
+    page: '第',
+
+    // Table Actions
+    actions: '操作',
+    copyId: '复制 ID',
+    clearSearch: '清除搜索',
+    noQuotesFound: '未找到报价',
+    noQuotesMatchSearch: '没有符合搜索条件的报价',
+    noQuotesAvailable: '暂无可用报价',
 
     // Language
     language: '语言',

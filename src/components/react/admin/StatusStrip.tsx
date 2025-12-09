@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import type { QuoteStatus } from './types';
 import { STATUS_CONFIG } from './types';
 import { useQuoteStore } from './stores/quoteStore';
+import { useLanguage } from './hooks/useLanguage';
 
 interface StatusStripProps {
   className?: string;
@@ -18,6 +19,7 @@ interface StatusStripProps {
 
 export function StatusStrip({ className }: StatusStripProps) {
   const { statusCounts, filter, setFilter } = useQuoteStore();
+  const { t, getStageLabel } = useLanguage();
 
   const handleStatusClick = (status: QuoteStatus | null) => {
     setFilter({ status: filter.status === status ? null : status });
@@ -38,7 +40,7 @@ export function StatusStrip({ className }: StatusStripProps) {
           filter.status === null && 'bg-primary hover:bg-primary/90'
         )}
       >
-        All
+        {t('all')}
         <Badge
           variant="secondary"
           className={cn(
@@ -76,7 +78,7 @@ export function StatusStrip({ className }: StatusStripProps) {
                 status === 'full_batch_order' && 'bg-green-500'
               )}
             />
-            {config.label}
+            {getStageLabel(status)}
             <Badge
               variant="secondary"
               className={cn(

@@ -37,6 +37,7 @@ import type { Quote, QuoteStatus, QuoteDocument } from './types';
 import { STATUS_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useUpdateQuoteMutation, quoteKeys } from './hooks/useQuotes';
+import { useLanguage } from './hooks/useLanguage';
 
 // Form validation schema
 const quoteFormSchema = z.object({
@@ -53,11 +54,13 @@ function StatusButton({
   currentStatus,
   onClick,
   disabled,
+  getStageLabel,
 }: {
   status: QuoteStatus;
   currentStatus: QuoteStatus;
   onClick: () => void;
   disabled?: boolean;
+  getStageLabel: (key: string) => string;
 }) {
   const config = STATUS_CONFIG[status];
   const isActive = status === currentStatus;
@@ -75,7 +78,7 @@ function StatusButton({
           : 'hover:bg-gray-50'
       }`}
     >
-      {config.label}
+      {getStageLabel(status)}
     </Button>
   );
 }
@@ -168,12 +171,12 @@ function DocumentCard({
 }
 
 // Auto-save indicator
-function SaveIndicator({ isSaving, isSaved }: { isSaving: boolean; isSaved: boolean }) {
+function SaveIndicator({ isSaving, isSaved, savingText, savedText }: { isSaving: boolean; isSaved: boolean; savingText: string; savedText: string }) {
   if (isSaving) {
     return (
       <div className="flex items-center gap-1 text-xs text-gray-500">
         <Loader2 className="h-3 w-3 animate-spin" />
-        <span>Saving...</span>
+        <span>{savingText}</span>
       </div>
     );
   }
@@ -182,7 +185,7 @@ function SaveIndicator({ isSaving, isSaved }: { isSaving: boolean; isSaved: bool
     return (
       <div className="flex items-center gap-1 text-xs text-green-600">
         <Check className="h-3 w-3" />
-        <span>Saved</span>
+        <span>{savedText}</span>
       </div>
     );
   }
@@ -195,6 +198,7 @@ export function QuoteDetailPanel() {
   const { isDetailPanelOpen, toggleDetailPanel, selectQuote } = useQuoteStore();
   const selectedQuote = useSelectedQuote();
   const updateMutation = useUpdateQuoteMutation();
+  const { t, getStageLabel } = useLanguage();
 
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -359,7 +363,7 @@ export function QuoteDetailPanel() {
                 {/* Status Section */}
                 <div>
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                    Stage
+                    {t('stage')}
                   </h3>
                   <div className="grid grid-cols-2 sm:flex gap-2 sm:flex-wrap">
                     {(Object.keys(STATUS_CONFIG) as QuoteStatus[]).map((status) => (
@@ -369,6 +373,7 @@ export function QuoteDetailPanel() {
                         currentStatus={selectedQuote.status}
                         onClick={() => handleStatusChange(status)}
                         disabled={updateMutation.isPending}
+                        getStageLabel={getStageLabel}
                       />
                     ))}
                   </div>
@@ -379,17 +384,17 @@ export function QuoteDetailPanel() {
                 {/* Product Details */}
                 <div>
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                    Product Details
+                    {t('productDetails')}
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500 text-xs">Created</span>
+                      <span className="text-gray-500 text-xs">{t('created')}</span>
                       <p className="font-medium text-gray-900">
                         {formatDate(selectedQuote.createdAt)}
                       </p>
                     </div>
                     <div>
-                      <span className="text-gray-500 text-xs">Updated</span>
+                      <span className="text-gray-500 text-xs">{t('updated')}</span>
                       <p className="font-medium text-gray-900">
                         {formatDate(selectedQuote.updatedAt)}
                       </p>
@@ -403,13 +408,13 @@ export function QuoteDetailPanel() {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                      Pricing & Quantity
+                      {t('pricingQuantity')}
                     </h3>
-                    <SaveIndicator isSaving={isSaving} isSaved={isSaved} />
+                    <SaveIndicator isSaving={isSaving} isSaved={isSaved} savingText={t('saving')} savedText={t('saved')} />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="price">Price</Label>
+                      <Label htmlFor="price">{t('price')}</Label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                           $
@@ -429,7 +434,7 @@ export function QuoteDetailPanel() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="quantity">Order Quantity</Label>
+                      <Label htmlFor="quantity">{t('orderQuantity')}</Label>
                       <Input
                         id="quantity"
                         type="number"
@@ -451,10 +456,10 @@ export function QuoteDetailPanel() {
                 {/* Public Notes */}
                 <div>
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                    Public Notes
+                    {t('publicNotes')}
                   </h3>
                   <Textarea
-                    placeholder="Add notes visible on the dashboard..."
+                    placeholder={t('addPublicNotesPlaceholder')}
                     rows={4}
                     {...form.register('publicNotes', {
                       onBlur: (e) => handleAutoSave('publicNotes', e.target.value),
@@ -468,7 +473,7 @@ export function QuoteDetailPanel() {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                      Formula Documents
+                      {t('formulaDocuments')}
                     </h3>
                     <Label htmlFor="file-upload" className="cursor-pointer">
                       <input
@@ -481,7 +486,7 @@ export function QuoteDetailPanel() {
                       />
                       <span className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors inline-flex items-center gap-1">
                         <Upload className="w-3.5 h-3.5" />
-                        <span>Upload</span>
+                        <span>{t('upload')}</span>
                       </span>
                     </Label>
                   </div>
@@ -508,8 +513,8 @@ export function QuoteDetailPanel() {
                   ) : (
                     <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
                       <FileText className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm">No documents uploaded</p>
-                      <p className="text-xs">Drag & drop or click Upload</p>
+                      <p className="text-sm">{t('noDocumentsUploaded')}</p>
+                      <p className="text-xs">{t('dragDropHint')}</p>
                     </div>
                   )}
                 </div>

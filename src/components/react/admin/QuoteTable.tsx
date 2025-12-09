@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, Search, FileText, MoreHorizontal, ChevronLeft, ChevronRight, X, Download, Check, Loader2 } from 'lucide-react';
+import { ArrowUpDown, Search, FileText, MoreHorizontal, ChevronLeft, ChevronRight, X, Download, Check, Loader2, Upload } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,6 +59,8 @@ import type { Quote, QuoteStatus, QuoteDocument } from './types';
 import { STATUS_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useQuotesQuery, useUpdateQuoteMutation } from './hooks/useQuotes';
+import { useLanguage } from './hooks/useLanguage';
+import { DocumentUploadModal } from './DocumentUploadModal';
 
 // Helper to format date
 function formatDate(dateStr?: string): string {
@@ -79,13 +81,13 @@ function formatCurrency(value?: number): string {
 }
 
 // Status Badge Component
-function StatusBadge({ status }: { status: QuoteStatus }) {
+function StatusBadge({ status, getStageLabel }: { status: QuoteStatus; getStageLabel: (key: string) => string }) {
   const config = STATUS_CONFIG[status];
   if (!config) return <Badge variant="outline">{status}</Badge>;
 
   return (
     <Badge className={`${config.bgColor} ${config.color} border-0 font-medium`}>
-      {config.label}
+      {getStageLabel(status)}
     </Badge>
   );
 }
@@ -374,17 +376,42 @@ function DocumentLightbox({
 }
 
 // Document Count Component with Large Preview on Hover + Lightbox on Click
-function DocumentCount({ documents }: { documents: QuoteDocument[] }) {
+function DocumentCount({
+  documents,
+  quoteId,
+  quoteName
+}: {
+  documents: QuoteDocument[];
+  quoteId: string;
+  quoteName: string;
+}) {
+  const { t } = useLanguage();
   const count = documents.length;
   const [hoverIndex, setHoverIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   if (count === 0) {
     return (
-      <div className="flex justify-center">
-        <FileText className="w-4 h-4 text-gray-300" />
-      </div>
+      <>
+        <div
+          className="flex justify-center cursor-pointer group"
+          onClick={(e) => {
+            e.stopPropagation();
+            setUploadModalOpen(true);
+          }}
+          title={t('clickToUpload')}
+        >
+          <Upload className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+        </div>
+        <DocumentUploadModal
+          isOpen={uploadModalOpen}
+          onClose={() => setUploadModalOpen(false)}
+          quoteId={quoteId}
+          quoteName={quoteName}
+        />
+      </>
     );
   }
 
@@ -522,6 +549,7 @@ export function QuoteTable() {
 
   const { isLoading, isError, error } = useQuotesQuery();
   const updateMutation = useUpdateQuoteMutation();
+  const { t, getStageLabel } = useLanguage();
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },
@@ -545,7 +573,7 @@ export function QuoteTable() {
             className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Created
+            {t('created')}
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
@@ -565,7 +593,7 @@ export function QuoteTable() {
             className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Name
+            {t('name')}
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
@@ -585,18 +613,22 @@ export function QuoteTable() {
             className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Stage
+            {t('stage')}
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
-        cell: ({ row }) => <StatusBadge status={row.getValue('status')} />,
+        cell: ({ row }) => <StatusBadge status={row.getValue('status')} getStageLabel={getStageLabel} />,
         size: 125,
       },
       {
         id: 'documents',
-        header: () => <span className="text-center block">Formula</span>,
+        header: () => <span className="text-center block">{t('formula')}</span>,
         cell: ({ row }) => (
-          <DocumentCount documents={row.original.documents ?? []} />
+          <DocumentCount
+            documents={row.original.documents ?? []}
+            quoteId={row.original.id}
+            quoteName={row.original.name}
+          />
         ),
         size: 65,
       },
@@ -609,7 +641,7 @@ export function QuoteTable() {
             className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Price
+            {t('price')}
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
@@ -633,7 +665,7 @@ export function QuoteTable() {
             className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            Qty
+            {t('qty')}
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
@@ -650,7 +682,7 @@ export function QuoteTable() {
       },
       {
         accessorKey: 'publicNotes',
-        header: () => <span>Notes</span>,
+        header: () => <span>{t('notes')}</span>,
         cell: ({ row }) => {
           const notes = row.getValue('publicNotes') as string | undefined;
           return (
@@ -675,15 +707,15 @@ export function QuoteTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => selectQuote(row.original.id)}>
-                View Details
+                {t('viewDetails')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(row.original.id)}
               >
-                Copy ID
+                {t('copyId')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -691,7 +723,7 @@ export function QuoteTable() {
         size: 36,
       },
     ],
-    [selectQuote, handleInlineUpdate]
+    [selectQuote, handleInlineUpdate, t, getStageLabel]
   );
 
   const table = useReactTable({
@@ -722,14 +754,14 @@ export function QuoteTable() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Search quotes..."
+            placeholder={t('searchQuotes')}
             value={filter.search}
             onChange={(e) => setFilter({ search: e.target.value })}
             className="pl-10 w-full"
           />
         </div>
         <div className="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-          <span className="font-semibold text-primary">{totalFiltered}</span> quotes
+          <span className="font-semibold text-primary">{totalFiltered}</span> {t('quotes')}
         </div>
       </div>
 
@@ -747,17 +779,17 @@ export function QuoteTable() {
               <EmptyMedia variant="icon">
                 <Search className="h-6 w-6" />
               </EmptyMedia>
-              <EmptyTitle>No quotes found</EmptyTitle>
+              <EmptyTitle>{t('noQuotesFound')}</EmptyTitle>
               <EmptyDescription>
                 {filter.search
-                  ? 'No quotes match your search criteria'
-                  : 'No quotes available yet'}
+                  ? t('noQuotesMatchSearch')
+                  : t('noQuotesAvailable')}
               </EmptyDescription>
             </EmptyHeader>
             {filter.search && (
               <EmptyContent>
                 <Button variant="outline" onClick={() => setFilter({ search: '' })}>
-                  Clear search
+                  {t('clearSearch')}
                 </Button>
               </EmptyContent>
             )}
@@ -806,9 +838,9 @@ export function QuoteTable() {
         <div className="px-5 py-4 border-t border-gray-100 bg-gray-50/50">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-sm text-gray-500">
-              Showing <span className="font-medium text-gray-700">{startItem}</span>-
-              <span className="font-medium text-gray-700">{endItem}</span> of{' '}
-              <span className="font-medium text-gray-700">{totalFiltered}</span> quotes
+              {t('showing')} <span className="font-medium text-gray-700">{startItem}</span>-
+              <span className="font-medium text-gray-700">{endItem}</span> {t('of')}{' '}
+              <span className="font-medium text-gray-700">{totalFiltered}</span> {t('quotes')}
             </div>
 
             <div className="flex items-center gap-2">
@@ -819,12 +851,12 @@ export function QuoteTable() {
                 disabled={!hasPreviousPage}
               >
                 <ChevronLeft className="h-4 w-4 sm:mr-1" />
-                <span className="hidden sm:inline">Previous</span>
+                <span className="hidden sm:inline">{t('previous')}</span>
               </Button>
 
               <div className="flex items-center gap-1">
                 <span className="text-sm text-gray-700 px-2">
-                  Page {page} of {Math.ceil(totalFiltered / limit)}
+                  {t('page')} {page} {t('of')} {Math.ceil(totalFiltered / limit)}
                 </span>
               </div>
 
@@ -834,7 +866,7 @@ export function QuoteTable() {
                 onClick={() => setPage(page + 1)}
                 disabled={!hasNextPage}
               >
-                <span className="hidden sm:inline">Next</span>
+                <span className="hidden sm:inline">{t('next')}</span>
                 <ChevronRight className="h-4 w-4 sm:ml-1" />
               </Button>
             </div>
