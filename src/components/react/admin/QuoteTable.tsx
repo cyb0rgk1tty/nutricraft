@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, Search, FileText, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpDown, Search, FileText, MoreHorizontal, ChevronLeft, ChevronRight, X, Download, Check, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,8 +44,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
-import type { Quote, QuoteStatus } from './types';
+import type { Quote, QuoteStatus, QuoteDocument } from './types';
 import { STATUS_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useQuotesQuery, useUpdateQuoteMutation } from './hooks/useQuotes';
@@ -80,8 +90,296 @@ function StatusBadge({ status }: { status: QuoteStatus }) {
   );
 }
 
-// Document Count Component
-function DocumentCount({ count }: { count: number }) {
+// Editable Cell Component for inline editing
+function EditableCell({
+  value,
+  quoteId,
+  field,
+  type = 'text',
+  prefix = '',
+  placeholder = '-',
+  onUpdate,
+}: {
+  value: number | string | undefined | null;
+  quoteId: string;
+  field: 'ourCost' | 'orderQuantity';
+  type?: 'number' | 'text';
+  prefix?: string;
+  placeholder?: string;
+  onUpdate: (id: string, updates: Partial<Quote>) => Promise<void>;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputValue, setInputValue] = useState(value?.toString() ?? '');
+  const [isSaving, setIsSaving] = useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Focus input when entering edit mode
+  React.useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  // Reset input value when value prop changes
+  React.useEffect(() => {
+    if (!isEditing) {
+      setInputValue(value?.toString() ?? '');
+    }
+  }, [value, isEditing]);
+
+  const handleSave = async () => {
+    const newValue = type === 'number'
+      ? (inputValue === '' ? null : parseFloat(inputValue))
+      : inputValue;
+
+    // Skip if value hasn't changed
+    if (newValue === value || (newValue === null && (value === undefined || value === null))) {
+      setIsEditing(false);
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await onUpdate(quoteId, { [field]: newValue });
+    } catch (error) {
+      // Reset to original value on error
+      setInputValue(value?.toString() ?? '');
+    } finally {
+      setIsSaving(false);
+      setIsEditing(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSave();
+    } else if (e.key === 'Escape') {
+      setInputValue(value?.toString() ?? '');
+      setIsEditing(false);
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent row selection
+    setIsEditing(true);
+  };
+
+  // Display formatted value
+  const displayValue = useMemo(() => {
+    if (value === undefined || value === null || value === '') return placeholder;
+    if (type === 'number') {
+      const numValue = typeof value === 'string' ? parseFloat(value) : value;
+      if (field === 'ourCost') {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }).format(numValue);
+      }
+      return numValue.toLocaleString();
+    }
+    return value;
+  }, [value, type, field, placeholder]);
+
+  if (isEditing) {
+    return (
+      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+        {prefix && <span className="text-gray-400 text-sm">{prefix}</span>}
+        <Input
+          ref={inputRef}
+          type={type}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onBlur={handleSave}
+          onKeyDown={handleKeyDown}
+          className="h-7 w-20 text-sm px-2"
+          step={field === 'ourCost' ? '0.01' : '1'}
+          min="0"
+        />
+        {isSaving && <Loader2 className="w-3 h-3 animate-spin text-primary" />}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group"
+      onClick={handleClick}
+      title="Click to edit"
+    >
+      <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'}`}>
+        {displayValue}
+      </span>
+    </div>
+  );
+}
+
+// Sort documents by uploadedAt (oldest first)
+function sortDocumentsByDate(documents: QuoteDocument[]): QuoteDocument[] {
+  return [...documents].sort((a, b) => {
+    const dateA = new Date(a.uploadedAt || 0).getTime();
+    const dateB = new Date(b.uploadedAt || 0).getTime();
+    return dateA - dateB; // Oldest first
+  });
+}
+
+// Document Lightbox Component
+function DocumentLightbox({
+  documents,
+  currentIndex,
+  isOpen,
+  onClose,
+  onNavigate,
+}: {
+  documents: QuoteDocument[];
+  currentIndex: number;
+  isOpen: boolean;
+  onClose: () => void;
+  onNavigate: (index: number) => void;
+}) {
+  const currentDoc = documents[currentIndex];
+  const isImage = currentDoc?.fileType?.startsWith('image/');
+  const isPdf = currentDoc?.fileType === 'application/pdf';
+  const count = documents.length;
+
+  // Keyboard navigation
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        onNavigate(currentIndex - 1);
+      } else if (e.key === 'ArrowRight' && currentIndex < count - 1) {
+        onNavigate(currentIndex + 1);
+      } else if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, currentIndex, count, onNavigate, onClose]);
+
+  if (!currentDoc) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent
+        className="max-w-[95vw] max-h-[95vh] w-auto p-0 bg-black/95 border-none"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <DialogTitle className="sr-only">Document Preview</DialogTitle>
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        {/* Download button */}
+        <a
+          href={currentDoc.filePath}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-4 right-16 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Download className="w-6 h-6" />
+        </a>
+
+        {/* Main content area */}
+        <div className="flex items-center justify-center min-h-[60vh] p-8">
+          {/* Previous button */}
+          {count > 1 && currentIndex > 0 && (
+            <button
+              onClick={() => onNavigate(currentIndex - 1)}
+              className="absolute left-4 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+          )}
+
+          {/* Document preview */}
+          <div className="flex items-center justify-center">
+            {isImage && currentDoc.filePath ? (
+              <img
+                src={currentDoc.filePath}
+                alt={currentDoc.fileName}
+                className="max-w-[85vw] max-h-[80vh] object-contain rounded-lg"
+              />
+            ) : isPdf ? (
+              <a
+                href={currentDoc.filePath}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center w-[400px] h-[300px] bg-gradient-to-br from-red-500/20 to-red-600/20 text-white rounded-xl hover:from-red-500/30 hover:to-red-600/30 transition-colors"
+              >
+                <FileText className="w-20 h-20 mb-4" />
+                <p className="text-lg font-medium truncate max-w-[350px] px-4">{currentDoc.fileName}</p>
+                <p className="text-sm text-white/70 mt-2">Click to open PDF</p>
+              </a>
+            ) : (
+              <div className="flex flex-col items-center justify-center w-[300px] h-[200px]">
+                <FileText className="w-16 h-16 text-white/50" />
+                <p className="text-sm text-white/70 mt-4">{currentDoc.fileName}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Next button */}
+          {count > 1 && currentIndex < count - 1 && (
+            <button
+              onClick={() => onNavigate(currentIndex + 1)}
+              className="absolute right-4 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+          )}
+        </div>
+
+        {/* Footer with filename and pagination */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+          <div className="text-center">
+            <p className="text-white font-medium truncate max-w-[600px] mx-auto">
+              {currentDoc.fileName}
+            </p>
+            {count > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-3">
+                {documents.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                      idx === currentIndex
+                        ? 'bg-white scale-125'
+                        : 'bg-white/40 hover:bg-white/60'
+                    }`}
+                    onClick={() => onNavigate(idx)}
+                  />
+                ))}
+              </div>
+            )}
+            <p className="text-white/50 text-sm mt-2">
+              {currentIndex + 1} of {count} documents
+            </p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// Document Count Component with Large Preview on Hover + Lightbox on Click
+function DocumentCount({ documents }: { documents: QuoteDocument[] }) {
+  const count = documents.length;
+  const [hoverIndex, setHoverIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
   if (count === 0) {
     return (
       <div className="flex justify-center">
@@ -90,20 +388,102 @@ function DocumentCount({ count }: { count: number }) {
     );
   }
 
+  // Sort documents by upload date (oldest first)
+  const sortedDocs = useMemo(() => sortDocumentsByDate(documents), [documents]);
+
+  const currentDoc = sortedDocs[hoverIndex];
+  const isImage = currentDoc?.fileType?.startsWith('image/');
+  const isPdf = currentDoc?.fileType === 'application/pdf';
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxIndex(hoverIndex);
+    setLightboxOpen(true);
+  };
+
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="flex items-center justify-center gap-1 cursor-pointer">
+    <>
+      <HoverCard openDelay={200}>
+        <HoverCardTrigger asChild>
+          <div
+            className="flex items-center justify-center gap-1 cursor-pointer"
+            onClick={handleClick}
+          >
             <FileText className="w-4 h-4 text-primary" />
             <span className="text-xs font-medium text-primary">{count}</span>
           </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{count} document{count !== 1 ? 's' : ''} attached</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        </HoverCardTrigger>
+        <HoverCardContent
+          className="w-auto p-4"
+          side="right"
+          sideOffset={12}
+          onClick={handleClick}
+        >
+          <div className="space-y-3">
+            {/* Larger Preview */}
+            <div
+              className="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center cursor-pointer"
+              style={{ maxWidth: 'min(700px, 80vw)', maxHeight: 'min(550px, 70vh)' }}
+            >
+              {isImage && currentDoc.filePath ? (
+                <img
+                  src={currentDoc.filePath}
+                  alt={currentDoc.fileName}
+                  className="max-w-full max-h-[550px] object-contain"
+                />
+              ) : isPdf ? (
+                <div className="w-[400px] h-[280px] flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100 text-red-600 rounded-lg">
+                  <FileText className="w-16 h-16 mb-3" />
+                  <p className="text-base font-medium truncate max-w-[350px] px-4">{currentDoc.fileName}</p>
+                  <p className="text-sm text-red-400 mt-2">Click to open PDF</p>
+                </div>
+              ) : (
+                <div className="w-[300px] h-[200px] flex flex-col items-center justify-center">
+                  <FileText className="w-16 h-16 text-gray-400" />
+                  <p className="text-sm text-gray-500 mt-3">{currentDoc.fileName}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Filename and click hint */}
+            <div className="text-center">
+              <p className="text-sm text-gray-700 truncate max-w-[500px]" title={currentDoc.fileName}>
+                {currentDoc.fileName}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">Click to view full size</p>
+            </div>
+
+            {/* Navigation dots if multiple documents */}
+            {count > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-1">
+                {sortedDocs.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                      idx === hoverIndex ? 'bg-primary scale-110' : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHoverIndex(idx);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+
+      {/* Lightbox Modal */}
+      <DocumentLightbox
+        documents={sortedDocs}
+        currentIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={setLightboxIndex}
+      />
+    </>
   );
 }
 
@@ -148,6 +528,11 @@ export function QuoteTable() {
   ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  // Handler for inline editing updates
+  const handleInlineUpdate = async (id: string, updates: Partial<Quote>) => {
+    await updateMutation.mutateAsync({ id, updates });
+  };
+
   // Column definitions
   const columns: ColumnDef<Quote>[] = useMemo(
     () => [
@@ -185,10 +570,11 @@ export function QuoteTable() {
           </Button>
         ),
         cell: ({ row }) => (
-          <div className="font-medium truncate max-w-[200px]" title={row.getValue('name')}>
+          <div className="font-medium truncate" title={row.getValue('name')}>
             {row.getValue('name')}
           </div>
         ),
+        minSize: 200,
       },
       {
         accessorKey: 'status',
@@ -210,7 +596,7 @@ export function QuoteTable() {
         id: 'documents',
         header: () => <span className="text-center block">Formula</span>,
         cell: ({ row }) => (
-          <DocumentCount count={row.original.documents?.length ?? 0} />
+          <DocumentCount documents={row.original.documents ?? []} />
         ),
         size: 65,
       },
@@ -228,11 +614,15 @@ export function QuoteTable() {
           </Button>
         ),
         cell: ({ row }) => (
-          <span className="text-sm font-medium">
-            {formatCurrency(row.getValue('ourCost'))}
-          </span>
+          <EditableCell
+            value={row.getValue('ourCost')}
+            quoteId={row.original.id}
+            field="ourCost"
+            type="number"
+            onUpdate={handleInlineUpdate}
+          />
         ),
-        size: 95,
+        size: 110,
       },
       {
         accessorKey: 'orderQuantity',
@@ -247,19 +637,20 @@ export function QuoteTable() {
             <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
-        cell: ({ row }) => {
-          const qty = row.getValue('orderQuantity') as number | undefined;
-          return (
-            <span className="text-sm text-muted-foreground">
-              {qty ? qty.toLocaleString() : '-'}
-            </span>
-          );
-        },
-        size: 65,
+        cell: ({ row }) => (
+          <EditableCell
+            value={row.getValue('orderQuantity')}
+            quoteId={row.original.id}
+            field="orderQuantity"
+            type="number"
+            onUpdate={handleInlineUpdate}
+          />
+        ),
+        size: 90,
       },
       {
         accessorKey: 'publicNotes',
-        header: 'Notes',
+        header: () => <span>Notes</span>,
         cell: ({ row }) => {
           const notes = row.getValue('publicNotes') as string | undefined;
           return (
@@ -300,7 +691,7 @@ export function QuoteTable() {
         size: 36,
       },
     ],
-    [selectQuote]
+    [selectQuote, handleInlineUpdate]
   );
 
   const table = useReactTable({

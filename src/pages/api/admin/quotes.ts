@@ -18,6 +18,9 @@ import type { FetchQuotesOptions, Quote } from '../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../utils/adminAuth';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
 
+const STORAGE_BUCKET = 'quote-documents';
+const SIGNED_URL_EXPIRY = 3600; // 1 hour
+
 // Helper to enrich quotes with documents from Supabase
 async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
   if (quotes.length === 0) return quotes;
@@ -39,6 +42,40 @@ async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
     return quotes; // Return quotes without documents if fetch fails
   }
 
+  if (!documents || documents.length === 0) {
+    return quotes;
+  }
+
+  // Generate signed URLs for all documents in parallel
+  const storagePaths = documents.map(d => d.storage_path);
+  console.log('[Signed URLs] Generating for paths:', storagePaths);
+
+  const { data: signedUrls, error: signedUrlError } = await supabase.storage
+    .from(STORAGE_BUCKET)
+    .createSignedUrls(storagePaths, SIGNED_URL_EXPIRY);
+
+  console.log('[Signed URLs] Bulk error:', signedUrlError);
+  console.log('[Signed URLs] Response data:', JSON.stringify(signedUrls, null, 2));
+
+  if (signedUrlError) {
+    console.error('Error generating signed URLs:', signedUrlError);
+    // Continue anyway - will handle missing URLs below
+  }
+
+  // Create a map of storage_path to signed URL, handling individual errors
+  const urlMap = new Map<string, string>();
+  signedUrls?.forEach((item, index) => {
+    if (item.error) {
+      console.error(`[Signed URLs] Error for ${storagePaths[index]}:`, item.error);
+    } else if (item.signedUrl) {
+      urlMap.set(storagePaths[index], item.signedUrl);
+    } else {
+      console.warn(`[Signed URLs] No URL for ${storagePaths[index]}, item:`, item);
+    }
+  });
+
+  console.log(`[Signed URLs] Generated ${urlMap.size}/${storagePaths.length} signed URLs`);
+
   // Map Supabase documents to QuoteDocument format and attach to quotes
   return quotes.map(quote => ({
     ...quote,
@@ -50,7 +87,7 @@ async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
         fileName: d.file_name,
         fileType: d.file_type,
         fileSize: d.file_size,
-        filePath: d.storage_path,
+        filePath: urlMap.get(d.storage_path) || '',
         uploadedAt: d.created_at,
       })),
   }));
