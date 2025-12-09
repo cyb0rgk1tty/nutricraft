@@ -14,8 +14,47 @@
 
 import type { APIRoute } from 'astro';
 import { fetchQuotesFromCRM, fetchQuotesPaginated } from '../../../utils/twentyCrmQuotes';
-import type { FetchQuotesOptions } from '../../../utils/twentyCrmQuotes';
+import type { FetchQuotesOptions, Quote } from '../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../utils/adminAuth';
+import { getSupabaseServiceClient } from '../../../utils/supabase';
+
+// Helper to enrich quotes with documents from Supabase
+async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
+  if (quotes.length === 0) return quotes;
+
+  // Get all quote IDs (CRM product IDs)
+  const quoteIds = quotes.map(q => q.id);
+
+  // Get Supabase client for admin operations
+  const supabase = getSupabaseServiceClient();
+
+  // Fetch documents for all quotes in one query
+  const { data: documents, error } = await supabase
+    .from('quote_documents')
+    .select('*')
+    .in('crm_product_id', quoteIds);
+
+  if (error) {
+    console.error('Error fetching documents:', error);
+    return quotes; // Return quotes without documents if fetch fails
+  }
+
+  // Map Supabase documents to QuoteDocument format and attach to quotes
+  return quotes.map(quote => ({
+    ...quote,
+    documents: (documents || [])
+      .filter(d => d.crm_product_id === quote.id)
+      .map(d => ({
+        id: d.id,
+        quoteId: d.crm_product_id,
+        fileName: d.file_name,
+        fileType: d.file_type,
+        fileSize: d.file_size,
+        filePath: d.storage_path,
+        uploadedAt: d.created_at,
+      })),
+  }));
+}
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -74,10 +113,13 @@ export const GET: APIRoute = async ({ request }) => {
         );
       }
 
+      // Enrich quotes with documents from Supabase
+      const quotesWithDocuments = await enrichQuotesWithDocuments(result.quotes);
+
       return new Response(
         JSON.stringify({
           success: true,
-          quotes: result.quotes,
+          quotes: quotesWithDocuments,
           statusCounts: result.statusCounts,
           pagination: result.pagination,
         }),
@@ -109,10 +151,13 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
+    // Enrich quotes with documents from Supabase
+    const quotesWithDocuments = await enrichQuotesWithDocuments(result.quotes);
+
     return new Response(
       JSON.stringify({
         success: true,
-        quotes: result.quotes,
+        quotes: quotesWithDocuments,
         statusCounts: result.statusCounts,
       }),
       {
