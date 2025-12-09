@@ -209,6 +209,65 @@
   </div>
 </div>
 
+<!-- Upload Formula Modal -->
+<div id="upload-formula-modal" class="upload-formula-modal">
+  <div class="upload-formula-backdrop"></div>
+  <div class="upload-formula-container">
+    <!-- Header -->
+    <div class="upload-formula-header">
+      <h3 data-i18n="uploadFormula">Upload Formula</h3>
+      <button type="button" id="upload-modal-close" class="upload-modal-close-btn" title="Close">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="upload-formula-content">
+      <!-- Drop Zone -->
+      <div id="upload-modal-drop-zone" class="upload-modal-drop-zone">
+        <input type="file" id="upload-modal-file-input" class="hidden" multiple accept=".pdf,.png,.jpg,.jpeg" />
+
+        <!-- Default state -->
+        <div class="drop-zone-content">
+          <div class="drop-zone-icon">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+          </div>
+          <p class="drop-zone-title" data-i18n="selectFilesOrDrop">Select files or drag & drop</p>
+          <p class="drop-zone-subtitle" data-i18n="supportedFormats">PDF, PNG, JPEG up to 10MB</p>
+          <button type="button" id="upload-modal-browse-btn" class="drop-zone-browse-btn">
+            <span data-i18n="clickToUpload">Click to upload</span>
+          </button>
+        </div>
+
+        <!-- Drag over overlay -->
+        <div id="upload-modal-drop-overlay" class="upload-modal-drop-overlay">
+          <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <p data-i18n="dropFilesHere">Drop files here</p>
+        </div>
+      </div>
+
+      <!-- Upload Progress -->
+      <div id="upload-modal-progress" class="upload-modal-progress hidden">
+        <div class="progress-bar-container">
+          <div id="upload-modal-progress-bar" class="progress-bar"></div>
+        </div>
+        <p id="upload-modal-status" class="progress-status" data-i18n="uploading">Uploading...</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="upload-formula-footer">
+      <button type="button" id="upload-modal-cancel" class="upload-modal-cancel-btn" data-i18n="cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <style is:global>
   /*
    * IMPORTANT: Using is:global because inputs are dynamically generated via JS
@@ -645,6 +704,224 @@
   .inline-input.notes-input {
     text-align: left;
     padding: 0.25rem 0.5rem;
+  }
+
+  /* ============================================================================
+   * UPLOAD FORMULA MODAL STYLES
+   * ============================================================================ */
+
+  .upload-formula-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .upload-formula-modal.visible {
+    display: flex;
+  }
+
+  .upload-formula-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+  }
+
+  .upload-formula-container {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    animation: uploadModalSlideIn 0.2s ease-out;
+  }
+
+  @keyframes uploadModalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .upload-formula-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .upload-formula-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .upload-modal-close-btn {
+    padding: 0.375rem;
+    color: #6b7280;
+    border-radius: 0.375rem;
+    transition: all 0.15s ease;
+  }
+  .upload-modal-close-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+
+  .upload-formula-content {
+    padding: 1.25rem;
+  }
+
+  .upload-modal-drop-zone {
+    position: relative;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: #fafafa;
+  }
+  .upload-modal-drop-zone:hover {
+    border-color: #00c16e;
+    background: #f0fef4;
+  }
+  .upload-modal-drop-zone.drag-over {
+    border-color: #00c16e;
+    background: #f0fef4;
+  }
+
+  .drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .drop-zone-icon {
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+  }
+  .upload-modal-drop-zone:hover .drop-zone-icon,
+  .upload-modal-drop-zone.drag-over .drop-zone-icon {
+    color: #00c16e;
+  }
+
+  .drop-zone-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
+  }
+  .drop-zone-subtitle {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin: 0;
+  }
+
+  .drop-zone-browse-btn {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: white;
+    background: #00c16e;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+  }
+  .drop-zone-browse-btn:hover {
+    background: #00a85e;
+    transform: translateY(-1px);
+  }
+
+  /* Drag over overlay */
+  .upload-modal-drop-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(0, 193, 110, 0.1);
+    border-radius: 0.75rem;
+    color: #00c16e;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  .upload-modal-drop-zone.drag-over .upload-modal-drop-overlay {
+    display: flex;
+  }
+  .upload-modal-drop-zone.drag-over .drop-zone-content {
+    opacity: 0;
+  }
+
+  /* Upload progress */
+  .upload-modal-progress {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .upload-modal-progress.hidden {
+    display: none;
+  }
+
+  .progress-bar-container {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00c16e, #00d87f);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .progress-status {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+
+  .upload-formula-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .upload-modal-cancel-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+  }
+  .upload-modal-cancel-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  /* Clickable no-doc icon */
+  .formula-thumbnail .no-doc.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .formula-thumbnail .no-doc.clickable:hover {
+    color: #00c16e;
+    transform: scale(1.15);
   }
 </style>
 
@@ -1491,14 +1768,20 @@
   function renderThumbnailSync(container: HTMLElement, documents: any[], quoteId: string) {
     if (documents.length === 0) {
       container.classList.remove('has-documents');
-      const noFormulaText = t('noFormulaUploaded');
+      const clickToUploadText = t('clickToUpload');
       container.innerHTML = `
-        <div class="no-doc" title="${noFormulaText}">
+        <div class="no-doc clickable" title="${clickToUploadText}" data-quote-id="${quoteId}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
       `;
+      // Add click handler to open upload modal
+      const noDocEl = container.querySelector('.no-doc.clickable');
+      noDocEl?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openUploadModal(quoteId);
+      });
       return;
     }
 
@@ -1562,6 +1845,191 @@
       `;
     }
   }
+
+  // ============================================================================
+  // UPLOAD FORMULA MODAL
+  // ============================================================================
+
+  // Upload modal state
+  let uploadModalQuoteId: string | null = null;
+  let uploadModalDragCounter = 0;
+
+  // Upload modal elements
+  const uploadModal = document.getElementById('upload-formula-modal');
+  const uploadModalBackdrop = uploadModal?.querySelector('.upload-formula-backdrop');
+  const uploadModalClose = document.getElementById('upload-modal-close');
+  const uploadModalCancel = document.getElementById('upload-modal-cancel');
+  const uploadModalDropZone = document.getElementById('upload-modal-drop-zone');
+  const uploadModalFileInput = document.getElementById('upload-modal-file-input') as HTMLInputElement;
+  const uploadModalBrowseBtn = document.getElementById('upload-modal-browse-btn');
+  const uploadModalProgress = document.getElementById('upload-modal-progress');
+  const uploadModalProgressBar = document.getElementById('upload-modal-progress-bar');
+  const uploadModalStatus = document.getElementById('upload-modal-status');
+
+  // Open upload modal
+  function openUploadModal(quoteId: string) {
+    uploadModalQuoteId = quoteId;
+    uploadModal?.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+
+    // Reset state
+    if (uploadModalProgress) uploadModalProgress.classList.add('hidden');
+    if (uploadModalProgressBar) uploadModalProgressBar.style.width = '0%';
+    if (uploadModalFileInput) uploadModalFileInput.value = '';
+    uploadModalDropZone?.classList.remove('drag-over');
+  }
+
+  // Close upload modal
+  function closeUploadModal() {
+    uploadModal?.classList.remove('visible');
+    uploadModalQuoteId = null;
+    document.body.style.overflow = '';
+    uploadModalDragCounter = 0;
+  }
+
+  // Upload document from modal
+  async function uploadDocumentFromModal(file: File) {
+    if (!uploadModalQuoteId) return;
+
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      alert(t('fileSizeExceeds'));
+      return;
+    }
+
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert(t('invalidFileType'));
+      return;
+    }
+
+    // Show progress
+    uploadModalProgress?.classList.remove('hidden');
+    if (uploadModalProgressBar) uploadModalProgressBar.style.width = '0%';
+    if (uploadModalStatus) uploadModalStatus.textContent = t('uploading');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Simulate progress
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += 10;
+        if (uploadModalProgressBar && progress < 90) {
+          uploadModalProgressBar.style.width = `${progress}%`;
+        }
+      }, 100);
+
+      const response = await fetch(`/api/admin/quotes/${uploadModalQuoteId}/documents`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      clearInterval(progressInterval);
+
+      if (uploadModalProgressBar) uploadModalProgressBar.style.width = '100%';
+
+      const data = await response.json();
+
+      if (data.success) {
+        if (uploadModalStatus) uploadModalStatus.textContent = t('uploadComplete');
+
+        // Invalidate cache for this quote
+        documentCache.delete(uploadModalQuoteId);
+
+        // Dispatch event to refresh thumbnail
+        window.dispatchEvent(new CustomEvent('documentsChanged', { detail: { quoteId: uploadModalQuoteId } }));
+
+        // Close modal after short delay
+        setTimeout(() => {
+          closeUploadModal();
+        }, 800);
+      } else {
+        if (uploadModalStatus) uploadModalStatus.textContent = t('error', { message: data.error });
+        setTimeout(() => {
+          uploadModalProgress?.classList.add('hidden');
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      if (uploadModalStatus) uploadModalStatus.textContent = t('uploadFailed');
+      setTimeout(() => {
+        uploadModalProgress?.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Clear input
+    if (uploadModalFileInput) uploadModalFileInput.value = '';
+  }
+
+  // Handle multiple files
+  function handleUploadFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    Array.from(files).forEach(file => uploadDocumentFromModal(file));
+  }
+
+  // Upload modal event listeners
+  uploadModalClose?.addEventListener('click', closeUploadModal);
+  uploadModalCancel?.addEventListener('click', closeUploadModal);
+  uploadModalBackdrop?.addEventListener('click', closeUploadModal);
+
+  // Browse button triggers file input
+  uploadModalBrowseBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    uploadModalFileInput?.click();
+  });
+
+  // Clicking drop zone also triggers file input
+  uploadModalDropZone?.addEventListener('click', () => {
+    uploadModalFileInput?.click();
+  });
+
+  // File input change handler
+  uploadModalFileInput?.addEventListener('change', (e) => {
+    const input = e.target as HTMLInputElement;
+    handleUploadFiles(input.files);
+  });
+
+  // Drag and drop handlers
+  uploadModalDropZone?.addEventListener('dragenter', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadModalDragCounter++;
+    uploadModalDropZone?.classList.add('drag-over');
+  });
+
+  uploadModalDropZone?.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadModalDragCounter--;
+    if (uploadModalDragCounter === 0) {
+      uploadModalDropZone?.classList.remove('drag-over');
+    }
+  });
+
+  uploadModalDropZone?.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
+  uploadModalDropZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadModalDragCounter = 0;
+    uploadModalDropZone?.classList.remove('drag-over');
+
+    const files = e.dataTransfer?.files;
+    handleUploadFiles(files || null);
+  });
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && uploadModal?.classList.contains('visible')) {
+      closeUploadModal();
+    }
+  });
 
   // ============================================================================
   // DOCUMENT VIEWER MODAL

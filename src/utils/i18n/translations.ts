@@ -113,6 +113,13 @@ export const translations = {
     dropFilesHere: 'Drop files here',
     dragDropHint: 'Drag & drop or click Upload',
 
+    // Upload Modal
+    uploadFormula: 'Upload Formula',
+    selectFilesOrDrop: 'Select files or drag & drop',
+    supportedFormats: 'PDF, PNG, JPEG up to 10MB',
+    cancel: 'Cancel',
+    clickToUpload: 'Click to upload',
+
     // Pagination
     showing: 'Showing',
     of: 'of',
@@ -233,6 +240,13 @@ export const translations = {
     error: '错误：{message}',
     dropFilesHere: '拖放文件到此处',
     dragDropHint: '拖放或点击上传',
+
+    // Upload Modal
+    uploadFormula: '上传配方',
+    selectFilesOrDrop: '选择文件或拖放',
+    supportedFormats: 'PDF、PNG、JPEG，最大 10MB',
+    cancel: '取消',
+    clickToUpload: '点击上传',
 
     // Pagination
     showing: '显示',
