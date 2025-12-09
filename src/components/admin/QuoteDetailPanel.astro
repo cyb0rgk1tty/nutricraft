@@ -818,6 +818,11 @@
     populatePanel(event.detail.quote);
   });
 
+  // Listen for close panel event
+  window.addEventListener('closeQuotePanel', () => {
+    closePanel();
+  });
+
   // Listen for updates from table inline edits
   window.addEventListener('quoteUpdatedFromTable', (e: Event) => {
     const event = e as CustomEvent;
@@ -1052,6 +1057,10 @@
         }, 1000);
         // Refresh documents list
         loadDocuments();
+        // Notify table to refresh thumbnail
+        if (currentQuote) {
+          window.dispatchEvent(new CustomEvent('documentsChanged', { detail: { quoteId: currentQuote.id } }));
+        }
       } else {
         if (uploadStatus) uploadStatus.textContent = t('error', { message: data.error });
         setTimeout(() => {
@@ -1208,6 +1217,10 @@
         }
         // Refresh documents list
         loadDocuments();
+        // Notify table to refresh thumbnail
+        if (currentQuote) {
+          window.dispatchEvent(new CustomEvent('documentsChanged', { detail: { quoteId: currentQuote.id } }));
+        }
       } else {
         alert(t('failedToDelete'));
       }

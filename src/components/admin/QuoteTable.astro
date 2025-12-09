@@ -1904,10 +1904,22 @@
     }
   }
 
-  // Open quote detail panel
+  // Open quote detail panel (or close if already showing this quote)
   function openQuotePanel(quoteId: string) {
     const quote = currentQuotes.find(q => q.id === quoteId);
-    if (quote) {
+    if (!quote) return;
+
+    // Check if panel is already open with this quote
+    const panel = document.getElementById('quote-panel');
+    const panelIdEl = document.getElementById('panel-id');
+    const isOpen = panel?.classList.contains('panel-open');
+    const currentPanelQuoteId = panelIdEl?.textContent?.trim();
+
+    if (isOpen && currentPanelQuoteId === quoteId) {
+      // Close the panel if clicking on the same quote
+      window.dispatchEvent(new CustomEvent('closeQuotePanel'));
+    } else {
+      // Open the panel with this quote
       window.dispatchEvent(new CustomEvent('openQuotePanel', { detail: { quote } }));
     }
   }
@@ -2055,5 +2067,47 @@
     // Re-render the table to update dynamic content (dates, status labels, etc.)
     renderTable();
     updatePaginationUI();
+  });
+
+  // Listen for document changes from the detail panel
+  window.addEventListener('documentsChanged', (e: Event) => {
+    const event = e as CustomEvent;
+    const quoteId = event.detail?.quoteId;
+    if (!quoteId) return;
+
+    // Invalidate the cache for this quote
+    documentCache.delete(quoteId);
+    urlCache.forEach((_, key) => {
+      if (key.startsWith(`${quoteId}:`)) {
+        urlCache.delete(key);
+      }
+    });
+
+    // Refresh the thumbnail for this specific quote
+    const thumbnail = document.querySelector(`.formula-thumbnail[data-quote-id="${quoteId}"]`) as HTMLElement;
+    if (thumbnail) {
+      // Show loading state
+      thumbnail.innerHTML = '<div class="formula-loading w-10 h-10 bg-gray-100 rounded-lg animate-pulse"></div>';
+      thumbnail.classList.remove('has-documents');
+
+      // Fetch fresh documents for this quote
+      fetch(`/api/admin/quotes/documents-batch?ids=${quoteId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.documents[quoteId]) {
+            const docs = data.documents[quoteId];
+            setCachedDocuments(quoteId, docs);
+            renderThumbnail(thumbnail, docs, quoteId);
+          } else {
+            setCachedDocuments(quoteId, []);
+            renderThumbnail(thumbnail, [], quoteId);
+          }
+        })
+        .catch(err => {
+          console.error('Failed to refresh thumbnail:', err);
+          setCachedDocuments(quoteId, []);
+          renderThumbnail(thumbnail, [], quoteId);
+        });
+    }
   });
 </script>
