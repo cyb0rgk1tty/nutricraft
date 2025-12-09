@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, Search, FileText, MoreHorizontal, ChevronLeft, ChevronRight, X, Download, Check, Loader2, Upload } from 'lucide-react';
+import { ArrowUpDown, Search, FileText, ChevronLeft, ChevronRight, X, Download, Check, Loader2, Upload } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,14 +30,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
   Tooltip,
   TooltipContent,
@@ -104,7 +96,7 @@ function EditableCell({
 }: {
   value: number | string | undefined | null;
   quoteId: string;
-  field: 'ourCost' | 'orderQuantity';
+  field: 'ourCost' | 'orderQuantity' | 'publicNotes';
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
@@ -197,9 +189,9 @@ function EditableCell({
           onChange={(e) => setInputValue(e.target.value)}
           onBlur={handleSave}
           onKeyDown={handleKeyDown}
-          className="h-7 w-20 text-sm px-2"
+          className={`h-7 text-sm px-2 ${type === 'text' ? 'w-40' : 'w-20'}`}
           step={field === 'ourCost' ? '0.01' : '1'}
-          min="0"
+          min={type === 'number' ? '0' : undefined}
         />
         {isSaving && <Loader2 className="w-3 h-3 animate-spin text-primary" />}
       </div>
@@ -208,11 +200,11 @@ function EditableCell({
 
   return (
     <div
-      className="cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group"
+      className={`cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group ${type === 'text' ? 'max-w-[160px]' : ''}`}
       onClick={handleClick}
-      title="Click to edit"
+      title={type === 'text' && value ? String(value) : 'Click to edit'}
     >
-      <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'}`}>
+      <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'} ${type === 'text' ? 'truncate block' : ''}`}>
         {displayValue}
       </span>
     </div>
@@ -378,40 +370,29 @@ function DocumentLightbox({
 // Document Count Component with Large Preview on Hover + Lightbox on Click
 function DocumentCount({
   documents,
-  quoteId,
-  quoteName
+  onOpenUpload
 }: {
   documents: QuoteDocument[];
-  quoteId: string;
-  quoteName: string;
+  onOpenUpload: () => void;
 }) {
   const { t } = useLanguage();
   const count = documents.length;
   const [hoverIndex, setHoverIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   if (count === 0) {
     return (
-      <>
-        <div
-          className="flex justify-center cursor-pointer group"
-          onClick={(e) => {
-            e.stopPropagation();
-            setUploadModalOpen(true);
-          }}
-          title={t('clickToUpload')}
-        >
-          <Upload className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
-        </div>
-        <DocumentUploadModal
-          isOpen={uploadModalOpen}
-          onClose={() => setUploadModalOpen(false)}
-          quoteId={quoteId}
-          quoteName={quoteName}
-        />
-      </>
+      <div
+        className="flex justify-center cursor-pointer group"
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpenUpload();
+        }}
+        title={t('clickToUpload')}
+      >
+        <Upload className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
+      </div>
     );
   }
 
@@ -556,6 +537,21 @@ export function QuoteTable() {
   ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  // Upload modal state (lifted to table level to prevent row click issues)
+  const [uploadModal, setUploadModal] = useState<{
+    isOpen: boolean;
+    quoteId: string;
+    quoteName: string;
+  }>({ isOpen: false, quoteId: '', quoteName: '' });
+
+  const openUploadModal = (quoteId: string, quoteName: string) => {
+    setUploadModal({ isOpen: true, quoteId, quoteName });
+  };
+
+  const closeUploadModal = () => {
+    setUploadModal({ isOpen: false, quoteId: '', quoteName: '' });
+  };
+
   // Handler for inline editing updates
   const handleInlineUpdate = async (id: string, updates: Partial<Quote>) => {
     await updateMutation.mutateAsync({ id, updates });
@@ -626,8 +622,7 @@ export function QuoteTable() {
         cell: ({ row }) => (
           <DocumentCount
             documents={row.original.documents ?? []}
-            quoteId={row.original.id}
-            quoteName={row.original.name}
+            onOpenUpload={() => openUploadModal(row.original.id, row.original.name)}
           />
         ),
         size: 65,
@@ -654,7 +649,9 @@ export function QuoteTable() {
             onUpdate={handleInlineUpdate}
           />
         ),
-        size: 110,
+        size: 100,
+        minSize: 80,
+        maxSize: 110,
       },
       {
         accessorKey: 'orderQuantity',
@@ -678,49 +675,45 @@ export function QuoteTable() {
             onUpdate={handleInlineUpdate}
           />
         ),
-        size: 90,
+        size: 80,
+        minSize: 60,
+        maxSize: 90,
       },
       {
         accessorKey: 'publicNotes',
         header: () => <span>{t('notes')}</span>,
-        cell: ({ row }) => {
-          const notes = row.getValue('publicNotes') as string | undefined;
-          return (
-            <span
-              className="text-sm text-muted-foreground truncate block max-w-[200px]"
-              title={notes}
-            >
-              {notes || '-'}
-            </span>
-          );
-        },
+        cell: ({ row }) => (
+          <EditableCell
+            value={row.getValue('publicNotes')}
+            quoteId={row.original.id}
+            field="publicNotes"
+            type="text"
+            placeholder={t('addPublicNotesPlaceholder')}
+            onUpdate={handleInlineUpdate}
+          />
+        ),
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
       },
       {
         id: 'actions',
         header: '',
         cell: ({ row }) => (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{t('actions')}</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => selectQuote(row.original.id)}>
-                {t('viewDetails')}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(row.original.id)}
-              >
-                {t('copyId')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 text-gray-400 hover:text-primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              selectQuote(row.original.id);
+            }}
+            title={t('viewDetails')}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
         ),
-        size: 36,
+        size: 40,
       },
     ],
     [selectQuote, handleInlineUpdate, t, getStageLabel]
@@ -748,6 +741,7 @@ export function QuoteTable() {
   const endItem = Math.min(page * limit, totalFiltered);
 
   return (
+    <>
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
       {/* Header with Search */}
       <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-4 bg-gradient-to-r from-white to-primary/5">
@@ -874,6 +868,15 @@ export function QuoteTable() {
         </div>
       )}
     </div>
+
+    {/* Upload Modal (lifted to table level) */}
+    <DocumentUploadModal
+      isOpen={uploadModal.isOpen}
+      onClose={closeUploadModal}
+      quoteId={uploadModal.quoteId}
+      quoteName={uploadModal.quoteName}
+    />
+    </>
   );
 }
 

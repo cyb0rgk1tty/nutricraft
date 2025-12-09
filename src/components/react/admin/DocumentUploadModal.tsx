@@ -124,7 +124,7 @@ export function DocumentUploadModal({
     }
   }, [handleFiles]);
 
-  // Upload files
+  // Upload files (one at a time since API handles single files)
   const handleUpload = async () => {
     const validFiles = selectedFiles.filter((f) => !f.error);
     if (validFiles.length === 0) return;
@@ -133,27 +133,26 @@ export function DocumentUploadModal({
     setUploadProgress(0);
     setUploadError(null);
 
-    const formData = new FormData();
-    formData.append('quoteId', quoteId);
-    validFiles.forEach((f) => formData.append('files', f.file));
+    const totalFiles = validFiles.length;
+    let uploadedCount = 0;
 
     try {
-      // Simulate progress
-      const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => Math.min(prev + 10, 90));
-      }, 100);
+      for (const fileItem of validFiles) {
+        const formData = new FormData();
+        formData.append('file', fileItem.file);
 
-      const response = await fetch(`/api/admin/quotes/${quoteId}/documents`, {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch(`/api/admin/quotes/${quoteId}/documents`, {
+          method: 'POST',
+          body: formData,
+        });
 
-      clearInterval(progressInterval);
-      setUploadProgress(100);
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Failed to upload ${fileItem.file.name}`);
+        }
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Upload failed');
+        uploadedCount++;
+        setUploadProgress(Math.round((uploadedCount / totalFiles) * 100));
       }
 
       setUploadSuccess(true);

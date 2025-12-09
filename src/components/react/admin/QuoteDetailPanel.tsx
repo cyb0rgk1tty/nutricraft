@@ -204,6 +204,7 @@ export function QuoteDetailPanel() {
   const [isSaved, setIsSaved] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Form setup
   const form = useForm<QuoteFormValues>({
@@ -265,39 +266,65 @@ export function QuoteDetailPanel() {
     }
   };
 
-  // File upload handler
+  // Drag and drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileUpload(files);
+    }
+  }, []);
+
+  // File upload handler (uploads files one at a time)
   const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0 || !selectedQuote) return;
 
     setIsUploading(true);
     setUploadProgress(0);
 
-    const formData = new FormData();
-    formData.append('quoteId', selectedQuote.id);
-    Array.from(files).forEach((file) => formData.append('files', file));
+    const fileArray = Array.from(files);
+    const totalFiles = fileArray.length;
+    let uploadedCount = 0;
 
     try {
-      // Simulate progress
-      const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => Math.min(prev + 10, 90));
-      }, 100);
+      for (const file of fileArray) {
+        const formData = new FormData();
+        formData.append('file', file);
 
-      const response = await fetch(`/api/admin/quotes/${selectedQuote.id}/documents`, {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch(`/api/admin/quotes/${selectedQuote.id}/documents`, {
+          method: 'POST',
+          body: formData,
+        });
 
-      clearInterval(progressInterval);
-      setUploadProgress(100);
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Failed to upload ${file.name}`);
+        }
 
-      if (!response.ok) throw new Error('Upload failed');
+        uploadedCount++;
+        setUploadProgress(Math.round((uploadedCount / totalFiles) * 100));
+      }
 
-      toast.success('Documents uploaded successfully');
+      toast.success(t('uploadComplete'));
 
       // Refresh quotes to get updated document list
       queryClient.invalidateQueries({ queryKey: quoteKeys.lists() });
     } catch (error) {
-      toast.error('Failed to upload documents');
+      toast.error(error instanceof Error ? error.message : t('uploadFailed'));
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
@@ -498,25 +525,47 @@ export function QuoteDetailPanel() {
                     </div>
                   )}
 
-                  {/* Documents Grid */}
-                  {selectedQuote.documents && selectedQuote.documents.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-3">
-                      {selectedQuote.documents.map((doc) => (
-                        <DocumentCard
-                          key={doc.id}
-                          document={doc}
-                          onDelete={handleDeleteDocument}
-                          onView={(d) => window.open(d.filePath, '_blank')}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
-                      <FileText className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm">{t('noDocumentsUploaded')}</p>
-                      <p className="text-xs">{t('dragDropHint')}</p>
-                    </div>
-                  )}
+                  {/* Drop Zone */}
+                  <div
+                    className={`relative rounded-lg transition-all ${
+                      isDragging
+                        ? 'ring-2 ring-primary ring-offset-2 bg-primary/5'
+                        : ''
+                    }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                  >
+                    {/* Drag overlay */}
+                    {isDragging && (
+                      <div className="absolute inset-0 bg-primary/10 rounded-lg flex items-center justify-center z-10 border-2 border-dashed border-primary">
+                        <div className="text-center">
+                          <Upload className="w-8 h-8 text-primary mx-auto mb-2 animate-bounce" />
+                          <p className="text-sm font-medium text-primary">{t('dropFilesHere')}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Documents Grid */}
+                    {selectedQuote.documents && selectedQuote.documents.length > 0 ? (
+                      <div className="grid grid-cols-2 gap-3">
+                        {selectedQuote.documents.map((doc) => (
+                          <DocumentCard
+                            key={doc.id}
+                            document={doc}
+                            onDelete={handleDeleteDocument}
+                            onView={(d) => window.open(d.filePath, '_blank')}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 hover:bg-gray-50 transition-colors">
+                        <FileText className="w-8 h-8 mx-auto mb-2" />
+                        <p className="text-sm">{t('noDocumentsUploaded')}</p>
+                        <p className="text-xs">{t('dragDropHint')}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </ScrollArea>

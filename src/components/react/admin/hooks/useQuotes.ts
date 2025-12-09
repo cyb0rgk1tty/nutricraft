@@ -37,10 +37,10 @@ async function fetchQuotes(options: FetchQuotesOptions): Promise<PaginatedQuotes
 }
 
 async function updateQuote(id: string, updates: Partial<Quote>): Promise<UpdateQuoteResponse> {
-  const response = await fetch('/api/admin/quotes', {
-    method: 'PUT',
+  const response = await fetch(`/api/admin/quotes/${id}`, {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id, ...updates }),
+    body: JSON.stringify(updates),
   });
 
   if (!response.ok) {
