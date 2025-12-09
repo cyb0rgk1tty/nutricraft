@@ -797,7 +797,7 @@ export function QuoteTable() {
                     <TableHead
                       key={header.id}
                       style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
-                      className="text-sm font-semibold text-gray-500 uppercase tracking-wider"
+                      className="text-sm font-semibold text-gray-500 tracking-wide"
                     >
                       {header.isPlaceholder
                         ? null
