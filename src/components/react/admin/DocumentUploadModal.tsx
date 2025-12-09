@@ -247,7 +247,7 @@ export function DocumentUploadModal({
               <>
                 <Upload className="w-12 h-12 text-gray-400 mb-3" />
                 <p className="text-sm font-medium text-gray-700">{t('selectFilesOrDrop')}</p>
-                <p className="text-xs text-gray-500 mt-1">{t('supportedFormats')}</p>
+                <p className="text-sm text-gray-500 mt-1">{t('supportedFormats')}</p>
               </>
             )}
           </div>
@@ -270,7 +270,7 @@ export function DocumentUploadModal({
                     <p className="truncate font-medium" title={fileItem.file.name}>
                       {fileItem.file.name}
                     </p>
-                    <p className={cn('text-xs', fileItem.error ? 'text-red-500' : 'text-gray-400')}>
+                    <p className={cn('text-sm', fileItem.error ? 'text-red-500' : 'text-gray-400')}>
                       {fileItem.error || formatFileSize(fileItem.file.size)}
                     </p>
                   </div>
@@ -297,7 +297,7 @@ export function DocumentUploadModal({
         {isUploading && (
           <div className="space-y-2">
             <Progress value={uploadProgress} className="h-2" />
-            <p className="text-xs text-center text-gray-500">{t('uploading')}</p>
+            <p className="text-sm text-center text-gray-500">{t('uploading')}</p>
           </div>
         )}
 

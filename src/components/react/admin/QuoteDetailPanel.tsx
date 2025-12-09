@@ -116,10 +116,10 @@ function DocumentCard({
         </div>
 
         {/* File name */}
-        <p className="text-xs text-gray-700 truncate" title={document.fileName}>
+        <p className="text-sm text-gray-700 truncate" title={document.fileName}>
           {document.fileName}
         </p>
-        <p className="text-xs text-gray-400">
+        <p className="text-sm text-gray-400">
           {(document.fileSize / 1024).toFixed(1)} KB
         </p>
       </div>
@@ -174,7 +174,7 @@ function DocumentCard({
 function SaveIndicator({ isSaving, isSaved, savingText, savedText }: { isSaving: boolean; isSaved: boolean; savingText: string; savedText: string }) {
   if (isSaving) {
     return (
-      <div className="flex items-center gap-1 text-xs text-gray-500">
+      <div className="flex items-center gap-1 text-sm text-gray-500">
         <Loader2 className="h-3 w-3 animate-spin" />
         <span>{savingText}</span>
       </div>
@@ -183,7 +183,7 @@ function SaveIndicator({ isSaving, isSaved, savingText, savedText }: { isSaving:
 
   if (isSaved) {
     return (
-      <div className="flex items-center gap-1 text-xs text-green-600">
+      <div className="flex items-center gap-1 text-sm text-green-600">
         <Check className="h-3 w-3" />
         <span>{savedText}</span>
       </div>
@@ -378,7 +378,7 @@ export function QuoteDetailPanel() {
                 <SheetTitle className="text-lg font-semibold text-white">
                   {selectedQuote.name}
                 </SheetTitle>
-                <SheetDescription className="text-xs text-white/70 font-mono">
+                <SheetDescription className="text-sm text-white/70 font-mono">
                   {selectedQuote.id}
                 </SheetDescription>
               </SheetHeader>
@@ -389,7 +389,7 @@ export function QuoteDetailPanel() {
               <div className="p-4 space-y-6">
                 {/* Status Section */}
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                     {t('stage')}
                   </h3>
                   <div className="grid grid-cols-2 sm:flex gap-2 sm:flex-wrap">
@@ -410,18 +410,18 @@ export function QuoteDetailPanel() {
 
                 {/* Product Details */}
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                     {t('productDetails')}
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500 text-xs">{t('created')}</span>
+                      <span className="text-gray-500 text-sm">{t('created')}</span>
                       <p className="font-medium text-gray-900">
                         {formatDate(selectedQuote.createdAt)}
                       </p>
                     </div>
                     <div>
-                      <span className="text-gray-500 text-xs">{t('updated')}</span>
+                      <span className="text-gray-500 text-sm">{t('updated')}</span>
                       <p className="font-medium text-gray-900">
                         {formatDate(selectedQuote.updatedAt)}
                       </p>
@@ -434,7 +434,7 @@ export function QuoteDetailPanel() {
                 {/* Pricing & Quantity */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                       {t('pricingQuantity')}
                     </h3>
                     <SaveIndicator isSaving={isSaving} isSaved={isSaved} savingText={t('saving')} savedText={t('saved')} />
@@ -482,7 +482,7 @@ export function QuoteDetailPanel() {
 
                 {/* Public Notes */}
                 <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                     {t('publicNotes')}
                   </h3>
                   <Textarea
@@ -499,7 +499,7 @@ export function QuoteDetailPanel() {
                 {/* Formula Documents */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                       {t('formulaDocuments')}
                     </h3>
                     <Label htmlFor="file-upload" className="cursor-pointer">
@@ -511,7 +511,7 @@ export function QuoteDetailPanel() {
                         multiple
                         onChange={(e) => handleFileUpload(e.target.files)}
                       />
-                      <span className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors inline-flex items-center gap-1">
+                      <span className="px-3 py-1.5 text-sm font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors inline-flex items-center gap-1">
                         <Upload className="w-3.5 h-3.5" />
                         <span>{t('upload')}</span>
                       </span>
@@ -562,7 +562,7 @@ export function QuoteDetailPanel() {
                       <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-primary/50 hover:bg-gray-50 transition-colors">
                         <FileText className="w-8 h-8 mx-auto mb-2" />
                         <p className="text-sm">{t('noDocumentsUploaded')}</p>
-                        <p className="text-xs">{t('dragDropHint')}</p>
+                        <p className="text-sm">{t('dragDropHint')}</p>
                       </div>
                     )}
                   </div>

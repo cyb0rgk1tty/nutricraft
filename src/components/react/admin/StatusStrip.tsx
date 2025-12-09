@@ -33,18 +33,18 @@ export function StatusStrip({ className }: StatusStripProps) {
       {/* All Status Button */}
       <Button
         variant={filter.status === null ? 'default' : 'outline'}
-        size="sm"
+        size="default"
         onClick={() => handleStatusClick(null)}
         className={cn(
           'gap-2',
-          filter.status === null && 'bg-primary hover:bg-primary/90'
+          filter.status === null && 'bg-primary-light hover:bg-primary-light/90 text-gray-800'
         )}
       >
         {t('all')}
         <Badge
           variant="secondary"
           className={cn(
-            'ml-1 h-5 px-1.5 text-xs',
+            'ml-1 h-5 px-1.5 text-sm',
             filter.status === null ? 'bg-white/20 text-white' : 'bg-gray-100'
           )}
         >
@@ -62,11 +62,11 @@ export function StatusStrip({ className }: StatusStripProps) {
           <Button
             key={status}
             variant={isActive ? 'default' : 'outline'}
-            size="sm"
+            size="default"
             onClick={() => handleStatusClick(status)}
             className={cn(
               'gap-2',
-              isActive && 'bg-primary hover:bg-primary/90'
+              isActive && 'bg-primary-light hover:bg-primary-light/90 text-gray-800'
             )}
           >
             <span
@@ -82,7 +82,7 @@ export function StatusStrip({ className }: StatusStripProps) {
             <Badge
               variant="secondary"
               className={cn(
-                'ml-1 h-5 px-1.5 text-xs',
+                'ml-1 h-5 px-1.5 text-sm',
                 isActive ? 'bg-white/20 text-white' : 'bg-gray-100'
               )}
             >

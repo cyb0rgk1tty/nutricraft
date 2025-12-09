@@ -418,7 +418,7 @@ function DocumentCount({
             onClick={handleClick}
           >
             <FileText className="w-4 h-4 text-primary" />
-            <span className="text-xs font-medium text-primary">{count}</span>
+            <span className="text-sm font-medium text-primary">{count}</span>
           </div>
         </HoverCardTrigger>
         <HoverCardContent
@@ -458,7 +458,7 @@ function DocumentCount({
               <p className="text-sm text-gray-700 truncate max-w-[500px]" title={currentDoc.fileName}>
                 {currentDoc.fileName}
               </p>
-              <p className="text-xs text-gray-400 mt-1">Click to view full size</p>
+              <p className="text-sm text-gray-400 mt-1">Click to view full size</p>
             </div>
 
             {/* Navigation dots if multiple documents */}
@@ -797,7 +797,7 @@ export function QuoteTable() {
                     <TableHead
                       key={header.id}
                       style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
-                      className="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                      className="text-sm font-semibold text-gray-500 uppercase tracking-wider"
                     >
                       {header.isPlaceholder
                         ? null
