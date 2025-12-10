@@ -262,7 +262,7 @@ function DocumentLightbox({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        className="max-w-[95vw] max-h-[95vh] w-auto p-0 bg-black/95 border-none"
+        className="max-w-[95vw] max-h-[95vh] w-auto p-0 bg-black/95 border-none flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <DialogTitle className="sr-only">Document Preview</DialogTitle>
@@ -287,7 +287,7 @@ function DocumentLightbox({
         </a>
 
         {/* Main content area */}
-        <div className="flex items-center justify-center min-h-[60vh] p-8">
+        <div className="flex-1 flex items-center justify-center min-h-[50vh] p-8 pb-4">
           {/* Previous button */}
           {count > 1 && currentIndex > 0 && (
             <button
@@ -304,7 +304,7 @@ function DocumentLightbox({
               <img
                 src={currentDoc.filePath}
                 alt={currentDoc.fileName}
-                className="max-w-[85vw] max-h-[80vh] object-contain rounded-lg"
+                className="max-w-[85vw] max-h-[70vh] object-contain rounded-lg"
               />
             ) : isPdf ? (
               <a
@@ -337,7 +337,7 @@ function DocumentLightbox({
         </div>
 
         {/* Footer with filename and pagination */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+        <div className="flex-shrink-0 bg-black/80 p-4 pb-6">
           <div className="text-center">
             <p className="text-white font-medium truncate max-w-[600px] mx-auto">
               {currentDoc.fileName}
