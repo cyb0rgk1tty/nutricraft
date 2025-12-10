@@ -200,11 +200,11 @@ function EditableCell({
 
   return (
     <div
-      className={`cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group ${type === 'text' ? 'max-w-[160px]' : ''}`}
+      className="cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group"
       onClick={handleClick}
       title={type === 'text' && value ? String(value) : 'Click to edit'}
     >
-      <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'} ${type === 'text' ? 'truncate block' : ''}`}>
+      <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'}`}>
         {displayValue}
       </span>
     </div>
