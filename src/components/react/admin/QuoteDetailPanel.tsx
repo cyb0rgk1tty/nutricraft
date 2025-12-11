@@ -142,7 +142,7 @@ function DocumentCard({
                 <Download className="h-3 w-3" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Download</TooltipContent>
+            <TooltipContent>{t('download')}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
 

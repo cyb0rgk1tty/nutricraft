@@ -98,7 +98,10 @@ export const translations = {
     // Document Actions
     back: 'Back',
     view: 'View',
+    download: 'Download',
     delete: 'Delete',
+    clickToOpenPdf: 'Click to open PDF',
+    clickToViewFullSize: 'Click to view full size',
     failedToDelete: 'Failed to delete document',
     failedToLoadDoc: 'Failed to load document',
     confirmDelete: 'Are you sure you want to delete "{filename}"?',
@@ -235,7 +238,10 @@ export const translations = {
     // Document Actions
     back: '返回',
     view: '查看',
+    download: '下载',
     delete: '删除',
+    clickToOpenPdf: '点击打开PDF',
+    clickToViewFullSize: '点击查看大图',
     failedToDelete: '删除文档失败',
     failedToLoadDoc: '加载文档失败',
     confirmDelete: '确定要删除 "{filename}" 吗？',

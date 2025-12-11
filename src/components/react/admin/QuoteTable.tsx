@@ -315,7 +315,7 @@ function DocumentLightbox({
               >
                 <FileText className="w-20 h-20 mb-4" />
                 <p className="text-lg font-medium truncate max-w-[350px] px-4">{currentDoc.fileName}</p>
-                <p className="text-sm text-white/70 mt-2">Click to open PDF</p>
+                <p className="text-sm text-white/70 mt-2">{t('clickToOpenPdf')}</p>
               </a>
             ) : (
               <div className="flex flex-col items-center justify-center w-[300px] h-[200px]">
@@ -443,7 +443,7 @@ function DocumentCount({
                 <div className="w-[400px] h-[280px] flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100 text-red-600 rounded-lg">
                   <FileText className="w-16 h-16 mb-3" />
                   <p className="text-base font-medium truncate max-w-[350px] px-4">{currentDoc.fileName}</p>
-                  <p className="text-sm text-red-400 mt-2">Click to open PDF</p>
+                  <p className="text-sm text-red-400 mt-2">{t('clickToOpenPdf')}</p>
                 </div>
               ) : (
                 <div className="w-[300px] h-[200px] flex flex-col items-center justify-center">
@@ -458,7 +458,7 @@ function DocumentCount({
               <p className="text-sm text-gray-700 truncate max-w-[500px]" title={currentDoc.fileName}>
                 {currentDoc.fileName}
               </p>
-              <p className="text-sm text-gray-400 mt-1">Click to view full size</p>
+              <p className="text-sm text-gray-400 mt-1">{t('clickToViewFullSize')}</p>
             </div>
 
             {/* Navigation dots if multiple documents */}
