@@ -48,14 +48,10 @@ async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
 
   // Generate signed URLs for all documents in parallel
   const storagePaths = documents.map(d => d.storage_path);
-  console.log('[Signed URLs] Generating for paths:', storagePaths);
 
   const { data: signedUrls, error: signedUrlError } = await supabase.storage
     .from(STORAGE_BUCKET)
     .createSignedUrls(storagePaths, SIGNED_URL_EXPIRY);
-
-  console.log('[Signed URLs] Bulk error:', signedUrlError);
-  console.log('[Signed URLs] Response data:', JSON.stringify(signedUrls, null, 2));
 
   if (signedUrlError) {
     console.error('Error generating signed URLs:', signedUrlError);
@@ -69,12 +65,8 @@ async function enrichQuotesWithDocuments(quotes: Quote[]): Promise<Quote[]> {
       console.error(`[Signed URLs] Error for ${storagePaths[index]}:`, item.error);
     } else if (item.signedUrl) {
       urlMap.set(storagePaths[index], item.signedUrl);
-    } else {
-      console.warn(`[Signed URLs] No URL for ${storagePaths[index]}, item:`, item);
     }
   });
-
-  console.log(`[Signed URLs] Generated ${urlMap.size}/${storagePaths.length} signed URLs`);
 
   // Map Supabase documents to QuoteDocument format and attach to quotes
   return quotes.map(quote => ({

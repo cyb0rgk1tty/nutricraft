@@ -146,12 +146,7 @@ export async function cleanupOldLogs(daysToKeep: number = 90): Promise<number> {
       return 0;
     }
 
-    const deletedCount = data?.length || 0;
-    if (deletedCount > 0) {
-      console.log(`Audit log cleanup: deleted ${deletedCount} logs older than ${daysToKeep} days`);
-    }
-
-    return deletedCount;
+    return data?.length || 0;
   } catch (error) {
     console.error('Audit log cleanup error:', error);
     return 0;

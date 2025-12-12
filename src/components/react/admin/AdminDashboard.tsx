@@ -25,7 +25,6 @@ function DashboardContent({ className, isAuthenticated = false }: AdminDashboard
 
   // Sync authentication state to store so queries can check it
   useEffect(() => {
-    console.log('[AdminDashboard] Setting auth state:', isAuthenticated);
     setAuthenticated(isAuthenticated);
   }, [isAuthenticated, setAuthenticated]);
 
@@ -41,11 +40,8 @@ function DashboardContent({ className, isAuthenticated = false }: AdminDashboard
 
   // Don't render anything until authenticated
   if (!isAuthenticated) {
-    console.log('[AdminDashboard] Not authenticated, rendering null');
     return null;
   }
-
-  console.log('[AdminDashboard] Authenticated, rendering dashboard');
 
   return (
     <div className={className}>

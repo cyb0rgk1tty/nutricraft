@@ -186,7 +186,6 @@ export async function findCompanyByName(companyName: string): Promise<string | n
     );
 
     if (exactMatch) {
-      console.log(`Twenty CRM: Found existing company ${exactMatch.node.id} for "${companyName}"`);
       return exactMatch.node.id;
     }
 

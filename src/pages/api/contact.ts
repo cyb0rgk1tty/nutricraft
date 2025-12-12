@@ -88,7 +88,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Honeypot spam check - if filled, it's a bot
     if (honeypot) {
-      console.log('Spam detected: Honeypot field filled');
       // Return success to not alert the bot
       return new Response(JSON.stringify({
         success: true,
@@ -218,7 +217,6 @@ ${message}
       const personResult = await createPersonInTwentyCrm(formData, companyId);
       if (personResult.success && personResult.personId) {
         personId = personResult.personId;
-        console.log('Twenty CRM: Person created successfully:', personId);
       } else {
         console.error('Twenty CRM: Failed to create person:', personResult.error);
       }
@@ -226,9 +224,7 @@ ${message}
       // Step 3: Create Opportunity (linked to person and company)
       if (personId) {
         const opportunityResult = await createOpportunityInTwentyCrm(formData, personId, companyId);
-        if (opportunityResult.success) {
-          console.log('Twenty CRM: Opportunity created successfully:', opportunityResult.opportunityId);
-        } else {
+        if (!opportunityResult.success) {
           console.error('Twenty CRM: Failed to create opportunity:', opportunityResult.error);
         }
       } else {
