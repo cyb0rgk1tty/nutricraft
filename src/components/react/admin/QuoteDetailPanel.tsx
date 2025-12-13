@@ -93,6 +93,7 @@ function DocumentCard({
   onDelete: (id: string) => void;
   onView: (document: QuoteDocument) => void;
 }) {
+  const { t } = useLanguage();
   const isImage = document.fileType.startsWith('image/');
   const isPDF = document.fileType === 'application/pdf';
 
