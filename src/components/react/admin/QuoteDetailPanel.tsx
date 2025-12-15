@@ -33,8 +33,8 @@ import {
 } from '@/components/ui/tooltip';
 import { toast } from 'sonner';
 
-import type { Quote, QuoteStatus, QuoteDocument } from './types';
-import { STATUS_CONFIG } from './types';
+import type { Quote, QuoteStatus, QuoteDocument, QuotePriority } from './types';
+import { STATUS_CONFIG, PRIORITY_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useUpdateQuoteMutation, quoteKeys } from './hooks/useQuotes';
 import { useLanguage } from './hooks/useLanguage';
@@ -267,6 +267,23 @@ export function QuoteDetailPanel() {
     }
   };
 
+  // Priority toggle handler
+  const handlePriorityToggle = async () => {
+    if (!selectedQuote) return;
+
+    const newPriority = selectedQuote.priority === 'urgent' ? null : 'urgent';
+
+    try {
+      await updateMutation.mutateAsync({
+        id: selectedQuote.id,
+        updates: { priority: newPriority },
+      });
+      toast.success(newPriority === 'urgent' ? t('markAsUrgent') : t('clearPriority'));
+    } catch (error) {
+      toast.error('Failed to update priority');
+    }
+  };
+
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -405,6 +422,24 @@ export function QuoteDetailPanel() {
                       />
                     ))}
                   </div>
+                </div>
+
+                <Separator />
+
+                {/* Priority Section */}
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    {t('priority')}
+                  </h3>
+                  <Button
+                    type="button"
+                    variant={selectedQuote.priority === 'urgent' ? 'destructive' : 'outline'}
+                    size="sm"
+                    onClick={handlePriorityToggle}
+                    disabled={updateMutation.isPending}
+                  >
+                    {selectedQuote.priority === 'urgent' ? t('clearPriority') : t('markAsUrgent')}
+                  </Button>
                 </div>
 
                 <Separator />

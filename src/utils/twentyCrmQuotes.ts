@@ -26,6 +26,7 @@ export const CRM_CONFIG = {
     id: 'id',
     name: 'name',
     status: 'stages',  // Note: Twenty CRM uses "stages" (plural)
+    priority: 'priority',  // Select type in CRM (URGENT, NORMAL)
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     ourCost: 'ourCost',  // Number type in CRM
@@ -61,6 +62,7 @@ export interface Quote {
   id: string;
   name: string;
   status: string;
+  priority?: 'urgent' | 'normal' | null;  // Priority level (Select in CRM)
   price?: number;
   notes?: string;
   createdAt?: string;
@@ -216,6 +218,11 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
     crmData[fieldMappings.publicNotes] = quote.publicNotes;
   }
 
+  if (quote.priority !== undefined) {
+    // Send null to clear, or UPPERCASE for values (Twenty CRM expects URGENT, NORMAL)
+    crmData[fieldMappings.priority] = quote.priority ? quote.priority.toUpperCase() : null;
+  }
+
   return crmData;
 }
 
@@ -338,6 +345,7 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               id
               name
               stages
+              priority
               createdAt
               updatedAt
               ourCost
@@ -386,6 +394,7 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         id: product.id,
         name: product.name || 'Unnamed Product',
         status: normalizedStage,
+        priority: product.priority?.toLowerCase() || null,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         crmId: product.id,
@@ -488,6 +497,7 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               id
               name
               stages
+              priority
               createdAt
               updatedAt
               ourCost
@@ -545,6 +555,7 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         id: product.id,
         name: product.name || 'Unnamed Product',
         status: normalizedStage,
+        priority: product.priority?.toLowerCase() || null,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         crmId: product.id,
@@ -646,6 +657,7 @@ export async function updateQuoteInCRM(
           id
           name
           stages
+          priority
           updatedAt
           ourCost
           orderQuantity
@@ -685,6 +697,7 @@ export async function updateQuoteInCRM(
         id: updatedProduct.id,
         name: updatedProduct.name || '',
         status: stageValue?.toLowerCase() || 'new',
+        priority: updatedProduct.priority?.toLowerCase() || null,
         updatedAt: updatedProduct.updatedAt,
       },
     };

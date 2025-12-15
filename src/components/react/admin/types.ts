@@ -5,6 +5,9 @@
 // Quote status stages
 export type QuoteStatus = 'planning' | 'order_samples' | 'client_review_samples' | 'full_batch_order';
 
+// Quote priority levels
+export type QuotePriority = 'urgent' | 'normal' | null;
+
 // Quote document
 export interface QuoteDocument {
   id: string;
@@ -22,6 +25,7 @@ export interface Quote {
   id: string;
   name: string;
   status: QuoteStatus;
+  priority?: QuotePriority;
   price?: number;
   notes?: string;
   createdAt?: string;
@@ -95,6 +99,15 @@ export const STATUS_CONFIG: Record<QuoteStatus, { label: string; color: string; 
     bgColor: 'bg-green-100',
   },
 };
+
+// Priority configuration
+export const PRIORITY_CONFIG = {
+  urgent: {
+    label: 'Urgent',
+    color: 'text-red-700',
+    bgColor: 'bg-red-100',
+  },
+} as const;
 
 // Sort options
 export type SortField = 'createdAt' | 'name' | 'ourCost' | 'orderQuantity' | 'status';

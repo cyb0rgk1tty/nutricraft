@@ -47,8 +47,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-import type { Quote, QuoteStatus, QuoteDocument } from './types';
-import { STATUS_CONFIG } from './types';
+import type { Quote, QuoteStatus, QuoteDocument, QuotePriority } from './types';
+import { STATUS_CONFIG, PRIORITY_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useQuotesQuery, useUpdateQuoteMutation } from './hooks/useQuotes';
 import { useLanguage } from './hooks/useLanguage';
@@ -80,6 +80,19 @@ function StatusBadge({ status, getStageLabel }: { status: QuoteStatus; getStageL
   return (
     <Badge className={`${config.bgColor} ${config.color} border-0 font-medium`}>
       {getStageLabel(status)}
+    </Badge>
+  );
+}
+
+// Priority Badge Component - only shows for urgent items
+function PriorityBadge({ priority }: { priority?: QuotePriority }) {
+  if (!priority || priority !== 'urgent') return null;
+
+  const config = PRIORITY_CONFIG.urgent;
+
+  return (
+    <Badge className={`${config.bgColor} ${config.color} border-0 font-medium text-xs ml-2`}>
+      {config.label}
     </Badge>
   );
 }
@@ -579,6 +592,32 @@ export function QuoteTable() {
           </span>
         ),
         size: 90,
+      },
+      {
+        accessorKey: 'priority',
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-full justify-center"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            {t('priority')}
+            <ArrowUpDown className="ml-1 h-3 w-3" />
+          </Button>
+        ),
+        cell: ({ row }) => (
+          <div className="flex justify-center -mx-2">
+            <PriorityBadge priority={row.original.priority} />
+          </div>
+        ),
+        sortingFn: (rowA, rowB) => {
+          // Sort urgent items first (urgent = 1, others = 0)
+          const priorityA = rowA.original.priority === 'urgent' ? 1 : 0;
+          const priorityB = rowB.original.priority === 'urgent' ? 1 : 0;
+          return priorityA - priorityB;
+        },
+        size: 80,
       },
       {
         accessorKey: 'name',

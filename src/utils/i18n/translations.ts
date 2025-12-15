@@ -52,6 +52,12 @@ export const translations = {
     fullBatchOrder: 'Full Batch Order',
     unknown: 'Unknown',
 
+    // Priority Labels
+    priority: 'Priority',
+    priorityUrgent: 'Urgent',
+    markAsUrgent: 'Mark as Urgent',
+    clearPriority: 'Clear Priority',
+
     // Table Content
     viewDetails: 'View details',
     unnamed: 'Unnamed',
@@ -191,6 +197,12 @@ export const translations = {
     sampleDelivered: '样品已交付',
     fullBatchOrder: '批量订单',
     unknown: '未知',
+
+    // Priority Labels
+    priority: '优先级',
+    priorityUrgent: '紧急',
+    markAsUrgent: '标记为紧急',
+    clearPriority: '取消紧急',
 
     // Table Content
     viewDetails: '查看详情',
