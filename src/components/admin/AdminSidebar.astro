@@ -11,8 +11,6 @@
  * - Logout functionality
  */
 
-import LanguageSelector from './LanguageSelector.astro';
-
 interface Props {
   currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs';
   isAdmin?: boolean;
@@ -151,11 +149,6 @@ const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
         </div>
       </div>
     )}
-
-    <!-- Language Selector -->
-    <div class="px-2">
-      <LanguageSelector />
-    </div>
 
     <!-- Logout button -->
     <button
