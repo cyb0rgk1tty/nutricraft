@@ -1,8 +1,7 @@
 /**
  * API Endpoint: GET /api/admin/dashboard
  * Returns combined data for the admin dashboard:
- * - Opportunities by week (from Twenty CRM)
- * - Status counts
+ * - Opportunities by day (from Twenty CRM)
  * - Recent activity (from audit logs)
  * - Announcement status
  *
@@ -10,23 +9,21 @@
  */
 
 import type { APIRoute } from 'astro';
-import { fetchQuotesFromCRM } from '../../../utils/twentyCrmQuotes';
+import { fetchOpportunities } from '../../../utils/twentyCrm';
 import { verifySession } from '../../../utils/adminAuth';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
 
 // Types for dashboard response
-interface WeeklyData {
-  week: string; // ISO week format: '2025-W51'
-  weekLabel: string; // Display label: 'Dec 16'
+interface DailyData {
+  date: string; // ISO date format: '2025-12-16'
+  dateLabel: string; // Display label: 'Dec 16'
   count: number;
-  stages: Record<string, number>;
 }
 
 interface DashboardResponse {
   success: boolean;
-  opportunitiesByWeek: WeeklyData[];
-  statusCounts: Record<string, number>;
-  totalQuotes: number;
+  opportunitiesByDay: DailyData[];
+  totalOpportunities: number;
   recentActivity: AuditLog[];
   announcementActive: boolean;
   error?: string;
@@ -42,68 +39,37 @@ interface AuditLog {
 }
 
 /**
- * Get ISO week string from a date (e.g., '2025-W51')
+ * Format a date string (YYYY-MM-DD) as 'Mon DD' (e.g., 'Dec 16')
  */
-function getISOWeek(date: Date): string {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNum = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
-  return `${d.getUTCFullYear()}-W${weekNum.toString().padStart(2, '0')}`;
-}
-
-/**
- * Get the Monday of a given ISO week
- */
-function getWeekMonday(isoWeek: string): Date {
-  const [year, weekPart] = isoWeek.split('-W');
-  const weekNum = parseInt(weekPart, 10);
-
-  // January 4th is always in week 1 (ISO 8601)
-  const jan4 = new Date(Date.UTC(parseInt(year, 10), 0, 4));
-  const dayOfWeek = jan4.getUTCDay() || 7;
-  const weekStart = new Date(jan4);
-  weekStart.setUTCDate(jan4.getUTCDate() - dayOfWeek + 1 + (weekNum - 1) * 7);
-
-  return weekStart;
-}
-
-/**
- * Format a date as 'Mon DD' (e.g., 'Dec 16')
- */
-function formatWeekLabel(date: Date): string {
+function formatDateLabel(dateStr: string): string {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const date = new Date(dateStr + 'T00:00:00Z');
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}`;
 }
 
 /**
- * Group quotes by ISO week
+ * Group opportunities by day
+ * @param opportunities - Array of opportunities with createdAt timestamps
+ * @param numDays - Number of days to include (default 14, max 90)
  */
-function groupByWeek(quotes: Array<{ createdAt?: string; status: string }>): WeeklyData[] {
-  const weeks = new Map<string, { count: number; stages: Record<string, number> }>();
+function groupByDay(opportunities: Array<{ createdAt: string }>, numDays: number = 14): DailyData[] {
+  const dayMap = new Map<string, number>();
 
-  for (const quote of quotes) {
-    if (!quote.createdAt) continue;
-
-    const weekKey = getISOWeek(new Date(quote.createdAt));
-    const existing = weeks.get(weekKey) || { count: 0, stages: {} };
-    existing.count++;
-    existing.stages[quote.status] = (existing.stages[quote.status] || 0) + 1;
-    weeks.set(weekKey, existing);
+  for (const opp of opportunities) {
+    if (!opp.createdAt) continue;
+    const dateKey = opp.createdAt.split('T')[0]; // Extract YYYY-MM-DD
+    dayMap.set(dateKey, (dayMap.get(dateKey) || 0) + 1);
   }
 
-  // Convert to array and sort by week
-  const result = Array.from(weeks.entries())
-    .map(([week, data]) => ({
-      week,
-      weekLabel: formatWeekLabel(getWeekMonday(week)),
-      ...data,
+  // Convert to array, sort by date, return last N days
+  return Array.from(dayMap.entries())
+    .map(([date, count]) => ({
+      date,
+      dateLabel: formatDateLabel(date),
+      count,
     }))
-    .sort((a, b) => a.week.localeCompare(b.week));
-
-  // Return last 12 weeks (or all if less)
-  return result.slice(-12);
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(-numDays);
 }
 
 /**
@@ -165,24 +131,27 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
+    // Parse days query parameter (default 14, min 7, max 90)
+    const url = new URL(request.url);
+    const daysParam = url.searchParams.get('days');
+    const days = Math.min(Math.max(parseInt(daysParam || '14', 10), 7), 90);
+
     // Fetch all data in parallel
-    const [quotesResult, recentActivity, announcementActive] = await Promise.all([
-      fetchQuotesFromCRM(),
+    const [opportunitiesResult, recentActivity, announcementActive] = await Promise.all([
+      fetchOpportunities(),
       fetchRecentActivity(10),
       checkAnnouncementStatus(),
     ]);
 
-    // Process quotes data
-    const quotes = quotesResult.success ? quotesResult.quotes : [];
-    const opportunitiesByWeek = groupByWeek(quotes);
-    const statusCounts = quotesResult.statusCounts || {};
-    const totalQuotes = quotes.length;
+    // Process opportunities data
+    const opportunities = opportunitiesResult.success ? opportunitiesResult.opportunities : [];
+    const opportunitiesByDay = groupByDay(opportunities, days);
+    const totalOpportunities = opportunities.length;
 
     const response: DashboardResponse = {
       success: true,
-      opportunitiesByWeek,
-      statusCounts,
-      totalQuotes,
+      opportunitiesByDay,
+      totalOpportunities,
       recentActivity,
       announcementActive,
     };
@@ -201,9 +170,8 @@ export const GET: APIRoute = async ({ request }) => {
       JSON.stringify({
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
-        opportunitiesByWeek: [],
-        statusCounts: {},
-        totalQuotes: 0,
+        opportunitiesByDay: [],
+        totalOpportunities: 0,
         recentActivity: [],
         announcementActive: false,
       }),

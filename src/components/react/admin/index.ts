@@ -26,4 +26,4 @@ export { useQuoteStore, useSelectedQuote, useFilteredQuotes, useQuoteById } from
 // Types
 export type { Quote, QuoteStatus, QuoteDocument, FetchQuotesOptions, FilterConfig, SortConfig } from './types';
 export { STATUS_CONFIG } from './types';
-export type { WeeklyData, AuditLog, DashboardData } from './hooks/useDashboardData';
+export type { DailyData, AuditLog, DashboardData } from './hooks/useDashboardData';

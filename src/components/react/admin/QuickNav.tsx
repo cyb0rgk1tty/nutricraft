@@ -6,8 +6,7 @@
 import { Skeleton } from '../../ui/skeleton';
 
 interface QuickNavProps {
-  statusCounts?: Record<string, number>;
-  totalQuotes?: number;
+  totalOpportunities?: number;
   announcementActive?: boolean;
   isLoading?: boolean;
 }
@@ -56,7 +55,7 @@ function NavCard({ title, description, href, icon, badge, badgeColor = 'bg-prima
   );
 }
 
-export function QuickNav({ statusCounts, totalQuotes, announcementActive, isLoading }: QuickNavProps) {
+export function QuickNav({ totalOpportunities, announcementActive, isLoading }: QuickNavProps) {
   if (isLoading) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
@@ -74,9 +73,6 @@ export function QuickNav({ statusCounts, totalQuotes, announcementActive, isLoad
       </div>
     );
   }
-
-  // Calculate pending quotes (planning stage)
-  const pendingQuotes = statusCounts?.planning || 0;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
@@ -101,7 +97,7 @@ export function QuickNav({ statusCounts, totalQuotes, announcementActive, isLoad
                 />
               </svg>
             }
-            badge={totalQuotes}
+            badge={totalOpportunities}
             badgeColor="bg-primary"
           />
 

@@ -1,7 +1,7 @@
 /**
  * Twenty CRM Integration Utility
  * Handles creation of Person, Company, and Opportunity records in Twenty CRM
- * from contact form submissions
+ * from contact form submissions, and fetching Opportunities for the dashboard
  */
 
 // =============================================================================
@@ -18,6 +18,17 @@ interface TwentyCrmResponse {
   personId?: string;
   companyId?: string;
   opportunityId?: string;
+  error?: string;
+}
+
+export interface OpportunitiesResponse {
+  success: boolean;
+  opportunities: Array<{
+    id: string;
+    name: string;
+    stage: string;
+    createdAt: string;
+  }>;
   error?: string;
 }
 
@@ -467,6 +478,64 @@ export async function createOpportunityInTwentyCrm(
     console.error('Twenty CRM: Unexpected error creating opportunity:', error);
     return {
       success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+// =============================================================================
+// FETCH OPPORTUNITIES (for Dashboard)
+// =============================================================================
+
+/**
+ * Fetches opportunities from Twenty CRM for the admin dashboard
+ * Returns the most recent opportunities (last 100) for daily tracking
+ */
+export async function fetchOpportunities(): Promise<OpportunitiesResponse> {
+  try {
+    const config = getCrmConfig();
+    if (!config) {
+      return { success: false, opportunities: [], error: 'Missing CRM configuration' };
+    }
+
+    const query = `
+      query FetchOpportunities($first: Int!) {
+        opportunities(first: $first, orderBy: { createdAt: DescNullsLast }) {
+          edges {
+            node {
+              id
+              name
+              stage
+              createdAt
+            }
+          }
+        }
+      }
+    `;
+
+    // Fetch last 100 opportunities (covers ~30 days typically)
+    const result = await graphqlRequest(config, query, { first: 100 });
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error fetching opportunities:', result.errors);
+      return {
+        success: false,
+        opportunities: [],
+        error: result.errors[0]?.message || 'GraphQL error',
+      };
+    }
+
+    // Transform edges to flat array
+    const opportunities = result.data?.opportunities?.edges?.map(
+      (edge: { node: { id: string; name: string; stage: string; createdAt: string } }) => edge.node
+    ) || [];
+
+    return { success: true, opportunities };
+  } catch (error) {
+    console.error('Twenty CRM: Unexpected error fetching opportunities:', error);
+    return {
+      success: false,
+      opportunities: [],
       error: error instanceof Error ? error.message : 'Unknown error',
     };
   }

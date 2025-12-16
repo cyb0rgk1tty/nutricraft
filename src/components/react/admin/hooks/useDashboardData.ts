@@ -5,11 +5,10 @@
 import { useQuery } from '@tanstack/react-query';
 
 // Types for dashboard data
-export interface WeeklyData {
-  week: string;
-  weekLabel: string;
+export interface DailyData {
+  date: string;
+  dateLabel: string;
   count: number;
-  stages: Record<string, number>;
 }
 
 export interface AuditLog {
@@ -23,9 +22,8 @@ export interface AuditLog {
 
 export interface DashboardData {
   success: boolean;
-  opportunitiesByWeek: WeeklyData[];
-  statusCounts: Record<string, number>;
-  totalQuotes: number;
+  opportunitiesByDay: DailyData[];
+  totalOpportunities: number;
   recentActivity: AuditLog[];
   announcementActive: boolean;
   error?: string;
@@ -34,12 +32,12 @@ export interface DashboardData {
 // Query keys
 export const dashboardKeys = {
   all: ['dashboard'] as const,
-  data: () => [...dashboardKeys.all, 'data'] as const,
+  data: (days?: number) => [...dashboardKeys.all, 'data', days] as const,
 };
 
 // API Function
-async function fetchDashboardData(): Promise<DashboardData> {
-  const response = await fetch('/api/admin/dashboard');
+async function fetchDashboardData(days: number = 14): Promise<DashboardData> {
+  const response = await fetch(`/api/admin/dashboard?days=${days}`);
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -55,10 +53,10 @@ async function fetchDashboardData(): Promise<DashboardData> {
 }
 
 // Hook
-export function useDashboardData() {
+export function useDashboardData(days: number = 14) {
   return useQuery({
-    queryKey: dashboardKeys.data(),
-    queryFn: fetchDashboardData,
+    queryKey: dashboardKeys.data(days),
+    queryFn: () => fetchDashboardData(days),
     staleTime: 60 * 1000, // Consider data fresh for 1 minute
     refetchInterval: 2 * 60 * 1000, // Refetch every 2 minutes
     retry: (failureCount, error) => {

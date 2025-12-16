@@ -3,7 +3,7 @@
  * Main admin dashboard home page with charts, stats, and navigation
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryProvider } from './providers/QueryProvider';
 import { OpportunitiesChart } from './OpportunitiesChart';
@@ -51,7 +51,8 @@ function StatCard({
 
 function HomeContent({ className }: AdminHomeProps) {
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useDashboardData();
+  const [selectedDays, setSelectedDays] = useState(14);
+  const { data, isLoading, error } = useDashboardData(selectedDays);
 
   // Listen for external refresh events
   useEffect(() => {
@@ -84,36 +85,46 @@ function HomeContent({ className }: AdminHomeProps) {
     );
   }
 
-  const statusCounts = data?.statusCounts || {};
-  const totalQuotes = data?.totalQuotes || 0;
+  const totalOpportunities = data?.totalOpportunities || 0;
+  const dailyData = data?.opportunitiesByDay || [];
+
+  // Calculate stats from daily data
+  const today = new Date().toISOString().split('T')[0];
+  const todayCount = dailyData.find(d => d.date === today)?.count || 0;
+
+  // Last 7 days sum
+  const last7Days = dailyData.slice(-7).reduce((sum, d) => sum + d.count, 0);
+
+  // Last 14 days sum (all data)
+  const last14Days = dailyData.reduce((sum, d) => sum + d.count, 0);
 
   return (
     <div className={className}>
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total Quotes"
-          value={isLoading ? '-' : totalQuotes}
+          label="Total Opportunities"
+          value={isLoading ? '-' : totalOpportunities}
           color="primary"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
           }
         />
         <StatCard
-          label="Price Quote"
-          value={isLoading ? '-' : (statusCounts.planning || 0)}
+          label="Today"
+          value={isLoading ? '-' : todayCount}
           color="blue"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           }
         />
         <StatCard
-          label="In Progress"
-          value={isLoading ? '-' : ((statusCounts.order_samples || 0) + (statusCounts.client_review_samples || 0))}
+          label="Last 7 Days"
+          value={isLoading ? '-' : last7Days}
           color="amber"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,12 +133,12 @@ function HomeContent({ className }: AdminHomeProps) {
           }
         />
         <StatCard
-          label="Full Batch"
-          value={isLoading ? '-' : (statusCounts.full_batch_order || 0)}
+          label="Last 14 Days"
+          value={isLoading ? '-' : last14Days}
           color="green"
           icon={
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           }
         />
@@ -136,8 +147,10 @@ function HomeContent({ className }: AdminHomeProps) {
       {/* Opportunities Chart */}
       <div className="mb-6">
         <OpportunitiesChart
-          data={data?.opportunitiesByWeek || []}
+          data={dailyData}
           isLoading={isLoading}
+          selectedDays={selectedDays}
+          onDaysChange={setSelectedDays}
         />
       </div>
 
@@ -145,8 +158,7 @@ function HomeContent({ className }: AdminHomeProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <QuickNav
-            statusCounts={statusCounts}
-            totalQuotes={totalQuotes}
+            totalOpportunities={totalOpportunities}
             announcementActive={data?.announcementActive}
             isLoading={isLoading}
           />

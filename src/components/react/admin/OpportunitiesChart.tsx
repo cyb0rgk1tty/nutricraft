@@ -1,6 +1,6 @@
 /**
  * OpportunitiesChart Component
- * Displays a stacked bar chart of opportunities by week
+ * Displays a simple bar chart of new opportunities per day
  */
 
 import {
@@ -10,133 +10,68 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
-import type { WeeklyData } from './hooks/useDashboardData';
+import type { DailyData } from './hooks/useDashboardData';
 import { Skeleton } from '../../ui/skeleton';
 
 interface OpportunitiesChartProps {
-  data: WeeklyData[];
+  data: DailyData[];
   isLoading?: boolean;
+  selectedDays: number;
+  onDaysChange: (days: number) => void;
 }
 
-// Stage colors matching the brand
-const stageConfig = {
-  planning: {
-    label: 'Price Quote',
-    color: '#60a5fa', // blue-400
-  },
-  order_samples: {
-    label: 'Order Samples',
-    color: '#f59e0b', // amber-500
-  },
-  client_review_samples: {
-    label: 'Sample Delivered',
-    color: '#8b5cf6', // purple-500
-  },
-  full_batch_order: {
-    label: 'Full Batch',
-    color: '#10b981', // green-500 (matches primary)
-  },
-};
-
-// Get all unique stages from data
-function getUniqueStages(data: WeeklyData[]): string[] {
-  const stages = new Set<string>();
-  data.forEach((week) => {
-    Object.keys(week.stages).forEach((stage) => stages.add(stage));
-  });
-  // Sort by the order in stageConfig
-  const stageOrder = Object.keys(stageConfig);
-  return Array.from(stages).sort(
-    (a, b) => stageOrder.indexOf(a) - stageOrder.indexOf(b)
-  );
-}
-
-// Transform data to flatten stages for Recharts
-function transformData(data: WeeklyData[]): Array<Record<string, string | number>> {
-  return data.map((week) => ({
-    week: week.week,
-    weekLabel: week.weekLabel,
-    total: week.count,
-    ...week.stages,
-  }));
-}
+// Date range options for the dropdown
+const DATE_RANGE_OPTIONS = [
+  { value: 7, label: 'Last 7 days' },
+  { value: 14, label: 'Last 14 days' },
+  { value: 30, label: 'Last 30 days' },
+  { value: 90, label: 'Last 90 days' },
+];
 
 // Custom tooltip
 function CustomTooltip({ active, payload, label }: {
   active?: boolean;
-  payload?: Array<{ name: string; value: number; color: string }>;
+  payload?: Array<{ value: number }>;
   label?: string;
 }) {
   if (!active || !payload?.length) return null;
 
-  const total = payload.reduce((sum, entry) => sum + (entry.value || 0), 0);
-
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 min-w-[160px]">
-      <p className="font-semibold text-gray-900 mb-2">Week of {label}</p>
-      <div className="space-y-1.5">
-        {payload.map((entry) => {
-          const config = stageConfig[entry.name as keyof typeof stageConfig];
-          return (
-            <div key={entry.name} className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: entry.color }}
-                />
-                <span className="text-sm text-gray-600">
-                  {config?.label || entry.name}
-                </span>
-              </div>
-              <span className="text-sm font-medium text-gray-900">{entry.value}</span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="border-t border-gray-100 mt-2 pt-2">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-700">Total</span>
-          <span className="text-sm font-bold text-gray-900">{total}</span>
-        </div>
+    <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 min-w-[120px]">
+      <p className="font-semibold text-gray-900 mb-1">{label}</p>
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-sm text-gray-600">New Opportunities</span>
+        <span className="text-sm font-bold text-primary">{payload[0].value}</span>
       </div>
     </div>
   );
 }
 
-// Custom legend
-function CustomLegend({ payload }: { payload?: Array<{ value: string; color: string }> }) {
-  if (!payload?.length) return null;
-
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-4">
-      {payload.map((entry) => {
-        const config = stageConfig[entry.value as keyof typeof stageConfig];
-        return (
-          <div key={entry.value} className="flex items-center gap-1.5">
-            <div
-              className="w-3 h-3 rounded-sm"
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className="text-xs text-gray-600">
-              {config?.label || entry.value}
-            </span>
-          </div>
-        );
-      })}
-    </div>
+export function OpportunitiesChart({ data, isLoading, selectedDays, onDaysChange }: OpportunitiesChartProps) {
+  // Dropdown component for reuse across states
+  const DateRangeDropdown = (
+    <select
+      value={selectedDays}
+      onChange={(e) => onDaysChange(Number(e.target.value))}
+      className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white hover:border-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer"
+    >
+      {DATE_RANGE_OPTIONS.map(opt => (
+        <option key={opt.value} value={opt.value}>{opt.label}</option>
+      ))}
+    </select>
   );
-}
 
-export function OpportunitiesChart({ data, isLoading }: OpportunitiesChartProps) {
   if (isLoading) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-4 w-64 mt-1" />
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-32 mt-1" />
+          </div>
+          {DateRangeDropdown}
         </div>
         <div className="p-6">
           <Skeleton className="h-[300px] w-full" />
@@ -145,16 +80,16 @@ export function OpportunitiesChart({ data, isLoading }: OpportunitiesChartProps)
     );
   }
 
-  const chartData = transformData(data);
-  const stages = getUniqueStages(data);
-
   // If no data, show empty state
   if (!data.length) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900">Opportunities Over Time</h2>
-          <p className="text-sm text-gray-500 mt-1">Weekly breakdown by stage</p>
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">New Opportunities</h2>
+            <p className="text-sm text-gray-500 mt-1">Daily count</p>
+          </div>
+          {DateRangeDropdown}
         </div>
         <div className="p-6 flex items-center justify-center h-[300px]">
           <div className="text-center">
@@ -180,19 +115,22 @@ export function OpportunitiesChart({ data, isLoading }: OpportunitiesChartProps)
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100">
-        <h2 className="text-lg font-semibold text-gray-900">Opportunities Over Time</h2>
-        <p className="text-sm text-gray-500 mt-1">Weekly breakdown by stage (last 12 weeks)</p>
+      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">New Opportunities</h2>
+          <p className="text-sm text-gray-500 mt-1">Daily count</p>
+        </div>
+        {DateRangeDropdown}
       </div>
       <div className="p-6">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            data={chartData}
+            data={data}
             margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
             <XAxis
-              dataKey="weekLabel"
+              dataKey="dateLabel"
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#6b7280', fontSize: 12 }}
@@ -206,20 +144,11 @@ export function OpportunitiesChart({ data, isLoading }: OpportunitiesChartProps)
               dx={-10}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Legend content={<CustomLegend />} />
-            {stages.map((stage) => {
-              const config = stageConfig[stage as keyof typeof stageConfig];
-              return (
-                <Bar
-                  key={stage}
-                  dataKey={stage}
-                  name={stage}
-                  stackId="a"
-                  fill={config?.color || '#94a3b8'}
-                  radius={stage === stages[stages.length - 1] ? [4, 4, 0, 0] : [0, 0, 0, 0]}
-                />
-              );
-            })}
+            <Bar
+              dataKey="count"
+              fill="#10b981"
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
