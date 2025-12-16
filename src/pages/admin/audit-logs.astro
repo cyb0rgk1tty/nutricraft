@@ -27,190 +27,192 @@ const description = 'View audit logs for the manufacturer dashboard';
 
 <BaseLayout title={title} description={description} noindex={true} noChat={true}>
   <div class="min-h-screen bg-gray-50">
-  <!-- Page Header -->
-  <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
-    <div class="px-4 sm:px-6 lg:px-8 py-4">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Audit Logs</h1>
-          <p class="text-sm text-gray-500 mt-1">Track all user actions on the dashboard</p>
+    <div class="max-w-7xl mx-auto">
+      <!-- Page Header -->
+      <div class="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <div class="px-4 sm:px-6 lg:px-8 py-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Audit Logs</h1>
+              <p class="text-sm text-gray-500 mt-1">Track all user actions on the dashboard</p>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3">
+              <!-- Refresh Button -->
+              <button
+                id="refresh-btn"
+                type="button"
+                class="p-2.5 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                title="Refresh logs"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="flex items-center gap-2 sm:gap-3">
-          <!-- Refresh Button -->
-          <button
-            id="refresh-btn"
-            type="button"
-            class="p-2.5 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-            title="Refresh logs"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </div>
+
+      <!-- Filters Section -->
+      <div class="px-4 sm:px-6 lg:px-8 py-4">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Action Filter -->
+            <div>
+              <label for="action-filter" class="block text-sm font-medium text-gray-700 mb-1">Action</label>
+              <select
+                id="action-filter"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+              >
+                <option value="">All Actions</option>
+                <option value="LOGIN">Login</option>
+                <option value="LOGIN_FAILED">Login Failed</option>
+                <option value="LOGOUT">Logout</option>
+                <option value="QUOTE_UPDATED">Quote Updated</option>
+                <option value="QUOTE_SYNCED">Quote Synced</option>
+                <option value="DOCUMENT_UPLOADED">Document Uploaded</option>
+                <option value="DOCUMENT_DELETED">Document Deleted</option>
+              </select>
+            </div>
+
+            <!-- Field Modified Filter -->
+            <div>
+              <label for="field-filter" class="block text-sm font-medium text-gray-700 mb-1">Field Modified</label>
+              <select
+                id="field-filter"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+              >
+                <option value="">All Fields</option>
+                <option value="ourCost">Price (USD)</option>
+                <option value="status">Stage</option>
+                <option value="orderQuantity">Order Quantity</option>
+                <option value="publicNotes">Public Notes</option>
+              </select>
+            </div>
+
+            <!-- User Filter -->
+            <div>
+              <label for="user-filter" class="block text-sm font-medium text-gray-700 mb-1">User</label>
+              <select
+                id="user-filter"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+              >
+                <option value="">All Users</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <!-- Date From -->
+            <div>
+              <label for="date-from" class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+              <input
+                type="date"
+                id="date-from"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+              />
+            </div>
+
+            <!-- Date To -->
+            <div>
+              <label for="date-to" class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+              <input
+                type="date"
+                id="date-to"
+                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="px-4 sm:px-6 lg:px-8 pb-8">
+        <!-- Loading State -->
+        <div id="loading-state" class="flex items-center justify-center py-20">
+          <div class="text-center">
+            <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-500">Loading audit logs...</p>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden">
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Filters Section -->
-  <div class="px-4 sm:px-6 lg:px-8 py-4">
-    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- Action Filter -->
-        <div>
-          <label for="action-filter" class="block text-sm font-medium text-gray-700 mb-1">Action</label>
-          <select
-            id="action-filter"
-            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-          >
-            <option value="">All Actions</option>
-            <option value="LOGIN">Login</option>
-            <option value="LOGIN_FAILED">Login Failed</option>
-            <option value="LOGOUT">Logout</option>
-            <option value="QUOTE_UPDATED">Quote Updated</option>
-            <option value="QUOTE_SYNCED">Quote Synced</option>
-            <option value="DOCUMENT_UPLOADED">Document Uploaded</option>
-            <option value="DOCUMENT_DELETED">Document Deleted</option>
-          </select>
-        </div>
-
-        <!-- Field Modified Filter -->
-        <div>
-          <label for="field-filter" class="block text-sm font-medium text-gray-700 mb-1">Field Modified</label>
-          <select
-            id="field-filter"
-            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-          >
-            <option value="">All Fields</option>
-            <option value="ourCost">Price (USD)</option>
-            <option value="status">Stage</option>
-            <option value="orderQuantity">Order Quantity</option>
-            <option value="publicNotes">Public Notes</option>
-          </select>
-        </div>
-
-        <!-- User Filter -->
-        <div>
-          <label for="user-filter" class="block text-sm font-medium text-gray-700 mb-1">User</label>
-          <select
-            id="user-filter"
-            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-          >
-            <option value="">All Users</option>
-            <!-- Populated dynamically -->
-          </select>
-        </div>
-
-        <!-- Date From -->
-        <div>
-          <label for="date-from" class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
-          <input
-            type="date"
-            id="date-from"
-            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-          />
-        </div>
-
-        <!-- Date To -->
-        <div>
-          <label for="date-to" class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
-          <input
-            type="date"
-            id="date-to"
-            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <div class="px-4 sm:px-6 lg:px-8 pb-8">
-    <!-- Loading State -->
-    <div id="loading-state" class="flex items-center justify-center py-20">
-      <div class="text-center">
-        <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-        <p class="text-gray-500">Loading audit logs...</p>
-      </div>
-    </div>
-
-    <!-- Error State -->
-    <div id="error-state" class="hidden">
-      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-        <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-        <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Logs</h3>
-        <p id="error-message" class="text-red-600 mb-4">Unable to fetch audit logs</p>
-        <button
-          id="retry-btn"
-          type="button"
-          class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-        >
-          Try Again
-        </button>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div id="empty-state" class="hidden">
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">No Audit Logs</h3>
-        <p class="text-gray-500">No audit logs match your filters</p>
-      </div>
-    </div>
-
-    <!-- Logs Table -->
-    <div id="logs-container" class="hidden">
-      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Timestamp</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quote ID</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</th>
-                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">IP Address</th>
-              </tr>
-            </thead>
-            <tbody id="logs-tbody" class="divide-y divide-gray-200">
-              <!-- Populated by JavaScript using safe DOM methods -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        <div id="pagination" class="px-4 py-3 border-t border-gray-200 flex items-center justify-between bg-gray-50">
-          <div class="text-sm text-gray-500">
-            Showing <span id="showing-start">0</span> to <span id="showing-end">0</span> of <span id="total-count">0</span> logs
+            <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Logs</h3>
+            <p id="error-message" class="text-red-600 mb-4">Unable to fetch audit logs</p>
+            <button
+              id="retry-btn"
+              type="button"
+              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Try Again
+            </button>
           </div>
-          <div class="flex gap-2">
-            <button
-              id="prev-btn"
-              type="button"
-              class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled
-            >
-              Previous
-            </button>
-            <button
-              id="next-btn"
-              type="button"
-              class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled
-            >
-              Next
-            </button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden">
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
+            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">No Audit Logs</h3>
+            <p class="text-gray-500">No audit logs match your filters</p>
+          </div>
+        </div>
+
+        <!-- Logs Table -->
+        <div id="logs-container" class="hidden">
+          <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Timestamp</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quote ID</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">IP Address</th>
+                  </tr>
+                </thead>
+                <tbody id="logs-tbody" class="divide-y divide-gray-200">
+                  <!-- Populated by JavaScript using safe DOM methods -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="px-4 py-3 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+              <div class="text-sm text-gray-500">
+                Showing <span id="showing-start">0</span> to <span id="showing-end">0</span> of <span id="total-count">0</span> logs
+              </div>
+              <div class="flex gap-2">
+                <button
+                  id="prev-btn"
+                  type="button"
+                  class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled
+                >
+                  Previous
+                </button>
+                <button
+                  id="next-btn"
+                  type="button"
+                  class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </BaseLayout>
 
