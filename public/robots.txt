@@ -1,0 +1,12 @@
+# Robots.txt for Nutricraft Labs
+# https://nutricraftlabs.com
+
+User-agent: *
+Allow: /
+
+# Block admin area from all crawlers
+Disallow: /admin/
+Disallow: /api/admin/
+
+# Sitemap location
+Sitemap: https://nutricraftlabs.com/sitemap-index.xml
