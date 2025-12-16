@@ -7,7 +7,6 @@
  * Now uses React components with TanStack Query for data fetching and Zustand for state management.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import AdminSidebar from '../../components/admin/AdminSidebar.astro';
 import LanguageSelector from '../../components/admin/LanguageSelector.astro';
 import { AdminDashboard } from '../../components/react/admin';
 import { verifySession } from '../../utils/adminAuth';
@@ -106,17 +105,9 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     </div>
   </div>
 
-  <!-- Dashboard Content with Sidebar (shown when authenticated) -->
+  <!-- Dashboard Content (shown when authenticated) -->
   <div id="dashboard-content" class:list={["min-h-screen bg-gray-50", { "hidden": !isAuthenticated }]}>
-    <!-- Sidebar -->
-    <AdminSidebar currentPage="quotes" isAdmin={isAdmin} username={username} />
-
-    <!-- Main Content Area -->
-    <div class="lg:ml-64 min-h-screen">
-      <!-- Mobile header spacer -->
-      <div class="h-16 lg:hidden"></div>
-
-      <!-- Page Header -->
+    <!-- Page Header -->
       <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
         <div class="px-4 sm:px-6 lg:px-8 py-4">
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -147,10 +138,9 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
         </div>
       </div>
 
-      <!-- Main Content - React Dashboard -->
-      <div class="px-4 sm:px-6 lg:px-8 py-6">
-        <AdminDashboard client:load isAuthenticated={isAuthenticated} />
-      </div>
+    <!-- Main Content - React Dashboard -->
+    <div class="px-4 sm:px-6 lg:px-8 py-6">
+      <AdminDashboard client:load isAuthenticated={isAuthenticated} />
     </div>
   </div>
 </BaseLayout>
