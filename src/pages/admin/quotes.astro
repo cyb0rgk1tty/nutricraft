@@ -79,6 +79,12 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
           </button>
         </div>
 
+        <!-- CAPTCHA Container (shown after failed attempts) -->
+        <div id="captcha-container" class="hidden">
+          <div class="text-sm text-gray-600 mb-2 text-center">Please verify you're human</div>
+          <div id="turnstile-widget" class="flex justify-center"></div>
+        </div>
+
         <button
           type="submit"
           id="access-btn"
@@ -251,6 +257,90 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
   const eyeOpen = document.getElementById('eye-open');
   const eyeClosed = document.getElementById('eye-closed');
   const logoutBtn = document.getElementById('logout-btn');
+  const captchaContainer = document.getElementById('captcha-container');
+  const turnstileWidget = document.getElementById('turnstile-widget');
+
+  // CAPTCHA state
+  let captchaRequired = false;
+  let captchaSiteKey: string | null = null;
+  let captchaToken: string | null = null;
+  let turnstileWidgetId: string | null = null;
+  let turnstileScriptLoaded = false;
+
+  // Load Cloudflare Turnstile script dynamically
+  function loadTurnstileScript(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (turnstileScriptLoaded) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        turnstileScriptLoaded = true;
+        resolve();
+      };
+      script.onerror = () => reject(new Error('Failed to load Turnstile script'));
+      document.head.appendChild(script);
+    });
+  }
+
+  // Render CAPTCHA widget
+  async function renderCaptcha(siteKey: string) {
+    if (!turnstileWidget || !captchaContainer) return;
+
+    try {
+      await loadTurnstileScript();
+
+      // Show the container
+      captchaContainer.classList.remove('hidden');
+
+      // Clear existing widget using safe DOM methods
+      while (turnstileWidget.firstChild) {
+        turnstileWidget.removeChild(turnstileWidget.firstChild);
+      }
+
+      // Reset previous widget if exists
+      if (turnstileWidgetId && (window as any).turnstile) {
+        try {
+          (window as any).turnstile.remove(turnstileWidgetId);
+        } catch (e) {
+          // Widget may not exist anymore
+        }
+      }
+
+      // Render new widget
+      turnstileWidgetId = (window as any).turnstile.render(turnstileWidget, {
+        sitekey: siteKey,
+        theme: 'light',
+        callback: (token: string) => {
+          captchaToken = token;
+        },
+        'expired-callback': () => {
+          captchaToken = null;
+        },
+        'error-callback': () => {
+          captchaToken = null;
+          showError('CAPTCHA verification failed. Please try again.');
+        },
+      });
+    } catch (error) {
+      console.error('Failed to render CAPTCHA:', error);
+      showError('Failed to load CAPTCHA. Please refresh the page.');
+    }
+  }
+
+  // Hide CAPTCHA
+  function hideCaptcha() {
+    if (captchaContainer) {
+      captchaContainer.classList.add('hidden');
+    }
+    captchaRequired = false;
+    captchaToken = null;
+  }
 
   // Show dashboard with animation
   function showDashboard() {
@@ -281,9 +371,75 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     eyeClosed?.classList.toggle('hidden');
   });
 
+  // Lockout countdown timer
+  let lockoutTimer: ReturnType<typeof setInterval> | null = null;
+  let lockoutEndTime: number | null = null;
+
+  function startLockoutCountdown(retryAfterSeconds: number) {
+    // Clear any existing timer
+    if (lockoutTimer) {
+      clearInterval(lockoutTimer);
+    }
+
+    lockoutEndTime = Date.now() + retryAfterSeconds * 1000;
+
+    // Disable inputs during lockout
+    if (usernameInput) usernameInput.disabled = true;
+    if (passwordInput) passwordInput.disabled = true;
+    if (accessBtn) accessBtn.disabled = true;
+
+    const updateCountdown = () => {
+      if (!lockoutEndTime) return;
+
+      const remaining = Math.max(0, Math.ceil((lockoutEndTime - Date.now()) / 1000));
+
+      if (remaining <= 0) {
+        // Lockout expired
+        if (lockoutTimer) clearInterval(lockoutTimer);
+        lockoutTimer = null;
+        lockoutEndTime = null;
+
+        // Re-enable inputs
+        if (usernameInput) usernameInput.disabled = false;
+        if (passwordInput) passwordInput.disabled = false;
+        if (accessBtn) {
+          accessBtn.disabled = false;
+          accessBtn.textContent = i18n?.t('accessDashboard') || 'Access Dashboard';
+        }
+
+        // Update message
+        const errorText = document.getElementById('error-text');
+        if (errorText) {
+          errorText.textContent = 'You can try again now.';
+        }
+        return;
+      }
+
+      // Format remaining time
+      const minutes = Math.floor(remaining / 60);
+      const seconds = remaining % 60;
+      const timeStr = minutes > 0
+        ? `${minutes}:${seconds.toString().padStart(2, '0')}`
+        : `${seconds}s`;
+
+      if (accessBtn) {
+        accessBtn.textContent = `Locked (${timeStr})`;
+      }
+    };
+
+    // Update immediately and then every second
+    updateCountdown();
+    lockoutTimer = setInterval(updateCountdown, 1000);
+  }
+
   // Handle form submission
   loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Don't submit if locked out
+    if (lockoutEndTime && Date.now() < lockoutEndTime) {
+      return;
+    }
 
     const username = usernameInput?.value?.trim();
     const password = passwordInput?.value;
@@ -300,24 +456,70 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     }
 
     try {
+      // Build request body with optional CAPTCHA token
+      const requestBody: { username: string; password: string; captchaToken?: string } = {
+        username,
+        password,
+      };
+
+      // Include CAPTCHA token if required and available
+      if (captchaRequired && captchaToken) {
+        requestBody.captchaToken = captchaToken;
+      }
+
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Reload the page so SSR provides correct isAuthenticated state to React
+        // Hide CAPTCHA and reload the page
+        hideCaptcha();
         window.location.reload();
       } else {
+        // Show error message
         showError(data.error || 'Invalid username or password');
+
+        // Handle CAPTCHA requirement
+        if (data.captchaRequired && data.captchaSiteKey) {
+          captchaRequired = true;
+          captchaSiteKey = data.captchaSiteKey;
+          renderCaptcha(data.captchaSiteKey);
+        }
+
+        // Handle lockout with countdown
+        if (data.locked && data.retryAfter) {
+          startLockoutCountdown(data.retryAfter);
+        } else if (response.status === 429 && data.retryAfter) {
+          // Rate limited
+          startLockoutCountdown(data.retryAfter);
+        } else {
+          // Re-enable button for regular errors
+          if (accessBtn) {
+            accessBtn.disabled = false;
+            accessBtn.textContent = i18n?.t('accessDashboard') || 'Access Dashboard';
+          }
+        }
+
+        // Reset CAPTCHA token after failed attempt (need fresh one)
+        captchaToken = null;
+        if (turnstileWidgetId && (window as any).turnstile) {
+          try {
+            (window as any).turnstile.reset(turnstileWidgetId);
+          } catch (e) {
+            // Widget may need re-rendering
+            if (captchaSiteKey) {
+              renderCaptcha(captchaSiteKey);
+            }
+          }
+        }
       }
     } catch (error) {
       console.error('Login error:', error);
       showError('An error occurred. Please try again.');
-    } finally {
       // Re-enable button
       if (accessBtn) {
         accessBtn.disabled = false;
@@ -326,25 +528,44 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
     }
   });
 
-  function showError(message: string) {
+  function showError(message: string, isWarning: boolean = false) {
     if (loginError) {
       loginError.classList.remove('hidden');
+
+      // Change styling for warnings vs errors
+      if (isWarning) {
+        loginError.classList.remove('bg-red-50', 'border-red-200');
+        loginError.classList.add('bg-amber-50', 'border-amber-200');
+      } else {
+        loginError.classList.remove('bg-amber-50', 'border-amber-200');
+        loginError.classList.add('bg-red-50', 'border-red-200');
+      }
+
       const errorText = document.getElementById('error-text');
       if (errorText) {
         errorText.textContent = message;
+        if (isWarning) {
+          errorText.classList.remove('text-red-700');
+          errorText.classList.add('text-amber-700');
+        } else {
+          errorText.classList.remove('text-amber-700');
+          errorText.classList.add('text-red-700');
+        }
       }
     }
 
-    // Shake animation on inputs
-    [usernameInput, passwordInput].forEach(input => {
-      if (input) {
-        input.classList.add('border-red-300');
-        input.style.animation = 'shake 0.5s ease-in-out';
-        setTimeout(() => {
-          input.style.animation = '';
-        }, 500);
-      }
-    });
+    // Shake animation on inputs (only for non-lockout errors)
+    if (!lockoutEndTime) {
+      [usernameInput, passwordInput].forEach(input => {
+        if (input) {
+          input.classList.add('border-red-300');
+          input.style.animation = 'shake 0.5s ease-in-out';
+          setTimeout(() => {
+            input.style.animation = '';
+          }, 500);
+        }
+      });
+    }
   }
 
   // Clear error on input

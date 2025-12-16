@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 import { getSupabaseServiceClient } from './supabase';
 
 const SESSION_COOKIE_NAME = 'admin_session';
-const SESSION_DURATION_DAYS = 7;
+const SESSION_DURATION_DAYS = 1; // Reduced from 7 for better security
 
 export interface AdminUser {
   id: string;
@@ -30,6 +30,9 @@ export interface AdminSession {
 
 /**
  * Verify username and password, return user if valid
+ *
+ * Security: Uses constant-time comparison to prevent timing attacks.
+ * Always performs bcrypt comparison even for non-existent users.
  */
 export async function verifyCredentials(
   username: string,
@@ -44,13 +47,13 @@ export async function verifyCredentials(
     .eq('username_lower', username.toLowerCase().trim())
     .single();
 
-  if (error || !user) {
-    return null;
-  }
+  // SECURITY: Always perform password comparison to prevent timing attacks
+  // Use a dummy hash if user doesn't exist (same computational cost)
+  const hashToCompare = user?.password_hash || '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
+  const isValid = await bcrypt.compare(password, hashToCompare);
 
-  // Verify password
-  const isValid = await bcrypt.compare(password, user.password_hash);
-  if (!isValid) {
+  // Return null if user doesn't exist OR password is invalid
+  if (error || !user || !isValid) {
     return null;
   }
 
