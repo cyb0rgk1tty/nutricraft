@@ -3,7 +3,7 @@
  * Admin Settings Page
  * Manage site-wide settings like the announcement bar
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdminLayout from '../../layouts/AdminLayout.astro';
 import { verifySession } from '../../utils/adminAuth';
 import { getAnnouncement } from '../../utils/announcements';
 
@@ -24,102 +24,94 @@ const title = 'Settings | Nutricraft Labs Admin';
 const description = 'Admin settings for Nutricraft Labs website';
 ---
 
-<BaseLayout title={title} description={description} noindex={true} noChat={true}>
-  <!-- Header -->
-  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<AdminLayout title={title} description={description} currentPage="settings">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
+    <div class="px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <a href="/admin/quotes" class="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </a>
+        <div>
           <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Settings</h1>
+          <p class="text-sm text-gray-500 mt-1">Manage site-wide configuration</p>
         </div>
-        <a
-          href="/admin/quotes"
-          class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
-        >
-          Back to Dashboard
-        </a>
       </div>
     </div>
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Announcement Bar Settings -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-white to-amber-50">
-        <h2 class="text-lg font-semibold text-gray-900">Announcement Bar</h2>
-        <p class="text-sm text-gray-500 mt-1">Display a message at the top of all pages</p>
-      </div>
+  <div class="px-4 sm:px-6 lg:px-8 py-6">
+    <div class="max-w-2xl">
+      <!-- Announcement Bar Settings -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-white to-amber-50">
+          <h2 class="text-lg font-semibold text-gray-900">Announcement Bar</h2>
+          <p class="text-sm text-gray-500 mt-1">Display a message at the top of all pages</p>
+        </div>
 
-      <form id="announcement-form" class="p-6 space-y-6">
-        <!-- Toggle -->
-        <div class="flex items-center justify-between">
-          <div>
-            <label for="is-active" class="text-sm font-medium text-gray-900">Enable Announcement</label>
-            <p class="text-sm text-gray-500">Show the announcement bar on all pages</p>
-          </div>
-          <button
-            type="button"
-            id="is-active"
-            role="switch"
-            aria-checked={announcement?.is_active ? "true" : "false"}
-            class:list={[
-              "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-              announcement?.is_active ? "bg-primary" : "bg-gray-200"
-            ]}
-          >
-            <span
+        <form id="announcement-form" class="p-6 space-y-6">
+          <!-- Toggle -->
+          <div class="flex items-center justify-between">
+            <div>
+              <label for="is-active" class="text-sm font-medium text-gray-900">Enable Announcement</label>
+              <p class="text-sm text-gray-500">Show the announcement bar on all pages</p>
+            </div>
+            <button
+              type="button"
+              id="is-active"
+              role="switch"
+              aria-checked={announcement?.is_active ? "true" : "false"}
               class:list={[
-                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
-                announcement?.is_active ? "translate-x-5" : "translate-x-0"
+                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                announcement?.is_active ? "bg-primary" : "bg-gray-200"
               ]}
-            />
-          </button>
-        </div>
-
-        <!-- Message -->
-        <div>
-          <label for="message" class="block text-sm font-medium text-gray-900 mb-2">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="3"
-            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors resize-none"
-            placeholder="Enter announcement message..."
-          >{announcement?.message || ''}</textarea>
-          <p class="text-sm text-gray-500 mt-2">This message will be displayed at the top of every page.</p>
-        </div>
-
-        <!-- Preview -->
-        <div>
-          <label class="block text-sm font-medium text-gray-900 mb-2">Preview</label>
-          <div id="preview" class="bg-amber-100 border border-amber-200 rounded-xl py-2.5 px-4">
-            <p id="preview-text" class="text-amber-900 text-sm text-center">
-              {announcement?.message || 'Your announcement will appear here...'}
-            </p>
+            >
+              <span
+                class:list={[
+                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                  announcement?.is_active ? "translate-x-5" : "translate-x-0"
+                ]}
+              />
+            </button>
           </div>
-        </div>
 
-        <!-- Save Button -->
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div id="save-status" class="text-sm text-gray-500"></div>
-          <button
-            type="submit"
-            id="save-btn"
-            class="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Save Changes
-          </button>
-        </div>
-      </form>
+          <!-- Message -->
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-900 mb-2">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="3"
+              class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors resize-none"
+              placeholder="Enter announcement message..."
+            >{announcement?.message || ''}</textarea>
+            <p class="text-sm text-gray-500 mt-2">This message will be displayed at the top of every page.</p>
+          </div>
+
+          <!-- Preview -->
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2">Preview</label>
+            <div id="preview" class="bg-amber-100 border border-amber-200 rounded-xl py-2.5 px-4">
+              <p id="preview-text" class="text-amber-900 text-sm text-center">
+                {announcement?.message || 'Your announcement will appear here...'}
+              </p>
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div id="save-status" class="text-sm text-gray-500"></div>
+            <button
+              type="submit"
+              id="save-btn"
+              class="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</BaseLayout>
+</AdminLayout>
 
 <script define:vars={{ announcementId: announcement?.id }}>
   // Elements

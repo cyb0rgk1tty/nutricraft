@@ -1,0 +1,51 @@
+---
+/**
+ * Admin Layout
+ * Shared layout for all admin pages with sidebar navigation
+ *
+ * Features:
+ * - Sidebar navigation (fixed on desktop, slide-in on mobile)
+ * - Authentication state passed to sidebar
+ * - Consistent page structure
+ * - Mobile-responsive with hamburger menu
+ */
+
+import BaseLayout from './BaseLayout.astro';
+import AdminSidebar from '../components/admin/AdminSidebar.astro';
+import { verifySession } from '../utils/adminAuth';
+
+interface Props {
+  title: string;
+  description?: string;
+  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs';
+}
+
+const { title, description = 'Admin Dashboard', currentPage } = Astro.props;
+
+// Get authentication state
+const authResult = await verifySession(Astro.request);
+const user = authResult?.user;
+const isAdmin = user?.username === 'nutricraftadmin';
+---
+
+<BaseLayout title={title} description={description} noindex={true} noChat={true}>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <AdminSidebar
+      currentPage={currentPage}
+      isAdmin={isAdmin}
+      username={user?.username}
+    />
+
+    <!-- Main Content Area -->
+    <div class="lg:ml-64 min-h-screen">
+      <!-- Mobile header spacer -->
+      <div class="h-16 lg:hidden"></div>
+
+      <!-- Page Content -->
+      <main>
+        <slot />
+      </main>
+    </div>
+  </div>
+</BaseLayout>
