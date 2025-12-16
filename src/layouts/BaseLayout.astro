@@ -2,6 +2,7 @@
 import { SEO } from "astro-seo";
 import ChatSupport from "../components/ChatSupport.astro";
 import Analytics from "../components/Analytics.astro";
+import AnnouncementBar from "../components/AnnouncementBar.astro";
 import "../styles/tailwind.css";
 
 export interface Props {
@@ -345,6 +346,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         style="display:none;visibility:hidden"></iframe></noscript
     >
     <!-- End Google Tag Manager (noscript) -->
+    <AnnouncementBar />
     <slot />
     {!noChat && <ChatSupport />}
     <Analytics />

@@ -1,0 +1,79 @@
+---
+/**
+ * AnnouncementBar Component
+ *
+ * Displays a site-wide announcement bar at the top of all pages.
+ * Can be toggled on/off and message edited via admin settings.
+ * Users can dismiss it (persisted via localStorage).
+ */
+
+import { getActiveAnnouncement } from '../utils/announcements';
+
+const announcement = await getActiveAnnouncement();
+
+// Generate a simple hash of the message for dismiss tracking
+// When message changes, the bar will show again
+const messageHash = announcement?.message
+  ? btoa(announcement.message).slice(0, 8)
+  : '';
+---
+
+{announcement && (
+  <div
+    id="announcement-bar"
+    data-hash={messageHash}
+    class="bg-amber-100 border-b border-amber-200 py-2.5 px-4 relative"
+  >
+    <div class="max-w-7xl mx-auto flex items-center justify-center">
+      <p class="text-amber-900 text-sm text-center pr-8">
+        {announcement.message}
+      </p>
+      <button
+        id="dismiss-announcement"
+        type="button"
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-amber-700 hover:text-amber-900 transition-colors p-1"
+        aria-label="Dismiss announcement"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+)}
+
+<script>
+  // Handle announcement bar dismiss functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const bar = document.getElementById('announcement-bar');
+    const dismissBtn = document.getElementById('dismiss-announcement');
+
+    if (!bar || !dismissBtn) return;
+
+    const messageHash = bar.dataset.hash;
+    const storageKey = `announcement_dismissed_${messageHash}`;
+
+    // Check if this specific announcement was dismissed
+    if (localStorage.getItem(storageKey) === 'true') {
+      bar.style.display = 'none';
+      return;
+    }
+
+    // Handle dismiss click
+    dismissBtn.addEventListener('click', () => {
+      bar.style.display = 'none';
+      localStorage.setItem(storageKey, 'true');
+    });
+  });
+</script>
