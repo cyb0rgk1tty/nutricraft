@@ -208,6 +208,112 @@ export async function findCompanyByName(companyName: string): Promise<string | n
 }
 
 /**
+ * Searches for a person by email address (case-insensitive)
+ * @param email - Email to search for
+ * @returns Person ID if found, null otherwise
+ */
+export async function findPersonByEmail(email: string): Promise<string | null> {
+  try {
+    const config = getCrmConfig();
+    if (!config) return null;
+
+    const query = `
+      query FindPerson($filter: PersonFilterInput) {
+        people(filter: $filter) {
+          edges {
+            node {
+              id
+              emails {
+                primaryEmail
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      filter: {
+        emails: {
+          primaryEmail: {
+            ilike: `%${email}%`,
+          },
+        },
+      },
+    };
+
+    const result = await graphqlRequest(config, query, variables);
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error searching for person:', result.errors);
+      return null;
+    }
+
+    const people = result.data?.people?.edges || [];
+
+    // Find exact match (case-insensitive)
+    const exactMatch = people.find(
+      (edge: any) => edge.node.emails?.primaryEmail?.toLowerCase() === email.toLowerCase()
+    );
+
+    if (exactMatch) {
+      console.log(`Twenty CRM: Found existing person ${exactMatch.node.id} for ${email}`);
+      return exactMatch.node.id;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Twenty CRM: Error finding person:', error);
+    return null;
+  }
+}
+
+/**
+ * Checks if a person already has an opportunity
+ * @param personId - Person ID to check
+ * @returns true if opportunity exists, false otherwise
+ */
+export async function hasOpportunityForPerson(personId: string): Promise<boolean> {
+  try {
+    const config = getCrmConfig();
+    if (!config) return false;
+
+    const query = `
+      query FindOpportunities($filter: OpportunityFilterInput) {
+        opportunities(filter: $filter, first: 1) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      filter: {
+        pointOfContactId: {
+          eq: personId,
+        },
+      },
+    };
+
+    const result = await graphqlRequest(config, query, variables);
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error checking for opportunities:', result.errors);
+      return false;
+    }
+
+    const opportunities = result.data?.opportunities?.edges || [];
+    return opportunities.length > 0;
+  } catch (error) {
+    console.error('Twenty CRM: Error checking for opportunities:', error);
+    return false;
+  }
+}
+
+/**
  * Creates a Company record in Twenty CRM
  * @param companyName - Name of the company
  * @param emailDomain - Optional domain extracted from email

@@ -7,6 +7,8 @@ import {
   createCompanyInTwentyCrm,
   createOpportunityInTwentyCrm,
   findCompanyByName,
+  findPersonByEmail,
+  hasOpportunityForPerson,
 } from '../../utils/twentyCrm';
 
 /**
@@ -213,19 +215,36 @@ ${message}
         }
       }
 
-      // Step 2: Create Person (linked to company if available)
-      const personResult = await createPersonInTwentyCrm(formData, companyId);
-      if (personResult.success && personResult.personId) {
-        personId = personResult.personId;
+      // Step 2: Check if Person already exists by email, create if not
+      let isExistingPerson = false;
+      const existingPersonId = await findPersonByEmail(email);
+
+      if (existingPersonId) {
+        personId = existingPersonId;
+        isExistingPerson = true;
+        console.log(`Twenty CRM: Found existing person ${personId} for ${email}`);
       } else {
-        console.error('Twenty CRM: Failed to create person:', personResult.error);
+        // Create new Person (linked to company if available)
+        const personResult = await createPersonInTwentyCrm(formData, companyId);
+        if (personResult.success && personResult.personId) {
+          personId = personResult.personId;
+        } else {
+          console.error('Twenty CRM: Failed to create person:', personResult.error);
+        }
       }
 
-      // Step 3: Create Opportunity (linked to person and company)
+      // Step 3: Check if Opportunity exists, create if not
       if (personId) {
-        const opportunityResult = await createOpportunityInTwentyCrm(formData, personId, companyId);
-        if (!opportunityResult.success) {
-          console.error('Twenty CRM: Failed to create opportunity:', opportunityResult.error);
+        // Only check for existing opportunity if person already existed
+        const opportunityExists = isExistingPerson && await hasOpportunityForPerson(personId);
+
+        if (opportunityExists) {
+          console.log(`Twenty CRM: Skipping opportunity - one already exists for person ${personId}`);
+        } else {
+          const opportunityResult = await createOpportunityInTwentyCrm(formData, personId, companyId);
+          if (!opportunityResult.success) {
+            console.error('Twenty CRM: Failed to create opportunity:', opportunityResult.error);
+          }
         }
       } else {
         console.error('Twenty CRM: Skipping opportunity creation - no person ID');
