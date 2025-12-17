@@ -11,9 +11,13 @@ import { RecentActivity } from './RecentActivity';
 import { QuickNav } from './QuickNav';
 import { AdsStatsCards } from './AdsStatsCards';
 import { AdSpendChart } from './AdSpendChart';
+import { InvoiceStatsCards } from './InvoiceStatsCards';
+import { RevenueChart } from './RevenueChart';
+import { RecentPayments } from './RecentPayments';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 import { useDashboardData, dashboardKeys } from './hooks/useDashboardData';
+import { useInvoiceData } from './hooks/useInvoiceData';
 
 interface AdminHomeProps {
   className?: string;
@@ -57,6 +61,7 @@ function HomeContent({ className }: AdminHomeProps) {
   const [selectedDays, setSelectedDays] = useState(14);
   const [isSyncing, setIsSyncing] = useState(false);
   const { data, isLoading, error } = useDashboardData(selectedDays);
+  const { data: invoiceData, isLoading: invoiceLoading } = useInvoiceData(30);
 
   // Listen for external refresh events
   useEffect(() => {
@@ -200,6 +205,33 @@ function HomeContent({ className }: AdminHomeProps) {
             data={data.adsMetrics.spendByDay}
             isLoading={isLoading}
           />
+        </div>
+      )}
+
+      {/* Invoice Stats */}
+      <div className="mb-6">
+        <InvoiceStatsCards
+          stats={invoiceData?.stats}
+          isLoading={invoiceLoading}
+          configured={invoiceData?.configured}
+        />
+      </div>
+
+      {/* Revenue Chart and Recent Payments - only show if Invoice Ninja is configured and has data */}
+      {invoiceData?.configured && invoiceData?.stats && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="lg:col-span-2">
+            <RevenueChart
+              data={invoiceData.stats.revenueByDay}
+              isLoading={invoiceLoading}
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <RecentPayments
+              payments={invoiceData.stats.recentPayments}
+              isLoading={invoiceLoading}
+            />
+          </div>
         </div>
       )}
 

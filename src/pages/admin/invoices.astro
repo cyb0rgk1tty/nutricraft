@@ -1,0 +1,59 @@
+---
+/**
+ * Invoices Analytics Page
+ * Detailed view of Invoice Ninja payments and balance statistics
+ * Restricted to nutricraftadmin only
+ */
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { InvoiceAnalytics } from '../../components/react/admin/InvoiceAnalytics';
+import { verifySession } from '../../utils/adminAuth';
+
+// Check if user is authenticated
+const authResult = await verifySession(Astro.request);
+
+// Redirect to quotes page (has login form) if not authenticated
+if (!authResult) {
+  return Astro.redirect('/admin/quotes');
+}
+
+// Only nutricraftadmin can access
+if (authResult.user.username !== 'nutricraftadmin') {
+  return Astro.redirect('/admin/quotes');
+}
+
+// SEO metadata
+const title = 'Invoices & Payments | Nutricraft Labs Admin';
+const description = 'View invoice payments and account balance statistics';
+---
+
+<AdminLayout title={title} description={description} currentPage="invoices">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
+    <div class="px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Invoices & Payments</h1>
+          <p class="text-sm text-gray-500 mt-1">Revenue tracking and payment analytics</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://invoice.tangleapps.vip"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+          >
+            Open Invoice Ninja
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="px-4 sm:px-6 lg:px-8 py-6">
+    <InvoiceAnalytics client:load />
+  </div>
+</AdminLayout>
