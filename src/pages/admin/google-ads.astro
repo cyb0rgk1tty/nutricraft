@@ -1,0 +1,49 @@
+---
+/**
+ * Google Ads Analytics Page
+ * Detailed view of Google Ads performance metrics
+ * Restricted to nutricraftadmin only
+ */
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { GoogleAdsAnalytics } from '../../components/react/admin/GoogleAdsAnalytics';
+import { verifySession } from '../../utils/adminAuth';
+
+// Check if user is authenticated
+const authResult = await verifySession(Astro.request);
+
+// Redirect to quotes page (has login form) if not authenticated
+if (!authResult) {
+  return Astro.redirect('/admin/quotes');
+}
+
+// Only nutricraftadmin can access
+if (authResult.user.username !== 'nutricraftadmin') {
+  return Astro.redirect('/admin/quotes');
+}
+
+// SEO metadata
+const title = 'Google Ads Analytics | Nutricraft Labs Admin';
+const description = 'View Google Ads performance metrics and analytics';
+---
+
+<AdminLayout title={title} description={description} currentPage="google-ads">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
+    <div class="px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Google Ads</h1>
+          <p class="text-sm text-gray-500 mt-1">Performance metrics and spend analytics</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400">Auto-syncs every 15 minutes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="px-4 sm:px-6 lg:px-8 py-6">
+    <GoogleAdsAnalytics client:load />
+  </div>
+</AdminLayout>

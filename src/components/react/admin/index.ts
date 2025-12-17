@@ -12,6 +12,9 @@ export { StatusStrip } from './StatusStrip';
 export { OpportunitiesChart } from './OpportunitiesChart';
 export { RecentActivity } from './RecentActivity';
 export { QuickNav } from './QuickNav';
+export { GoogleAdsAnalytics } from './GoogleAdsAnalytics';
+export { AdsStatsCards } from './AdsStatsCards';
+export { AdSpendChart } from './AdSpendChart';
 
 // Providers
 export { QueryProvider } from './providers/QueryProvider';

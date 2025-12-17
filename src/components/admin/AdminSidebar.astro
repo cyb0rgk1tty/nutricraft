@@ -12,7 +12,7 @@
  */
 
 interface Props {
-  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs';
+  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads';
   isAdmin?: boolean;
   username?: string;
 }
@@ -34,6 +34,19 @@ const navItems = [
     href: '/admin/quotes',
     icon: 'clipboard',
     adminOnly: false,
+  },
+  {
+    id: 'advertisements',
+    label: 'Advertisements',
+    icon: 'megaphone',
+    adminOnly: true,
+    submenu: [
+      {
+        id: 'google-ads',
+        label: 'Google Ads',
+        href: '/admin/google-ads',
+      },
+    ],
   },
   {
     id: 'settings',
@@ -95,6 +108,60 @@ const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
   <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
     {visibleNavItems.map((item) => {
       const isActive = currentPage === item.id;
+      const hasSubmenu = 'submenu' in item && item.submenu;
+      const isSubmenuActive = hasSubmenu && item.submenu.some((sub: any) => currentPage === sub.id);
+
+      if (hasSubmenu) {
+        return (
+          <div class="submenu-container">
+            <button
+              type="button"
+              class:list={[
+                'submenu-toggle w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors',
+                isSubmenuActive
+                  ? 'bg-primary/10 text-primary font-medium'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+              ]}
+              data-expanded={isSubmenuActive ? 'true' : 'false'}
+            >
+              <div class="flex items-center gap-3">
+                {item.icon === 'megaphone' && (
+                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                  </svg>
+                )}
+                <span>{item.label}</span>
+              </div>
+              <svg class="submenu-chevron w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class:list={['submenu-items ml-4 mt-1 space-y-1', !isSubmenuActive && 'hidden']}>
+              {item.submenu.map((sub: any) => {
+                const isSubActive = currentPage === sub.id;
+                return (
+                  <a
+                    href={sub.href}
+                    class:list={[
+                      'flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-sm',
+                      isSubActive
+                        ? 'bg-primary/10 text-primary font-medium'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                    ]}
+                    aria-current={isSubActive ? 'page' : undefined}
+                  >
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span>{sub.label}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      }
+
       return (
         <a
           href={item.href}
@@ -216,5 +283,36 @@ const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
       console.error('Logout error:', error);
     }
     window.location.href = '/admin/quotes';
+  });
+
+  // Submenu toggle functionality
+  const submenuToggles = document.querySelectorAll('.submenu-toggle');
+  submenuToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const container = toggle.closest('.submenu-container');
+      const items = container?.querySelector('.submenu-items');
+      const chevron = toggle.querySelector('.submenu-chevron');
+      const isExpanded = toggle.getAttribute('data-expanded') === 'true';
+
+      if (items && chevron) {
+        if (isExpanded) {
+          items.classList.add('hidden');
+          chevron.classList.remove('rotate-180');
+          toggle.setAttribute('data-expanded', 'false');
+        } else {
+          items.classList.remove('hidden');
+          chevron.classList.add('rotate-180');
+          toggle.setAttribute('data-expanded', 'true');
+        }
+      }
+    });
+  });
+
+  // Initialize chevron rotation for expanded submenus
+  submenuToggles.forEach((toggle) => {
+    if (toggle.getAttribute('data-expanded') === 'true') {
+      const chevron = toggle.querySelector('.submenu-chevron');
+      chevron?.classList.add('rotate-180');
+    }
   });
 </script>
