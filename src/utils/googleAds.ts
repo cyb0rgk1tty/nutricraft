@@ -136,12 +136,30 @@ export async function fetchAccountMetrics(
     metrics.sort((a, b) => a.date.localeCompare(b.date));
 
     return { success: true, metrics };
-  } catch (error) {
-    console.error('Google Ads API error:', error);
+  } catch (error: any) {
+    // Extract detailed error message from Google Ads API errors
+    let errorMessage = 'Failed to fetch Google Ads data';
+
+    if (error?.errors?.length > 0) {
+      // Google Ads API returns an array of errors with detailed failure info
+      errorMessage = error.errors
+        .map((e: any) => e.message || e.error_code || JSON.stringify(e))
+        .join('; ');
+    } else if (error?.message) {
+      errorMessage = error.message;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+
+    console.error('Google Ads API error:', {
+      message: errorMessage,
+      fullError: JSON.stringify(error, null, 2),
+    });
+
     return {
       success: false,
       metrics: [],
-      error: error instanceof Error ? error.message : 'Failed to fetch Google Ads data',
+      error: errorMessage,
     };
   }
 }
