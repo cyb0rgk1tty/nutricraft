@@ -64,3 +64,4 @@ __pycache__/
 # Claude Code local files
 .claude/settings.local.json
 .claude/plans/
+.claude/mcp.json

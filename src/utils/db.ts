@@ -436,6 +436,19 @@ export async function autocompleteProducts(
 }
 
 /**
+ * Sanitize search query to prevent injection attacks
+ * Escapes special characters used in LIKE patterns and SQL
+ */
+function sanitizeSearchQuery(query: string): string {
+  // Remove or escape characters that could be used for injection
+  return query
+    .replace(/[%_\\]/g, '\\$&')  // Escape LIKE wildcards and backslash
+    .replace(/['";\x00-\x1f]/g, '') // Remove quotes, semicolons, and control chars
+    .trim()
+    .slice(0, 100); // Limit length to prevent DoS
+}
+
+/**
  * Simple text search (fallback if RPC functions not available)
  */
 export async function searchProductsSimple(
@@ -448,6 +461,14 @@ export async function searchProductsSimple(
 ): Promise<ProductWithRelations[]> {
   const supabase = getSupabaseClient();
 
+  // Sanitize query to prevent SQL injection
+  const sanitizedQuery = sanitizeSearchQuery(query);
+
+  // If sanitization results in empty string, return empty results
+  if (!sanitizedQuery) {
+    return [];
+  }
+
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -456,7 +477,7 @@ export async function searchProductsSimple(
       dosage_form:dosage_forms(*)
     `)
     .eq('is_active', true)
-    .or(`name.ilike.%${query}%,description.ilike.%${query}%,sku.ilike.%${query}%`)
+    .or(`name.ilike.%${sanitizedQuery}%,description.ilike.%${sanitizedQuery}%,sku.ilike.%${sanitizedQuery}%`)
     .limit(options?.limit || 20);
 
   if (error) {

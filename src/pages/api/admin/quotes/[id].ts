@@ -8,6 +8,7 @@ import type { APIRoute } from 'astro';
 import { updateQuoteInCRM } from '../../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../../utils/adminAuth';
 import { logAuditAction } from '../../../../utils/auditLog';
+import { logAndSanitize } from '../../../../utils/errorSanitizer';
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   try {
@@ -82,12 +83,13 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       }
     );
   } catch (error) {
-    console.error('API /admin/quotes/[id] PATCH error:', error);
+    // Log full error server-side, return sanitized message to client
+    const safeMessage = logAndSanitize('API /admin/quotes/[id] PATCH', error);
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Internal server error',
+        error: safeMessage,
       }),
       {
         status: 500,

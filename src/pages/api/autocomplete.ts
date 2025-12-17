@@ -18,14 +18,29 @@ import type { APIRoute } from 'astro';
 import { autocompleteProducts, type AutocompleteResult } from '../../utils/db';
 import { getSupabaseClient } from '../../utils/supabase';
 
+/**
+ * Sanitize search term to prevent injection attacks
+ */
+function sanitizeSearchTerm(term: string): string {
+  return term
+    .replace(/[%_\\]/g, '\\$&')  // Escape LIKE wildcards
+    .replace(/['";\x00-\x1f]/g, '') // Remove dangerous characters
+    .trim()
+    .slice(0, 100); // Limit length
+}
+
 // Helper to get total count of matching products (without limit)
 async function getTotalMatchCount(term: string): Promise<number> {
   const supabase = getSupabaseClient();
+  const sanitizedTerm = sanitizeSearchTerm(term);
+
+  if (!sanitizedTerm) return 0;
+
   const { count, error } = await supabase
     .from('products')
     .select('id', { count: 'exact', head: true })
     .eq('is_active', true)
-    .or(`name.ilike.%${term}%,description.ilike.%${term}%,sku.ilike.%${term}%`);
+    .or(`name.ilike.%${sanitizedTerm}%,description.ilike.%${sanitizedTerm}%,sku.ilike.%${sanitizedTerm}%`);
 
   if (error) {
     console.warn('Count query failed:', error);
@@ -180,31 +195,40 @@ export const GET: APIRoute = async ({ request }) => {
       console.warn('Autocomplete RPC failed, using fallback:', rpcError);
       const supabase = getSupabaseClient();
 
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, slug')
-        .eq('is_active', true)
-        .or(`name.ilike.${term}%,name.ilike.%${term}%`)
-        .order('name', { ascending: true })
-        .limit(limit);
+      // Sanitize the term before using in query
+      const sanitizedTerm = sanitizeSearchTerm(term);
+      if (!sanitizedTerm) {
+        suggestions = [];
+      } else {
+        const { data, error } = await supabase
+          .from('products')
+          .select('id, name, slug')
+          .eq('is_active', true)
+          .or(`name.ilike.${sanitizedTerm}%,name.ilike.%${sanitizedTerm}%`)
+          .order('name', { ascending: true })
+          .limit(limit);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      suggestions = (data || []).map((p) => ({
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-        similarity: p.name.toLowerCase().startsWith(term.toLowerCase()) ? 1 : 0.5,
-      }));
+        suggestions = (data || []).map((p) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          similarity: p.name.toLowerCase().startsWith(term.toLowerCase()) ? 1 : 0.5,
+        }));
+      }
     }
 
-    // Also search for ingredient matches
+    // Also search for ingredient matches (sanitize term here too)
     const supabase = getSupabaseClient();
-    const { data: ingredientMatches } = await supabase
-      .from('product_ingredients')
-      .select('ingredient_name')
-      .ilike('ingredient_name', `${term}%`)
-      .limit(5);
+    const sanitizedIngredientTerm = sanitizeSearchTerm(term);
+    const { data: ingredientMatches } = sanitizedIngredientTerm
+      ? await supabase
+          .from('product_ingredients')
+          .select('ingredient_name')
+          .ilike('ingredient_name', `${sanitizedIngredientTerm}%`)
+          .limit(5)
+      : { data: null };
 
     const ingredientSuggestions = ingredientMatches
       ? [...new Set(ingredientMatches.map((i) => i.ingredient_name))].slice(0, 3)

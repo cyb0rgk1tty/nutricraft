@@ -16,6 +16,7 @@ import {
   findPersonByEmail,
   hasOpportunityForPerson,
 } from '../../../utils/twentyCrm';
+import { logAndSanitize } from '../../../utils/errorSanitizer';
 
 // Cal.com webhook payload structure
 interface CalWebhookPayload {
@@ -272,14 +273,14 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
   } catch (error) {
-    console.error('Cal.com webhook: Unexpected error:', error);
+    // Log full error server-side, return sanitized message to client
+    const safeMessage = logAndSanitize('Cal.com webhook', error, 'Webhook processing failed');
 
     // Return 200 even on errors to prevent Cal.com from retrying indefinitely
-    // Log the error for debugging
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Internal server error',
+        error: safeMessage,
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
