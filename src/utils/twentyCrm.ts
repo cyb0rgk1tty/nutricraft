@@ -236,7 +236,7 @@ export async function findPersonByEmail(email: string): Promise<string | null> {
       filter: {
         emails: {
           primaryEmail: {
-            ilike: `%${email}%`,
+            ilike: email,  // Exact case-insensitive match (no wildcards = uses index)
           },
         },
       },
