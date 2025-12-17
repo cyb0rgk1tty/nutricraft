@@ -9,7 +9,10 @@ import { QueryProvider } from './providers/QueryProvider';
 import { OpportunitiesChart } from './OpportunitiesChart';
 import { RecentActivity } from './RecentActivity';
 import { QuickNav } from './QuickNav';
+import { AdsStatsCards } from './AdsStatsCards';
+import { AdSpendChart } from './AdSpendChart';
 import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useDashboardData, dashboardKeys } from './hooks/useDashboardData';
 
 interface AdminHomeProps {
@@ -52,6 +55,7 @@ function StatCard({
 function HomeContent({ className }: AdminHomeProps) {
   const queryClient = useQueryClient();
   const [selectedDays, setSelectedDays] = useState(14);
+  const [isSyncing, setIsSyncing] = useState(false);
   const { data, isLoading, error } = useDashboardData(selectedDays);
 
   // Listen for external refresh events
@@ -63,6 +67,31 @@ function HomeContent({ className }: AdminHomeProps) {
     window.addEventListener('refreshDashboard', handleRefresh);
     return () => window.removeEventListener('refreshDashboard', handleRefresh);
   }, [queryClient]);
+
+  // Handle Google Ads sync
+  const handleAdsSync = async () => {
+    setIsSyncing(true);
+    try {
+      const response = await fetch('/api/admin/google-ads/sync', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(`Synced ${result.recordsSynced} records from Google Ads`);
+        queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      } else {
+        toast.error(result.error || 'Failed to sync Google Ads data');
+      }
+    } catch (err) {
+      toast.error('Failed to sync Google Ads data');
+      console.error('Ads sync error:', err);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // Handle error state
   if (error) {
@@ -153,6 +182,26 @@ function HomeContent({ className }: AdminHomeProps) {
           onDaysChange={setSelectedDays}
         />
       </div>
+
+      {/* Google Ads Stats */}
+      <div className="mb-6">
+        <AdsStatsCards
+          metrics={data?.adsMetrics}
+          isLoading={isLoading}
+          onRefresh={handleAdsSync}
+          isSyncing={isSyncing}
+        />
+      </div>
+
+      {/* Ad Spend Chart - only show if there's data */}
+      {data?.adsMetrics?.spendByDay && data.adsMetrics.spendByDay.length > 0 && (
+        <div className="mb-6">
+          <AdSpendChart
+            data={data.adsMetrics.spendByDay}
+            isLoading={isLoading}
+          />
+        </div>
+      )}
 
       {/* Quick Nav and Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

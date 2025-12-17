@@ -12,6 +12,7 @@ import type { APIRoute } from 'astro';
 import { fetchOpportunities } from '../../../utils/twentyCrm';
 import { verifySession } from '../../../utils/adminAuth';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
+import { microsToDollars } from '../../../utils/googleAds';
 
 // Types for dashboard response
 interface DailyData {
@@ -20,12 +21,28 @@ interface DailyData {
   count: number;
 }
 
+interface AdsMetrics {
+  totalSpend: number;
+  totalClicks: number;
+  totalImpressions: number;
+  totalConversions: number;
+  averageCpl: number | null;
+  spendByDay: Array<{
+    date: string;
+    dateLabel: string;
+    spend: number;
+    conversions: number;
+  }>;
+  lastSyncedAt: string | null;
+}
+
 interface DashboardResponse {
   success: boolean;
   opportunitiesByDay: DailyData[];
   totalOpportunities: number;
   recentActivity: AuditLog[];
   announcementActive: boolean;
+  adsMetrics?: AdsMetrics;
   error?: string;
 }
 
@@ -93,6 +110,78 @@ async function fetchRecentActivity(limit: number = 10): Promise<AuditLog[]> {
 }
 
 /**
+ * Fetch Google Ads metrics from database
+ */
+async function fetchAdsMetrics(days: number): Promise<AdsMetrics | undefined> {
+  const supabase = getSupabaseServiceClient();
+
+  // Calculate date range
+  const toDate = new Date().toISOString().split('T')[0];
+  const fromDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+  // Fetch daily metrics
+  const { data: dailyData, error: dailyError } = await supabase
+    .from('google_ads_daily')
+    .select('*')
+    .gte('date', fromDate)
+    .lte('date', toDate)
+    .order('date', { ascending: true });
+
+  if (dailyError) {
+    console.error('Error fetching ads metrics:', dailyError);
+    return undefined;
+  }
+
+  // If no data, return undefined (not configured or no data yet)
+  if (!dailyData?.length) {
+    return undefined;
+  }
+
+  // Get last sync time
+  const { data: syncLog } = await supabase
+    .from('google_ads_sync_log')
+    .select('created_at')
+    .eq('status', 'success')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+
+  // Calculate totals
+  const totals = dailyData.reduce(
+    (acc, day) => ({
+      costMicros: acc.costMicros + (day.cost_micros || 0),
+      clicks: acc.clicks + (day.clicks || 0),
+      impressions: acc.impressions + (day.impressions || 0),
+      conversions: acc.conversions + (day.conversions || 0),
+    }),
+    { costMicros: 0, clicks: 0, impressions: 0, conversions: 0 }
+  );
+
+  // Calculate average CPL
+  const averageCpl = totals.conversions > 0
+    ? microsToDollars(totals.costMicros) / totals.conversions
+    : null;
+
+  // Format daily data for chart
+  const spendByDay = dailyData.map((day) => ({
+    date: day.date,
+    dateLabel: formatDateLabel(day.date),
+    spend: microsToDollars(day.cost_micros || 0),
+    conversions: day.conversions || 0,
+  }));
+
+  return {
+    totalSpend: microsToDollars(totals.costMicros),
+    totalClicks: totals.clicks,
+    totalImpressions: totals.impressions,
+    totalConversions: totals.conversions,
+    averageCpl,
+    spendByDay,
+    lastSyncedAt: syncLog?.created_at || null,
+  };
+}
+
+/**
  * Check if announcement is active
  */
 async function checkAnnouncementStatus(): Promise<boolean> {
@@ -137,10 +226,11 @@ export const GET: APIRoute = async ({ request }) => {
     const days = Math.min(Math.max(parseInt(daysParam || '14', 10), 7), 90);
 
     // Fetch all data in parallel
-    const [opportunitiesResult, recentActivity, announcementActive] = await Promise.all([
+    const [opportunitiesResult, recentActivity, announcementActive, adsMetrics] = await Promise.all([
       fetchOpportunities(),
       fetchRecentActivity(10),
       checkAnnouncementStatus(),
+      fetchAdsMetrics(days),
     ]);
 
     // Process opportunities data
@@ -154,6 +244,7 @@ export const GET: APIRoute = async ({ request }) => {
       totalOpportunities,
       recentActivity,
       announcementActive,
+      adsMetrics,
     };
 
     return new Response(JSON.stringify(response), {

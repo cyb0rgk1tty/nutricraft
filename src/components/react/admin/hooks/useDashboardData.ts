@@ -20,12 +20,28 @@ export interface AuditLog {
   quote_id: string | null;
 }
 
+export interface AdsMetrics {
+  totalSpend: number;
+  totalClicks: number;
+  totalImpressions: number;
+  totalConversions: number;
+  averageCpl: number | null;
+  spendByDay: Array<{
+    date: string;
+    dateLabel: string;
+    spend: number;
+    conversions: number;
+  }>;
+  lastSyncedAt: string | null;
+}
+
 export interface DashboardData {
   success: boolean;
   opportunitiesByDay: DailyData[];
   totalOpportunities: number;
   recentActivity: AuditLog[];
   announcementActive: boolean;
+  adsMetrics?: AdsMetrics;
   error?: string;
 }
 
