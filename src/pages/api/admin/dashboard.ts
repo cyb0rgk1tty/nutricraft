@@ -188,7 +188,7 @@ async function checkAnnouncementStatus(): Promise<boolean> {
   const supabase = getSupabaseServiceClient();
 
   const { data, error } = await supabase
-    .from('announcements')
+    .from('site_announcements')
     .select('is_active')
     .eq('type', 'global')
     .single();
