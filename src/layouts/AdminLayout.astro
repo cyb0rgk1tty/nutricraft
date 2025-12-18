@@ -17,7 +17,7 @@ import { verifySession } from '../utils/adminAuth';
 interface Props {
   title: string;
   description?: string;
-  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs';
+  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads' | 'invoices' | 'airwallex';
 }
 
 const { title, description = 'Admin Dashboard', currentPage } = Astro.props;
