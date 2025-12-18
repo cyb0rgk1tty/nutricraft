@@ -13,12 +13,12 @@ const authResult = await verifySession(Astro.request);
 
 // Redirect to quotes page (has login form) if not authenticated
 if (!authResult) {
-  return Astro.redirect('/admin/quotes');
+  return Astro.redirect('/mandash');
 }
 
 // Only nutricraftadmin can access
 if (authResult.user.username !== 'nutricraftadmin') {
-  return Astro.redirect('/admin/quotes');
+  return Astro.redirect('/mandash');
 }
 
 // SEO metadata

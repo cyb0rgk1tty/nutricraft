@@ -48,7 +48,7 @@ export const invoiceKeys = {
 
 // API Function
 async function fetchInvoiceStats(days: number = 30): Promise<InvoiceDataResponse> {
-  const response = await fetch(`/api/admin/invoices/stats?days=${days}`);
+  const response = await fetch(`/api/adminpanel/invoices/stats?days=${days}`);
 
   if (!response.ok) {
     if (response.status === 401) {

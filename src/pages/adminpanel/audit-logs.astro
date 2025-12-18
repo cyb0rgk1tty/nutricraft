@@ -12,12 +12,12 @@ const authResult = await verifySession(Astro.request);
 
 // Redirect to login if not authenticated
 if (!authResult) {
-  return Astro.redirect('/admin/quotes');
+  return Astro.redirect('/mandash');
 }
 
 // Only nutricraftadmin can view audit logs
 if (authResult.user.username !== 'nutricraftadmin') {
-  return Astro.redirect('/admin/quotes');
+  return Astro.redirect('/mandash');
 }
 
 // SEO metadata
@@ -369,10 +369,10 @@ const description = 'View audit logs for the manufacturer dashboard';
     logsContainer?.classList.add('hidden');
 
     try {
-      const response = await fetch(`/api/admin/audit-logs?${buildQueryString()}`);
+      const response = await fetch(`/api/adminpanel/audit-logs?${buildQueryString()}`);
 
       if (response.status === 401) {
-        window.location.href = '/admin/quotes';
+        window.location.href = '/mandash';
         return;
       }
 

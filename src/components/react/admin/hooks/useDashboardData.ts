@@ -53,7 +53,7 @@ export const dashboardKeys = {
 
 // API Function
 async function fetchDashboardData(days: number = 14): Promise<DashboardData> {
-  const response = await fetch(`/api/admin/dashboard?days=${days}`);
+  const response = await fetch(`/api/adminpanel/dashboard?days=${days}`);
 
   if (!response.ok) {
     if (response.status === 401) {

@@ -38,7 +38,7 @@ interface SyncLog {
 
 // Fetch ads metrics for a date range
 async function fetchAdsMetrics(days: number): Promise<AdsMetrics | null> {
-  const response = await fetch(`/api/admin/dashboard?days=${days}`, {
+  const response = await fetch(`/api/adminpanel/dashboard?days=${days}`, {
     credentials: 'include',
   });
 
@@ -52,7 +52,7 @@ async function fetchAdsMetrics(days: number): Promise<AdsMetrics | null> {
 
 // Fetch sync logs
 async function fetchSyncLogs(): Promise<SyncLog[]> {
-  const response = await fetch('/api/admin/google-ads/logs', {
+  const response = await fetch('/api/adminpanel/google-ads/logs', {
     credentials: 'include',
   });
 
@@ -87,7 +87,7 @@ function GoogleAdsContent() {
   const handleSync = async () => {
     setIsSyncing(true);
     try {
-      const response = await fetch('/api/admin/google-ads/sync', {
+      const response = await fetch('/api/adminpanel/google-ads/sync', {
         method: 'POST',
         credentials: 'include',
       });

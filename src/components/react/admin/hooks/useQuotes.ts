@@ -27,7 +27,7 @@ async function fetchQuotes(options: FetchQuotesOptions): Promise<PaginatedQuotes
   if (options.sortField) params.set('sortField', options.sortField);
   if (options.sortDirection) params.set('sortDirection', options.sortDirection);
 
-  const response = await fetch(`/api/admin/quotes?${params.toString()}`);
+  const response = await fetch(`/api/adminpanel/quotes?${params.toString()}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch quotes');
@@ -37,7 +37,7 @@ async function fetchQuotes(options: FetchQuotesOptions): Promise<PaginatedQuotes
 }
 
 async function updateQuote(id: string, updates: Partial<Quote>): Promise<UpdateQuoteResponse> {
-  const response = await fetch(`/api/admin/quotes/${id}`, {
+  const response = await fetch(`/api/adminpanel/quotes/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates),

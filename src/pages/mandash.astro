@@ -6,9 +6,9 @@
  *
  * Now uses React components with TanStack Query for data fetching and Zustand for state management.
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { AdminDashboard } from '../../components/react/admin';
-import { verifySession } from '../../utils/adminAuth';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { AdminDashboard } from '../components/react/admin';
+import { verifySession } from '../utils/adminAuth';
 
 // Check if user is already authenticated via cookie
 const authResult = await verifySession(Astro.request);
@@ -150,11 +150,11 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
    */
 
   // Import i18n functions dynamically
-  let i18n: typeof import('../../utils/i18n/index') | null = null;
+  let i18n: typeof import('../utils/i18n/index') | null = null;
 
   // Initialize i18n module
   async function initI18n() {
-    i18n = await import('../../utils/i18n/index');
+    i18n = await import('../utils/i18n/index');
     updateAllText();
   }
 
@@ -404,7 +404,7 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
         requestBody.captchaToken = captchaToken;
       }
 
-      const response = await fetch('/api/admin/login', {
+      const response = await fetch('/api/adminpanel/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),

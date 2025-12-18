@@ -10,7 +10,7 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), sitemap({
-    filter: (page) => !page.includes('/admin/') && !page.includes('/catalog'),
+    filter: (page) => !page.includes('/adminpanel/') && !page.includes('/mandash') && !page.includes('/catalog'),
     customPages: [
       // Dosage Forms
       'https://nutricraftlabs.com/dosage-forms/tablets',
@@ -59,7 +59,7 @@ export default defineConfig({
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/', '/catalog']
+        disallow: ['/api/', '/catalog']
       }
     ]
   }), react()],

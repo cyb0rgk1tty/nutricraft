@@ -13,7 +13,7 @@ const isAuthenticated = !!authResult;
 
 // Redirect to quotes page if not authenticated (that page has the login form)
 if (!isAuthenticated) {
-  return Astro.redirect('/admin/quotes');
+  return Astro.redirect('/mandash');
 }
 
 // Fetch current announcement
@@ -177,7 +177,7 @@ const description = 'Admin settings for Nutricraft Labs website';
     }
 
     try {
-      const response = await fetch('/api/admin/announcements', {
+      const response = await fetch('/api/adminpanel/announcements', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

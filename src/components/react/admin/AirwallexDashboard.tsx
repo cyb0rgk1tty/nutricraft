@@ -74,7 +74,7 @@ interface SyncLog {
 
 // Fetch Airwallex dashboard data
 async function fetchAirwallexData(days: number): Promise<AirwallexData> {
-  const response = await fetch(`/api/admin/airwallex?days=${days}`, {
+  const response = await fetch(`/api/adminpanel/airwallex?days=${days}`, {
     credentials: 'include',
   });
 
@@ -87,7 +87,7 @@ async function fetchAirwallexData(days: number): Promise<AirwallexData> {
 
 // Fetch sync logs
 async function fetchSyncLogs(): Promise<SyncLog[]> {
-  const response = await fetch('/api/admin/airwallex/logs', {
+  const response = await fetch('/api/adminpanel/airwallex/logs', {
     credentials: 'include',
   });
 
@@ -175,7 +175,7 @@ function AirwallexContent() {
   const handleSync = async () => {
     setIsSyncing(true);
     try {
-      const response = await fetch(`/api/admin/airwallex/sync?days=${selectedDays}`, {
+      const response = await fetch(`/api/adminpanel/airwallex/sync?days=${selectedDays}`, {
         method: 'POST',
         credentials: 'include',
       });

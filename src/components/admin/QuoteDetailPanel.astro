@@ -692,7 +692,7 @@
     if (!currentQuote) return;
 
     try {
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}`, {
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -731,7 +731,7 @@
 
     try {
       // First save locally
-      const saveResponse = await fetch(`/api/admin/quotes/${currentQuote.id}`, {
+      const saveResponse = await fetch(`/api/adminpanel/quotes/${currentQuote.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -748,7 +748,7 @@
       window.dispatchEvent(new CustomEvent('quoteUpdated', { detail: { quote: currentQuote } }));
 
       // Then sync to CRM
-      const syncResponse = await fetch(`/api/admin/quotes/${currentQuote.id}/sync`, {
+      const syncResponse = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/sync`, {
         method: 'POST',
       });
 
@@ -912,7 +912,7 @@
     documentsLoading?.classList.remove('hidden');
 
     try {
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}/documents`);
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/documents`);
       const data = await response.json();
 
       if (data.success) {
@@ -1039,7 +1039,7 @@
         }
       }, 100);
 
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}/documents`, {
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/documents`, {
         method: 'POST',
         body: formData,
       });
@@ -1088,7 +1088,7 @@
 
     try {
       // Get signed URL
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}/documents/${docId}/url`);
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/documents/${docId}/url`);
       const data = await response.json();
 
       if (!data.success) {
@@ -1170,7 +1170,7 @@
     if (!currentViewingDoc || !currentQuote) return;
 
     try {
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}/documents/${currentViewingDoc.id}/url`);
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/documents/${currentViewingDoc.id}/url`);
       const data = await response.json();
 
       if (data.success) {
@@ -1204,7 +1204,7 @@
     if (!currentQuote) return;
 
     try {
-      const response = await fetch(`/api/admin/quotes/${currentQuote.id}/documents/${docId}`, {
+      const response = await fetch(`/api/adminpanel/quotes/${currentQuote.id}/documents/${docId}`, {
         method: 'DELETE',
       });
 

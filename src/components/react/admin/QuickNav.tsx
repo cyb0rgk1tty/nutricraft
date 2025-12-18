@@ -86,7 +86,7 @@ export function QuickNav({ totalOpportunities, announcementActive, isLoading }: 
           <NavCard
             title="Quotes"
             description="Manage quote requests and pricing"
-            href="/admin/quotes"
+            href="/mandash"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -105,7 +105,7 @@ export function QuickNav({ totalOpportunities, announcementActive, isLoading }: 
           <NavCard
             title="Settings"
             description="Site announcements and configuration"
-            href="/admin/settings"
+            href="/adminpanel/settings"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -130,7 +130,7 @@ export function QuickNav({ totalOpportunities, announcementActive, isLoading }: 
           <NavCard
             title="Audit Logs"
             description="View activity and change history"
-            href="/admin/audit-logs"
+            href="/adminpanel/audit-logs"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

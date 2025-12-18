@@ -154,7 +154,7 @@ export function InvoiceStatsCards({ stats, isLoading, configured = true }: Invoi
           </p>
         </div>
         <a
-          href="/admin/invoices"
+          href="/adminpanel/invoices"
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
         >
           View Details

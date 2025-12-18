@@ -206,7 +206,7 @@ export function RecentActivity({ activities, isLoading }: RecentActivityProps) {
 
       <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
         <a
-          href="/admin/audit-logs"
+          href="/adminpanel/audit-logs"
           className="flex items-center justify-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
         >
           View all activity

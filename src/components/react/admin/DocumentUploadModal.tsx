@@ -141,7 +141,7 @@ export function DocumentUploadModal({
         const formData = new FormData();
         formData.append('file', fileItem.file);
 
-        const response = await fetch(`/api/admin/quotes/${quoteId}/documents`, {
+        const response = await fetch(`/api/adminpanel/quotes/${quoteId}/documents`, {
           method: 'POST',
           body: formData,
         });

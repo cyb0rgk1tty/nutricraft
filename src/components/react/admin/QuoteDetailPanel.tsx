@@ -323,7 +323,7 @@ export function QuoteDetailPanel() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch(`/api/admin/quotes/${selectedQuote.id}/documents`, {
+        const response = await fetch(`/api/adminpanel/quotes/${selectedQuote.id}/documents`, {
           method: 'POST',
           body: formData,
         });
@@ -354,7 +354,7 @@ export function QuoteDetailPanel() {
     if (!selectedQuote) return;
 
     try {
-      const response = await fetch(`/api/admin/quotes/${selectedQuote.id}/documents/${documentId}`, {
+      const response = await fetch(`/api/adminpanel/quotes/${selectedQuote.id}/documents/${documentId}`, {
         method: 'DELETE',
       });
 

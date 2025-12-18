@@ -77,7 +77,7 @@ function HomeContent({ className }: AdminHomeProps) {
   const handleAdsSync = async () => {
     setIsSyncing(true);
     try {
-      const response = await fetch('/api/admin/google-ads/sync', {
+      const response = await fetch('/api/adminpanel/google-ads/sync', {
         method: 'POST',
         credentials: 'include',
       });
