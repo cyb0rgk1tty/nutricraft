@@ -122,8 +122,8 @@ function HomeContent({ className }: AdminHomeProps) {
   const totalOpportunities = data?.totalOpportunities || 0;
   const dailyData = data?.opportunitiesByDay || [];
 
-  // Calculate stats from daily data
-  const today = new Date().toISOString().split('T')[0];
+  // Calculate stats from daily data (using EST timezone)
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
   const todayCount = dailyData.find(d => d.date === today)?.count || 0;
 
   // Last 7 days sum

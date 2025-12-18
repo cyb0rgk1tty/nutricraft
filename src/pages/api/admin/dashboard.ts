@@ -74,7 +74,8 @@ function groupByDay(opportunities: Array<{ createdAt: string }>, numDays: number
 
   for (const opp of opportunities) {
     if (!opp.createdAt) continue;
-    const dateKey = opp.createdAt.split('T')[0]; // Extract YYYY-MM-DD
+    // Convert UTC timestamp to EST date (handles daylight saving automatically)
+    const dateKey = new Date(opp.createdAt).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     dayMap.set(dateKey, (dayMap.get(dateKey) || 0) + 1);
   }
 
