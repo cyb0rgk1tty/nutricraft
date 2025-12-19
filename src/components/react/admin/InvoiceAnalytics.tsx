@@ -166,7 +166,7 @@ function OverdueInvoicesList({ count, amount, isLoading }: { count: number; amou
 
 function InvoiceAnalyticsContent() {
   const queryClient = useQueryClient();
-  const [selectedDays, setSelectedDays] = useState<number | 'month'>(30);
+  const [selectedDays, setSelectedDays] = useState<number | 'month' | 'all'>(30);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { data: invoiceData, isLoading, error, dataUpdatedAt } = useInvoiceData(selectedDays);
 
@@ -196,13 +196,14 @@ function InvoiceAnalyticsContent() {
   };
 
   // Date range options
-  const dateRangeOptions: Array<{ value: number | 'month'; label: string }> = [
+  const dateRangeOptions: Array<{ value: number | 'month' | 'all'; label: string }> = [
     { value: 7, label: '7 days' },
     { value: 14, label: '14 days' },
     { value: 30, label: '30 days' },
     { value: 60, label: '60 days' },
     { value: 90, label: '90 days' },
     { value: 'month', label: 'This Month' },
+    { value: 'all', label: 'All Time' },
   ];
 
   if (error) {

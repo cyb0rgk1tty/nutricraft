@@ -55,16 +55,21 @@ export const GET: APIRoute = async ({ request }) => {
     const url = new URL(request.url);
     const daysParam = url.searchParams.get('days');
     const thisMonthParam = url.searchParams.get('thisMonth') === 'true';
+    const allTimeParam = url.searchParams.get('allTime') === 'true';
 
-    // days parameter: default 30, min 1 (for This Month), max 90
-    const days = Math.min(Math.max(parseInt(daysParam || '30', 10), 1), 90);
+    // days parameter: default 30, min 1, max 3650 (for All Time ~10 years)
+    const days = Math.min(Math.max(parseInt(daysParam || '30', 10), 1), 3650);
 
     // Fetch invoice stats
     const result = await fetchInvoiceStats(days);
 
-    // Override period label if thisMonth flag is set
-    if (thisMonthParam && result.data) {
-      result.data.periodLabel = 'This Month';
+    // Override period label based on filter type
+    if (result.data) {
+      if (allTimeParam) {
+        result.data.periodLabel = 'All Time';
+      } else if (thisMonthParam) {
+        result.data.periodLabel = 'This Month';
+      }
     }
 
     if (!result.success) {

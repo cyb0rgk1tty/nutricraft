@@ -64,7 +64,7 @@ export interface InvoiceDataResponse {
 // Query keys
 export const invoiceKeys = {
   all: ['invoices'] as const,
-  stats: (days?: number | 'month') => [...invoiceKeys.all, 'stats', days] as const,
+  stats: (days?: number | 'month' | 'all') => [...invoiceKeys.all, 'stats', days] as const,
 };
 
 // Calculate days since start of month
@@ -76,12 +76,21 @@ function getDaysThisMonth(): number {
 }
 
 // API Function
-async function fetchInvoiceStats(days: number | 'month' = 30): Promise<InvoiceDataResponse> {
-  // Convert 'month' to actual days
-  const actualDays = days === 'month' ? getDaysThisMonth() : days;
+async function fetchInvoiceStats(days: number | 'month' | 'all' = 30): Promise<InvoiceDataResponse> {
+  // Handle special filter values
   const isThisMonth = days === 'month';
+  const isAllTime = days === 'all';
 
-  const response = await fetch(`/api/adminpanel/invoices/stats?days=${actualDays}&thisMonth=${isThisMonth}`);
+  let actualDays: number;
+  if (days === 'month') {
+    actualDays = getDaysThisMonth();
+  } else if (days === 'all') {
+    actualDays = 3650; // ~10 years - effectively all time
+  } else {
+    actualDays = days;
+  }
+
+  const response = await fetch(`/api/adminpanel/invoices/stats?days=${actualDays}&thisMonth=${isThisMonth}&allTime=${isAllTime}`);
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -97,10 +106,7 @@ async function fetchInvoiceStats(days: number | 'month' = 30): Promise<InvoiceDa
 }
 
 // Hook
-export function useInvoiceData(days: number | 'month' = 30) {
-  // Convert 'month' to actual days for query key consistency
-  const actualDays = days === 'month' ? getDaysThisMonth() : days;
-
+export function useInvoiceData(days: number | 'month' | 'all' = 30) {
   return useQuery({
     queryKey: invoiceKeys.stats(days),
     queryFn: () => fetchInvoiceStats(days),

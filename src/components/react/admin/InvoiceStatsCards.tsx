@@ -31,7 +31,7 @@ interface InvoiceStatsCardsProps {
   stats?: InvoiceStats;
   isLoading?: boolean;
   configured?: boolean;
-  selectedDays?: number | 'month';
+  selectedDays?: number | 'month' | 'all';
 }
 
 // Format currency (CAD - base currency)
