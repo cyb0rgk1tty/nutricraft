@@ -6,12 +6,14 @@
  *
  * Query params:
  * - days: Number of days to sync (default: 30, max: 90)
+ * - clear: If 'true', clears existing transactions before syncing
  *
  * Protected by admin authentication (nutricraftadmin only).
  */
 
 import type { APIRoute } from 'astro';
 import { verifySession } from '../../../../utils/adminAuth';
+import { getSupabaseServiceClient } from '../../../../utils/supabase';
 import {
   isAirwallexConfigured,
   syncTransactionsToDb,
@@ -46,6 +48,22 @@ export const POST: APIRoute = async ({ request, url }) => {
       parseInt(url.searchParams.get('days') || '30', 10),
       90
     );
+
+    // Check if we should clear existing transactions first
+    const shouldClear = url.searchParams.get('clear') === 'true';
+    if (shouldClear) {
+      console.log('[Airwallex] Clearing existing transactions before sync...');
+      const { error: deleteError } = await getSupabaseServiceClient()
+        .from('airwallex_transactions')
+        .delete()
+        .neq('id', ''); // Delete all rows
+
+      if (deleteError) {
+        console.error('[Airwallex] Failed to clear transactions:', deleteError);
+      } else {
+        console.log('[Airwallex] Cleared existing transactions');
+      }
+    }
 
     // Sync transactions
     const result = await syncTransactionsToDb(days);

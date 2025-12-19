@@ -303,7 +303,11 @@ async function fetchTransactionsFromApi(
 
   // Log first item to see actual field names from Airwallex API
   if (data.items?.length > 0) {
-    console.log('[Airwallex] Sample transaction fields:', JSON.stringify(data.items[0], null, 2));
+    const sample = data.items[0];
+    console.log('[Airwallex] Sample transaction - all fields:', Object.keys(sample));
+    console.log('[Airwallex] Sample transaction - raw data:', JSON.stringify(sample, null, 2));
+  } else {
+    console.log('[Airwallex] No transactions returned from API for date range');
   }
 
   return (data.items || []).map((item: any) => ({
