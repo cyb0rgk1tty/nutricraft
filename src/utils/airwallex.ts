@@ -328,13 +328,15 @@ async function fetchTransactionsFromApi(
     id: item.id,
     amount: Number(item.amount) || 0,
     currency: item.currency,
-    type: item.transaction_type || item.type || 'unknown',
+    // Airwallex uses camelCase: transactionType
+    type: item.transactionType || item.transaction_type || item.type || 'unknown',
     status: item.status || 'completed',
     description: item.description || null,
-    source_id: item.source_id || null,
-    source_type: item.source_type || null,
-    // Airwallex uses different date field names depending on the API version
-    created_at: item.created_at || item.posted_at || item.transaction_date || item.batch_date || new Date().toISOString(),
+    // Airwallex uses camelCase: sourceId, sourceType
+    source_id: item.sourceId || item.source_id || null,
+    source_type: item.sourceType || item.source_type || null,
+    // Airwallex uses camelCase: createdAt
+    created_at: item.createdAt || item.created_at || item.settledAt || new Date().toISOString(),
   }));
 }
 
