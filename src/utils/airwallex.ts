@@ -301,6 +301,11 @@ async function fetchTransactionsFromApi(
     authenticatedRequest<any>(`/api/v1/financial_transactions?${params.toString()}`)
   );
 
+  // Log first item to see actual field names from Airwallex API
+  if (data.items?.length > 0) {
+    console.log('[Airwallex] Sample transaction fields:', JSON.stringify(data.items[0], null, 2));
+  }
+
   return (data.items || []).map((item: any) => ({
     id: item.id,
     amount: Number(item.amount) || 0,
