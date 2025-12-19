@@ -24,11 +24,11 @@ interface InvoiceStatsCardsProps {
   configured?: boolean;
 }
 
-// Format currency
+// Format currency (CAD - base currency)
 function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value);

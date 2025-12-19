@@ -27,11 +27,11 @@ interface RevenueChartProps {
   isLoading?: boolean;
 }
 
-// Format currency for tooltip
+// Format currency for tooltip (CAD - base currency)
 function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value);

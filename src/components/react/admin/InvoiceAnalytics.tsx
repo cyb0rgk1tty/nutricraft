@@ -35,11 +35,11 @@ const STATUS_COLORS = {
   overdue: '#EF4444',
 };
 
-// Format currency
+// Format currency (CAD - base currency)
 function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value);
@@ -252,7 +252,12 @@ function InvoiceAnalyticsContent() {
       <div className="bg-white rounded-xl border border-gray-200 p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Date Range</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-gray-900">Date Range</h2>
+              <span className="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
+                All amounts in CAD
+              </span>
+            </div>
             <p className="text-sm text-gray-500">
               {dataUpdatedAt
                 ? `Last updated: ${formatLastUpdated(dataUpdatedAt)}`

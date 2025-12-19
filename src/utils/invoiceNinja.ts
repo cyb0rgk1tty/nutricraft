@@ -33,6 +33,8 @@ export interface Invoice {
   due_date: string;
   created_at: number;
   updated_at: number;
+  currency_id: string;
+  exchange_rate: number;  // Rate to convert to base currency (CAD)
   client?: {
     id: string;
     name: string;
@@ -48,6 +50,8 @@ export interface Payment {
   date: string;
   created_at: number;
   transaction_reference: string;
+  currency_id: string;
+  exchange_rate: number;  // Rate to convert to base currency (CAD)
   client?: {
     id: string;
     name: string;
@@ -267,7 +271,16 @@ function isOverdue(invoice: Invoice): boolean {
 }
 
 /**
+ * Convert amount to base currency (CAD) using exchange rate
+ * If exchange_rate is not provided, assume it's already in base currency
+ */
+function toBaseCurrency(amount: number, exchangeRate?: number): number {
+  return amount * (exchangeRate || 1);
+}
+
+/**
  * Fetch comprehensive invoice statistics for the dashboard
+ * All amounts are converted to CAD (base currency) using exchange rates
  */
 export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinjaResult<InvoiceStats>> {
   try {
@@ -293,24 +306,26 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
     const monthStart = getMonthStart();
     const daysAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-    // Calculate total revenue (sum of all payments)
-    const totalRevenue = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+    // Calculate total revenue (sum of all payments, converted to CAD)
+    const totalRevenue = payments.reduce((sum, p) => {
+      return sum + toBaseCurrency(p.amount || 0, p.exchange_rate);
+    }, 0);
 
-    // Calculate revenue this month
+    // Calculate revenue this month (converted to CAD)
     const revenueThisMonth = payments
       .filter(p => p.date >= monthStart)
-      .reduce((sum, p) => sum + (p.amount || 0), 0);
+      .reduce((sum, p) => sum + toBaseCurrency(p.amount || 0, p.exchange_rate), 0);
 
-    // Calculate outstanding balance (sum of unpaid invoice balances)
+    // Calculate outstanding balance (sum of unpaid invoice balances, converted to CAD)
     const outstandingBalance = invoices
       .filter(inv => inv.status_id !== INVOICE_STATUS.PAID && inv.balance > 0)
-      .reduce((sum, inv) => sum + inv.balance, 0);
+      .reduce((sum, inv) => sum + toBaseCurrency(inv.balance, inv.exchange_rate), 0);
 
-    // Calculate overdue invoices
+    // Calculate overdue invoices (converted to CAD)
     const overdueInvoicesList = invoices.filter(isOverdue);
     const overdueInvoices = {
       count: overdueInvoicesList.length,
-      amount: overdueInvoicesList.reduce((sum, inv) => sum + inv.balance, 0),
+      amount: overdueInvoicesList.reduce((sum, inv) => sum + toBaseCurrency(inv.balance, inv.exchange_rate), 0),
     };
 
     // Invoices sent this month
@@ -318,23 +333,23 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
       inv => inv.date >= monthStart && inv.status_id !== INVOICE_STATUS.DRAFT
     ).length;
 
-    // Recent payments (last 10)
+    // Recent payments (last 10, amounts converted to CAD)
     const recentPayments = payments
       .slice(0, 10)
       .map(p => ({
         id: p.id,
         clientName: p.client?.display_name || p.client?.name || 'Unknown',
-        amount: p.amount,
+        amount: toBaseCurrency(p.amount, p.exchange_rate),
         date: p.date,
       }));
 
-    // Revenue by day (for chart)
+    // Revenue by day (for chart, converted to CAD)
     const revenueByDayMap = new Map<string, number>();
     payments
       .filter(p => p.date >= daysAgo)
       .forEach(p => {
         const existing = revenueByDayMap.get(p.date) || 0;
-        revenueByDayMap.set(p.date, existing + p.amount);
+        revenueByDayMap.set(p.date, existing + toBaseCurrency(p.amount, p.exchange_rate));
       });
 
     const revenueByDay = Array.from(revenueByDayMap.entries())
@@ -413,24 +428,24 @@ export function getWebhookSecret(): string | null {
 }
 
 /**
- * Format currency value
+ * Format currency value (CAD - base currency)
  */
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
 }
 
 /**
- * Format currency with decimals
+ * Format currency with decimals (CAD - base currency)
  */
 export function formatCurrencyPrecise(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CAD',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
