@@ -310,7 +310,8 @@ async function fetchTransactionsFromApi(
     description: item.description || null,
     source_id: item.source_id || null,
     source_type: item.source_type || null,
-    created_at: item.created_at,
+    // Airwallex uses different date field names depending on the API version
+    created_at: item.created_at || item.posted_at || item.transaction_date || item.batch_date || new Date().toISOString(),
   }));
 }
 
