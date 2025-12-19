@@ -297,9 +297,23 @@ async function fetchTransactionsFromApi(
     page_size: '200',
   });
 
+  console.log('[Airwallex] Fetching transactions:', {
+    from: fromDate.toISOString(),
+    to: toDate.toISOString(),
+    endpoint: `/api/v1/financial_transactions?${params.toString()}`,
+  });
+
   const data = await apiRequestWithRetry(() =>
     authenticatedRequest<any>(`/api/v1/financial_transactions?${params.toString()}`)
   );
+
+  console.log('[Airwallex] API response:', {
+    hasItems: !!data.items,
+    itemCount: data.items?.length || 0,
+    totalCount: data.total_count,
+    page: data.page_num,
+    responseKeys: Object.keys(data),
+  });
 
   // Log first item to see actual field names from Airwallex API
   if (data.items?.length > 0) {
