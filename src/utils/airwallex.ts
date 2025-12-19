@@ -157,17 +157,6 @@ async function getAccessToken(): Promise<string> {
     return cachedToken;
   }
 
-  // Log configuration for debugging (partial credentials only)
-  const clientIdPreview = config.clientId ? `${config.clientId.substring(0, 8)}...` : 'NOT SET';
-  const apiKeyPreview = config.apiKey ? `${config.apiKey.substring(0, 8)}...` : 'NOT SET';
-  console.log('[Airwallex] Authenticating:', {
-    baseUrl: config.baseUrl,
-    clientIdPreview,
-    apiKeyPreview,
-    clientIdLength: config.clientId?.length || 0,
-    apiKeyLength: config.apiKey?.length || 0,
-  });
-
   // Fetch new token
   const response = await fetch(`${config.baseUrl}/api/v1/authentication/login`, {
     method: 'POST',
@@ -189,15 +178,7 @@ async function getAccessToken(): Promise<string> {
       // Not JSON, use raw text
     }
 
-    console.error('[Airwallex] Authentication failed:', {
-      status: response.status,
-      statusText: response.statusText,
-      errorText: errorText.substring(0, 500),
-      errorCode: errorDetails?.code,
-      errorMessage: errorDetails?.message,
-      errorSource: errorDetails?.source,
-    });
-
+    console.error('[Airwallex] Authentication failed:', response.status);
     const errorMsg = errorDetails?.message || `Authentication failed: ${response.status}`;
     throw new Error(`API error: ${response.status} - ${errorMsg}`);
   }
@@ -206,8 +187,6 @@ async function getAccessToken(): Promise<string> {
   cachedToken = data.token;
   // Token is valid for 30 minutes
   tokenExpiry = Date.now() + 30 * 60 * 1000;
-
-  console.log('[Airwallex] Authentication successful, token obtained');
 
   return cachedToken!;
 }
@@ -297,32 +276,9 @@ async function fetchTransactionsFromApi(
     page_size: '200',
   });
 
-  console.log('[Airwallex] Fetching transactions:', {
-    from: fromDate.toISOString(),
-    to: toDate.toISOString(),
-    endpoint: `/api/v1/financial_transactions?${params.toString()}`,
-  });
-
   const data = await apiRequestWithRetry(() =>
     authenticatedRequest<any>(`/api/v1/financial_transactions?${params.toString()}`)
   );
-
-  console.log('[Airwallex] API response:', {
-    hasItems: !!data.items,
-    itemCount: data.items?.length || 0,
-    totalCount: data.total_count,
-    page: data.page_num,
-    responseKeys: Object.keys(data),
-  });
-
-  // Log first item to see actual field names from Airwallex API
-  if (data.items?.length > 0) {
-    const sample = data.items[0];
-    console.log('[Airwallex] Sample transaction - all fields:', Object.keys(sample));
-    console.log('[Airwallex] Sample transaction - raw data:', JSON.stringify(sample, null, 2));
-  } else {
-    console.log('[Airwallex] No transactions returned from API for date range');
-  }
 
   return (data.items || []).map((item: any) => ({
     id: item.id,

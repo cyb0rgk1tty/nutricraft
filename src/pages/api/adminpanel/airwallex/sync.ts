@@ -52,7 +52,6 @@ export const POST: APIRoute = async ({ request, url }) => {
     // Check if we should clear existing transactions first
     const shouldClear = url.searchParams.get('clear') === 'true';
     if (shouldClear) {
-      console.log('[Airwallex] Clearing existing transactions before sync...');
       const { error: deleteError } = await getSupabaseServiceClient()
         .from('airwallex_transactions')
         .delete()
@@ -60,8 +59,6 @@ export const POST: APIRoute = async ({ request, url }) => {
 
       if (deleteError) {
         console.error('[Airwallex] Failed to clear transactions:', deleteError);
-      } else {
-        console.log('[Airwallex] Cleared existing transactions');
       }
     }
 
