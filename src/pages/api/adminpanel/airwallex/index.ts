@@ -44,7 +44,20 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // Get query params
-    const days = parseInt(url.searchParams.get('days') || '30', 10);
+    const daysParam = url.searchParams.get('days') || '30';
+    const thisMonth = url.searchParams.get('thisMonth') === 'true';
+    const allTime = url.searchParams.get('allTime') === 'true';
+
+    // Parse days (allow up to 3650 for "All Time")
+    const days = Math.min(Math.max(parseInt(daysParam, 10), 1), 3650);
+
+    // Determine period label for display
+    let periodLabel = `Last ${days} Days`;
+    if (allTime) {
+      periodLabel = 'All Time';
+    } else if (thisMonth) {
+      periodLabel = 'This Month';
+    }
 
     // Fetch data in parallel
     const [balancesResult, transactionsResult, lastSync] = await Promise.all([
@@ -69,6 +82,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         stats,
         lastSync,
         days,
+        periodLabel,
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );

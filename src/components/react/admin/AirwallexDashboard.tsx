@@ -61,6 +61,7 @@ interface AirwallexData {
   stats: AirwallexStats | null;
   lastSync: { synced_at: string; records_synced: number } | null;
   days: number;
+  periodLabel?: string;
 }
 
 interface SyncLog {
@@ -72,11 +73,33 @@ interface SyncLog {
   synced_at: string;
 }
 
+// Calculate days since start of month
+function getDaysThisMonth(): number {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const diffTime = now.getTime() - startOfMonth.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+}
+
 // Fetch Airwallex dashboard data
-async function fetchAirwallexData(days: number): Promise<AirwallexData> {
-  const response = await fetch(`/api/adminpanel/airwallex?days=${days}`, {
-    credentials: 'include',
-  });
+async function fetchAirwallexData(days: number | 'month' | 'all'): Promise<AirwallexData> {
+  // Handle special filter values
+  const isThisMonth = days === 'month';
+  const isAllTime = days === 'all';
+
+  let actualDays: number;
+  if (days === 'month') {
+    actualDays = getDaysThisMonth();
+  } else if (days === 'all') {
+    actualDays = 3650; // ~10 years
+  } else {
+    actualDays = days;
+  }
+
+  const response = await fetch(
+    `/api/adminpanel/airwallex?days=${actualDays}&thisMonth=${isThisMonth}&allTime=${isAllTime}`,
+    { credentials: 'include' }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch Airwallex data');
@@ -154,14 +177,15 @@ function getStatusColor(status: string): string {
 
 function AirwallexContent() {
   const queryClient = useQueryClient();
-  const [selectedDays, setSelectedDays] = useState(30);
+  const [selectedDays, setSelectedDays] = useState<number | 'month' | 'all'>(30);
   const [isSyncing, setIsSyncing] = useState(false);
 
-  // Fetch Airwallex data
+  // Fetch Airwallex data (with 5-minute polling to match Invoice Ninja)
   const { data, isLoading, error } = useQuery({
     queryKey: ['airwallexData', selectedDays],
     queryFn: () => fetchAirwallexData(selectedDays),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // Poll every 5 minutes (matches Invoice Ninja)
   });
 
   // Fetch sync logs
@@ -169,13 +193,24 @@ function AirwallexContent() {
     queryKey: ['airwallexSyncLogs'],
     queryFn: fetchSyncLogs,
     staleTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // Poll every 5 minutes
   });
 
   // Handle manual sync
   const handleSync = async () => {
     setIsSyncing(true);
     try {
-      const response = await fetch(`/api/adminpanel/airwallex/sync?days=${selectedDays}`, {
+      // Convert special values to actual days for sync
+      let syncDays: number;
+      if (selectedDays === 'month') {
+        syncDays = getDaysThisMonth();
+      } else if (selectedDays === 'all') {
+        syncDays = 365; // Sync last year for "All Time" (API has 7-day batch limit)
+      } else {
+        syncDays = selectedDays;
+      }
+
+      const response = await fetch(`/api/adminpanel/airwallex/sync?days=${syncDays}`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -197,13 +232,15 @@ function AirwallexContent() {
     }
   };
 
-  // Date range options
-  const dateRangeOptions = [
+  // Date range options (matching Invoice Ninja dashboard)
+  const dateRangeOptions: Array<{ value: number | 'month' | 'all'; label: string }> = [
     { value: 7, label: '7 days' },
     { value: 14, label: '14 days' },
     { value: 30, label: '30 days' },
     { value: 60, label: '60 days' },
     { value: 90, label: '90 days' },
+    { value: 'month', label: 'This Month' },
+    { value: 'all', label: 'All Time' },
   ];
 
   // Format date for display
