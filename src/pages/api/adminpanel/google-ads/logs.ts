@@ -5,7 +5,7 @@
 
 import type { APIRoute } from 'astro';
 import { verifySession } from '../../../../utils/adminAuth';
-import { supabase } from '../../../../utils/supabase';
+import { getSupabaseServiceClient } from '../../../../utils/supabase';
 
 export const GET: APIRoute = async ({ request }) => {
   // Verify admin session
@@ -27,7 +27,7 @@ export const GET: APIRoute = async ({ request }) => {
 
   try {
     // Fetch recent sync logs
-    const { data: logs, error } = await supabase
+    const { data: logs, error } = await getSupabaseServiceClient()
       .from('google_ads_sync_log')
       .select('*')
       .order('created_at', { ascending: false })

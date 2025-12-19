@@ -19,7 +19,10 @@
  * - Rate limits apply (implement exponential backoff)
  */
 
-import { supabase } from './supabase';
+import { getSupabaseServiceClient } from './supabase';
+
+// Get supabase client (service role for admin operations)
+const getSupabase = () => getSupabaseServiceClient();
 
 // Types
 export interface AirwallexConfig {
@@ -317,7 +320,7 @@ export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncR
 
     // Upsert to database
     if (allTransactions.length > 0) {
-      const { error } = await supabase
+      const { error } = await getSupabase()
         .from('airwallex_transactions')
         .upsert(
           allTransactions.map(tx => ({
@@ -341,7 +344,7 @@ export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncR
     }
 
     // Log sync
-    await supabase.from('airwallex_sync_log').insert({
+    await getSupabase().from('airwallex_sync_log').insert({
       records_synced: allTransactions.length,
       status: 'success',
       sync_type: 'manual',
@@ -352,7 +355,7 @@ export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncR
     console.error('Airwallex sync failed:', error);
 
     // Log failed sync
-    await supabase.from('airwallex_sync_log').insert({
+    await getSupabase().from('airwallex_sync_log').insert({
       records_synced: 0,
       status: 'error',
       error_message: error instanceof Error ? error.message : 'Unknown error',
@@ -377,7 +380,7 @@ export async function getTransactionsFromDb(
     const fromDate = new Date();
     fromDate.setDate(fromDate.getDate() - days);
 
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from('airwallex_transactions')
       .select('*')
       .gte('created_at', fromDate.toISOString())
@@ -402,7 +405,7 @@ export async function getTransactionsFromDb(
  * Get last sync info
  */
 export async function getLastSync(): Promise<{ synced_at: string; records_synced: number; status: string } | null> {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('airwallex_sync_log')
     .select('synced_at, records_synced, status')
     .eq('status', 'success')
@@ -417,7 +420,7 @@ export async function getLastSync(): Promise<{ synced_at: string; records_synced
  * Get sync logs
  */
 export async function getSyncLogs(limit: number = 10): Promise<any[]> {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('airwallex_sync_log')
     .select('*')
     .order('synced_at', { ascending: false })
@@ -519,7 +522,7 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
  * Upsert a single transaction (used by webhooks)
  */
 export async function upsertTransaction(transaction: AirwallexTransaction): Promise<void> {
-  const { error } = await supabase
+  const { error } = await getSupabase()
     .from('airwallex_transactions')
     .upsert(
       {
@@ -551,7 +554,7 @@ export async function logSync(
   errorMessage: string | null,
   syncType: 'manual' | 'webhook'
 ): Promise<void> {
-  await supabase.from('airwallex_sync_log').insert({
+  await getSupabase().from('airwallex_sync_log').insert({
     records_synced: recordsSynced,
     status,
     error_message: errorMessage,
