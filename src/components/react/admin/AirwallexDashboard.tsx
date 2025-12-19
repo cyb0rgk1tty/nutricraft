@@ -449,7 +449,7 @@ function AirwallexContent() {
                 {data.transactions.slice(0, 50).map((tx) => (
                   <tr key={tx.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">
-                      {formatDateOnly(tx.created_at)}
+                      {formatDate(tx.created_at)}
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full capitalize ${getTypeColor(tx.type)}`}>
