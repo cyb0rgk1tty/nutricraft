@@ -94,6 +94,27 @@ export interface InvoiceStats {
     paid: number;
     overdue: number;
   };
+  // Period-filtered stats (based on selected date range)
+  revenueInPeriod: number;
+  invoicesSentInPeriod: number;
+  paymentsInPeriod: Array<{
+    id: string;
+    clientName: string;
+    amount: number;
+    date: string;
+  }>;
+  invoicesByStatusInPeriod: {
+    draft: number;
+    sent: number;
+    paid: number;
+    overdue: number;
+  };
+  // Comparison data (previous period)
+  previousPeriodRevenue: number;
+  previousPeriodInvoicesSent: number;
+  // Period info for display
+  periodLabel: string;
+  periodDays: number;
 }
 
 export interface InvoiceNinjaResult<T> {
@@ -279,6 +300,18 @@ function toBaseCurrency(amount: number, exchangeRate?: number): number {
 }
 
 /**
+ * Get period label based on days
+ */
+function getPeriodLabel(days: number): string {
+  if (days <= 7) return 'Last 7 Days';
+  if (days <= 14) return 'Last 14 Days';
+  if (days <= 30) return 'Last 30 Days';
+  if (days <= 60) return 'Last 60 Days';
+  if (days <= 90) return 'Last 90 Days';
+  return 'This Month';
+}
+
+/**
  * Fetch comprehensive invoice statistics for the dashboard
  * All amounts are converted to CAD (base currency) using exchange rates
  */
@@ -305,6 +338,9 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
     const today = new Date().toISOString().split('T')[0];
     const monthStart = getMonthStart();
     const daysAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+    // Previous period boundary (for comparison)
+    const previousPeriodStart = new Date(Date.now() - days * 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
     // Calculate total revenue (sum of all payments, converted to CAD)
     const totalRevenue = payments.reduce((sum, p) => {
@@ -360,7 +396,7 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
-    // Invoice status breakdown
+    // Invoice status breakdown (all time)
     const invoicesByStatus = {
       draft: invoices.filter(inv => inv.status_id === INVOICE_STATUS.DRAFT).length,
       sent: invoices.filter(inv =>
@@ -372,6 +408,53 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
       overdue: overdueInvoicesList.length,
     };
 
+    // === PERIOD-FILTERED STATS ===
+
+    // Revenue in period (payments within selected days)
+    const paymentsInPeriodList = payments.filter(p => p.date >= daysAgo);
+    const revenueInPeriod = paymentsInPeriodList.reduce(
+      (sum, p) => sum + toBaseCurrency(p.amount || 0, p.exchange_rate), 0
+    );
+
+    // Payments in period (for display)
+    const paymentsInPeriod = paymentsInPeriodList.map(p => ({
+      id: p.id,
+      clientName: p.client?.display_name || p.client?.name || 'Unknown',
+      amount: toBaseCurrency(p.amount, p.exchange_rate),
+      date: p.date,
+    }));
+
+    // Invoices sent in period
+    const invoicesInPeriod = invoices.filter(inv => inv.date >= daysAgo);
+    const invoicesSentInPeriod = invoicesInPeriod.filter(
+      inv => inv.status_id !== INVOICE_STATUS.DRAFT
+    ).length;
+
+    // Invoice status breakdown (in period)
+    const overdueInPeriod = invoicesInPeriod.filter(isOverdue);
+    const invoicesByStatusInPeriod = {
+      draft: invoicesInPeriod.filter(inv => inv.status_id === INVOICE_STATUS.DRAFT).length,
+      sent: invoicesInPeriod.filter(inv =>
+        inv.status_id === INVOICE_STATUS.SENT ||
+        inv.status_id === INVOICE_STATUS.VIEWED ||
+        inv.status_id === INVOICE_STATUS.PARTIAL
+      ).length,
+      paid: invoicesInPeriod.filter(inv => inv.status_id === INVOICE_STATUS.PAID).length,
+      overdue: overdueInPeriod.length,
+    };
+
+    // === PREVIOUS PERIOD STATS (for comparison) ===
+
+    // Previous period revenue (e.g., if 30 days selected, this is 30-60 days ago)
+    const previousPeriodRevenue = payments
+      .filter(p => p.date >= previousPeriodStart && p.date < daysAgo)
+      .reduce((sum, p) => sum + toBaseCurrency(p.amount || 0, p.exchange_rate), 0);
+
+    // Previous period invoices sent
+    const previousPeriodInvoicesSent = invoices
+      .filter(inv => inv.date >= previousPeriodStart && inv.date < daysAgo && inv.status_id !== INVOICE_STATUS.DRAFT)
+      .length;
+
     const stats: InvoiceStats = {
       totalRevenue,
       revenueThisMonth,
@@ -381,6 +464,17 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
       recentPayments,
       revenueByDay,
       invoicesByStatus,
+      // Period-filtered stats
+      revenueInPeriod,
+      invoicesSentInPeriod,
+      paymentsInPeriod,
+      invoicesByStatusInPeriod,
+      // Comparison data
+      previousPeriodRevenue,
+      previousPeriodInvoicesSent,
+      // Period info
+      periodLabel: getPeriodLabel(days),
+      periodDays: days,
     };
 
     return { success: true, data: stats };

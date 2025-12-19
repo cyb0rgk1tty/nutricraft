@@ -16,6 +16,7 @@ interface Payment {
 interface RecentPaymentsProps {
   payments?: Payment[];
   isLoading?: boolean;
+  periodLabel?: string;
 }
 
 // Format currency (CAD - base currency)
@@ -41,7 +42,7 @@ function formatDate(dateStr: string): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-export function RecentPayments({ payments, isLoading }: RecentPaymentsProps) {
+export function RecentPayments({ payments, isLoading, periodLabel }: RecentPaymentsProps) {
   // Loading state
   if (isLoading) {
     return (
@@ -84,8 +85,15 @@ export function RecentPayments({ payments, isLoading }: RecentPaymentsProps) {
   return (
     <div className="bg-white rounded-xl border border-gray-200">
       <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-        <h3 className="font-semibold text-gray-900">Recent Payments</h3>
-        <span className="text-xs text-gray-500">{payments.length} payments</span>
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-gray-900">Payments</h3>
+          {periodLabel && (
+            <span className="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded">
+              {periodLabel}
+            </span>
+          )}
+        </div>
+        <span className="text-xs text-gray-500">{payments.length} payment{payments.length !== 1 ? 's' : ''}</span>
       </div>
       <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
         {payments.map((payment) => (

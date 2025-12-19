@@ -166,7 +166,7 @@ function OverdueInvoicesList({ count, amount, isLoading }: { count: number; amou
 
 function InvoiceAnalyticsContent() {
   const queryClient = useQueryClient();
-  const [selectedDays, setSelectedDays] = useState(30);
+  const [selectedDays, setSelectedDays] = useState<number | 'month'>(30);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { data: invoiceData, isLoading, error, dataUpdatedAt } = useInvoiceData(selectedDays);
 
@@ -196,12 +196,13 @@ function InvoiceAnalyticsContent() {
   };
 
   // Date range options
-  const dateRangeOptions = [
+  const dateRangeOptions: Array<{ value: number | 'month'; label: string }> = [
     { value: 7, label: '7 days' },
     { value: 14, label: '14 days' },
     { value: 30, label: '30 days' },
     { value: 60, label: '60 days' },
     { value: 90, label: '90 days' },
+    { value: 'month', label: 'This Month' },
   ];
 
   if (error) {
@@ -311,6 +312,7 @@ function InvoiceAnalyticsContent() {
         stats={stats}
         isLoading={isLoading}
         configured={invoiceData?.configured}
+        selectedDays={selectedDays}
       />
 
       {/* Charts Row */}
@@ -321,19 +323,20 @@ function InvoiceAnalyticsContent() {
           isLoading={isLoading}
         />
 
-        {/* Invoice Status Chart */}
+        {/* Invoice Status Chart (filtered by period) */}
         <InvoiceStatusChart
-          data={stats?.invoicesByStatus}
+          data={stats?.invoicesByStatusInPeriod || stats?.invoicesByStatus}
           isLoading={isLoading}
         />
       </div>
 
       {/* Bottom Row: Recent Payments + Overdue */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Payments */}
+        {/* Recent Payments (filtered by period) */}
         <RecentPayments
-          payments={stats?.recentPayments}
+          payments={stats?.paymentsInPeriod || stats?.recentPayments}
           isLoading={isLoading}
+          periodLabel={stats?.periodLabel}
         />
 
         {/* Overdue Invoices */}
@@ -344,30 +347,6 @@ function InvoiceAnalyticsContent() {
         />
       </div>
 
-      {/* Summary Stats */}
-      {stats && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-900">{stats.invoicesByStatus.draft}</p>
-              <p className="text-sm text-gray-500">Draft Invoices</p>
-            </div>
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <p className="text-2xl font-bold text-blue-600">{stats.invoicesByStatus.sent}</p>
-              <p className="text-sm text-gray-500">Sent/Pending</p>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <p className="text-2xl font-bold text-green-600">{stats.invoicesByStatus.paid}</p>
-              <p className="text-sm text-gray-500">Paid Invoices</p>
-            </div>
-            <div className="text-center p-4 bg-amber-50 rounded-lg">
-              <p className="text-2xl font-bold text-amber-600">{stats.invoicesSentThisMonth}</p>
-              <p className="text-sm text-gray-500">Sent This Month</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Toaster position="bottom-right" richColors />
     </div>
