@@ -157,6 +157,17 @@ async function getAccessToken(): Promise<string> {
     return cachedToken;
   }
 
+  // Log configuration for debugging (partial credentials only)
+  const clientIdPreview = config.clientId ? `${config.clientId.substring(0, 8)}...` : 'NOT SET';
+  const apiKeyPreview = config.apiKey ? `${config.apiKey.substring(0, 8)}...` : 'NOT SET';
+  console.log('[Airwallex] Authenticating:', {
+    baseUrl: config.baseUrl,
+    clientIdPreview,
+    apiKeyPreview,
+    clientIdLength: config.clientId?.length || 0,
+    apiKeyLength: config.apiKey?.length || 0,
+  });
+
   // Fetch new token
   const response = await fetch(`${config.baseUrl}/api/v1/authentication/login`, {
     method: 'POST',
@@ -169,14 +180,34 @@ async function getAccessToken(): Promise<string> {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('Airwallex auth error:', response.status, errorText);
-    throw new Error(`Authentication failed: ${response.status}`);
+
+    // Try to parse error as JSON for more details
+    let errorDetails: any = null;
+    try {
+      errorDetails = JSON.parse(errorText);
+    } catch {
+      // Not JSON, use raw text
+    }
+
+    console.error('[Airwallex] Authentication failed:', {
+      status: response.status,
+      statusText: response.statusText,
+      errorText: errorText.substring(0, 500),
+      errorCode: errorDetails?.code,
+      errorMessage: errorDetails?.message,
+      errorSource: errorDetails?.source,
+    });
+
+    const errorMsg = errorDetails?.message || `Authentication failed: ${response.status}`;
+    throw new Error(`API error: ${response.status} - ${errorMsg}`);
   }
 
   const data = await response.json();
   cachedToken = data.token;
   // Token is valid for 30 minutes
   tokenExpiry = Date.now() + 30 * 60 * 1000;
+
+  console.log('[Airwallex] Authentication successful, token obtained');
 
   return cachedToken!;
 }
