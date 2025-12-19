@@ -10,6 +10,7 @@ import { InvoiceStatsCards } from './InvoiceStatsCards';
 import { RevenueChart } from './RevenueChart';
 import { RecentPayments } from './RecentPayments';
 import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useInvoiceData, type InvoiceStats } from './hooks/useInvoiceData';
 import {
   ResponsiveContainer,
@@ -166,7 +167,33 @@ function OverdueInvoicesList({ count, amount, isLoading }: { count: number; amou
 function InvoiceAnalyticsContent() {
   const queryClient = useQueryClient();
   const [selectedDays, setSelectedDays] = useState(30);
-  const { data: invoiceData, isLoading, error } = useInvoiceData(selectedDays);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { data: invoiceData, isLoading, error, dataUpdatedAt } = useInvoiceData(selectedDays);
+
+  // Handle manual refresh
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      toast.success('Invoice data refreshed from Invoice Ninja');
+    } catch {
+      toast.error('Failed to refresh invoice data');
+    } finally {
+      // Small delay to show the refresh animation
+      setTimeout(() => setIsRefreshing(false), 500);
+    }
+  };
+
+  // Format last updated time
+  const formatLastUpdated = (timestamp: number) => {
+    if (!timestamp) return 'Never';
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
 
   // Date range options
   const dateRangeOptions = [
@@ -221,27 +248,55 @@ function InvoiceAnalyticsContent() {
 
   return (
     <div className="space-y-6">
-      {/* Date Range Selector */}
+      {/* Date Range Selector & Refresh Button */}
       <div className="bg-white rounded-xl border border-gray-200 p-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Date Range</h2>
-            <p className="text-sm text-gray-500">Select the time period for revenue analysis</p>
+            <p className="text-sm text-gray-500">
+              {dataUpdatedAt
+                ? `Last updated: ${formatLastUpdated(dataUpdatedAt)}`
+                : 'Select the time period for revenue analysis'}
+            </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {dateRangeOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setSelectedDays(option.value)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedDays === option.value
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap gap-2">
+              {dateRangeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setSelectedDays(option.value)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    selectedDays === option.value
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing || isLoading}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {isRefreshing || isLoading ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Refreshing...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Refresh
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
