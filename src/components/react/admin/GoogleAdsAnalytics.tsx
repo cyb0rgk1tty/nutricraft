@@ -36,11 +36,33 @@ interface SyncLog {
   created_at: string;
 }
 
+// Calculate days since start of month
+function getDaysThisMonth(): number {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const diffTime = now.getTime() - startOfMonth.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+}
+
 // Fetch ads metrics for a date range
-async function fetchAdsMetrics(days: number): Promise<AdsMetrics | null> {
-  const response = await fetch(`/api/adminpanel/dashboard?days=${days}`, {
-    credentials: 'include',
-  });
+async function fetchAdsMetrics(days: number | 'month' | 'all'): Promise<AdsMetrics | null> {
+  // Handle special filter values
+  const isThisMonth = days === 'month';
+  const isAllTime = days === 'all';
+
+  let actualDays: number;
+  if (days === 'month') {
+    actualDays = getDaysThisMonth();
+  } else if (days === 'all') {
+    actualDays = 3650; // ~10 years
+  } else {
+    actualDays = days;
+  }
+
+  const response = await fetch(
+    `/api/adminpanel/dashboard?days=${actualDays}&thisMonth=${isThisMonth}&allTime=${isAllTime}`,
+    { credentials: 'include' }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch ads metrics');
@@ -66,14 +88,15 @@ async function fetchSyncLogs(): Promise<SyncLog[]> {
 
 function GoogleAdsContent() {
   const queryClient = useQueryClient();
-  const [selectedDays, setSelectedDays] = useState(30);
+  const [selectedDays, setSelectedDays] = useState<number | 'month' | 'all'>(30);
   const [isSyncing, setIsSyncing] = useState(false);
 
-  // Fetch ads metrics
+  // Fetch ads metrics (with 5-minute polling to match other dashboards)
   const { data: metrics, isLoading, error } = useQuery({
     queryKey: ['adsMetrics', selectedDays],
     queryFn: () => fetchAdsMetrics(selectedDays),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // Poll every 5 minutes
   });
 
   // Fetch sync logs
@@ -81,6 +104,7 @@ function GoogleAdsContent() {
     queryKey: ['adsSyncLogs'],
     queryFn: fetchSyncLogs,
     staleTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // Poll every 5 minutes
   });
 
   // Handle manual sync
@@ -110,12 +134,14 @@ function GoogleAdsContent() {
   };
 
   // Date range options
-  const dateRangeOptions = [
+  const dateRangeOptions: Array<{ value: number | 'month' | 'all'; label: string }> = [
     { value: 7, label: '7 days' },
     { value: 14, label: '14 days' },
     { value: 30, label: '30 days' },
     { value: 60, label: '60 days' },
     { value: 90, label: '90 days' },
+    { value: 'month', label: 'This Month' },
+    { value: 'all', label: 'All Time' },
   ];
 
   // Format date for display

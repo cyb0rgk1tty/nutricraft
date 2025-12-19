@@ -221,10 +221,14 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
-    // Parse days query parameter (default 14, min 7, max 90)
+    // Parse query parameters
     const url = new URL(request.url);
     const daysParam = url.searchParams.get('days');
-    const days = Math.min(Math.max(parseInt(daysParam || '14', 10), 7), 90);
+    const thisMonth = url.searchParams.get('thisMonth') === 'true';
+    const allTime = url.searchParams.get('allTime') === 'true';
+
+    // days parameter: default 14, min 7, max 3650 (for All Time ~10 years)
+    const days = Math.min(Math.max(parseInt(daysParam || '14', 10), 7), 3650);
 
     // Fetch all data in parallel
     const [opportunitiesResult, recentActivity, announcementActive, adsMetrics] = await Promise.all([
