@@ -11,7 +11,10 @@
  * Environment Variables:
  * - INVOICE_NINJA_URL: Your Invoice Ninja instance URL
  * - INVOICE_NINJA_API_TOKEN: API token for authentication
+ * - INVOICE_NINJA_WEBHOOK_SECRET: Secret for webhook verification
  */
+
+import { getSupabaseServiceClient } from './supabase';
 
 // Types
 export interface InvoiceNinjaConfig {
@@ -374,6 +377,39 @@ export async function fetchInvoiceStats(days: number = 30): Promise<InvoiceNinja
       error: error instanceof Error ? error.message : 'Failed to fetch invoice statistics',
     };
   }
+}
+
+/**
+ * Log a webhook event to the database
+ */
+export async function logWebhookEvent(
+  eventType: string,
+  entityId: string | null,
+  payload: unknown,
+  status: 'received' | 'processed' | 'error',
+  errorMessage?: string
+): Promise<void> {
+  try {
+    const supabase = getSupabaseServiceClient();
+    await supabase.from('invoice_ninja_webhook_log').insert({
+      event_type: eventType,
+      entity_id: entityId,
+      payload: payload as Record<string, unknown>,
+      status,
+      error_message: errorMessage || null,
+    });
+  } catch (error) {
+    console.error('Failed to log webhook event:', error);
+  }
+}
+
+/**
+ * Get webhook secret for verification
+ */
+export function getWebhookSecret(): string | null {
+  return import.meta.env.INVOICE_NINJA_WEBHOOK_SECRET ||
+    process.env.INVOICE_NINJA_WEBHOOK_SECRET ||
+    null;
 }
 
 /**
