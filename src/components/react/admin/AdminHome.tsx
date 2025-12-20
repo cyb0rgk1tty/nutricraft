@@ -58,7 +58,7 @@ function StatCard({
 
 function HomeContent({ className }: AdminHomeProps) {
   const queryClient = useQueryClient();
-  const [selectedDays, setSelectedDays] = useState(14);
+  const [selectedDays, setSelectedDays] = useState<number | 'month' | 'all'>(14);
   const [isSyncing, setIsSyncing] = useState(false);
   const { data, isLoading, error } = useDashboardData(selectedDays);
   const { data: invoiceData, isLoading: invoiceLoading } = useInvoiceData(30);

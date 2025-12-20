@@ -48,12 +48,35 @@ export interface DashboardData {
 // Query keys
 export const dashboardKeys = {
   all: ['dashboard'] as const,
-  data: (days?: number) => [...dashboardKeys.all, 'data', days] as const,
+  data: (days?: number | 'month' | 'all') => [...dashboardKeys.all, 'data', days] as const,
 };
 
+// Calculate days since start of month
+function getDaysThisMonth(): number {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const diffTime = now.getTime() - startOfMonth.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+}
+
 // API Function
-async function fetchDashboardData(days: number = 14): Promise<DashboardData> {
-  const response = await fetch(`/api/adminpanel/dashboard?days=${days}`);
+async function fetchDashboardData(days: number | 'month' | 'all' = 14): Promise<DashboardData> {
+  // Handle special filter values
+  const isThisMonth = days === 'month';
+  const isAllTime = days === 'all';
+
+  let actualDays: number;
+  if (days === 'month') {
+    actualDays = getDaysThisMonth();
+  } else if (days === 'all') {
+    actualDays = 3650; // ~10 years
+  } else {
+    actualDays = days;
+  }
+
+  const response = await fetch(
+    `/api/adminpanel/dashboard?days=${actualDays}&thisMonth=${isThisMonth}&allTime=${isAllTime}`
+  );
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -69,12 +92,12 @@ async function fetchDashboardData(days: number = 14): Promise<DashboardData> {
 }
 
 // Hook
-export function useDashboardData(days: number = 14) {
+export function useDashboardData(days: number | 'month' | 'all' = 14) {
   return useQuery({
     queryKey: dashboardKeys.data(days),
     queryFn: () => fetchDashboardData(days),
     staleTime: 60 * 1000, // Consider data fresh for 1 minute
-    refetchInterval: 2 * 60 * 1000, // Refetch every 2 minutes
+    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes (match other dashboards)
     retry: (failureCount, error) => {
       // Don't retry on auth errors
       if (error instanceof Error && (error.message === 'Unauthorized' || error.message === 'Access denied')) {

@@ -18,16 +18,19 @@ import { Skeleton } from '../../ui/skeleton';
 interface OpportunitiesChartProps {
   data: DailyData[];
   isLoading?: boolean;
-  selectedDays: number;
-  onDaysChange: (days: number) => void;
+  selectedDays: number | 'month' | 'all';
+  onDaysChange: (days: number | 'month' | 'all') => void;
 }
 
 // Date range options for the dropdown
-const DATE_RANGE_OPTIONS = [
-  { value: 7, label: 'Last 7 days' },
-  { value: 14, label: 'Last 14 days' },
-  { value: 30, label: 'Last 30 days' },
-  { value: 90, label: 'Last 90 days' },
+const DATE_RANGE_OPTIONS: Array<{ value: number | 'month' | 'all'; label: string }> = [
+  { value: 7, label: '7 days' },
+  { value: 14, label: '14 days' },
+  { value: 30, label: '30 days' },
+  { value: 60, label: '60 days' },
+  { value: 90, label: '90 days' },
+  { value: 'month', label: 'This Month' },
+  { value: 'all', label: 'All Time' },
 ];
 
 // Custom tooltip
@@ -50,11 +53,21 @@ function CustomTooltip({ active, payload, label }: {
 }
 
 export function OpportunitiesChart({ data, isLoading, selectedDays, onDaysChange }: OpportunitiesChartProps) {
+  // Handle dropdown change - parse numeric values, keep string values as-is
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === 'month' || value === 'all') {
+      onDaysChange(value);
+    } else {
+      onDaysChange(Number(value));
+    }
+  };
+
   // Dropdown component for reuse across states
   const DateRangeDropdown = (
     <select
       value={selectedDays}
-      onChange={(e) => onDaysChange(Number(e.target.value))}
+      onChange={handleDropdownChange}
       className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white hover:border-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer"
     >
       {DATE_RANGE_OPTIONS.map(opt => (
