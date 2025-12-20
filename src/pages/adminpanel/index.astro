@@ -2,11 +2,12 @@
 /**
  * Admin Dashboard Home Page
  * Central hub for all admin functionality
- * Restricted to nutricraftadmin only
+ * Requires dashboard:view permission (Super Admin, Staff)
  */
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { AdminHome } from '../../components/react/admin';
 import { verifySession } from '../../utils/adminAuth';
+import { hasPermission } from '../../utils/rbac';
 
 // Check if user is authenticated
 const authResult = await verifySession(Astro.request);
@@ -16,8 +17,8 @@ if (!authResult) {
   return Astro.redirect('/mandash');
 }
 
-// Only nutricraftadmin can access the dashboard home
-if (authResult.user.username !== 'nutricraftadmin') {
+// Check dashboard permission (Super Admin and Staff can view)
+if (!hasPermission(authResult.user.role, 'dashboard', 'view')) {
   return Astro.redirect('/mandash');
 }
 

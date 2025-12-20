@@ -1,0 +1,800 @@
+---
+/**
+ * User Management Page
+ * Manage admin panel users and their roles
+ * Requires userManagement:view permission (Super Admin only)
+ */
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { verifySession } from '../../utils/adminAuth';
+import { hasPermission, getAllRoles } from '../../utils/rbac';
+
+// Check if user is authenticated
+const authResult = await verifySession(Astro.request);
+
+// Redirect to quotes page (has login form) if not authenticated
+if (!authResult) {
+  return Astro.redirect('/mandash');
+}
+
+// Check user management permission (Super Admin only)
+if (!hasPermission(authResult.user.role, 'userManagement', 'view')) {
+  return Astro.redirect('/mandash');
+}
+
+const roles = getAllRoles();
+const currentUserId = authResult.user.id;
+
+// SEO metadata
+const title = 'User Management | Nutricraft Labs Admin';
+const description = 'Manage admin panel users and their roles';
+---
+
+<AdminLayout title={title} description={description} currentPage="users">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 lg:top-0 z-30">
+    <div class="px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-900">User Management</h1>
+          <p class="text-sm text-gray-500 mt-1">Manage admin panel users and their roles</p>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Add User Button -->
+          <button
+            id="add-user-btn"
+            type="button"
+            class="flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <span class="hidden sm:inline">Add User</span>
+          </button>
+          <!-- Refresh Button -->
+          <button
+            id="refresh-btn"
+            type="button"
+            class="p-2.5 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            title="Refresh users"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Loading State -->
+    <div id="loading-state" class="flex items-center justify-center py-20">
+      <div class="text-center">
+        <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-gray-500">Loading users...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="hidden">
+      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+        <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Users</h3>
+        <p id="error-message" class="text-red-600 mb-4">Unable to fetch users</p>
+        <button
+          id="retry-btn"
+          type="button"
+          class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div id="users-container" class="hidden">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Username</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Last Login</th>
+                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody" class="divide-y divide-gray-200">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div id="add-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <!-- Background overlay -->
+      <div class="modal-overlay fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+      <!-- Modal panel -->
+      <div class="modal-panel inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <form id="add-user-form">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Add New User</h3>
+              <button type="button" class="modal-close text-gray-400 hover:text-gray-500">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Username -->
+              <div>
+                <label for="new-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <input
+                  type="text"
+                  id="new-username"
+                  name="username"
+                  required
+                  minlength="3"
+                  maxlength="50"
+                  pattern="[a-zA-Z0-9_]+"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                  placeholder="Enter username"
+                />
+                <p class="text-xs text-gray-500 mt-1">3-50 characters, letters, numbers, and underscores only</p>
+              </div>
+
+              <!-- Password -->
+              <div>
+                <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                  <input
+                    type="password"
+                    id="new-password"
+                    name="password"
+                    required
+                    minlength="12"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none pr-10"
+                    placeholder="Enter password"
+                  />
+                  <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 px-3 text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Minimum 12 characters</p>
+              </div>
+
+              <!-- Role -->
+              <div>
+                <label for="new-role" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <select
+                  id="new-role"
+                  name="role"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                >
+                  {roles.map(role => (
+                    <option value={role.value}>{role.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <!-- Error message -->
+            <div id="add-error" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600"></div>
+          </div>
+
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+            <button
+              type="submit"
+              id="add-submit-btn"
+              class="w-full sm:w-auto px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+            >
+              Create User
+            </button>
+            <button
+              type="button"
+              class="modal-close w-full sm:w-auto mt-2 sm:mt-0 px-4 py-2 bg-white text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="delete-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="modal-overlay fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      <div class="modal-panel inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3 class="text-lg font-semibold text-gray-900" id="delete-modal-title">Delete User</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">Are you sure you want to delete <strong id="delete-username"></strong>? This action cannot be undone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+          <button
+            type="button"
+            id="confirm-delete-btn"
+            class="w-full sm:w-auto px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            class="modal-close w-full sm:w-auto mt-2 sm:mt-0 px-4 py-2 bg-white text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div id="reset-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="reset-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="modal-overlay fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      <div class="modal-panel inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900" id="reset-modal-title">Password Reset</h3>
+            <button type="button" class="modal-close text-gray-400 hover:text-gray-500">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Before reset -->
+          <div id="reset-confirm" class="space-y-4">
+            <p class="text-sm text-gray-500">Reset password for <strong id="reset-username"></strong>? A new temporary password will be generated.</p>
+          </div>
+
+          <!-- After reset - show password -->
+          <div id="reset-result" class="hidden space-y-4">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+              <p class="text-sm text-green-700 mb-2">Password reset successfully! Share this temporary password securely:</p>
+              <div class="flex items-center gap-2">
+                <code id="temp-password" class="flex-1 bg-white border border-green-300 rounded px-3 py-2 font-mono text-lg"></code>
+                <button type="button" id="copy-password-btn" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors" title="Copy password">
+                  <svg id="copy-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <svg id="check-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </button>
+              </div>
+              <p class="text-xs text-green-600 mt-2">This password will only be shown once. Make sure to save it!</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+          <button
+            type="button"
+            id="confirm-reset-btn"
+            class="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+          >
+            Reset Password
+          </button>
+          <button
+            type="button"
+            class="modal-close w-full sm:w-auto mt-2 sm:mt-0 px-4 py-2 bg-white text-gray-700 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden SVG templates for cloning -->
+  <template id="key-icon-template">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+    </svg>
+  </template>
+  <template id="trash-icon-template">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+  </template>
+</AdminLayout>
+
+<script define:vars={{ currentUserId, roles }}>
+  // State
+  let users = [];
+  let deleteUserId = null;
+  let resetUserId = null;
+
+  // Elements
+  const loadingState = document.getElementById('loading-state');
+  const errorState = document.getElementById('error-state');
+  const usersContainer = document.getElementById('users-container');
+  const usersTbody = document.getElementById('users-tbody');
+
+  // Icon templates
+  const keyIconTemplate = document.getElementById('key-icon-template');
+  const trashIconTemplate = document.getElementById('trash-icon-template');
+
+  // Role badge colors
+  const roleColors = {
+    super_admin: { bg: 'bg-purple-100', text: 'text-purple-800' },
+    staff: { bg: 'bg-blue-100', text: 'text-blue-800' },
+    manufacturer: { bg: 'bg-green-100', text: 'text-green-800' },
+  };
+
+  const roleLabels = {
+    super_admin: 'Super Admin',
+    staff: 'Staff',
+    manufacturer: 'Manufacturer',
+  };
+
+  // Format date
+  function formatDate(isoString) {
+    if (!isoString) return 'Never';
+    const date = new Date(isoString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+
+  // Format timestamp
+  function formatTimestamp(isoString) {
+    if (!isoString) return 'Never';
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  // Create role badge
+  function createRoleBadge(role) {
+    const colors = roleColors[role] || { bg: 'bg-gray-100', text: 'text-gray-800' };
+    const label = roleLabels[role] || role;
+    const span = document.createElement('span');
+    span.className = `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`;
+    span.textContent = label;
+    return span;
+  }
+
+  // Create role selector
+  function createRoleSelector(userId, currentRole) {
+    const select = document.createElement('select');
+    select.className = 'px-2 py-1 text-sm border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none';
+    select.dataset.userId = userId;
+
+    roles.forEach(role => {
+      const option = document.createElement('option');
+      option.value = role.value;
+      option.textContent = role.label;
+      option.selected = role.value === currentRole;
+      select.appendChild(option);
+    });
+
+    select.addEventListener('change', async (e) => {
+      const newRole = e.target.value;
+      await updateUserRole(userId, newRole);
+    });
+
+    return select;
+  }
+
+  // Clear table body
+  function clearTableBody() {
+    while (usersTbody?.firstChild) {
+      usersTbody.removeChild(usersTbody.firstChild);
+    }
+  }
+
+  // Render user row
+  function renderUserRow(user) {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-gray-50';
+    tr.dataset.userId = user.id;
+
+    const isCurrentUser = user.id === currentUserId;
+
+    // Username
+    const usernameTd = document.createElement('td');
+    usernameTd.className = 'px-4 py-3';
+    const usernameDiv = document.createElement('div');
+    usernameDiv.className = 'flex items-center gap-2';
+    const usernameSpan = document.createElement('span');
+    usernameSpan.className = 'font-medium text-gray-900';
+    usernameSpan.textContent = user.username;
+    usernameDiv.appendChild(usernameSpan);
+    if (isCurrentUser) {
+      const youBadge = document.createElement('span');
+      youBadge.className = 'text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded';
+      youBadge.textContent = 'You';
+      usernameDiv.appendChild(youBadge);
+    }
+    usernameTd.appendChild(usernameDiv);
+    tr.appendChild(usernameTd);
+
+    // Role
+    const roleTd = document.createElement('td');
+    roleTd.className = 'px-4 py-3';
+    if (isCurrentUser) {
+      roleTd.appendChild(createRoleBadge(user.role));
+    } else {
+      roleTd.appendChild(createRoleSelector(user.id, user.role));
+    }
+    tr.appendChild(roleTd);
+
+    // Created
+    const createdTd = document.createElement('td');
+    createdTd.className = 'px-4 py-3 text-sm text-gray-600';
+    createdTd.textContent = formatDate(user.created_at);
+    tr.appendChild(createdTd);
+
+    // Last Login
+    const loginTd = document.createElement('td');
+    loginTd.className = 'px-4 py-3 text-sm text-gray-600';
+    loginTd.textContent = formatTimestamp(user.last_login);
+    tr.appendChild(loginTd);
+
+    // Actions
+    const actionsTd = document.createElement('td');
+    actionsTd.className = 'px-4 py-3 text-right';
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'flex items-center justify-end gap-2';
+
+    if (!isCurrentUser) {
+      // Reset Password button
+      const resetBtn = document.createElement('button');
+      resetBtn.type = 'button';
+      resetBtn.className = 'p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors';
+      resetBtn.title = 'Reset Password';
+      if (keyIconTemplate) {
+        resetBtn.appendChild(keyIconTemplate.content.cloneNode(true));
+      }
+      resetBtn.addEventListener('click', () => showResetModal(user.id, user.username));
+      actionsDiv.appendChild(resetBtn);
+
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors';
+      deleteBtn.title = 'Delete User';
+      if (trashIconTemplate) {
+        deleteBtn.appendChild(trashIconTemplate.content.cloneNode(true));
+      }
+      deleteBtn.addEventListener('click', () => showDeleteModal(user.id, user.username));
+      actionsDiv.appendChild(deleteBtn);
+    } else {
+      const selfSpan = document.createElement('span');
+      selfSpan.className = 'text-xs text-gray-400';
+      selfSpan.textContent = 'Current user';
+      actionsDiv.appendChild(selfSpan);
+    }
+
+    actionsTd.appendChild(actionsDiv);
+    tr.appendChild(actionsTd);
+
+    return tr;
+  }
+
+  // Load users
+  async function loadUsers() {
+    loadingState?.classList.remove('hidden');
+    errorState?.classList.add('hidden');
+    usersContainer?.classList.add('hidden');
+
+    try {
+      const response = await fetch('/api/adminpanel/users');
+
+      if (response.status === 401) {
+        window.location.href = '/mandash';
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load users');
+      }
+
+      users = data.users || [];
+
+      loadingState?.classList.add('hidden');
+
+      // Render users
+      clearTableBody();
+      users.forEach(user => {
+        usersTbody?.appendChild(renderUserRow(user));
+      });
+
+      usersContainer?.classList.remove('hidden');
+    } catch (error) {
+      console.error('Failed to load users:', error);
+      loadingState?.classList.add('hidden');
+      errorState?.classList.remove('hidden');
+      const errorMessage = document.getElementById('error-message');
+      if (errorMessage) {
+        errorMessage.textContent = error.message || 'Failed to load users';
+      }
+    }
+  }
+
+  // Update user role
+  async function updateUserRole(userId, newRole) {
+    try {
+      const response = await fetch(`/api/adminpanel/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: newRole }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        alert(data.error || 'Failed to update role');
+        loadUsers(); // Reload to reset state
+        return;
+      }
+
+      // Update local state
+      const userIndex = users.findIndex(u => u.id === userId);
+      if (userIndex !== -1) {
+        users[userIndex].role = newRole;
+      }
+    } catch (error) {
+      console.error('Failed to update role:', error);
+      alert('Failed to update role');
+      loadUsers();
+    }
+  }
+
+  // Modal helpers
+  function showModal(modalId) {
+    document.getElementById(modalId)?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function hideModal(modalId) {
+    document.getElementById(modalId)?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function showDeleteModal(userId, username) {
+    deleteUserId = userId;
+    document.getElementById('delete-username').textContent = username;
+    showModal('delete-modal');
+  }
+
+  function showResetModal(userId, username) {
+    resetUserId = userId;
+    document.getElementById('reset-username').textContent = username;
+    document.getElementById('reset-confirm')?.classList.remove('hidden');
+    document.getElementById('reset-result')?.classList.add('hidden');
+    document.getElementById('confirm-reset-btn')?.classList.remove('hidden');
+    showModal('reset-modal');
+  }
+
+  // Delete user
+  async function deleteUser() {
+    if (!deleteUserId) return;
+
+    const btn = document.getElementById('confirm-delete-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
+    }
+
+    try {
+      const response = await fetch(`/api/adminpanel/users/${deleteUserId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        alert(data.error || 'Failed to delete user');
+        return;
+      }
+
+      hideModal('delete-modal');
+      loadUsers();
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      alert('Failed to delete user');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Delete';
+      }
+      deleteUserId = null;
+    }
+  }
+
+  // Reset password
+  async function resetPassword() {
+    if (!resetUserId) return;
+
+    const btn = document.getElementById('confirm-reset-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Resetting...';
+    }
+
+    try {
+      const response = await fetch('/api/adminpanel/users/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: resetUserId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        alert(data.error || 'Failed to reset password');
+        return;
+      }
+
+      // Show the temporary password
+      document.getElementById('temp-password').textContent = data.tempPassword;
+      document.getElementById('reset-confirm')?.classList.add('hidden');
+      document.getElementById('reset-result')?.classList.remove('hidden');
+      btn?.classList.add('hidden');
+    } catch (error) {
+      console.error('Failed to reset password:', error);
+      alert('Failed to reset password');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Reset Password';
+      }
+    }
+  }
+
+  // Add user
+  async function addUser(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const username = form.username.value.trim();
+    const password = form.password.value;
+    const role = form.role.value;
+
+    const btn = document.getElementById('add-submit-btn');
+    const errorDiv = document.getElementById('add-error');
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+    }
+    errorDiv?.classList.add('hidden');
+
+    try {
+      const response = await fetch('/api/adminpanel/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, role }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        if (errorDiv) {
+          errorDiv.textContent = data.error || 'Failed to create user';
+          errorDiv.classList.remove('hidden');
+        }
+        return;
+      }
+
+      hideModal('add-modal');
+      form.reset();
+      loadUsers();
+    } catch (error) {
+      console.error('Failed to add user:', error);
+      if (errorDiv) {
+        errorDiv.textContent = 'Failed to create user';
+        errorDiv.classList.remove('hidden');
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Create User';
+      }
+    }
+  }
+
+  // Event listeners
+  document.getElementById('refresh-btn')?.addEventListener('click', loadUsers);
+  document.getElementById('retry-btn')?.addEventListener('click', loadUsers);
+  document.getElementById('add-user-btn')?.addEventListener('click', () => showModal('add-modal'));
+  document.getElementById('add-user-form')?.addEventListener('submit', addUser);
+  document.getElementById('confirm-delete-btn')?.addEventListener('click', deleteUser);
+  document.getElementById('confirm-reset-btn')?.addEventListener('click', resetPassword);
+
+  // Toggle password visibility
+  document.getElementById('toggle-password')?.addEventListener('click', () => {
+    const input = document.getElementById('new-password');
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+  });
+
+  // Copy password button
+  document.getElementById('copy-password-btn')?.addEventListener('click', () => {
+    const password = document.getElementById('temp-password')?.textContent;
+    if (password) {
+      navigator.clipboard.writeText(password).then(() => {
+        const copyIcon = document.getElementById('copy-icon');
+        const checkIcon = document.getElementById('check-icon');
+        copyIcon?.classList.add('hidden');
+        checkIcon?.classList.remove('hidden');
+        setTimeout(() => {
+          copyIcon?.classList.remove('hidden');
+          checkIcon?.classList.add('hidden');
+        }, 2000);
+      });
+    }
+  });
+
+  // Close modal handlers
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      hideModal('add-modal');
+      hideModal('delete-modal');
+      hideModal('reset-modal');
+    });
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', () => {
+      hideModal('add-modal');
+      hideModal('delete-modal');
+      hideModal('reset-modal');
+    });
+  });
+
+  // Close on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      hideModal('add-modal');
+      hideModal('delete-modal');
+      hideModal('reset-modal');
+    }
+  });
+
+  // Initial load
+  loadUsers();
+</script>

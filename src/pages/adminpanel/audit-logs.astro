@@ -2,10 +2,11 @@
 /**
  * Audit Logs Viewer - Admin Page
  * View and filter audit logs for the manufacturer dashboard
- * Protected by session authentication - admin only
+ * Requires auditLogs:view permission (Super Admin only)
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { verifySession } from '../../utils/adminAuth';
+import { hasPermission } from '../../utils/rbac';
 
 // Check if user is authenticated
 const authResult = await verifySession(Astro.request);
@@ -15,8 +16,8 @@ if (!authResult) {
   return Astro.redirect('/mandash');
 }
 
-// Only nutricraftadmin can view audit logs
-if (authResult.user.username !== 'nutricraftadmin') {
+// Check audit logs permission (Super Admin only)
+if (!hasPermission(authResult.user.role, 'auditLogs', 'view')) {
   return Astro.redirect('/mandash');
 }
 

@@ -16,7 +16,13 @@ export type AuditAction =
   | 'QUOTE_UPDATED'
   | 'QUOTE_SYNCED'
   | 'DOCUMENT_UPLOADED'
-  | 'DOCUMENT_DELETED';
+  | 'DOCUMENT_DELETED'
+  // User management actions
+  | 'USER_CREATED'
+  | 'USER_UPDATED'
+  | 'USER_DELETED'
+  | 'USER_ROLE_CHANGED'
+  | 'PASSWORD_RESET';
 
 export interface AuditLogOptions {
   quoteId?: string;

@@ -2,11 +2,12 @@
 /**
  * Airwallex Dashboard Page
  * View account balances and transaction history
- * Restricted to nutricraftadmin only
+ * Requires airwallex:view permission (Super Admin, Staff)
  */
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { AirwallexDashboard } from '../../components/react/admin/AirwallexDashboard';
 import { verifySession } from '../../utils/adminAuth';
+import { hasPermission } from '../../utils/rbac';
 
 // Check if user is authenticated
 const authResult = await verifySession(Astro.request);
@@ -16,8 +17,8 @@ if (!authResult) {
   return Astro.redirect('/mandash');
 }
 
-// Only nutricraftadmin can access
-if (authResult.user.username !== 'nutricraftadmin') {
+// Check airwallex permission
+if (!hasPermission(authResult.user.role, 'airwallex', 'view')) {
   return Astro.redirect('/mandash');
 }
 

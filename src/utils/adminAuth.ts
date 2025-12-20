@@ -7,6 +7,7 @@
 
 import bcrypt from 'bcryptjs';
 import { getSupabaseServiceClient } from './supabase';
+import type { UserRole } from './rbac';
 
 const SESSION_COOKIE_NAME = 'admin_session';
 const SESSION_DURATION_DAYS = 1; // Reduced from 7 for better security
@@ -16,6 +17,7 @@ export interface AdminUser {
   username: string;
   username_lower: string;
   password_hash: string;
+  role: UserRole;
   created_at: string;
   last_login: string | null;
 }

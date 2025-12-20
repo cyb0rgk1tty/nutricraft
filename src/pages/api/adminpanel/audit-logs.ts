@@ -1,12 +1,13 @@
 /**
  * API Endpoint: GET /api/admin/audit-logs
  * Fetches audit logs with pagination and filtering
- * Protected by session authentication
+ * Requires auditLogs:view permission (Super Admin only)
  */
 
 import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
 import { verifySession } from '../../../utils/adminAuth';
+import { hasPermission } from '../../../utils/rbac';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -19,8 +20,8 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
-    // Only nutricraftadmin can view audit logs
-    if (authResult.user.username !== 'nutricraftadmin') {
+    // Check audit logs permission (Super Admin only)
+    if (!hasPermission(authResult.user.role, 'auditLogs', 'view')) {
       return new Response(
         JSON.stringify({ success: false, error: 'Access denied' }),
         { status: 403, headers: { 'Content-Type': 'application/json' } }

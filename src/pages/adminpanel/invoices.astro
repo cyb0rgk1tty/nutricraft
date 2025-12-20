@@ -2,11 +2,12 @@
 /**
  * Invoices Analytics Page
  * Detailed view of Invoice Ninja payments and balance statistics
- * Restricted to nutricraftadmin only
+ * Requires invoices:view permission (Super Admin, Staff)
  */
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import { InvoiceAnalytics } from '../../components/react/admin/InvoiceAnalytics';
 import { verifySession } from '../../utils/adminAuth';
+import { hasPermission } from '../../utils/rbac';
 
 // Check if user is authenticated
 const authResult = await verifySession(Astro.request);
@@ -16,8 +17,8 @@ if (!authResult) {
   return Astro.redirect('/mandash');
 }
 
-// Only nutricraftadmin can access
-if (authResult.user.username !== 'nutricraftadmin') {
+// Check invoices permission
+if (!hasPermission(authResult.user.role, 'invoices', 'view')) {
   return Astro.redirect('/mandash');
 }
 

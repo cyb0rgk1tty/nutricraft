@@ -1,15 +1,15 @@
 /**
  * API Endpoint: /api/admin/announcements
  * Manages site announcement settings
- * Protected by session authentication
  *
- * GET - Fetch current announcement settings
- * PATCH - Update announcement (is_active, message)
+ * GET - Fetch current announcement settings (requires settings:view)
+ * PATCH - Update announcement (requires settings:edit - Super Admin only)
  */
 
 import type { APIRoute } from 'astro';
 import { verifySession } from '../../../utils/adminAuth';
 import { getAnnouncement, updateAnnouncement } from '../../../utils/announcements';
+import { hasPermission } from '../../../utils/rbac';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -19,6 +19,14 @@ export const GET: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({ success: false, error: 'Unauthorized' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check settings view permission
+    if (!hasPermission(authResult.user.role, 'settings', 'view')) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Access denied' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -46,6 +54,14 @@ export const PATCH: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({ success: false, error: 'Unauthorized' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check settings edit permission (Super Admin only)
+    if (!hasPermission(authResult.user.role, 'settings', 'edit')) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Access denied. Super Admin required.' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
       );
     }
 

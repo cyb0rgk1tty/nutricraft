@@ -5,7 +5,8 @@
  * - Recent activity (from audit logs)
  * - Announcement status
  *
- * Protected by session authentication - admin only (nutricraftadmin)
+ * Protected by session authentication
+ * Requires dashboard:view permission (Super Admin, Staff)
  */
 
 import type { APIRoute } from 'astro';
@@ -13,6 +14,7 @@ import { fetchOpportunities } from '../../../utils/twentyCrm';
 import { verifySession } from '../../../utils/adminAuth';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
 import { microsToDollars } from '../../../utils/googleAds';
+import { hasPermission } from '../../../utils/rbac';
 
 // Types for dashboard response
 interface DailyData {
@@ -213,8 +215,8 @@ export const GET: APIRoute = async ({ request }) => {
       );
     }
 
-    // Only nutricraftadmin can access the dashboard
-    if (authResult.user.username !== 'nutricraftadmin') {
+    // Check dashboard permission
+    if (!hasPermission(authResult.user.role, 'dashboard', 'view')) {
       return new Response(
         JSON.stringify({ success: false, error: 'Access denied' }),
         { status: 403, headers: { 'Content-Type': 'application/json' } }

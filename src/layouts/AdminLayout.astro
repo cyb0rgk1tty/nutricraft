@@ -8,16 +8,18 @@
  * - Authentication state passed to sidebar
  * - Consistent page structure
  * - Mobile-responsive with hamburger menu
+ * - Role-based navigation filtering
  */
 
 import BaseLayout from './BaseLayout.astro';
 import AdminSidebar from '../components/admin/AdminSidebar.astro';
 import { verifySession } from '../utils/adminAuth';
+import type { UserRole } from '../utils/rbac';
 
 interface Props {
   title: string;
   description?: string;
-  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads' | 'invoices' | 'airwallex';
+  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads' | 'invoices' | 'airwallex' | 'users';
 }
 
 const { title, description = 'Admin Dashboard', currentPage } = Astro.props;
@@ -25,7 +27,7 @@ const { title, description = 'Admin Dashboard', currentPage } = Astro.props;
 // Get authentication state
 const authResult = await verifySession(Astro.request);
 const user = authResult?.user;
-const isAdmin = user?.username === 'nutricraftadmin';
+const userRole: UserRole = user?.role || 'manufacturer';
 ---
 
 <BaseLayout title={title} description={description} noindex={true} noChat={true}>
@@ -33,7 +35,7 @@ const isAdmin = user?.username === 'nutricraftadmin';
     <!-- Sidebar -->
     <AdminSidebar
       currentPage={currentPage}
-      isAdmin={isAdmin}
+      userRole={userRole}
       username={user?.username}
     />
 

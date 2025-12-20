@@ -6,40 +6,43 @@
  * Features:
  * - Fixed sidebar on desktop (lg+)
  * - Slide-in overlay on mobile
- * - Conditional nav items based on user role
+ * - Role-based nav items filtering
  * - Active state highlighting
  * - Logout functionality
  */
 
+import type { UserRole } from '../../utils/rbac';
+import { hasPermission, getRoleDisplayName, isSuperAdmin, canAccessAdminPanel } from '../../utils/rbac';
+
 interface Props {
-  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads' | 'invoices' | 'airwallex';
-  isAdmin?: boolean;
+  currentPage: 'dashboard' | 'quotes' | 'settings' | 'audit-logs' | 'google-ads' | 'invoices' | 'airwallex' | 'users';
+  userRole: UserRole;
   username?: string;
 }
 
-const { currentPage, isAdmin = false, username } = Astro.props;
+const { currentPage, userRole, username } = Astro.props;
 
-// Navigation items configuration
+// Navigation items configuration with required permissions
 const navItems = [
   {
     id: 'dashboard',
     label: 'Dashboard',
     href: '/adminpanel',
     icon: 'home',
-    adminOnly: true,
+    resource: 'dashboard' as const,
   },
   {
     id: 'quotes',
     label: 'Quotes',
     href: '/mandash',
     icon: 'clipboard',
-    adminOnly: false,
+    resource: 'quotes' as const,
   },
   {
     id: 'finance',
     label: 'Finance',
     icon: 'currency',
-    adminOnly: true,
+    resource: 'invoices' as const,
     submenu: [
       {
         id: 'invoices',
@@ -57,7 +60,7 @@ const navItems = [
     id: 'advertisements',
     label: 'Advertisements',
     icon: 'megaphone',
-    adminOnly: true,
+    resource: 'googleAds' as const,
     submenu: [
       {
         id: 'google-ads',
@@ -71,19 +74,27 @@ const navItems = [
     label: 'Settings',
     href: '/adminpanel/settings',
     icon: 'cog',
-    adminOnly: false,
+    resource: 'settings' as const,
+  },
+  {
+    id: 'users',
+    label: 'Users',
+    href: '/adminpanel/users',
+    icon: 'users',
+    resource: 'userManagement' as const,
   },
   {
     id: 'audit-logs',
     label: 'Audit Logs',
     href: '/adminpanel/audit-logs',
     icon: 'document',
-    adminOnly: true,
+    resource: 'auditLogs' as const,
   },
 ];
 
-// Filter items based on admin status
-const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
+// Filter items based on role permissions
+const visibleNavItems = navItems.filter(item => hasPermission(userRole, item.resource, 'view'));
+const roleDisplayName = getRoleDisplayName(userRole);
 ---
 
 <!-- Mobile overlay backdrop -->
@@ -222,6 +233,11 @@ const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           )}
+          {item.icon === 'users' && (
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          )}
           <span>{item.label}</span>
         </a>
       );
@@ -240,7 +256,7 @@ const visibleNavItems = navItems.filter(item => !item.adminOnly || isAdmin);
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-medium text-gray-900 truncate">{username}</p>
-          <p class="text-xs text-gray-500">{isAdmin ? 'Administrator' : 'User'}</p>
+          <p class="text-xs text-gray-500">{roleDisplayName}</p>
         </div>
       </div>
     )}
