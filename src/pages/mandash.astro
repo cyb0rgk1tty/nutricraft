@@ -21,7 +21,7 @@ const title = 'Manufacture Dashboard | Nutricraft Labs';
 const description = 'Internal dashboard for managing manufacturer price quotes';
 ---
 
-<BaseLayout title={title} description={description} noindex={true} noChat={true}>
+<BaseLayout title={title} description={description} noindex={true} noChat={true} noAnnouncement={true}>
   <!-- Login Gate (shown when not authenticated) -->
   <div id="login-gate" class:list={["min-h-[calc(100vh-5rem)] bg-gradient-to-br from-mint-50 via-white to-primary/5 flex items-center justify-center py-16", { "hidden": isAuthenticated }]}>
     <div class="max-w-md mx-auto px-4 sm:px-6 text-center">

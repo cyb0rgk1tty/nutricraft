@@ -30,7 +30,7 @@ const user = authResult?.user;
 const userRole: UserRole = user?.role || 'manufacturer';
 ---
 
-<BaseLayout title={title} description={description} noindex={true} noChat={true}>
+<BaseLayout title={title} description={description} noindex={true} noChat={true} noAnnouncement={true}>
   <div class="min-h-screen bg-gray-50">
     <!-- Sidebar -->
     <AdminSidebar
