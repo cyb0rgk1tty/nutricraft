@@ -266,7 +266,7 @@ const description = 'Admin settings for Nutricraft Labs website';
       return;
     }
 
-    const message = (messageInput as HTMLTextAreaElement)?.value?.trim();
+    const message = messageInput?.value?.trim();
 
     if (!message) {
       showStatus('Please enter a message', true);
