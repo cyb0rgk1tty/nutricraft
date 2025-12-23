@@ -7,7 +7,7 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { verifySession } from '../../utils/adminAuth';
-import { getAnnouncement } from '../../utils/announcements';
+import { getAnnouncementAdmin } from '../../utils/announcements';
 import { hasPermission } from '../../utils/rbac';
 
 // Check if user is already authenticated via cookie
@@ -26,8 +26,8 @@ if (!hasPermission(authResult.user.role, 'settings', 'view')) {
 // Check if user can edit (Super Admin only)
 const canEdit = hasPermission(authResult.user.role, 'settings', 'edit');
 
-// Fetch current announcement
-const announcement = await getAnnouncement();
+// Fetch current announcement (using admin function to bypass RLS)
+const announcement = await getAnnouncementAdmin();
 
 // SEO metadata
 const title = 'Settings | Nutricraft Labs Admin';

@@ -54,6 +54,28 @@ export async function getActiveAnnouncement(): Promise<SiteAnnouncement | null> 
 }
 
 /**
+ * Get announcement for admin panel (bypasses RLS)
+ * Uses service client to read regardless of is_active status
+ */
+export async function getAnnouncementAdmin(): Promise<SiteAnnouncement | null> {
+  const supabase = getSupabaseServiceClient();
+
+  const { data, error } = await supabase
+    .from('site_announcements')
+    .select('*')
+    .order('id', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error('Error fetching announcement (admin):', error);
+    return null;
+  }
+
+  return data as SiteAnnouncement;
+}
+
+/**
  * Update the announcement settings (admin only)
  * Uses the service client to bypass RLS
  */
