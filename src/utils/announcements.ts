@@ -7,10 +7,13 @@
 import { getSupabaseClient, getSupabaseServiceClient } from './supabase';
 
 // Type definition for announcement
+export type AnnouncementColor = 'yellow' | 'green';
+
 export interface SiteAnnouncement {
   id: number;
   is_active: boolean;
   message: string;
+  color: AnnouncementColor;
   created_at: string;
   updated_at: string;
 }
@@ -56,7 +59,7 @@ export async function getActiveAnnouncement(): Promise<SiteAnnouncement | null> 
  */
 export async function updateAnnouncement(
   id: number,
-  updates: { is_active?: boolean; message?: string }
+  updates: { is_active?: boolean; message?: string; color?: AnnouncementColor }
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = getSupabaseServiceClient();
 

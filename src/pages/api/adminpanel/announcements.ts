@@ -67,7 +67,7 @@ export const PATCH: APIRoute = async ({ request }) => {
 
     // Parse request body
     const body = await request.json();
-    const { id, is_active, message } = body;
+    const { id, is_active, message, color } = body;
 
     if (!id) {
       return new Response(
@@ -77,12 +77,15 @@ export const PATCH: APIRoute = async ({ request }) => {
     }
 
     // Build updates object
-    const updates: { is_active?: boolean; message?: string } = {};
+    const updates: { is_active?: boolean; message?: string; color?: 'yellow' | 'green' } = {};
     if (typeof is_active === 'boolean') {
       updates.is_active = is_active;
     }
     if (typeof message === 'string' && message.trim()) {
       updates.message = message.trim();
+    }
+    if (color === 'yellow' || color === 'green') {
+      updates.color = color;
     }
 
     if (Object.keys(updates).length === 0) {

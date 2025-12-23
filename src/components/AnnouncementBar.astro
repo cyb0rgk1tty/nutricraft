@@ -16,22 +16,41 @@ const announcement = await getActiveAnnouncement();
 const messageHash = announcement?.message
   ? btoa(announcement.message).slice(0, 8)
   : '';
+
+// Color classes mapping
+const colorClasses = {
+  yellow: {
+    bg: 'bg-amber-100',
+    border: 'border-amber-200',
+    text: 'text-amber-900',
+    dismiss: 'text-amber-700 hover:text-amber-900',
+  },
+  green: {
+    bg: 'bg-green-100',
+    border: 'border-green-200',
+    text: 'text-green-900',
+    dismiss: 'text-green-700 hover:text-green-900',
+  },
+};
+
+const color = announcement?.color || 'yellow';
+const classes = colorClasses[color] || colorClasses.yellow;
 ---
 
 {announcement && (
   <div
     id="announcement-bar"
     data-hash={messageHash}
-    class="bg-amber-100 border-b border-amber-200 py-2.5 px-4 relative"
+    class:list={[classes.bg, "border-b", classes.border, "py-2.5 px-4 relative"]}
   >
     <div class="max-w-7xl mx-auto flex items-center justify-center">
-      <p class="text-amber-900 text-sm text-center pr-8">
+      <p class:list={[classes.text, "text-sm text-center pr-8"]}>
         {announcement.message}
       </p>
       <button
         id="dismiss-announcement"
         type="button"
-        class="absolute right-4 top-1/2 -translate-y-1/2 text-amber-700 hover:text-amber-900 transition-colors p-1"
+        class:list={["absolute right-4 top-1/2 -translate-y-1/2 transition-colors p-1", classes.dismiss]}
         aria-label="Dismiss announcement"
       >
         <svg
