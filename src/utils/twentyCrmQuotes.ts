@@ -430,7 +430,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         description: product.description || undefined,
-        dashboard: product.dashboard || undefined,
+        // Dashboard can be an array or string from CRM - normalize to string
+        dashboard: Array.isArray(product.dashboard) ? product.dashboard[0] : product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
         durlevelPrice: product.durlevelPrice || undefined,
@@ -593,7 +594,8 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         description: product.description || undefined,
-        dashboard: product.dashboard || undefined,
+        // Dashboard can be an array or string from CRM - normalize to string
+        dashboard: Array.isArray(product.dashboard) ? product.dashboard[0] : product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
         durlevelPrice: product.durlevelPrice || undefined,
