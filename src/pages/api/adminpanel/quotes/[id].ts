@@ -51,7 +51,8 @@ export const PATCH: APIRoute = async ({ params, request }) => {
     const userDashboard = authResult.user.dashboard_access;
     if (userDashboard) {
       // User is a manufacturer - restrict which fields they can update
-      const allowedFields = ['orderQuantity', 'description'];
+      // Note: description is read-only for manufacturers (only admins can edit)
+      const allowedFields = ['orderQuantity'];
 
       // Add their specific notes and price fields
       if (userDashboard === 'DURLEVEL') {

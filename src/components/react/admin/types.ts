@@ -84,22 +84,22 @@ export interface UpdateQuoteResponse {
 // Status configuration
 export const STATUS_CONFIG: Record<QuoteStatus, { label: string; color: string; bgColor: string }> = {
   planning: {
-    label: 'Price Quote',
+    label: 'Quote',
     color: 'text-blue-700',
     bgColor: 'bg-blue-100',
   },
   order_samples: {
-    label: 'Order Samples',
+    label: 'Samples',
     color: 'text-amber-700',
     bgColor: 'bg-amber-100',
   },
   client_review_samples: {
-    label: 'Sample Delivered',
+    label: 'Delivered',
     color: 'text-purple-700',
     bgColor: 'bg-purple-100',
   },
   full_batch_order: {
-    label: 'Full Batch Order',
+    label: 'Full Batch',
     color: 'text-green-700',
     bgColor: 'bg-green-100',
   },

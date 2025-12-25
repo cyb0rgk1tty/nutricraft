@@ -780,16 +780,28 @@ export function QuoteTable() {
       {
         accessorKey: 'description',
         header: () => <span>{t('description') || 'Description'}</span>,
-        cell: ({ row }) => (
-          <EditableCell
-            value={row.original.description}
-            quoteId={row.original.id}
-            field="description"
-            type="text"
-            placeholder={t('addDescriptionPlaceholder') || 'Add description...'}
-            onUpdate={handleInlineUpdate}
-          />
-        ),
+        cell: ({ row }) => {
+          // Manufacturers can only view description, not edit
+          if (userDashboard) {
+            const desc = row.original.description;
+            return (
+              <span className={`text-sm truncate block max-w-[150px] ${desc ? '' : 'text-gray-400'}`} title={desc || ''}>
+                {desc || '-'}
+              </span>
+            );
+          }
+          // Admins can edit
+          return (
+            <EditableCell
+              value={row.original.description}
+              quoteId={row.original.id}
+              field="description"
+              type="text"
+              placeholder={t('addDescriptionPlaceholder') || 'Add description...'}
+              onUpdate={handleInlineUpdate}
+            />
+          );
+        },
         size: 150,
         minSize: 100,
         maxSize: 200,

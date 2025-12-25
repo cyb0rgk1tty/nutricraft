@@ -562,16 +562,18 @@ export function QuoteDetailPanel() {
 
                 <Separator />
 
-                {/* Description (shared across all views) */}
+                {/* Description (read-only for manufacturers, editable for admins) */}
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                     {t('description')}
                   </h3>
                   <Textarea
-                    placeholder={t('addDescriptionPlaceholder')}
+                    placeholder={userDashboard ? '' : t('addDescriptionPlaceholder')}
                     rows={4}
+                    disabled={!!userDashboard}
+                    className={userDashboard ? 'bg-gray-50 cursor-not-allowed' : ''}
                     {...form.register('description', {
-                      onBlur: (e) => handleAutoSave('description', e.target.value),
+                      onBlur: (e) => !userDashboard && handleAutoSave('description', e.target.value),
                     })}
                   />
                 </div>

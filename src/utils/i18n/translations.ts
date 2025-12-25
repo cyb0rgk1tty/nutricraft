@@ -49,10 +49,10 @@ export const translations = {
 
     // Status Labels
     all: 'All',
-    priceQuote: 'Price Quote',
-    orderSamples: 'Order Samples',
-    sampleDelivered: 'Sample Delivered',
-    fullBatchOrder: 'Full Batch Order',
+    priceQuote: 'Quote',
+    orderSamples: 'Samples',
+    sampleDelivered: 'Delivered',
+    fullBatchOrder: 'Full Batch',
     unknown: 'Unknown',
 
     // Priority Labels
@@ -198,10 +198,10 @@ export const translations = {
 
     // Status Labels
     all: '全部',
-    priceQuote: '报价中',
-    orderSamples: '订购样品',
-    sampleDelivered: '样品已交付',
-    fullBatchOrder: '批量订单',
+    priceQuote: '报价',
+    orderSamples: '样品',
+    sampleDelivered: '已交付',
+    fullBatchOrder: '批量',
     unknown: '未知',
 
     // Priority Labels
