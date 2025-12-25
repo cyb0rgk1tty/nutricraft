@@ -602,11 +602,22 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
       };
     });
 
-    // Filter by dashboard if specified (for manufacturer users)
-    // If dashboardFilter is undefined (admin/staff), show all products
-    if (dashboardFilter) {
-      allQuotes = allQuotes.filter(quote => quote.dashboard === dashboardFilter);
-    }
+    // Filter by dashboard:
+    // - Products without a dashboard value should never appear on the manufacturer dashboard
+    // - Manufacturer users only see products assigned to their dashboard
+    // - Admin/staff see all products that have ANY dashboard value set
+    allQuotes = allQuotes.filter(quote => {
+      // Exclude products without a dashboard value
+      if (!quote.dashboard) return false;
+
+      // If dashboardFilter is set (manufacturer user), only show their products
+      if (dashboardFilter) {
+        return quote.dashboard === dashboardFilter;
+      }
+
+      // Admin/staff see all products with a dashboard value
+      return true;
+    });
 
     // Filter to only include allowed stages
     allQuotes = allQuotes.filter(quote =>
