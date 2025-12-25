@@ -8,6 +8,7 @@ export const translations = {
     // Page
     pageTitle: 'Manufacture Dashboard',
     pageDescription: 'Internal dashboard for managing manufacturer price quotes',
+    pageSubtitle: 'Manage manufacturer price quotes',
 
     // Auth
     enterCredentials: 'Enter your credentials to continue',
@@ -36,7 +37,10 @@ export const translations = {
     stage: 'Stage',
     formula: 'Formula',
     price: 'Price (USD)',
+    priceLabel: 'Price',
+    usdLabel: '(USD)',
     qty: 'Qty',
+    clickToEdit: 'Click to edit',
     notes: 'Notes',
     publicNotes: 'Public Notes',
     addPublicNotesPlaceholder: 'Add notes visible on the dashboard...',
@@ -157,6 +161,7 @@ export const translations = {
     // Page
     pageTitle: '制造商仪表板',
     pageDescription: '管理制造商报价请求的内部仪表板',
+    pageSubtitle: '管理制造商报价请求',
 
     // Auth
     enterCredentials: '请输入您的凭据以继续',
@@ -185,7 +190,10 @@ export const translations = {
     stage: '阶段',
     formula: '配方',
     price: '价格 (USD)',
+    priceLabel: '价格',
+    usdLabel: '(USD)',
     qty: '数量',
+    clickToEdit: '点击编辑',
     notes: '备注',
     publicNotes: '公开备注',
     addPublicNotesPlaceholder: '添加显示在仪表板上的备注...',

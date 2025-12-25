@@ -85,11 +85,11 @@ function StatusBadge({ status, getStageLabel }: { status: QuoteStatus; getStageL
 }
 
 // Priority Indicator Component - shows red dot for urgent items
-function PriorityIndicator({ priority }: { priority?: QuotePriority }) {
+function PriorityIndicator({ priority, title }: { priority?: QuotePriority; title: string }) {
   if (!priority || priority !== 'urgent') return null;
 
   return (
-    <div className="w-3 h-3 rounded-full bg-red-500" title="Urgent" />
+    <div className="w-3 h-3 rounded-full bg-red-500" title={title} />
   );
 }
 
@@ -101,6 +101,7 @@ function EditableCell({
   type = 'text',
   prefix = '',
   placeholder = '-',
+  clickToEditText = 'Click to edit',
   onUpdate,
 }: {
   value: number | string | undefined | null;
@@ -109,6 +110,7 @@ function EditableCell({
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
+  clickToEditText?: string;
   onUpdate: (id: string, updates: Partial<Quote>) => Promise<void>;
 }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -211,7 +213,7 @@ function EditableCell({
     <div
       className="cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 -my-1 transition-colors group"
       onClick={handleClick}
-      title={type === 'text' && value ? String(value) : 'Click to edit'}
+      title={type === 'text' && value ? String(value) : clickToEditText}
     >
       <span className={`text-sm ${value ? 'font-medium' : 'text-muted-foreground'}`}>
         {displayValue}
@@ -607,7 +609,7 @@ export function QuoteTable() {
         ),
         cell: ({ row }) => (
           <div className="flex justify-center">
-            <PriorityIndicator priority={row.original.priority} />
+            <PriorityIndicator priority={row.original.priority} title={t('priorityUrgent')} />
           </div>
         ),
         sortingFn: (rowA, rowB) => {
@@ -690,8 +692,8 @@ export function QuoteTable() {
               onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
               <span className="flex flex-col items-center leading-tight">
-                <span>Price</span>
-                <span className="text-xs font-normal text-gray-400">(USD)</span>
+                <span>{t('priceLabel')}</span>
+                <span className="text-xs font-normal text-gray-400">{t('usdLabel')}</span>
                 <ArrowUpDown className="h-3 w-3 text-gray-400" />
               </span>
             </Button>
@@ -706,6 +708,7 @@ export function QuoteTable() {
                 quoteId={row.original.id}
                 field="durlevelPrice"
                 type="number"
+                clickToEditText={t('clickToEdit')}
                 onUpdate={handleInlineUpdate}
               />
             );
@@ -717,6 +720,7 @@ export function QuoteTable() {
                 quoteId={row.original.id}
                 field="ausresonPrice"
                 type="number"
+                clickToEditText={t('clickToEdit')}
                 onUpdate={handleInlineUpdate}
               />
             );
@@ -733,6 +737,7 @@ export function QuoteTable() {
                   quoteId={row.original.id}
                   field="durlevelPrice"
                   type="number"
+                  clickToEditText={t('clickToEdit')}
                   onUpdate={handleInlineUpdate}
                 />
               </div>
@@ -743,6 +748,7 @@ export function QuoteTable() {
                   quoteId={row.original.id}
                   field="ausresonPrice"
                   type="number"
+                  clickToEditText={t('clickToEdit')}
                   onUpdate={handleInlineUpdate}
                 />
               </div>
@@ -774,6 +780,7 @@ export function QuoteTable() {
             quoteId={row.original.id}
             field="orderQuantity"
             type="number"
+            clickToEditText={t('clickToEdit')}
             onUpdate={handleInlineUpdate}
           />
         ),
@@ -801,7 +808,8 @@ export function QuoteTable() {
               quoteId={row.original.id}
               field="description"
               type="text"
-              placeholder={t('addDescriptionPlaceholder') || 'Add description...'}
+              placeholder={t('addDescriptionPlaceholder')}
+              clickToEditText={t('clickToEdit')}
               onUpdate={handleInlineUpdate}
             />
           );
@@ -838,7 +846,8 @@ export function QuoteTable() {
               quoteId={row.original.id}
               field={notesField}
               type="text"
-              placeholder={t('addNotesPlaceholder') || 'Add notes...'}
+              placeholder={t('addNotesPlaceholder')}
+              clickToEditText={t('clickToEdit')}
               onUpdate={handleInlineUpdate}
             />
           );
