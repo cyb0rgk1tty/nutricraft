@@ -624,13 +624,11 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-auto py-1"
+            className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            <span className="flex flex-col items-center leading-tight">
-              <span>{t('name')}</span>
-              <ArrowUpDown className="h-3 w-3 text-gray-400" />
-            </span>
+            {t('name')}
+            <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
         cell: ({ row }) => (
@@ -648,13 +646,11 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-auto py-1"
+            className="-ml-3 h-8"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            <span className="flex flex-col items-center leading-tight">
-              <span>{t('stage')}</span>
-              <ArrowUpDown className="h-3 w-3 text-gray-400" />
-            </span>
+            {t('stage')}
+            <ArrowUpDown className="ml-1 h-3 w-3" />
           </Button>
         ),
         cell: ({ row }) => <StatusBadge status={row.getValue('status')} getStageLabel={getStageLabel} />,
