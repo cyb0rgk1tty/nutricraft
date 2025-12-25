@@ -606,13 +606,16 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
     // - Products without a dashboard value should never appear on the manufacturer dashboard
     // - Manufacturer users only see products assigned to their dashboard
     // - Admin/staff see all products that have ANY dashboard value set
+    // Note: Case-insensitive comparison since TwentyCRM may use mixed case (e.g., 'Durlevel')
     allQuotes = allQuotes.filter(quote => {
       // Exclude products without a dashboard value
       if (!quote.dashboard) return false;
 
+      const normalizedDashboard = quote.dashboard.toUpperCase();
+
       // If dashboardFilter is set (manufacturer user), only show their products
       if (dashboardFilter) {
-        return quote.dashboard === dashboardFilter;
+        return normalizedDashboard === dashboardFilter.toUpperCase();
       }
 
       // Admin/staff see all products with a dashboard value
