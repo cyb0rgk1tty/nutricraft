@@ -29,7 +29,6 @@ export const CRM_CONFIG = {
     updatedAt: 'updatedAt',
     ourCost: 'ourCost',  // Number type in CRM
     orderQuantity: 'orderQuantity',  // Float type in CRM
-    publicNotes: 'publicNotes',  // Text type in CRM - legacy field
     description: 'description',  // Shared description field
     dashboard: 'dashboard',  // Enum: DURLEVEL, AUSRESON
     durlevelPublicNotes: 'durlevelPublicNotes',  // Notes for Durlevel only
@@ -74,7 +73,7 @@ export interface Quote {
   rawData?: Record<string, any>;
   ourCost?: number;  // Manufacturer's cost (Number in CRM)
   orderQuantity?: number;  // Order quantity (Float in CRM)
-  publicNotes?: string;  // Public Notes - displayed on dashboard (legacy)
+  publicNotes?: string;  // @deprecated - Not in CRM, kept for frontend compatibility
   description?: string;  // Shared description field
   dashboard?: string;  // Which dashboard this product belongs to: DURLEVEL, AUSRESON
   durlevelPublicNotes?: string;  // Notes visible only to Durlevel
@@ -219,10 +218,6 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
 
   if (quote.orderQuantity !== undefined) {
     crmData[fieldMappings.orderQuantity] = quote.orderQuantity;
-  }
-
-  if (quote.publicNotes !== undefined) {
-    crmData[fieldMappings.publicNotes] = quote.publicNotes;
   }
 
   if (quote.priority !== undefined) {
@@ -370,7 +365,6 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               updatedAt
               ourCost
               orderQuantity
-              publicNotes
               description
               dashboard
               durlevelPublicNotes
@@ -421,7 +415,6 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         crmId: product.id,
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
-        publicNotes: product.publicNotes || undefined,
         description: product.description || undefined,
         dashboard: product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
@@ -522,7 +515,6 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               updatedAt
               ourCost
               orderQuantity
-              publicNotes
               description
               dashboard
               durlevelPublicNotes
@@ -582,7 +574,6 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         crmId: product.id,
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
-        publicNotes: product.publicNotes || undefined,
         description: product.description || undefined,
         dashboard: product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
@@ -686,7 +677,6 @@ export async function updateQuoteInCRM(
           updatedAt
           ourCost
           orderQuantity
-          publicNotes
           description
           dashboard
           durlevelPublicNotes
@@ -730,7 +720,6 @@ export async function updateQuoteInCRM(
         updatedAt: updatedProduct.updatedAt,
         ourCost: updatedProduct.ourCost,
         orderQuantity: updatedProduct.orderQuantity,
-        publicNotes: updatedProduct.publicNotes,
         description: updatedProduct.description,
         dashboard: updatedProduct.dashboard,
         durlevelPublicNotes: updatedProduct.durlevelPublicNotes,
