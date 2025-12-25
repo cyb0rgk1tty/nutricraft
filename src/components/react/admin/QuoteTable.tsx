@@ -787,9 +787,9 @@ export function QuoteTable() {
           if (userDashboard) {
             const desc = row.original.description;
             return (
-              <span className={`text-sm truncate block max-w-[150px] ${desc ? '' : 'text-gray-400'}`} title={desc || ''}>
+              <div className={`text-sm whitespace-pre-wrap break-words ${desc ? '' : 'text-gray-400'}`}>
                 {desc || '-'}
-              </span>
+              </div>
             );
           }
           // Admins can edit
@@ -804,9 +804,9 @@ export function QuoteTable() {
             />
           );
         },
-        size: 150,
-        minSize: 100,
-        maxSize: 200,
+        size: 200,
+        minSize: 150,
+        maxSize: 300,
       },
       // Manufacturer-specific notes column
       {
