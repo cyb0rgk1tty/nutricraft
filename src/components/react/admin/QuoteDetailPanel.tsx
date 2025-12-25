@@ -105,9 +105,9 @@ function DocumentCard({
       >
         {/* Thumbnail */}
         <div className="aspect-[4/3] bg-gray-100 rounded mb-2 flex items-center justify-center overflow-hidden">
-          {document.thumbnailPath ? (
+          {isImage && document.filePath ? (
             <img
-              src={document.thumbnailPath}
+              src={document.filePath}
               alt={document.fileName}
               className="w-full h-full object-cover"
             />
