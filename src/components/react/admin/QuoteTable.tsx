@@ -676,19 +676,14 @@ export function QuoteTable() {
           return row.durlevelPrice ?? row.ausresonPrice;
         },
         header: ({ column }) => {
-          // Dynamic header based on manufacturer
-          const priceLabel = userDashboard === 'AUSRESON' ? 'Ausreson' : 'Durlevel';
           return (
             <Button
               variant="ghost"
               size="sm"
-              className="-ml-3 h-auto py-1"
+              className="-ml-3 h-8"
               onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
-              <span className="flex flex-col items-start leading-tight">
-                <span>{userDashboard ? priceLabel : 'Price'}</span>
-                <span className="text-xs font-normal text-gray-400">(USD)</span>
-              </span>
+              {t('price')}
               <ArrowUpDown className="ml-1 h-3 w-3" />
             </Button>
           );
