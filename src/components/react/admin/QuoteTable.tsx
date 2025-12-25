@@ -576,11 +576,13 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8"
+            className="-ml-3 h-auto py-1"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            {t('created')}
-            <ArrowUpDown className="ml-1 h-3 w-3" />
+            <span className="flex flex-col items-center leading-tight">
+              <span>{t('created')}</span>
+              <ArrowUpDown className="h-3 w-3 text-gray-400" />
+            </span>
           </Button>
         ),
         cell: ({ row }) => (
@@ -622,11 +624,13 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8"
+            className="-ml-3 h-auto py-1"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            {t('name')}
-            <ArrowUpDown className="ml-1 h-3 w-3" />
+            <span className="flex flex-col items-center leading-tight">
+              <span>{t('name')}</span>
+              <ArrowUpDown className="h-3 w-3 text-gray-400" />
+            </span>
           </Button>
         ),
         cell: ({ row }) => (
@@ -644,11 +648,13 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8"
+            className="-ml-3 h-auto py-1"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            {t('stage')}
-            <ArrowUpDown className="ml-1 h-3 w-3" />
+            <span className="flex flex-col items-center leading-tight">
+              <span>{t('stage')}</span>
+              <ArrowUpDown className="h-3 w-3 text-gray-400" />
+            </span>
           </Button>
         ),
         cell: ({ row }) => <StatusBadge status={row.getValue('status')} getStageLabel={getStageLabel} />,
@@ -687,11 +693,11 @@ export function QuoteTable() {
               className="-ml-3 h-auto py-1"
               onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
-              <span className="flex flex-col items-start leading-tight">
+              <span className="flex flex-col items-center leading-tight">
                 <span>Price</span>
                 <span className="text-xs font-normal text-gray-400">(USD)</span>
+                <ArrowUpDown className="h-3 w-3 text-gray-400" />
               </span>
-              <ArrowUpDown className="ml-1 h-3 w-3" />
             </Button>
           );
         },
@@ -757,11 +763,13 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8"
+            className="-ml-3 h-auto py-1"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            {t('qty')}
-            <ArrowUpDown className="ml-1 h-3 w-3" />
+            <span className="flex flex-col items-center leading-tight">
+              <span>{t('qty')}</span>
+              <ArrowUpDown className="h-3 w-3 text-gray-400" />
+            </span>
           </Button>
         ),
         cell: ({ row }) => (
