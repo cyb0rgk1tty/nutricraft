@@ -9,6 +9,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { AdminDashboard } from '../components/react/admin';
 import { verifySession } from '../utils/adminAuth';
+import LanguageSelector from '../components/admin/LanguageSelector.astro';
 
 // Check if user is already authenticated via cookie
 const authResult = await verifySession(Astro.request);
@@ -112,6 +113,8 @@ const description = 'Internal dashboard for managing manufacturer price quotes';
               <p class="text-sm text-gray-500 mt-1">Manage manufacturer price quotes</p>
             </div>
             <div class="flex items-center gap-2 sm:gap-3">
+              <!-- Language Selector -->
+              <LanguageSelector />
               <!-- Sync Status -->
               <div id="sync-status" class="hidden xs:flex items-center gap-2 text-sm text-gray-500">
                 <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
