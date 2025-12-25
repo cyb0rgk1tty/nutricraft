@@ -47,6 +47,35 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       );
     }
 
+    // Authorization: Manufacturers can only update their own notes field
+    const userDashboard = authResult.user.dashboard_access;
+    if (userDashboard) {
+      // User is a manufacturer - restrict which fields they can update
+      const allowedFields = ['ourCost', 'orderQuantity', 'description'];
+
+      // Add their specific notes field
+      if (userDashboard === 'DURLEVEL') {
+        allowedFields.push('durlevelPublicNotes');
+        // Block access to other manufacturer's notes
+        if ('ausresonPublicNotes' in updates) {
+          return new Response(
+            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer notes' }),
+            { status: 403, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+      } else if (userDashboard === 'AUSRESON') {
+        allowedFields.push('ausresonPublicNotes');
+        // Block access to other manufacturer's notes
+        if ('durlevelPublicNotes' in updates) {
+          return new Response(
+            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer notes' }),
+            { status: 403, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+      }
+    }
+    // Admins (userDashboard === null) can update all fields
+
     // Update in CRM
     const result = await updateQuoteInCRM(id, updates);
 

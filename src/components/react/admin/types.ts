@@ -35,7 +35,11 @@ export interface Quote {
   rawData?: Record<string, unknown>;
   ourCost?: number;
   orderQuantity?: number;
-  publicNotes?: string;
+  publicNotes?: string;  // Legacy field
+  description?: string;  // Shared description field
+  dashboard?: string;    // Which dashboard: DURLEVEL, AUSRESON
+  durlevelPublicNotes?: string;  // Notes for Durlevel only
+  ausresonPublicNotes?: string;  // Notes for Ausreson only
   documents?: QuoteDocument[];
 }
 
@@ -58,6 +62,7 @@ export interface PaginatedQuotesResponse {
     hasPreviousPage: boolean;
     totalFiltered: number;
   };
+  userDashboard?: string | null;  // User's dashboard access: DURLEVEL, AUSRESON, or null for admins
   error?: string;
 }
 

@@ -10,6 +10,7 @@ import type { Quote, QuoteStatus, SortConfig, FilterConfig } from '../types';
 interface QuoteState {
   // Auth
   isAuthenticated: boolean;
+  userDashboard: string | null; // User's dashboard access: DURLEVEL, AUSRESON, or null for admins
 
   // Data
   quotes: Quote[];
@@ -35,6 +36,7 @@ interface QuoteState {
 
   // Actions
   setAuthenticated: (isAuthenticated: boolean) => void;
+  setUserDashboard: (userDashboard: string | null) => void;
   setQuotes: (quotes: Quote[], statusCounts?: Record<string, number>) => void;
   selectQuote: (quoteId: string | null) => void;
   updateQuote: (quoteId: string, updates: Partial<Quote>) => void;
@@ -50,6 +52,7 @@ interface QuoteState {
 
 const initialState = {
   isAuthenticated: false,
+  userDashboard: null as string | null,
   quotes: [],
   statusCounts: {},
   selectedQuoteId: null,
@@ -77,6 +80,8 @@ export const useQuoteStore = create<QuoteState>()(
         ...initialState,
 
         setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+
+        setUserDashboard: (userDashboard) => set({ userDashboard }),
 
         setQuotes: (quotes, statusCounts) => set({
           quotes,

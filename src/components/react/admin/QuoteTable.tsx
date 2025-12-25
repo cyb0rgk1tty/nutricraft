@@ -109,7 +109,7 @@ function EditableCell({
 }: {
   value: number | string | undefined | null;
   quoteId: string;
-  field: 'ourCost' | 'orderQuantity' | 'publicNotes';
+  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes';
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
@@ -539,6 +539,7 @@ export function QuoteTable() {
     selectQuote,
     setFilter,
     setPage,
+    userDashboard,
   } = useQuoteStore();
 
   const { isLoading, isError, error } = useQuotesQuery();
@@ -722,18 +723,55 @@ export function QuoteTable() {
         maxSize: 90,
       },
       {
-        accessorKey: 'publicNotes',
-        header: () => <span>{t('notes')}</span>,
+        accessorKey: 'description',
+        header: () => <span>{t('description') || 'Description'}</span>,
         cell: ({ row }) => (
           <EditableCell
-            value={row.getValue('publicNotes')}
+            value={row.original.description}
             quoteId={row.original.id}
-            field="publicNotes"
+            field="description"
             type="text"
-            placeholder={t('addPublicNotesPlaceholder')}
+            placeholder={t('addDescriptionPlaceholder') || 'Add description...'}
             onUpdate={handleInlineUpdate}
           />
         ),
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
+      },
+      // Manufacturer-specific notes column
+      {
+        id: 'manufacturerNotes',
+        header: () => <span>{t('notes') || 'Notes'}</span>,
+        cell: ({ row }) => {
+          // Determine which notes field to show based on user's dashboard access
+          const notesField = userDashboard === 'DURLEVEL' ? 'durlevelPublicNotes'
+            : userDashboard === 'AUSRESON' ? 'ausresonPublicNotes'
+            : null; // Admins see a summary
+
+          if (!notesField) {
+            // Admin view - show indicator of which manufacturer has notes
+            const hasDurlevel = !!row.original.durlevelPublicNotes;
+            const hasAusreson = !!row.original.ausresonPublicNotes;
+            if (!hasDurlevel && !hasAusreson) return <span className="text-gray-400">-</span>;
+            return (
+              <span className="text-xs text-gray-500">
+                {hasDurlevel && 'D'}{hasDurlevel && hasAusreson && '/'}{hasAusreson && 'A'}
+              </span>
+            );
+          }
+
+          return (
+            <EditableCell
+              value={row.original[notesField]}
+              quoteId={row.original.id}
+              field={notesField}
+              type="text"
+              placeholder={t('addNotesPlaceholder') || 'Add notes...'}
+              onUpdate={handleInlineUpdate}
+            />
+          );
+        },
         size: 150,
         minSize: 100,
         maxSize: 200,
@@ -758,7 +796,7 @@ export function QuoteTable() {
         size: 40,
       },
     ],
-    [selectQuote, handleInlineUpdate, t, getStageLabel]
+    [selectQuote, handleInlineUpdate, t, getStageLabel, userDashboard]
   );
 
   const table = useReactTable({

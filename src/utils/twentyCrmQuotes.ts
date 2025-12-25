@@ -14,8 +14,6 @@
  * Configuration for the Twenty CRM custom object
  * Using the "Products" custom object with fields: Name, Creation date, Stages
  */
-// Hardcoded manufacturer filter - only show products from this manufacturer
-const MANUFACTURER_FILTER = 'Durlevel';
 
 export const CRM_CONFIG = {
   // The name of the custom object in Twenty CRM
@@ -31,7 +29,11 @@ export const CRM_CONFIG = {
     updatedAt: 'updatedAt',
     ourCost: 'ourCost',  // Number type in CRM
     orderQuantity: 'orderQuantity',  // Float type in CRM
-    publicNotes: 'publicNotes',  // Text type in CRM - displayed on dashboard
+    publicNotes: 'publicNotes',  // Text type in CRM - legacy field
+    description: 'description',  // Shared description field
+    dashboard: 'dashboard',  // Enum: DURLEVEL, AUSRESON
+    durlevelPublicNotes: 'durlevelPublicNotes',  // Notes for Durlevel only
+    ausresonPublicNotes: 'ausresonPublicNotes',  // Notes for Ausreson only
   } as Record<string, string>,
 
   // Stages to show in the dashboard (CRM stage value -> Dashboard display label)
@@ -72,7 +74,11 @@ export interface Quote {
   rawData?: Record<string, any>;
   ourCost?: number;  // Manufacturer's cost (Number in CRM)
   orderQuantity?: number;  // Order quantity (Float in CRM)
-  publicNotes?: string;  // Public Notes - displayed on dashboard
+  publicNotes?: string;  // Public Notes - displayed on dashboard (legacy)
+  description?: string;  // Shared description field
+  dashboard?: string;  // Which dashboard this product belongs to: DURLEVEL, AUSRESON
+  durlevelPublicNotes?: string;  // Notes visible only to Durlevel
+  ausresonPublicNotes?: string;  // Notes visible only to Ausreson
 }
 
 export interface FetchQuotesResponse {
@@ -103,6 +109,7 @@ export interface FetchQuotesOptions {
   search?: string;    // Search by name (optional)
   sortField?: 'createdAt' | 'name' | 'ourCost' | 'orderQuantity';
   sortDirection?: 'asc' | 'desc';
+  dashboardFilter?: string; // Filter by CRM dashboard field: 'DURLEVEL', 'AUSRESON', or undefined for all
 }
 
 export interface UpdateQuoteResponse {
@@ -221,6 +228,19 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
   if (quote.priority !== undefined) {
     // Send null to clear, or UPPERCASE for values (Twenty CRM expects URGENT, NORMAL)
     crmData[fieldMappings.priority] = quote.priority ? quote.priority.toUpperCase() : null;
+  }
+
+  // New fields
+  if (quote.description !== undefined) {
+    crmData[fieldMappings.description] = quote.description;
+  }
+
+  if (quote.durlevelPublicNotes !== undefined) {
+    crmData[fieldMappings.durlevelPublicNotes] = quote.durlevelPublicNotes;
+  }
+
+  if (quote.ausresonPublicNotes !== undefined) {
+    crmData[fieldMappings.ausresonPublicNotes] = quote.ausresonPublicNotes;
   }
 
   return crmData;
@@ -351,9 +371,10 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               ourCost
               orderQuantity
               publicNotes
-              manufacturer {
-                name
-              }
+              description
+              dashboard
+              durlevelPublicNotes
+              ausresonPublicNotes
             }
           }
         }
@@ -401,18 +422,16 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         publicNotes: product.publicNotes || undefined,
-        rawData: product,  // Store full product for manufacturer filtering
+        description: product.description || undefined,
+        dashboard: product.dashboard || undefined,
+        durlevelPublicNotes: product.durlevelPublicNotes || undefined,
+        ausresonPublicNotes: product.ausresonPublicNotes || undefined,
+        rawData: product,
       };
     });
 
-    // Filter to only include products from the specified manufacturer
-    let filteredQuotes = allQuotes.filter(quote => {
-      const manufacturerName = quote.rawData?.manufacturer?.name;
-      return manufacturerName === MANUFACTURER_FILTER;
-    });
-
     // Filter to only include allowed stages
-    const quotes = filteredQuotes.filter(quote =>
+    const quotes = allQuotes.filter(quote =>
       CRM_CONFIG.allowedStages.hasOwnProperty(quote.status)
     );
 
@@ -452,6 +471,7 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
     search,
     sortField = 'createdAt',
     sortDirection = 'desc',
+    dashboardFilter,
   } = options;
 
   try {
@@ -503,9 +523,10 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               ourCost
               orderQuantity
               publicNotes
-              manufacturer {
-                name
-              }
+              description
+              dashboard
+              durlevelPublicNotes
+              ausresonPublicNotes
             }
             cursor
           }
@@ -562,15 +583,19 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         ourCost,
         orderQuantity: product.orderQuantity || undefined,
         publicNotes: product.publicNotes || undefined,
-        rawData: product,  // Store full product for manufacturer filtering
+        description: product.description || undefined,
+        dashboard: product.dashboard || undefined,
+        durlevelPublicNotes: product.durlevelPublicNotes || undefined,
+        ausresonPublicNotes: product.ausresonPublicNotes || undefined,
+        rawData: product,
       };
     });
 
-    // Filter to only include products from the specified manufacturer
-    allQuotes = allQuotes.filter(quote => {
-      const manufacturerName = quote.rawData?.manufacturer?.name;
-      return manufacturerName === MANUFACTURER_FILTER;
-    });
+    // Filter by dashboard if specified (for manufacturer users)
+    // If dashboardFilter is undefined (admin/staff), show all products
+    if (dashboardFilter) {
+      allQuotes = allQuotes.filter(quote => quote.dashboard === dashboardFilter);
+    }
 
     // Filter to only include allowed stages
     allQuotes = allQuotes.filter(quote =>
@@ -662,6 +687,10 @@ export async function updateQuoteInCRM(
           ourCost
           orderQuantity
           publicNotes
+          description
+          dashboard
+          durlevelPublicNotes
+          ausresonPublicNotes
         }
       }
     `;
@@ -699,6 +728,13 @@ export async function updateQuoteInCRM(
         status: stageValue?.toLowerCase() || 'new',
         priority: updatedProduct.priority?.toLowerCase() || null,
         updatedAt: updatedProduct.updatedAt,
+        ourCost: updatedProduct.ourCost,
+        orderQuantity: updatedProduct.orderQuantity,
+        publicNotes: updatedProduct.publicNotes,
+        description: updatedProduct.description,
+        dashboard: updatedProduct.dashboard,
+        durlevelPublicNotes: updatedProduct.durlevelPublicNotes,
+        ausresonPublicNotes: updatedProduct.ausresonPublicNotes,
       },
     };
   } catch (error) {

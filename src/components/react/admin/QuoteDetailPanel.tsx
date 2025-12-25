@@ -43,7 +43,10 @@ import { useLanguage } from './hooks/useLanguage';
 const quoteFormSchema = z.object({
   ourCost: z.number().min(0).optional().nullable(),
   orderQuantity: z.number().min(0).optional().nullable(),
-  publicNotes: z.string().optional(),
+  publicNotes: z.string().optional(),  // Legacy field
+  description: z.string().optional(),
+  durlevelPublicNotes: z.string().optional(),
+  ausresonPublicNotes: z.string().optional(),
 });
 
 type QuoteFormValues = z.infer<typeof quoteFormSchema>;
@@ -196,7 +199,7 @@ function SaveIndicator({ isSaving, isSaved, savingText, savedText }: { isSaving:
 
 export function QuoteDetailPanel() {
   const queryClient = useQueryClient();
-  const { isDetailPanelOpen, toggleDetailPanel, selectQuote } = useQuoteStore();
+  const { isDetailPanelOpen, toggleDetailPanel, selectQuote, userDashboard } = useQuoteStore();
   const selectedQuote = useSelectedQuote();
   const updateMutation = useUpdateQuoteMutation();
   const { t, getStageLabel } = useLanguage();
@@ -214,6 +217,9 @@ export function QuoteDetailPanel() {
       ourCost: null,
       orderQuantity: null,
       publicNotes: '',
+      description: '',
+      durlevelPublicNotes: '',
+      ausresonPublicNotes: '',
     },
   });
 
@@ -224,6 +230,9 @@ export function QuoteDetailPanel() {
         ourCost: selectedQuote.ourCost ?? null,
         orderQuantity: selectedQuote.orderQuantity ?? null,
         publicNotes: selectedQuote.publicNotes ?? '',
+        description: selectedQuote.description ?? '',
+        durlevelPublicNotes: selectedQuote.durlevelPublicNotes ?? '',
+        ausresonPublicNotes: selectedQuote.ausresonPublicNotes ?? '',
       });
     }
   }, [selectedQuote?.id]);
@@ -516,19 +525,56 @@ export function QuoteDetailPanel() {
 
                 <Separator />
 
-                {/* Public Notes */}
+                {/* Description (shared across all views) */}
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                    {t('publicNotes')}
+                    {t('description')}
                   </h3>
                   <Textarea
-                    placeholder={t('addPublicNotesPlaceholder')}
+                    placeholder={t('addDescriptionPlaceholder')}
                     rows={4}
-                    {...form.register('publicNotes', {
-                      onBlur: (e) => handleAutoSave('publicNotes', e.target.value),
+                    {...form.register('description', {
+                      onBlur: (e) => handleAutoSave('description', e.target.value),
                     })}
                   />
                 </div>
+
+                <Separator />
+
+                {/* Manufacturer-specific notes */}
+                {/* Durlevel notes - visible to DURLEVEL users and admins */}
+                {(userDashboard === 'DURLEVEL' || userDashboard === null) && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                      {userDashboard === null ? 'Durlevel Notes' : t('manufacturerNotes')}
+                    </h3>
+                    <Textarea
+                      placeholder={t('addNotesPlaceholder')}
+                      rows={3}
+                      {...form.register('durlevelPublicNotes', {
+                        onBlur: (e) => handleAutoSave('durlevelPublicNotes', e.target.value),
+                      })}
+                      disabled={userDashboard !== null && userDashboard !== 'DURLEVEL'}
+                    />
+                  </div>
+                )}
+
+                {/* Ausreson notes - visible to AUSRESON users and admins */}
+                {(userDashboard === 'AUSRESON' || userDashboard === null) && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                      {userDashboard === null ? 'Ausreson Notes' : t('manufacturerNotes')}
+                    </h3>
+                    <Textarea
+                      placeholder={t('addNotesPlaceholder')}
+                      rows={3}
+                      {...form.register('ausresonPublicNotes', {
+                        onBlur: (e) => handleAutoSave('ausresonPublicNotes', e.target.value),
+                      })}
+                      disabled={userDashboard !== null && userDashboard !== 'AUSRESON'}
+                    />
+                  </div>
+                )}
 
                 <Separator />
 

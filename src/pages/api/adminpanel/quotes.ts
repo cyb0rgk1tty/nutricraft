@@ -105,6 +105,11 @@ export const GET: APIRoute = async ({ request }) => {
     const sortField = (url.searchParams.get('sortField') || 'createdAt') as FetchQuotesOptions['sortField'];
     const sortDirection = (url.searchParams.get('sortDirection') || 'desc') as FetchQuotesOptions['sortDirection'];
 
+    // Get dashboard filter from user's access level
+    // If user has dashboard_access set (e.g., 'DURLEVEL'), only show products for that dashboard
+    // If null (admin/staff), show all products
+    const dashboardFilter = authResult.user.dashboard_access || undefined;
+
     // Check if pagination is requested (any pagination param present)
     const usePagination = url.searchParams.has('page') ||
                           url.searchParams.has('limit') ||
@@ -121,6 +126,7 @@ export const GET: APIRoute = async ({ request }) => {
         search,
         sortField,
         sortDirection,
+        dashboardFilter,
       });
 
       if (!result.success) {
@@ -151,6 +157,7 @@ export const GET: APIRoute = async ({ request }) => {
           quotes: quotesWithDocuments,
           statusCounts: result.statusCounts,
           pagination: result.pagination,
+          userDashboard: dashboardFilter || null, // Tell frontend which dashboard user has access to
         }),
         {
           status: 200,

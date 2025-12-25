@@ -52,7 +52,7 @@ async function updateQuote(id: string, updates: Partial<Quote>): Promise<UpdateQ
 
 // Hooks
 export function useQuotesQuery(options?: Partial<FetchQuotesOptions>) {
-  const { isAuthenticated, filter, sort, page, limit, setQuotes, setPagination } = useQuoteStore();
+  const { isAuthenticated, filter, sort, page, limit, setQuotes, setPagination, setUserDashboard } = useQuoteStore();
 
   const queryOptions: FetchQuotesOptions = {
     page: options?.page ?? page,
@@ -82,8 +82,12 @@ export function useQuotesQuery(options?: Partial<FetchQuotesOptions>) {
         hasNextPage: query.data.pagination.hasNextPage,
         hasPreviousPage: query.data.pagination.hasPreviousPage,
       });
+      // Store user's dashboard access for conditional UI rendering
+      if (query.data.userDashboard !== undefined) {
+        setUserDashboard(query.data.userDashboard);
+      }
     }
-  }, [query.data, setQuotes, setPagination]);
+  }, [query.data, setQuotes, setPagination, setUserDashboard]);
 
   return query;
 }
