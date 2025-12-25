@@ -680,10 +680,13 @@ export function QuoteTable() {
             <Button
               variant="ghost"
               size="sm"
-              className="-ml-3 h-8"
+              className="-ml-3 h-auto py-1"
               onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
-              {t('price')}
+              <span className="flex flex-col items-start leading-tight">
+                <span>Price</span>
+                <span className="text-xs font-normal text-gray-400">(USD)</span>
+              </span>
               <ArrowUpDown className="ml-1 h-3 w-3" />
             </Button>
           );
