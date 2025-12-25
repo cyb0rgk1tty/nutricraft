@@ -638,7 +638,9 @@ export function QuoteTable() {
             {row.getValue('name')}
           </div>
         ),
-        minSize: 200,
+        size: 140,
+        minSize: 100,
+        maxSize: 180,
       },
       {
         accessorKey: 'status',
@@ -658,7 +660,7 @@ export function QuoteTable() {
       },
       {
         id: 'documents',
-        header: () => <span className="text-center block">{t('formula')}</span>,
+        header: () => <span className="text-center block font-semibold">{t('formula')}</span>,
         cell: ({ row }) => (
           <DocumentCount
             documents={row.original.documents ?? []}
@@ -779,7 +781,7 @@ export function QuoteTable() {
       },
       {
         accessorKey: 'description',
-        header: () => <span>{t('description') || 'Description'}</span>,
+        header: () => <span className="font-semibold">{t('description') || 'Description'}</span>,
         cell: ({ row }) => {
           // Manufacturers can only view description, not edit
           if (userDashboard) {
@@ -809,7 +811,7 @@ export function QuoteTable() {
       // Manufacturer-specific notes column
       {
         id: 'manufacturerNotes',
-        header: () => <span>{t('notes') || 'Notes'}</span>,
+        header: () => <span className="font-semibold">{t('notes') || 'Notes'}</span>,
         cell: ({ row }) => {
           // Determine which notes field to show based on user's dashboard access
           const notesField = userDashboard === 'DURLEVEL' ? 'durlevelPublicNotes'
@@ -839,9 +841,9 @@ export function QuoteTable() {
             />
           );
         },
-        size: 150,
-        minSize: 100,
-        maxSize: 200,
+        size: 200,
+        minSize: 150,
+        maxSize: 300,
       },
       {
         id: 'actions',
