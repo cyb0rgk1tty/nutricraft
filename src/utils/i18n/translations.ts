@@ -31,7 +31,7 @@ export const translations = {
     quotesWillAppear: 'Quote requests from Twenty CRM will appear here',
 
     // Table Headers
-    created: 'Created',
+    created: 'Date',
     name: 'Name',
     stage: 'Stage',
     formula: 'Formula',
@@ -180,7 +180,7 @@ export const translations = {
     quotesWillAppear: '来自 Twenty CRM 的报价请求将显示在这里',
 
     // Table Headers
-    created: '创建时间',
+    created: '日期',
     name: '名称',
     stage: '阶段',
     formula: '配方',
