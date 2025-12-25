@@ -47,28 +47,28 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       );
     }
 
-    // Authorization: Manufacturers can only update their own notes field
+    // Authorization: Manufacturers can only update their own notes and price fields
     const userDashboard = authResult.user.dashboard_access;
     if (userDashboard) {
       // User is a manufacturer - restrict which fields they can update
-      const allowedFields = ['ourCost', 'orderQuantity', 'description'];
+      const allowedFields = ['orderQuantity', 'description'];
 
-      // Add their specific notes field
+      // Add their specific notes and price fields
       if (userDashboard === 'DURLEVEL') {
-        allowedFields.push('durlevelPublicNotes');
-        // Block access to other manufacturer's notes
-        if ('ausresonPublicNotes' in updates) {
+        allowedFields.push('durlevelPublicNotes', 'durlevelPrice');
+        // Block access to other manufacturer's fields
+        if ('ausresonPublicNotes' in updates || 'ausresonPrice' in updates) {
           return new Response(
-            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer notes' }),
+            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer fields' }),
             { status: 403, headers: { 'Content-Type': 'application/json' } }
           );
         }
       } else if (userDashboard === 'AUSRESON') {
-        allowedFields.push('ausresonPublicNotes');
-        // Block access to other manufacturer's notes
-        if ('durlevelPublicNotes' in updates) {
+        allowedFields.push('ausresonPublicNotes', 'ausresonPrice');
+        // Block access to other manufacturer's fields
+        if ('durlevelPublicNotes' in updates || 'durlevelPrice' in updates) {
           return new Response(
-            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer notes' }),
+            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer fields' }),
             { status: 403, headers: { 'Content-Type': 'application/json' } }
           );
         }

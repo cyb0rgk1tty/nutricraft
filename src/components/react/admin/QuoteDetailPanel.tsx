@@ -41,12 +41,12 @@ import { useLanguage } from './hooks/useLanguage';
 
 // Form validation schema
 const quoteFormSchema = z.object({
-  ourCost: z.number().min(0).optional().nullable(),
   orderQuantity: z.number().min(0).optional().nullable(),
-  publicNotes: z.string().optional(),  // Legacy field
   description: z.string().optional(),
   durlevelPublicNotes: z.string().optional(),
   ausresonPublicNotes: z.string().optional(),
+  durlevelPrice: z.number().min(0).optional().nullable(),
+  ausresonPrice: z.number().min(0).optional().nullable(),
 });
 
 type QuoteFormValues = z.infer<typeof quoteFormSchema>;
@@ -214,12 +214,12 @@ export function QuoteDetailPanel() {
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteFormSchema),
     defaultValues: {
-      ourCost: null,
       orderQuantity: null,
-      publicNotes: '',
       description: '',
       durlevelPublicNotes: '',
       ausresonPublicNotes: '',
+      durlevelPrice: null,
+      ausresonPrice: null,
     },
   });
 
@@ -227,12 +227,12 @@ export function QuoteDetailPanel() {
   useEffect(() => {
     if (selectedQuote) {
       form.reset({
-        ourCost: selectedQuote.ourCost ?? null,
         orderQuantity: selectedQuote.orderQuantity ?? null,
-        publicNotes: selectedQuote.publicNotes ?? '',
         description: selectedQuote.description ?? '',
         durlevelPublicNotes: selectedQuote.durlevelPublicNotes ?? '',
         ausresonPublicNotes: selectedQuote.ausresonPublicNotes ?? '',
+        durlevelPrice: selectedQuote.durlevelPrice ?? null,
+        ausresonPrice: selectedQuote.ausresonPrice ?? null,
       });
     }
   }, [selectedQuote?.id]);
@@ -484,27 +484,63 @@ export function QuoteDetailPanel() {
                     </h3>
                     <SaveIndicator isSaving={isSaving} isSaved={isSaved} savingText={t('saving')} savedText={t('saved')} />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="price">{t('price')}</Label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                          $
-                        </span>
-                        <Input
-                          id="price"
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="0.00"
-                          className="pl-7"
-                          {...form.register('ourCost', {
-                            valueAsNumber: true,
-                            onBlur: (e) => handleAutoSave('ourCost', e.target.valueAsNumber || null),
-                          })}
-                        />
-                      </div>
+                  <div className="space-y-4">
+                    {/* Manufacturer-specific price fields */}
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Durlevel Price - visible to Durlevel users and admins */}
+                      {(userDashboard === 'DURLEVEL' || userDashboard === null) && (
+                        <div className="space-y-2">
+                          <Label htmlFor="durlevelPrice">
+                            {userDashboard === null ? 'Durlevel Price' : t('price')}
+                          </Label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                              $
+                            </span>
+                            <Input
+                              id="durlevelPrice"
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              placeholder="0.00"
+                              className="pl-7"
+                              {...form.register('durlevelPrice', {
+                                valueAsNumber: true,
+                                onBlur: (e) => handleAutoSave('durlevelPrice', e.target.valueAsNumber || null),
+                              })}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Ausreson Price - visible to Ausreson users and admins */}
+                      {(userDashboard === 'AUSRESON' || userDashboard === null) && (
+                        <div className="space-y-2">
+                          <Label htmlFor="ausresonPrice">
+                            {userDashboard === null ? 'Ausreson Price' : t('price')}
+                          </Label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                              $
+                            </span>
+                            <Input
+                              id="ausresonPrice"
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              placeholder="0.00"
+                              className="pl-7"
+                              {...form.register('ausresonPrice', {
+                                valueAsNumber: true,
+                                onBlur: (e) => handleAutoSave('ausresonPrice', e.target.valueAsNumber || null),
+                              })}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
+
+                    {/* Order Quantity */}
                     <div className="space-y-2">
                       <Label htmlFor="quantity">{t('orderQuantity')}</Label>
                       <Input
@@ -513,6 +549,7 @@ export function QuoteDetailPanel() {
                         min="0"
                         step="1"
                         placeholder="0"
+                        className="max-w-[200px]"
                         {...form.register('orderQuantity', {
                           valueAsNumber: true,
                           onBlur: (e) =>

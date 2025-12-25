@@ -109,7 +109,7 @@ function EditableCell({
 }: {
   value: number | string | undefined | null;
   quoteId: string;
-  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes';
+  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes' | 'durlevelPrice' | 'ausresonPrice';
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
@@ -178,7 +178,7 @@ function EditableCell({
     if (value === undefined || value === null || value === '') return placeholder;
     if (type === 'number') {
       const numValue = typeof value === 'string' ? parseFloat(value) : value;
-      if (field === 'ourCost') {
+      if (field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice') {
         return new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD',
@@ -203,7 +203,7 @@ function EditableCell({
           onBlur={handleSave}
           onKeyDown={handleKeyDown}
           className={`h-7 text-sm px-2 ${type === 'text' ? 'w-40' : 'w-20'}`}
-          step={field === 'ourCost' ? '0.01' : '1'}
+          step={field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice' ? '0.01' : '1'}
           min={type === 'number' ? '0' : undefined}
         />
         {isSaving && <Loader2 className="w-3 h-3 animate-spin text-primary" />}
@@ -667,34 +667,89 @@ export function QuoteTable() {
         ),
         size: 65,
       },
+      // Manufacturer-specific price column
       {
-        accessorKey: 'ourCost',
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-3 h-auto py-1"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            <span className="flex flex-col items-start leading-tight">
-              <span>Price</span>
-              <span className="text-xs font-normal text-gray-400">(USD)</span>
-            </span>
-            <ArrowUpDown className="ml-1 h-3 w-3" />
-          </Button>
-        ),
-        cell: ({ row }) => (
-          <EditableCell
-            value={row.getValue('ourCost')}
-            quoteId={row.original.id}
-            field="ourCost"
-            type="number"
-            onUpdate={handleInlineUpdate}
-          />
-        ),
+        id: 'price',
+        accessorFn: (row) => {
+          // Return the appropriate price based on user's dashboard
+          if (userDashboard === 'DURLEVEL') return row.durlevelPrice;
+          if (userDashboard === 'AUSRESON') return row.ausresonPrice;
+          // Admins see durlevelPrice by default (or could be combined view)
+          return row.durlevelPrice ?? row.ausresonPrice;
+        },
+        header: ({ column }) => {
+          // Dynamic header based on manufacturer
+          const priceLabel = userDashboard === 'AUSRESON' ? 'Ausreson' : 'Durlevel';
+          return (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="-ml-3 h-auto py-1"
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+              <span className="flex flex-col items-start leading-tight">
+                <span>{userDashboard ? priceLabel : 'Price'}</span>
+                <span className="text-xs font-normal text-gray-400">(USD)</span>
+              </span>
+              <ArrowUpDown className="ml-1 h-3 w-3" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          // Determine which price field to show/edit based on user's dashboard
+          if (userDashboard === 'DURLEVEL') {
+            return (
+              <EditableCell
+                value={row.original.durlevelPrice}
+                quoteId={row.original.id}
+                field="durlevelPrice"
+                type="number"
+                onUpdate={handleInlineUpdate}
+              />
+            );
+          }
+          if (userDashboard === 'AUSRESON') {
+            return (
+              <EditableCell
+                value={row.original.ausresonPrice}
+                quoteId={row.original.id}
+                field="ausresonPrice"
+                type="number"
+                onUpdate={handleInlineUpdate}
+              />
+            );
+          }
+          // Admin view - show both prices in a compact format
+          const durlevelVal = row.original.durlevelPrice;
+          const ausresonVal = row.original.ausresonPrice;
+          return (
+            <div className="text-sm space-y-0.5">
+              <div className="flex items-center gap-1">
+                <span className="text-gray-400 text-xs w-2">D</span>
+                <EditableCell
+                  value={durlevelVal}
+                  quoteId={row.original.id}
+                  field="durlevelPrice"
+                  type="number"
+                  onUpdate={handleInlineUpdate}
+                />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-gray-400 text-xs w-2">A</span>
+                <EditableCell
+                  value={ausresonVal}
+                  quoteId={row.original.id}
+                  field="ausresonPrice"
+                  type="number"
+                  onUpdate={handleInlineUpdate}
+                />
+              </div>
+            </div>
+          );
+        },
         size: 100,
         minSize: 80,
-        maxSize: 110,
+        maxSize: 120,
       },
       {
         accessorKey: 'orderQuantity',

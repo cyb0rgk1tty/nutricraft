@@ -33,6 +33,8 @@ export const CRM_CONFIG = {
     dashboard: 'dashboard',  // Enum: DURLEVEL, AUSRESON
     durlevelPublicNotes: 'durlevelPublicNotes',  // Notes for Durlevel only
     ausresonPublicNotes: 'ausresonPublicNotes',  // Notes for Ausreson only
+    durlevelPrice: 'durlevelPrice',  // Price for Durlevel only
+    ausresonPrice: 'ausresonPrice',  // Price for Ausreson only
   } as Record<string, string>,
 
   // Stages to show in the dashboard (CRM stage value -> Dashboard display label)
@@ -78,6 +80,8 @@ export interface Quote {
   dashboard?: string;  // Which dashboard this product belongs to: DURLEVEL, AUSRESON
   durlevelPublicNotes?: string;  // Notes visible only to Durlevel
   ausresonPublicNotes?: string;  // Notes visible only to Ausreson
+  durlevelPrice?: number;  // Price visible only to Durlevel
+  ausresonPrice?: number;  // Price visible only to Ausreson
 }
 
 export interface FetchQuotesResponse {
@@ -238,6 +242,14 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
     crmData[fieldMappings.ausresonPublicNotes] = quote.ausresonPublicNotes;
   }
 
+  if (quote.durlevelPrice !== undefined) {
+    crmData[fieldMappings.durlevelPrice] = quote.durlevelPrice;
+  }
+
+  if (quote.ausresonPrice !== undefined) {
+    crmData[fieldMappings.ausresonPrice] = quote.ausresonPrice;
+  }
+
   return crmData;
 }
 
@@ -369,6 +381,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               dashboard
               durlevelPublicNotes
               ausresonPublicNotes
+              durlevelPrice
+              ausresonPrice
             }
           }
         }
@@ -419,6 +433,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         dashboard: product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
+        durlevelPrice: product.durlevelPrice || undefined,
+        ausresonPrice: product.ausresonPrice || undefined,
         rawData: product,
       };
     });
@@ -519,6 +535,8 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               dashboard
               durlevelPublicNotes
               ausresonPublicNotes
+              durlevelPrice
+              ausresonPrice
             }
             cursor
           }
@@ -578,6 +596,8 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         dashboard: product.dashboard || undefined,
         durlevelPublicNotes: product.durlevelPublicNotes || undefined,
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
+        durlevelPrice: product.durlevelPrice || undefined,
+        ausresonPrice: product.ausresonPrice || undefined,
         rawData: product,
       };
     });
@@ -681,6 +701,8 @@ export async function updateQuoteInCRM(
           dashboard
           durlevelPublicNotes
           ausresonPublicNotes
+          durlevelPrice
+          ausresonPrice
         }
       }
     `;
@@ -724,6 +746,8 @@ export async function updateQuoteInCRM(
         dashboard: updatedProduct.dashboard,
         durlevelPublicNotes: updatedProduct.durlevelPublicNotes,
         ausresonPublicNotes: updatedProduct.ausresonPublicNotes,
+        durlevelPrice: updatedProduct.durlevelPrice || undefined,
+        ausresonPrice: updatedProduct.ausresonPrice || undefined,
       },
     };
   } catch (error) {

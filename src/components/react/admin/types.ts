@@ -26,7 +26,6 @@ export interface Quote {
   name: string;
   status: QuoteStatus;
   priority?: QuotePriority;
-  price?: number;
   notes?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -35,11 +34,12 @@ export interface Quote {
   rawData?: Record<string, unknown>;
   ourCost?: number;
   orderQuantity?: number;
-  publicNotes?: string;  // Legacy field
   description?: string;  // Shared description field
   dashboard?: string;    // Which dashboard: DURLEVEL, AUSRESON
   durlevelPublicNotes?: string;  // Notes for Durlevel only
   ausresonPublicNotes?: string;  // Notes for Ausreson only
+  durlevelPrice?: number;  // Price for Durlevel only
+  ausresonPrice?: number;  // Price for Ausreson only
   documents?: QuoteDocument[];
 }
 
