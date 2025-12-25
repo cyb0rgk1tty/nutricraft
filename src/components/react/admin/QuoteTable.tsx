@@ -84,16 +84,12 @@ function StatusBadge({ status, getStageLabel }: { status: QuoteStatus; getStageL
   );
 }
 
-// Priority Badge Component - only shows for urgent items
-function PriorityBadge({ priority }: { priority?: QuotePriority }) {
+// Priority Indicator Component - shows red dot for urgent items
+function PriorityIndicator({ priority }: { priority?: QuotePriority }) {
   if (!priority || priority !== 'urgent') return null;
 
-  const config = PRIORITY_CONFIG.urgent;
-
   return (
-    <Badge className={`${config.bgColor} ${config.color} border-0 font-medium text-xs ml-2`}>
-      {config.label}
-    </Badge>
+    <div className="w-3 h-3 rounded-full bg-red-500" title="Urgent" />
   );
 }
 
@@ -600,16 +596,16 @@ export function QuoteTable() {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-full justify-center"
+            className="h-8 w-full justify-center p-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            title={t('priority')}
           >
-            {t('priority')}
-            <ArrowUpDown className="ml-1 h-3 w-3" />
+            <div className="w-2.5 h-2.5 rounded-full bg-gray-300" />
           </Button>
         ),
         cell: ({ row }) => (
-          <div className="flex justify-center -mx-2">
-            <PriorityBadge priority={row.original.priority} />
+          <div className="flex justify-center">
+            <PriorityIndicator priority={row.original.priority} />
           </div>
         ),
         sortingFn: (rowA, rowB) => {
@@ -618,7 +614,7 @@ export function QuoteTable() {
           const priorityB = rowB.original.priority === 'urgent' ? 1 : 0;
           return priorityA - priorityB;
         },
-        size: 80,
+        size: 40,
       },
       {
         accessorKey: 'name',
@@ -638,9 +634,9 @@ export function QuoteTable() {
             {row.getValue('name')}
           </div>
         ),
-        size: 140,
-        minSize: 100,
-        maxSize: 180,
+        size: 100,
+        minSize: 80,
+        maxSize: 140,
       },
       {
         accessorKey: 'status',
@@ -841,9 +837,9 @@ export function QuoteTable() {
             />
           );
         },
-        size: 200,
-        minSize: 150,
-        maxSize: 300,
+        size: 280,
+        minSize: 200,
+        maxSize: 400,
       },
       {
         id: 'actions',
