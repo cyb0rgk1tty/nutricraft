@@ -656,7 +656,11 @@ export function QuoteTable() {
       },
       {
         id: 'documents',
-        header: () => <span className="text-center block font-semibold">{t('formula')}</span>,
+        header: () => (
+          <div className="flex justify-center" title={t('formula')}>
+            <FileText className="w-4 h-4 text-gray-500" />
+          </div>
+        ),
         cell: ({ row }) => (
           <DocumentCount
             documents={row.original.documents ?? []}
