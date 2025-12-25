@@ -787,7 +787,7 @@ export function QuoteTable() {
           if (userDashboard) {
             const desc = row.original.description;
             return (
-              <div className={`text-sm whitespace-pre-wrap break-words ${desc ? '' : 'text-gray-400'}`}>
+              <div className={`text-sm font-medium whitespace-pre-wrap break-words ${desc ? '' : 'text-gray-400'}`}>
                 {desc || '-'}
               </div>
             );
