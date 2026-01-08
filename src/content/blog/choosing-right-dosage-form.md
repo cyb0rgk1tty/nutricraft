@@ -486,7 +486,7 @@ Let's talk real numbers. Understanding the cost structure helps you plan realist
 | **Powders** | 0.8x | 500-5,000 lbs | $0.30-1.50/serving | Low | 4-6 weeks |
 | **Liquids** | 1.5x | 2,500-10,000 | $0.50-2.00/bottle | Medium-High | 4-6 weeks |
 
-*These are manufacturing costs only. They don't include ingredients, packaging, fulfillment, or the million other costs of running a supplement brand.
+*All prices in CAD. These are manufacturing costs only. They don't include ingredients, packaging, fulfillment, or the million other costs of running a supplement brand.
 
 ### Key Cost Drivers
 

@@ -62,7 +62,7 @@ Let's talk numbers. For a white label product with 1,000 units (our minimum orde
 | **Setup Fees** | $0-500 | Some manufacturers charge, we don't |
 | **Total Investment** | **$8,000-12,000** | For 1,000 units ready to sell |
 
-*Note: Pricing varies based on formulation complexity, dosage form, ingredient costs, and packaging specifications. The ranges shown reflect typical costs for most standard products. Contact us for a detailed quote specific to your product requirements.*
+*Note: All prices in CAD. Pricing varies based on formulation complexity, dosage form, ingredient costs, and packaging specifications. The ranges shown reflect typical costs for most standard products. Contact us for a detailed quote specific to your product requirements.*
 
 Your retail pricing and profit margins will vary based on your product positioning, target market, and operational costs. White label products typically cost $8-12 per unit at our 1,000 unit minimum, which many brands retail for $25-45 depending on the product category.
 
@@ -159,7 +159,7 @@ Custom formulation requires more upfront investment:
 | **Samples & Revisions** | $500-1,500 | Testing batches and adjustments |
 | **Total Investment** | **$15,000-25,000** | For first 1,000 units |
 
-*Note: Pricing varies based on formulation complexity, dosage form, ingredient costs, and packaging specifications. The ranges shown reflect typical costs for most custom formulations. Contact us for a detailed quote specific to your product requirements.*
+*Note: All prices in CAD. Pricing varies based on formulation complexity, dosage form, ingredient costs, and packaging specifications. The ranges shown reflect typical costs for most custom formulations. Contact us for a detailed quote specific to your product requirements.*
 
 The investment for custom formulation is higher upfront, but you own the formula, control the ingredients, and achieve true product differentiation. Private label custom formulas typically cost $12-18 per unit at minimum quantity, plus $5,000-10,000 for initial R&D and testing.
 
