@@ -829,14 +829,34 @@ export function QuoteTable() {
             : null; // Admins see a summary
 
           if (!notesField) {
-            // Admin view - show indicator of which manufacturer has notes
-            const hasDurlevel = !!row.original.durlevelPublicNotes;
-            const hasAusreson = !!row.original.ausresonPublicNotes;
-            if (!hasDurlevel && !hasAusreson) return <span className="text-gray-400">-</span>;
+            // Admin view - show both notes stacked and editable
             return (
-              <span className="text-xs text-gray-500">
-                {hasDurlevel && 'D'}{hasDurlevel && hasAusreson && '/'}{hasAusreson && 'A'}
-              </span>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-start gap-1">
+                  <span className="font-medium text-gray-500 text-xs shrink-0">D:</span>
+                  <EditableCell
+                    value={row.original.durlevelPublicNotes}
+                    quoteId={row.original.id}
+                    field="durlevelPublicNotes"
+                    type="text"
+                    placeholder={t('addNotesPlaceholder')}
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="font-medium text-gray-500 text-xs shrink-0">A:</span>
+                  <EditableCell
+                    value={row.original.ausresonPublicNotes}
+                    quoteId={row.original.id}
+                    field="ausresonPublicNotes"
+                    type="text"
+                    placeholder={t('addNotesPlaceholder')}
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              </div>
             );
           }
 
@@ -852,9 +872,9 @@ export function QuoteTable() {
             />
           );
         },
-        size: 280,
-        minSize: 200,
-        maxSize: 400,
+        size: 320,
+        minSize: 250,
+        maxSize: 500,
       },
       {
         id: 'actions',
