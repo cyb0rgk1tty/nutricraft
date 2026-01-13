@@ -65,3 +65,6 @@ __pycache__/
 .claude/settings.local.json
 .claude/plans/
 .claude/mcp.json
+
+# Planning documents (temporary)
+planning/
