@@ -725,15 +725,54 @@ export function QuoteTable() {
               />
             );
           }
-          // Admin view - show both prices in a compact format
-          const durlevelVal = row.original.durlevelPrice;
-          const ausresonVal = row.original.ausresonPrice;
+          // Admin view - show price based on product's dashboard assignment
+          const productDashboard = row.original.dashboard?.toUpperCase();
+
+          // If product is assigned to DURLEVEL, only show Durlevel price
+          if (productDashboard === 'DURLEVEL') {
+            return (
+              <div className="text-sm">
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400 text-xs w-2">D</span>
+                  <EditableCell
+                    value={row.original.durlevelPrice}
+                    quoteId={row.original.id}
+                    field="durlevelPrice"
+                    type="number"
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              </div>
+            );
+          }
+
+          // If product is assigned to AUSRESON, only show Ausreson price
+          if (productDashboard === 'AUSRESON') {
+            return (
+              <div className="text-sm">
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400 text-xs w-2">A</span>
+                  <EditableCell
+                    value={row.original.ausresonPrice}
+                    quoteId={row.original.id}
+                    field="ausresonPrice"
+                    type="number"
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              </div>
+            );
+          }
+
+          // Fallback: show both if no dashboard assignment (shouldn't happen)
           return (
             <div className="text-sm space-y-0.5">
               <div className="flex items-center gap-1">
                 <span className="text-gray-400 text-xs w-2">D</span>
                 <EditableCell
-                  value={durlevelVal}
+                  value={row.original.durlevelPrice}
                   quoteId={row.original.id}
                   field="durlevelPrice"
                   type="number"
@@ -744,7 +783,7 @@ export function QuoteTable() {
               <div className="flex items-center gap-1">
                 <span className="text-gray-400 text-xs w-2">A</span>
                 <EditableCell
-                  value={ausresonVal}
+                  value={row.original.ausresonPrice}
                   quoteId={row.original.id}
                   field="ausresonPrice"
                   type="number"
@@ -829,7 +868,46 @@ export function QuoteTable() {
             : null; // Admins see a summary
 
           if (!notesField) {
-            // Admin view - show both notes stacked and editable
+            // Admin view - show notes based on product's dashboard assignment
+            const productDashboard = row.original.dashboard?.toUpperCase();
+
+            // If product is assigned to DURLEVEL, only show Durlevel notes
+            if (productDashboard === 'DURLEVEL') {
+              return (
+                <div className="flex items-start gap-1">
+                  <span className="font-medium text-gray-500 text-xs shrink-0">D:</span>
+                  <EditableCell
+                    value={row.original.durlevelPublicNotes}
+                    quoteId={row.original.id}
+                    field="durlevelPublicNotes"
+                    type="text"
+                    placeholder={t('addNotesPlaceholder')}
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              );
+            }
+
+            // If product is assigned to AUSRESON, only show Ausreson notes
+            if (productDashboard === 'AUSRESON') {
+              return (
+                <div className="flex items-start gap-1">
+                  <span className="font-medium text-gray-500 text-xs shrink-0">A:</span>
+                  <EditableCell
+                    value={row.original.ausresonPublicNotes}
+                    quoteId={row.original.id}
+                    field="ausresonPublicNotes"
+                    type="text"
+                    placeholder={t('addNotesPlaceholder')}
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              );
+            }
+
+            // Fallback: show both if no dashboard assignment (shouldn't happen)
             return (
               <div className="flex flex-col gap-2">
                 <div className="flex items-start gap-1">

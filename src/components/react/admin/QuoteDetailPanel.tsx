@@ -199,7 +199,7 @@ function SaveIndicator({ isSaving, isSaved, savingText, savedText }: { isSaving:
 
 export function QuoteDetailPanel() {
   const queryClient = useQueryClient();
-  const { isDetailPanelOpen, toggleDetailPanel, selectQuote, userDashboard } = useQuoteStore();
+  const { isDetailPanelOpen, toggleDetailPanel, selectQuote, userDashboard, updateQuote } = useQuoteStore();
   const selectedQuote = useSelectedQuote();
   const updateMutation = useUpdateQuoteMutation();
   const { t, getStageLabel } = useLanguage();
@@ -371,7 +371,12 @@ export function QuoteDetailPanel() {
 
       toast.success('Document deleted');
 
-      // Refresh quotes to get updated document list
+      // Optimistic update: remove document from local state immediately
+      updateQuote(selectedQuote.id, {
+        documents: selectedQuote.documents?.filter(doc => doc.id !== documentId) || []
+      });
+
+      // Also invalidate cache for background refresh
       queryClient.invalidateQueries({ queryKey: quoteKeys.lists() });
     } catch (error) {
       toast.error('Failed to delete document');
@@ -487,8 +492,8 @@ export function QuoteDetailPanel() {
                   <div className="space-y-4">
                     {/* Manufacturer-specific price fields */}
                     <div className="grid grid-cols-2 gap-4">
-                      {/* Durlevel Price - visible to Durlevel users and admins */}
-                      {(userDashboard === 'DURLEVEL' || userDashboard === null) && (
+                      {/* Durlevel Price - visible to Durlevel users and admins (only if product is assigned to Durlevel) */}
+                      {(userDashboard === 'DURLEVEL' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'DURLEVEL')) && (
                         <div className="space-y-2">
                           <Label htmlFor="durlevelPrice">
                             {userDashboard === null ? 'Durlevel Price' : t('price')}
@@ -513,8 +518,8 @@ export function QuoteDetailPanel() {
                         </div>
                       )}
 
-                      {/* Ausreson Price - visible to Ausreson users and admins */}
-                      {(userDashboard === 'AUSRESON' || userDashboard === null) && (
+                      {/* Ausreson Price - visible to Ausreson users and admins (only if product is assigned to Ausreson) */}
+                      {(userDashboard === 'AUSRESON' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'AUSRESON')) && (
                         <div className="space-y-2">
                           <Label htmlFor="ausresonPrice">
                             {userDashboard === null ? 'Ausreson Price' : t('price')}
@@ -581,8 +586,8 @@ export function QuoteDetailPanel() {
                 <Separator />
 
                 {/* Manufacturer-specific notes */}
-                {/* Durlevel notes - visible to DURLEVEL users and admins */}
-                {(userDashboard === 'DURLEVEL' || userDashboard === null) && (
+                {/* Durlevel notes - visible to DURLEVEL users and admins (only if product is assigned to Durlevel) */}
+                {(userDashboard === 'DURLEVEL' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'DURLEVEL')) && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                       {userDashboard === null ? 'Durlevel Notes' : t('manufacturerNotes')}
@@ -598,8 +603,8 @@ export function QuoteDetailPanel() {
                   </div>
                 )}
 
-                {/* Ausreson notes - visible to AUSRESON users and admins */}
-                {(userDashboard === 'AUSRESON' || userDashboard === null) && (
+                {/* Ausreson notes - visible to AUSRESON users and admins (only if product is assigned to Ausreson) */}
+                {(userDashboard === 'AUSRESON' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'AUSRESON')) && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                       {userDashboard === null ? 'Ausreson Notes' : t('manufacturerNotes')}
