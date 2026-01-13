@@ -2,33 +2,41 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import PasswordGate from '../components/catalog/PasswordGate.astro';
+import CatalogLogin from '../components/catalog/CatalogLogin.astro';
 import CatalogFilterState from '../components/catalog/CatalogFilterState.astro';
 import CatalogHero from '../components/catalog/CatalogHero.astro';
 import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
 import FilterDrawer from '../components/catalog/FilterDrawer.astro';
 import CategorySection from '../components/catalog/CategorySection.astro';
-import {
-  getProductsByCategoryForCatalog,
-  getDosageFormCountsForCatalog,
-  getCategoriesForCatalog,
-  getUniqueIngredients,
-  type ComponentProduct
-} from '../utils/db';
 
-// Get password from environment variable (required)
-const CATALOG_PASSWORD = import.meta.env.CATALOG_PASSWORD;
+// Check authentication via HTTP-only cookie (server-side)
+const isAuthenticated = Astro.cookies.get('catalog_auth')?.value === 'authenticated';
+const showError = Astro.url.searchParams.get('error') === 'invalid';
 
-// Fetch data from Supabase
-const [productsByCategory, dosageForms, productCategories, uniqueIngredients] = await Promise.all([
-  getProductsByCategoryForCatalog(),
-  getDosageFormCountsForCatalog(),
-  getCategoriesForCatalog(),
-  getUniqueIngredients(),
-]);
+// Only fetch catalog data if authenticated
+let productsByCategory: any[] = [];
+let dosageForms: any[] = [];
+let productCategories: any[] = [];
+let uniqueIngredients: string[] = [];
+let totalProducts = 0;
 
-// Calculate total products
-const totalProducts = productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
+if (isAuthenticated) {
+  const {
+    getProductsByCategoryForCatalog,
+    getDosageFormCountsForCatalog,
+    getCategoriesForCatalog,
+    getUniqueIngredients,
+  } = await import('../utils/db');
+
+  [productsByCategory, dosageForms, productCategories, uniqueIngredients] = await Promise.all([
+    getProductsByCategoryForCatalog(),
+    getDosageFormCountsForCatalog(),
+    getCategoriesForCatalog(),
+    getUniqueIngredients(),
+  ]);
+
+  totalProducts = productsByCategory.reduce((sum, cat) => sum + cat.products.length, 0);
+}
 ---
 
 <BaseLayout
@@ -38,53 +46,54 @@ const totalProducts = productsByCategory.reduce((sum, cat) => sum + cat.products
 >
   <Header />
 
-  <PasswordGate password={CATALOG_PASSWORD}>
-    <!-- Centralized Filter State - must load first -->
-    <CatalogFilterState totalProducts={totalProducts} />
+  {!isAuthenticated ? (
+    <CatalogLogin showError={showError} />
+  ) : (
+    <>
+      <CatalogFilterState totalProducts={totalProducts} />
+      <CatalogHero />
 
-    <CatalogHero />
+      <main id="catalog-products" class="pb-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {productsByCategory.map((category, index) => (
+            <CategorySection
+              category={category}
+              products={category.products}
+              isFirst={index === 0}
+            />
+          ))}
 
-    <main id="catalog-products" class="pb-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {productsByCategory.map((category, index) => (
-          <CategorySection
-            category={category}
-            products={category.products}
-            isFirst={index === 0}
-          />
-        ))}
+          <!-- Custom Formula CTA -->
+          <section class="mt-16 mb-8 bg-gradient-to-r from-primary to-emerald-600 rounded-2xl p-8 md:p-12 text-white text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">
+              Don't See What You're Looking For?
+            </h2>
+            <p class="text-lg text-white/90 max-w-2xl mx-auto mb-6">
+              Our 100+ stock formulas are just the beginning. We can develop a completely
+              custom formula tailored to your brand's unique vision and target market.
+            </p>
+            <a
+              href="/contact"
+              class="inline-flex items-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              Start Your Custom Formula
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </section>
+        </div>
+      </main>
 
-        <!-- Custom Formula CTA -->
-        <section class="mt-16 mb-8 bg-gradient-to-r from-primary to-emerald-600 rounded-2xl p-8 md:p-12 text-white text-center">
-          <h2 class="text-2xl md:text-3xl font-bold mb-4">
-            Don't See What You're Looking For?
-          </h2>
-          <p class="text-lg text-white/90 max-w-2xl mx-auto mb-6">
-            Our 100+ stock formulas are just the beginning. We can develop a completely
-            custom formula tailored to your brand's unique vision and target market.
-          </p>
-          <a
-            href="/contact"
-            class="inline-flex items-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-          >
-            Start Your Custom Formula
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </section>
-      </div>
-    </main>
-
-    <!-- Floating Filter Button & Drawer -->
-    <FloatingFilterButton />
-    <FilterDrawer
-      categories={productCategories}
-      dosageForms={dosageForms}
-      totalProducts={totalProducts}
-      uniqueIngredients={uniqueIngredients}
-    />
-  </PasswordGate>
+      <FloatingFilterButton />
+      <FilterDrawer
+        categories={productCategories}
+        dosageForms={dosageForms}
+        totalProducts={totalProducts}
+        uniqueIngredients={uniqueIngredients}
+      />
+    </>
+  )}
 
   <Footer />
 </BaseLayout>
