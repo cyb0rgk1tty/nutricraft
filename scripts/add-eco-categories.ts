@@ -54,7 +54,7 @@ async function main() {
   // Add missing dosage forms
   const dosageFormsToAdd = [
     { name: 'Chews', slug: 'chews', legacy_id: 'chews' },
-    { name: 'Liquid', slug: 'liquid', legacy_id: 'liquid' },
+    { name: 'Liquids', slug: 'liquids', legacy_id: 'liquids' },
   ];
 
   for (const form of dosageFormsToAdd) {
