@@ -30,7 +30,7 @@ export const clientTypes = [
       },
       {
         problem: 'No industry connections',
-        solution: 'Access our network of 5+ vetted manufacturing partners'
+        solution: 'Access our network of 7+ vetted manufacturing partners'
       }
     ],
     benefits: [
@@ -375,7 +375,7 @@ export const clientTypes = [
       },
       {
         problem: 'Finding reliable manufacturing partners',
-        solution: 'Access to 5+ vetted GMP-certified facilities'
+        solution: 'Access to 7+ vetted GMP-certified facilities'
       }
     ],
     benefits: [
@@ -444,7 +444,7 @@ export const clientTypes = [
       },
       {
         problem: 'Need better margins without sacrificing quality',
-        solution: 'Competitive pricing from our 5+ GMP partner network'
+        solution: 'Competitive pricing from our 7+ GMP partner network'
       }
     ],
     benefits: [

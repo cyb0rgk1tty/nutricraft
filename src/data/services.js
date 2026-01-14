@@ -35,7 +35,7 @@ export const services = [
   {
     id: 'gmp-matchmaking',
     title: 'Extended Manufacturing Network',
-    description: 'For specialized needs our 5+ GMP partners can\'t fulfill, we find and vet manufacturers for you.',
+    description: 'For specialized needs our 7+ GMP partners can\'t fulfill, we find and vet manufacturers for you.',
     features: [
       'Specialized formats and certifications',
       'Expert vetting and negotiation',
