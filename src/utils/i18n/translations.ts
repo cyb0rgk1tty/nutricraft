@@ -155,6 +155,10 @@ export const translations = {
     language: 'Language',
     english: 'EN',
     chinese: '中文',
+
+    // Manufacturer Filter
+    allManufacturers: 'All Manufacturers',
+    filterByManufacturer: 'Filter by manufacturer',
   },
 
   zh: {
@@ -308,6 +312,10 @@ export const translations = {
     language: '语言',
     english: 'EN',
     chinese: '中文',
+
+    // Manufacturer Filter
+    allManufacturers: '所有制造商',
+    filterByManufacturer: '按制造商筛选',
   }
 } as const;
 

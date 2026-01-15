@@ -26,6 +26,7 @@ async function fetchQuotes(options: FetchQuotesOptions): Promise<PaginatedQuotes
   if (options.search) params.set('search', options.search);
   if (options.sortField) params.set('sortField', options.sortField);
   if (options.sortDirection) params.set('sortDirection', options.sortDirection);
+  if (options.manufacturer) params.set('manufacturer', options.manufacturer);
 
   const response = await fetch(`/api/adminpanel/quotes?${params.toString()}`);
 
@@ -61,6 +62,7 @@ export function useQuotesQuery(options?: Partial<FetchQuotesOptions>) {
     search: options?.search ?? (filter.search || undefined),
     sortField: options?.sortField ?? (sort.field as FetchQuotesOptions['sortField']),
     sortDirection: options?.sortDirection ?? sort.direction,
+    manufacturer: options?.manufacturer ?? filter.manufacturer ?? undefined,
   };
 
   const query = useQuery({

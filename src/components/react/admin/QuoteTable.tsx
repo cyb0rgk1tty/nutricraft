@@ -53,6 +53,7 @@ import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
 import { useQuotesQuery, useUpdateQuoteMutation } from './hooks/useQuotes';
 import { useLanguage } from './hooks/useLanguage';
 import { DocumentUploadModal } from './DocumentUploadModal';
+import { ManufacturerFilter } from './ManufacturerFilter';
 
 // Helper to format date
 function formatDate(dateStr?: string): string {
@@ -1001,16 +1002,20 @@ export function QuoteTable() {
   return (
     <>
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      {/* Header with Search */}
+      {/* Header with Search and Filters */}
       <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-4 bg-gradient-to-r from-white to-primary/5">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <Input
-            placeholder={t('searchQuotes')}
-            value={filter.search}
-            onChange={(e) => setFilter({ search: e.target.value })}
-            className="pl-10 w-full"
-          />
+        <div className="flex items-center gap-3 flex-1">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder={t('searchQuotes')}
+              value={filter.search}
+              onChange={(e) => setFilter({ search: e.target.value })}
+              className="pl-10 w-full"
+            />
+          </div>
+          {/* Manufacturer Filter - only visible for admins */}
+          <ManufacturerFilter />
         </div>
         <div className="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
           <span className="font-semibold text-primary">{totalFiltered}</span> {t('quotes')}

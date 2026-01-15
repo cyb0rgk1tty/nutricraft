@@ -104,11 +104,22 @@ export const GET: APIRoute = async ({ request }) => {
     const search = url.searchParams.get('search') || undefined;
     const sortField = (url.searchParams.get('sortField') || 'createdAt') as FetchQuotesOptions['sortField'];
     const sortDirection = (url.searchParams.get('sortDirection') || 'desc') as FetchQuotesOptions['sortDirection'];
+    const manufacturerParam = url.searchParams.get('manufacturer') || undefined;
 
-    // Get dashboard filter from user's access level
-    // If user has dashboard_access set (e.g., 'DURLEVEL'), only show products for that dashboard
-    // If null (admin/staff), show all products
-    const dashboardFilter = authResult.user.dashboard_access || undefined;
+    // Get dashboard filter from user's access level or admin's filter selection
+    // Priority:
+    // 1. If user has dashboard_access set (manufacturer role), use that (can't override)
+    // 2. If admin/staff and manufacturer param provided, use that to filter
+    // 3. If admin/staff and no param, show all products
+    let dashboardFilter = authResult.user.dashboard_access || undefined;
+
+    // Allow admins to filter by manufacturer (only if they don't have a fixed dashboard_access)
+    if (!dashboardFilter && manufacturerParam) {
+      // Validate manufacturer param
+      if (manufacturerParam === 'DURLEVEL' || manufacturerParam === 'AUSRESON') {
+        dashboardFilter = manufacturerParam;
+      }
+    }
 
     // Check if pagination is requested (any pagination param present)
     const usePagination = url.searchParams.has('page') ||

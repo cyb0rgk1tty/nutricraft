@@ -59,6 +59,7 @@ const initialState = {
   filter: {
     status: null as QuoteStatus | null,
     search: '',
+    manufacturer: null as 'DURLEVEL' | 'AUSRESON' | null,
   },
   sort: {
     field: 'createdAt' as const,

@@ -73,6 +73,7 @@ export interface FetchQuotesOptions {
   search?: string;
   sortField?: 'createdAt' | 'name' | 'ourCost' | 'orderQuantity';
   sortDirection?: 'asc' | 'desc';
+  manufacturer?: ManufacturerDashboard;  // Filter by manufacturer (admin only)
 }
 
 export interface UpdateQuoteResponse {
@@ -123,8 +124,12 @@ export interface SortConfig {
   direction: SortDirection;
 }
 
+// Manufacturer dashboard types
+export type ManufacturerDashboard = 'DURLEVEL' | 'AUSRESON';
+
 // Filter configuration
 export interface FilterConfig {
   status: QuoteStatus | null;
   search: string;
+  manufacturer: ManufacturerDashboard | null;  // null = all manufacturers (admin view)
 }
