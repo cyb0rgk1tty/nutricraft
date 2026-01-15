@@ -168,7 +168,7 @@ export const GET: APIRoute = async ({ request }) => {
           quotes: quotesWithDocuments,
           statusCounts: result.statusCounts,
           pagination: result.pagination,
-          userDashboard: dashboardFilter || null, // Tell frontend which dashboard user has access to
+          userDashboard: authResult.user.dashboard_access || null, // User's actual dashboard access (not the filter)
         }),
         {
           status: 200,
