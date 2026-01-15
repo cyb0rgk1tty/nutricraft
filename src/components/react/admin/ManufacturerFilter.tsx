@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Building2 } from 'lucide-react';
+import { Building2, X } from 'lucide-react';
 
 import type { ManufacturerDashboard } from './types';
 import { useQuoteStore } from './stores/quoteStore';
@@ -38,14 +38,21 @@ export function ManufacturerFilter({ className }: ManufacturerFilterProps) {
     setFilter({ manufacturer });
   };
 
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFilter({ manufacturer: null });
+  };
+
+  const isFiltered = filter.manufacturer !== null;
+
   return (
-    <div className={className}>
+    <div className={`relative ${className ?? ''}`}>
       <Select
         value={filter.manufacturer ?? 'all'}
         onValueChange={handleChange}
       >
-        <SelectTrigger className="w-[180px] bg-white">
-          <Building2 className="w-4 h-4 mr-2 text-gray-400" />
+        <SelectTrigger className={`w-[180px] bg-white ${isFiltered ? 'pr-8' : ''}`}>
+          <Building2 className={`w-4 h-4 mr-2 ${isFiltered ? 'text-primary' : 'text-gray-400'}`} />
           <SelectValue placeholder={t('allManufacturers')} />
         </SelectTrigger>
         <SelectContent>
@@ -54,6 +61,16 @@ export function ManufacturerFilter({ className }: ManufacturerFilterProps) {
           <SelectItem value="AUSRESON">Ausreson</SelectItem>
         </SelectContent>
       </Select>
+      {isFiltered && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute right-8 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
+          title={t('clearFilter')}
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 }

@@ -159,6 +159,7 @@ export const translations = {
     // Manufacturer Filter
     allManufacturers: 'All Manufacturers',
     filterByManufacturer: 'Filter by manufacturer',
+    clearFilter: 'Clear filter',
   },
 
   zh: {
@@ -316,6 +317,7 @@ export const translations = {
     // Manufacturer Filter
     allManufacturers: '所有制造商',
     filterByManufacturer: '按制造商筛选',
+    clearFilter: '清除筛选',
   }
 } as const;
 
