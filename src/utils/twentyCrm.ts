@@ -43,6 +43,7 @@ interface ContactFormData {
   budget?: string;
   timeline?: string;
   projectType: string;
+  projectStage?: string;
   message: string;
 }
 

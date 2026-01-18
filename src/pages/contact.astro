@@ -348,16 +348,19 @@ import Footer from "../components/Footer.astro";
               class="block text-sm font-semibold text-dark-900 mb-2"
               >Order Quantity *</label
             >
-            <input
-              type="text"
+            <select
               id="order-quantity"
               name="order-quantity"
-              pattern="[0-9]*"
-              inputmode="numeric"
               required
               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
-              placeholder="e.g., 1000"
-            />
+            >
+              <option value="">Select quantity range</option>
+              <option value="1,000 - 2,500 units">1,000 - 2,500 units</option>
+              <option value="2,500 - 5,000 units">2,500 - 5,000 units</option>
+              <option value="5,000 - 10,000 units">5,000 - 10,000 units</option>
+              <option value="10,000 - 25,000 units">10,000 - 25,000 units</option>
+              <option value="25,000+ units">25,000+ units</option>
+            </select>
           </div>
 
           <div>
@@ -414,9 +417,29 @@ import Footer from "../components/Footer.astro";
             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
           >
             <option value="">Select a project type</option>
-            <option value="private-label">Private Label / White Label</option>
-            <option value="custom-formulation">Custom Formulation</option>
+            <option value="stock-formulas">Stock Formulas (White-Label)</option>
+            <option value="custom-formulas">Custom Formulas (Private-Label)</option>
             <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="mt-6">
+          <label
+            for="project-stage"
+            class="block text-sm font-semibold text-dark-900 mb-2"
+            >Project Stage *</label
+          >
+          <select
+            id="project-stage"
+            name="project-stage"
+            required
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-mint-500 focus:ring-2 focus:ring-mint-200 transition-colors duration-300"
+          >
+            <option value="">Where are you in your journey?</option>
+            <option value="existing-business">Existing business adding supplement products</option>
+            <option value="new-venture-ready">New venture, ready to launch</option>
+            <option value="planning-stage">Planning stage - finalizing my approach</option>
+            <option value="researching">Researching - not ready to start yet</option>
           </select>
         </div>
 

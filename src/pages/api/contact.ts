@@ -85,6 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
     const budget = data.get('budget')?.toString() || '';
     const timeline = data.get('timeline')?.toString() || '';
     const projectType = data.get('project-type')?.toString() || '';
+    const projectStage = data.get('project-stage')?.toString() || '';
     const message = data.get('message')?.toString() || '';
     const honeypot = data.get('website')?.toString() || '';
 
@@ -101,7 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Basic validation
-    if (!name || !email || !projectType || !message) {
+    if (!name || !email || !projectType || !projectStage || !message) {
       return new Response(JSON.stringify({
         success: false,
         error: 'Please fill in all required fields'
@@ -146,6 +147,7 @@ export const POST: APIRoute = async ({ request }) => {
       <p><strong>Budget:</strong> ${budget ? escapeHtml(budget) : 'Not provided'}</p>
       <p><strong>Timeline:</strong> ${timeline ? escapeHtml(timeline) : 'Not provided'}</p>
       <p><strong>Project Type:</strong> ${escapeHtml(projectType)}</p>
+      <p><strong>Project Stage:</strong> ${escapeHtml(projectStage)}</p>
       <p><strong>Message:</strong></p>
       <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
     `;
@@ -162,6 +164,7 @@ Order Quantity: ${orderQuantity || 'Not provided'}
 Budget: ${budget || 'Not provided'}
 Timeline: ${timeline || 'Not provided'}
 Project Type: ${projectType}
+Project Stage: ${projectStage}
 
 Message:
 ${message}
@@ -191,6 +194,7 @@ ${message}
         budget,
         timeline,
         projectType,
+        projectStage,
         message,
       };
 
