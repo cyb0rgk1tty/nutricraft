@@ -1,0 +1,411 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ScrollAnimation from "../components/ScrollAnimation.astro";
+
+const metaTitle = "Our Team | About Nutricraft Labs";
+const metaDescription = "Meet the team behind Nutricraft Labs. 15+ years of combined supplement industry experience helping brands launch and grow.";
+
+const coreValues = [
+  {
+    title: "Transparency First",
+    description: "We tell you what you need to hear, not what you want to hear. If a formulation will not work or a timeline is unrealistic, we say so upfront.",
+    icon: "eye"
+  },
+  {
+    title: "Your Success Is Our Success",
+    description: "We only win when your products sell. That is why we are invested in getting the details right from day one.",
+    icon: "handshake"
+  },
+  {
+    title: "Quality Without Compromise",
+    description: "Every manufacturer in our network meets strict GMP standards. We do not cut corners on compliance or ingredient quality.",
+    icon: "shield"
+  },
+  {
+    title: "Accessible Expertise",
+    description: "Industry knowledge should not be gatekept. We share what we know so you can make informed decisions about your brand.",
+    icon: "lightbulb"
+  }
+];
+
+const experienceAreas = [
+  {
+    area: "Formulation & Product Development",
+    description: "Creating effective supplement formulas across capsules, tablets, powders, gummies, and specialty formats.",
+    icon: "flask"
+  },
+  {
+    area: "Regulatory Compliance",
+    description: "Navigating FDA requirements, Health Canada NPN applications, and international supplement regulations.",
+    icon: "clipboard"
+  },
+  {
+    area: "Manufacturing Operations",
+    description: "Understanding production timelines, quality control processes, and supply chain management.",
+    icon: "factory"
+  },
+  {
+    area: "Brand Launch Strategy",
+    description: "Helping new brands position themselves, price products, and enter the market successfully.",
+    icon: "rocket"
+  },
+  {
+    area: "Ingredient Sourcing",
+    description: "Identifying quality raw material suppliers and understanding ingredient trends and pricing.",
+    icon: "leaf"
+  },
+  {
+    area: "Packaging & Labeling",
+    description: "Designing compliant labels and selecting packaging that protects product integrity.",
+    icon: "tag"
+  }
+];
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span>Our Team</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            The People Behind<br/>
+            <span class="text-mint-600">Nutricraft Labs</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            We are a small team of supplement industry professionals who got tired of watching good brand ideas fail because of bad manufacturing experiences. So we built something better.
+          </p>
+
+          <!-- Key Stats -->
+          <div class="flex flex-wrap justify-center gap-8 mb-10">
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">5</div>
+              <div class="text-gray-600 text-sm">Team Members</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">15+</div>
+              <div class="text-gray-600 text-sm">Years Experience</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">20+</div>
+              <div class="text-gray-600 text-sm">Brands Launched</div>
+            </div>
+          </div>
+
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Our Story Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="prose prose-lg max-w-none">
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+
+          <p class="text-gray-600 leading-relaxed mb-6">
+            Nutricraft Labs started from a simple frustration: too many promising supplement brands were failing before they even got started. Not because their products were bad or their marketing was weak, but because they could not find a manufacturing partner willing to work with them at a reasonable scale.
+          </p>
+
+          <p class="text-gray-600 leading-relaxed mb-6">
+            The industry standard for minimum order quantities sits around 5,000 to 10,000 units. For a new brand testing the market, that means committing $50,000 or more before knowing if customers will actually buy. Most entrepreneurs do not have that kind of capital to risk on an unproven product.
+          </p>
+
+          <p class="text-gray-600 leading-relaxed mb-6">
+            Our founding team spent years working inside the supplement manufacturing industry. We saw the disconnect between what manufacturers wanted (large, predictable orders) and what emerging brands needed (flexibility, guidance, and lower risk). We knew there had to be a better way.
+          </p>
+
+          <!-- Pull Quote -->
+          <blockquote class="my-10 px-8 py-6 bg-mint-50 border-l-4 border-mint-500 rounded-r-lg">
+            <p class="text-2xl md:text-3xl font-semibold text-gray-800 italic">
+              We knew there had to be a better way.
+            </p>
+          </blockquote>
+
+          <p class="text-gray-600 leading-relaxed mb-6">
+            So we built Nutricraft Labs as a bridge. We partnered with multiple GMP-certified manufacturers across North America and Asia, negotiating terms that let us offer 1,000 unit minimums to our clients. We combined that with the industry knowledge we had accumulated to offer real guidance, not just order processing.
+          </p>
+
+          <p class="text-gray-600 leading-relaxed">
+            Today, we have helped 20+ brands go from idea to shelf. Health enthusiasts launching their first product. Athletes creating supplement lines for their followers. Gyms and wellness practitioners building house brands. Each one started with a conversation and ended with products their customers love.
+          </p>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            15+ Years of Combined Experience
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Our team brings deep expertise across every aspect of supplement manufacturing and brand building.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {experienceAreas.map((item, index) => (
+          <ScrollAnimation delay={index * 50}>
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+              <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
+                {item.icon === "flask" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                  </svg>
+                )}
+                {item.icon === "clipboard" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                  </svg>
+                )}
+                {item.icon === "factory" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                  </svg>
+                )}
+                {item.icon === "rocket" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                )}
+                {item.icon === "leaf" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                  </svg>
+                )}
+                {item.icon === "tag" && (
+                  <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                  </svg>
+                )}
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">{item.area}</h3>
+              <p class="text-sm text-gray-600">{item.description}</p>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            What We Stand For
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            These are not corporate buzzwords. They are the principles that guide every decision we make.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {coreValues.map((value, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center">
+                  {value.icon === "eye" && (
+                    <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                  )}
+                  {value.icon === "handshake" && (
+                    <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                  )}
+                  {value.icon === "shield" && (
+                    <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                  )}
+                  {value.icon === "lightbulb" && (
+                    <svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-2">{value.title}</h3>
+                <p class="text-gray-600">{value.description}</p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Work With Us Section -->
+  <section class="py-16 md:py-24 bg-mint-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Why Brands Choose Us
+          </h2>
+        </div>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ScrollAnimation delay={0}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Actually Answer Your Questions</h3>
+            <p class="text-sm text-gray-600">No gatekeeping. If you want to understand why something costs what it costs or why a formulation works a certain way, we explain it.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={50}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Have Done This Before</h3>
+            <p class="text-sm text-gray-600">Our team has launched products across every major supplement category. We know what works and what does not.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Are Not Too Big to Care</h3>
+            <p class="text-sm text-gray-600">You will not be passed between departments or lost in a queue. When you work with us, you work with people who know your project.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={150}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Tell You When Something Will Not Work</h3>
+            <p class="text-sm text-gray-600">If your idea has a problem, whether regulatory, practical, or market-related, we will tell you before you spend money on it.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={200}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Lower Barrier to Entry</h3>
+            <p class="text-sm text-gray-600">Start with 1,000 units instead of the 5,000-10,000 most manufacturers require. Test your market without betting the farm.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={250}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Work for You, Not the Manufacturers</h3>
+            <p class="text-sm text-gray-600">We are on your side of the table. Our job is getting you the best terms and quality, not filling a factory's production schedule.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={300}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Both US and Canada Covered</h3>
+            <p class="text-sm text-gray-600">Whether you are targeting the US market, need Health Canada NPNs, or both - we have the regulatory expertise and partners to make it happen.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={350}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">No Handoff to a Call Center</h3>
+            <p class="text-sm text-gray-600">The people you talk to during sales are the same people managing your project. No bait-and-switch after you sign.</p>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={400}>
+          <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow h-full">
+            <div class="flex-shrink-0 w-10 h-10 bg-mint-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-5 h-5 text-mint-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Find a Way</h3>
+            <p class="text-sm text-gray-600">Unusual format? Niche certification? Tight deadline? We do not say "that is not possible" - we figure out how to make it happen.</p>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-24 bg-gradient-to-br from-mint-600 to-mint-700">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+          Ready to Talk?
+        </h2>
+        <p class="text-xl text-mint-100 mb-8">
+          Schedule a free consultation with our team. No pressure, no obligations. Just a conversation about your supplement brand idea and how we might help.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            Schedule Free Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          <a href="/about" class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-lg hover:bg-mint-500 transition-all duration-300 border-2 border-white">
+            See How We Work
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

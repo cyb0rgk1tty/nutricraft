@@ -1,0 +1,590 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ScrollAnimation from "../components/ScrollAnimation.astro";
+
+const metaTitle = "How We Work | About Nutricraft Labs";
+const metaDescription = "Learn how Nutricraft Labs connects supplement brands with GMP-certified manufacturers across USA, Canada, and China. Transparent pricing, expert guidance, low MOQs.";
+
+const manufacturingRegions = [
+  {
+    name: "United States",
+    flag: "🇺🇸",
+    strengths: [
+      "Fastest shipping to US customers (2-5 days)",
+      "FDA-registered facilities with direct oversight",
+      "\"Made in USA\" labeling for premium positioning",
+      "Easier communication (same timezone, no language barrier)",
+      "Simplified regulatory compliance for US market"
+    ],
+    considerations: [
+      "Higher labor and overhead costs",
+      "Premium pricing compared to overseas options",
+      "Some specialized ingredients may still be imported"
+    ],
+    certifications: ["FDA Registered", "NSF GMP", "cGMP Compliant", "Third-Party Tested"],
+    leadTime: "4-8 weeks",
+    costIndicator: "$$$",
+    bestFor: "US market launches, premium positioning, speed-to-market, brands emphasizing domestic manufacturing"
+  },
+  {
+    name: "Canada",
+    flag: "🇨🇦",
+    strengths: [
+      "NPN (Natural Product Number) expertise built-in",
+      "Bilingual labeling capabilities (English/French)",
+      "Health Canada compliance specialists on staff",
+      "Strong quality standards comparable to US",
+      "Easier entry to Canadian retail chains"
+    ],
+    considerations: [
+      "Smaller manufacturing capacity than US or China",
+      "Longer NPN approval process (4-6 months)",
+      "Limited to certain dosage forms at some facilities"
+    ],
+    certifications: ["Health Canada Licensed", "GMP Compliant", "NPN Ready", "Site Licensed"],
+    leadTime: "6-10 weeks (plus NPN approval time)",
+    costIndicator: "$$",
+    bestFor: "Canadian market entry, NPN-required products, bilingual brands, Health Canada compliance"
+  },
+  {
+    name: "China",
+    flag: "🇨🇳",
+    strengths: [
+      "Significantly lower manufacturing costs (30-50% savings)",
+      "High production capacity for large orders",
+      "Direct access to raw ingredient suppliers",
+      "Advanced manufacturing technology investments",
+      "Competitive pricing for commodity supplements"
+    ],
+    considerations: [
+      "Longer shipping times (4-6 weeks ocean freight)",
+      "Import duties and customs clearance required",
+      "Quality control requires more oversight",
+      "Communication across time zones and language",
+      "Not suitable for \"Made in USA\" positioning"
+    ],
+    certifications: ["GMP Certified", "ISO 22000", "HACCP", "FDA Registered (for US export)"],
+    leadTime: "8-14 weeks (including shipping)",
+    costIndicator: "$",
+    bestFor: "Cost-sensitive projects, high-volume orders, price-competitive market positioning"
+  }
+];
+
+const businessModelAdvantages = [
+  {
+    title: "Lower Minimum Orders",
+    description: "Our partner relationships let you start with 1,000 units instead of the 5,000-10,000 most manufacturers require. Test your market before committing big.",
+    icon: "cube"
+  },
+  {
+    title: "Pre-Vetted Partners",
+    description: "We have already done the due diligence. Every manufacturer in our network has passed our certification checks, facility audits, and quality assessments.",
+    icon: "shield"
+  },
+  {
+    title: "Negotiated Pricing",
+    description: "Our volume across multiple brands gives us leverage to negotiate better rates than you would get approaching manufacturers directly as a new brand.",
+    icon: "currency"
+  },
+  {
+    title: "Single Point of Contact",
+    description: "Instead of managing relationships with manufacturers, packagers, labelers, and logistics providers separately, you work with one team: us.",
+    icon: "users"
+  },
+  {
+    title: "Flexibility to Switch",
+    description: "If a project needs different capabilities, we can move you to another partner in our network without starting the vetting process from scratch.",
+    icon: "refresh"
+  },
+  {
+    title: "Regulatory Guidance",
+    description: "Our team understands FDA and Health Canada requirements. We help ensure your products are compliant before they reach the manufacturing floor.",
+    icon: "document"
+  }
+];
+
+const businessModelTradeoffs = [
+  {
+    title: "We Are Not the Manufacturer",
+    description: "We coordinate and manage, but we do not own the production equipment. For brands wanting direct factory relationships long-term, we can facilitate introductions."
+  },
+  {
+    title: "Our Margin Is Built In",
+    description: "We are transparent about this: our fees are included in the pricing we quote. You are paying for our expertise, vetting, and management on top of raw manufacturing costs."
+  },
+  {
+    title: "Partner Capacity Limits Apply",
+    description: "During peak seasons or for very large orders, our partners may have capacity constraints. We will always be upfront about realistic timelines."
+  }
+];
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 bg-mint-100 text-mint-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <span>How We Work</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Your Bridge to<br/>
+            <span class="text-mint-600">Quality Manufacturing</span>
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            We connect supplement brands with vetted GMP-certified manufacturers across North America and Asia. You get the production quality of big brands without the big brand minimums.
+          </p>
+
+          <!-- Key Stats -->
+          <div class="flex flex-wrap justify-center gap-8 mb-10">
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">7+</div>
+              <div class="text-gray-600 text-sm">GMP Partners</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">3</div>
+              <div class="text-gray-600 text-sm">Manufacturing Regions</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">15+</div>
+              <div class="text-gray-600 text-sm">Years Experience</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-bold text-mint-600">1,000</div>
+              <div class="text-gray-600 text-sm">Unit MOQ</div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Schedule a Call
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </button>
+            <a href="/services" class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-mint-600">
+              View Our Services
+            </a>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Manufacturing Regions Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Manufacturing Partners by Region
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            We have built relationships with GMP-certified facilities across three key regions. Each offers distinct advantages depending on your market, budget, and timeline.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <div class="space-y-12">
+        {manufacturingRegions.map((region, index) => (
+          <ScrollAnimation delay={index * 100}>
+            <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+              <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Region Header -->
+                <div class="lg:w-1/3">
+                  <div class="flex items-center gap-3 mb-4">
+                    <span class="text-4xl">{region.flag}</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900">{region.name}</h3>
+                  </div>
+
+                  <!-- Quick Stats -->
+                  <div class="space-y-3 mb-6">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm text-gray-500 w-24">Lead Time:</span>
+                      <span class="font-medium text-gray-900">{region.leadTime}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm text-gray-500 w-24">Cost Level:</span>
+                      <span class="font-medium text-mint-600">{region.costIndicator}</span>
+                    </div>
+                  </div>
+
+                  <!-- Certifications -->
+                  <div class="flex flex-wrap gap-2">
+                    {region.certifications.map((cert) => (
+                      <span class="bg-mint-100 text-mint-800 text-xs font-medium px-2 py-1 rounded">
+                        {cert}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <!-- Strengths & Considerations -->
+                <div class="lg:w-2/3 grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                      </svg>
+                      Strengths
+                    </h4>
+                    <ul class="space-y-2">
+                      {region.strengths.map((strength) => (
+                        <li class="text-sm text-gray-600 flex items-start gap-2">
+                          <span class="text-mint-500 mt-1">+</span>
+                          {strength}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                      </svg>
+                      Considerations
+                    </h4>
+                    <ul class="space-y-2">
+                      {region.considerations.map((consideration) => (
+                        <li class="text-sm text-gray-600 flex items-start gap-2">
+                          <span class="text-amber-500 mt-1">!</span>
+                          {consideration}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Best For -->
+              <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm">
+                  <span class="font-semibold text-gray-900">Best for:</span>
+                  <span class="text-gray-600 ml-2">{region.bestFor}</span>
+                </p>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- True Turnkey Service Section -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <ScrollAnimation>
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              True Turnkey Service
+            </h2>
+            <div class="space-y-4 text-gray-600">
+              <p>
+                Some contract manufacturers require you to source your own raw ingredients, packaging, and labels, then coordinate delivery to their facility. That is a lot of logistics for a small team to manage.
+              </p>
+              <p class="text-xl font-semibold text-gray-900">
+                We handle all of it.
+              </p>
+              <p>
+                From raw material sourcing to packaging and labeling, we coordinate the entire supply chain. You get a single point of contact, clear timelines, and a finished product ready for market.
+              </p>
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={100}>
+          <div class="bg-white rounded-2xl p-8 shadow-sm">
+            <h3 class="font-semibold text-gray-900 mb-6">What We Coordinate For You</h3>
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900">Raw Material Sourcing</h4>
+                  <p class="text-sm text-gray-600">We source quality ingredients from vetted suppliers</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900">Formulation & Production</h4>
+                  <p class="text-sm text-gray-600">Manufacturing at GMP-certified facilities</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900">Packaging & Labeling</h4>
+                  <p class="text-sm text-gray-600">Compliant labels and professional packaging</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900">Quality Control</h4>
+                  <p class="text-sm text-gray-600">Testing and verification at every stage</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900">Shipping & Logistics</h4>
+                  <p class="text-sm text-gray-600">Delivered to you or your fulfillment center</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Model Section -->
+  <section class="py-16 md:py-24 bg-mint-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Our Partner Network Model
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            We are not a manufacturer. We are your expert guide to manufacturing. Here is how our model works and why it benefits emerging supplement brands.
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <!-- How It Works -->
+      <ScrollAnimation>
+        <div class="bg-white rounded-2xl p-8 md:p-10 mb-12">
+          <h3 class="text-xl font-bold text-gray-900 mb-6">How It Works</h3>
+          <div class="grid md:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-mint-600 font-bold">1</span>
+              </div>
+              <h4 class="font-semibold text-gray-900 mb-2">You Share Your Vision</h4>
+              <p class="text-sm text-gray-600">Tell us about your product idea, target market, budget, and timeline.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-mint-600 font-bold">2</span>
+              </div>
+              <h4 class="font-semibold text-gray-900 mb-2">We Match You</h4>
+              <p class="text-sm text-gray-600">We select the best manufacturing partner from our vetted network for your specific needs.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-mint-600 font-bold">3</span>
+              </div>
+              <h4 class="font-semibold text-gray-900 mb-2">We Manage Production</h4>
+              <p class="text-sm text-gray-600">We coordinate formulation, sampling, production, and quality control on your behalf.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-mint-600 font-bold">4</span>
+              </div>
+              <h4 class="font-semibold text-gray-900 mb-2">You Launch</h4>
+              <p class="text-sm text-gray-600">Your finished, labeled products ship to you or directly to your fulfillment center.</p>
+            </div>
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <!-- Advantages Grid -->
+      <ScrollAnimation>
+        <div class="mb-12">
+          <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Why This Model Works</h3>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {businessModelAdvantages.map((advantage) => (
+              <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-10 h-10 bg-mint-100 rounded-lg flex items-center justify-center mb-4">
+                  {advantage.icon === "cube" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                  )}
+                  {advantage.icon === "shield" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                  )}
+                  {advantage.icon === "currency" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  )}
+                  {advantage.icon === "users" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                  )}
+                  {advantage.icon === "refresh" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                  )}
+                  {advantage.icon === "document" && (
+                    <svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                  )}
+                </div>
+                <h4 class="font-semibold text-gray-900 mb-2">{advantage.title}</h4>
+                <p class="text-sm text-gray-600">{advantage.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollAnimation>
+
+      <!-- Tradeoffs - Transparency Section -->
+      <ScrollAnimation>
+        <div class="bg-white rounded-2xl p-8 md:p-10">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">What You Should Know</h3>
+          <p class="text-gray-600 mb-6">We believe in transparency. Here are the tradeoffs of working with a partner network model:</p>
+          <div class="grid md:grid-cols-3 gap-6">
+            {businessModelTradeoffs.map((tradeoff) => (
+              <div class="border-l-4 border-amber-400 pl-4">
+                <h4 class="font-semibold text-gray-900 mb-2">{tradeoff.title}</h4>
+                <p class="text-sm text-gray-600">{tradeoff.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation>
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Nutricraft vs. Going Direct
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            How does working with us compare to approaching manufacturers on your own?
+          </p>
+        </div>
+      </ScrollAnimation>
+
+      <ScrollAnimation>
+        <div class="overflow-x-auto">
+          <table class="w-full bg-gray-50 rounded-xl overflow-hidden">
+            <thead>
+              <tr class="bg-mint-600 text-white">
+                <th class="px-6 py-4 text-left font-semibold">Factor</th>
+                <th class="px-6 py-4 text-left font-semibold">With Nutricraft</th>
+                <th class="px-6 py-4 text-left font-semibold">Going Direct</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">Minimum Order</td>
+                <td class="px-6 py-4 text-gray-600">1,000 units</td>
+                <td class="px-6 py-4 text-gray-600">5,000-10,000+ units typically</td>
+              </tr>
+              <tr class="bg-white">
+                <td class="px-6 py-4 font-medium text-gray-900">Vetting Required</td>
+                <td class="px-6 py-4 text-gray-600">Already done by us</td>
+                <td class="px-6 py-4 text-gray-600">You handle facility audits, cert verification</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">Regulatory Guidance</td>
+                <td class="px-6 py-4 text-gray-600">Included (FDA, Health Canada)</td>
+                <td class="px-6 py-4 text-gray-600">Hire separately or DIY</td>
+              </tr>
+              <tr class="bg-white">
+                <td class="px-6 py-4 font-medium text-gray-900">Negotiating Power</td>
+                <td class="px-6 py-4 text-gray-600">Our volume across brands</td>
+                <td class="px-6 py-4 text-gray-600">Your volume only</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">If Problems Arise</td>
+                <td class="px-6 py-4 text-gray-600">We advocate on your behalf</td>
+                <td class="px-6 py-4 text-gray-600">You handle directly</td>
+              </tr>
+              <tr class="bg-white">
+                <td class="px-6 py-4 font-medium text-gray-900">Cost</td>
+                <td class="px-6 py-4 text-gray-600">Our margin built into pricing</td>
+                <td class="px-6 py-4 text-gray-600">Direct pricing (but higher MOQs)</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">Best For</td>
+                <td class="px-6 py-4 text-gray-600">New brands, low-volume, wanting guidance</td>
+                <td class="px-6 py-4 text-gray-600">Established brands with high volume</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-24 bg-gradient-to-br from-mint-600 to-mint-700">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation>
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+          Ready to Find Your Manufacturing Partner?
+        </h2>
+        <p class="text-xl text-mint-100 mb-8">
+          Schedule a free consultation to discuss your product idea and find out which manufacturing region and approach is right for your brand.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg hover:bg-mint-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            Schedule Free Consultation
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </button>
+          <a href="/services" class="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-semibold rounded-lg hover:bg-mint-500 transition-all duration-300 border-2 border-white">
+            Explore Services
+          </a>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
