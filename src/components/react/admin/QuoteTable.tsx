@@ -107,7 +107,7 @@ function EditableCell({
 }: {
   value: number | string | undefined | null;
   quoteId: string;
-  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes' | 'durlevelPrice' | 'ausresonPrice';
+  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes' | 'durlevelPrice' | 'ausresonPrice' | 'tracking';
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
@@ -827,6 +827,33 @@ export function QuoteTable() {
         size: 80,
         minSize: 60,
         maxSize: 90,
+      },
+      {
+        accessorKey: 'tracking',
+        header: () => <span className="font-semibold">{t('tracking') || 'Tracking'}</span>,
+        cell: ({ row }) => {
+          const status = row.original.status;
+          const showTracking = status === 'order_samples' || status === 'full_batch_order';
+
+          if (!showTracking) {
+            return <span className="text-gray-300">-</span>;
+          }
+
+          return (
+            <EditableCell
+              value={row.original.tracking}
+              quoteId={row.original.id}
+              field="tracking"
+              type="text"
+              placeholder={t('addTrackingPlaceholder') || 'Add tracking...'}
+              clickToEditText={t('clickToEdit')}
+              onUpdate={handleInlineUpdate}
+            />
+          );
+        },
+        size: 180,
+        minSize: 120,
+        maxSize: 250,
       },
       {
         accessorKey: 'description',
