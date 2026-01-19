@@ -47,6 +47,7 @@ const quoteFormSchema = z.object({
   ausresonPublicNotes: z.string().optional(),
   durlevelPrice: z.number().min(0).optional().nullable(),
   ausresonPrice: z.number().min(0).optional().nullable(),
+  tracking: z.string().optional(),
 });
 
 type QuoteFormValues = z.infer<typeof quoteFormSchema>;
@@ -220,6 +221,7 @@ export function QuoteDetailPanel() {
       ausresonPublicNotes: '',
       durlevelPrice: null,
       ausresonPrice: null,
+      tracking: '',
     },
   });
 
@@ -233,6 +235,7 @@ export function QuoteDetailPanel() {
         ausresonPublicNotes: selectedQuote.ausresonPublicNotes ?? '',
         durlevelPrice: selectedQuote.durlevelPrice ?? null,
         ausresonPrice: selectedQuote.ausresonPrice ?? null,
+        tracking: selectedQuote.tracking ?? '',
       });
     }
   }, [selectedQuote?.id]);
@@ -562,6 +565,21 @@ export function QuoteDetailPanel() {
                         })}
                       />
                     </div>
+
+                    {/* Tracking - visible only for Samples and Full Batch stages */}
+                    {(selectedQuote.status === 'order_samples' || selectedQuote.status === 'full_batch_order') && (
+                      <div className="space-y-2">
+                        <Label htmlFor="tracking">Tracking</Label>
+                        <Textarea
+                          id="tracking"
+                          placeholder="Enter tracking information..."
+                          rows={2}
+                          {...form.register('tracking', {
+                            onBlur: (e) => handleAutoSave('tracking', e.target.value),
+                          })}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 

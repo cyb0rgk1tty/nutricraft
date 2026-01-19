@@ -40,6 +40,7 @@ export interface Quote {
   ausresonPublicNotes?: string;  // Notes for Ausreson only
   durlevelPrice?: number;  // Price for Durlevel only
   ausresonPrice?: number;  // Price for Ausreson only
+  tracking?: string;       // Tracking info (visible only for Samples and Full Batch stages)
   documents?: QuoteDocument[];
 }
 
