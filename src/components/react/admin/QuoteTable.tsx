@@ -828,17 +828,11 @@ export function QuoteTable() {
         minSize: 60,
         maxSize: 90,
       },
-      {
+      // Only show tracking column when filtering by Samples or Full Batch stages
+      ...((filter.status === 'order_samples' || filter.status === 'full_batch_order') ? [{
         accessorKey: 'tracking',
         header: () => <span className="font-semibold">{t('tracking') || 'Tracking'}</span>,
-        cell: ({ row }) => {
-          const status = row.original.status;
-          const showTracking = status === 'order_samples' || status === 'full_batch_order';
-
-          if (!showTracking) {
-            return <span className="text-gray-300">-</span>;
-          }
-
+        cell: ({ row }: { row: { original: Quote } }) => {
           return (
             <EditableCell
               value={row.original.tracking}
@@ -854,7 +848,7 @@ export function QuoteTable() {
         size: 180,
         minSize: 120,
         maxSize: 250,
-      },
+      }] : []),
       {
         accessorKey: 'description',
         header: () => <span className="font-semibold">{t('description') || 'Description'}</span>,
@@ -1002,7 +996,7 @@ export function QuoteTable() {
         size: 40,
       },
     ],
-    [selectQuote, handleInlineUpdate, t, getStageLabel, userDashboard]
+    [selectQuote, handleInlineUpdate, t, getStageLabel, userDashboard, filter.status]
   );
 
   const table = useReactTable({
