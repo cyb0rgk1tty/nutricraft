@@ -300,7 +300,10 @@ async function fetchTransactionsFromApi(
  * Sync transactions from Airwallex API to Supabase
  * Handles 7-day date range limit by batching requests
  */
-export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncResult> {
+export async function syncTransactionsToDb(
+  totalDays: number = 7,
+  syncType: 'manual' | 'webhook' | 'auto' = 'manual'
+): Promise<SyncResult> {
   if (!isAirwallexConfigured()) {
     return {
       success: false,
@@ -360,7 +363,7 @@ export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncR
     await getSupabase().from('airwallex_sync_log').insert({
       records_synced: allTransactions.length,
       status: 'success',
-      sync_type: 'manual',
+      sync_type: syncType,
     });
 
     return { success: true, recordsSynced: allTransactions.length };
@@ -372,7 +375,7 @@ export async function syncTransactionsToDb(totalDays: number = 7): Promise<SyncR
       records_synced: 0,
       status: 'error',
       error_message: error instanceof Error ? error.message : 'Unknown error',
-      sync_type: 'manual',
+      sync_type: syncType,
     });
 
     return {
@@ -565,7 +568,7 @@ export async function logSync(
   recordsSynced: number,
   status: 'success' | 'error',
   errorMessage: string | null,
-  syncType: 'manual' | 'webhook'
+  syncType: 'manual' | 'webhook' | 'auto'
 ): Promise<void> {
   await getSupabase().from('airwallex_sync_log').insert({
     records_synced: recordsSynced,
@@ -573,4 +576,24 @@ export async function logSync(
     error_message: errorMessage,
     sync_type: syncType,
   });
+}
+
+/**
+ * Check if auto-sync should be triggered
+ * Returns true if no transactions exist OR last sync was > 24 hours ago
+ */
+export function shouldAutoSync(
+  lastSync: { synced_at: string; records_synced: number; status: string } | null,
+  transactionCount: number
+): boolean {
+  // Auto-sync if no transactions in database
+  if (transactionCount === 0) return true;
+
+  // Auto-sync if no sync record exists
+  if (!lastSync) return true;
+
+  // Auto-sync if last sync was > 24 hours ago
+  const lastSyncTime = new Date(lastSync.synced_at).getTime();
+  const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+  return lastSyncTime < twentyFourHoursAgo;
 }

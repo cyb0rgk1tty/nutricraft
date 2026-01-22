@@ -18,6 +18,8 @@ import {
   getTransactionsFromDb,
   getLastSync,
   calculateStats,
+  shouldAutoSync,
+  syncTransactionsToDb,
 } from '../../../../utils/airwallex';
 
 export const GET: APIRoute = async ({ request, url }) => {
@@ -60,11 +62,29 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // Fetch data in parallel
-    const [balancesResult, transactionsResult, lastSync] = await Promise.all([
+    let [balancesResult, transactionsResult, lastSync] = await Promise.all([
       fetchBalances(),
       getTransactionsFromDb(days),
       getLastSync(),
     ]);
+
+    // Check if auto-sync is needed (no data or stale)
+    let autoSynced = false;
+    const transactionCount = transactionsResult.success ? transactionsResult.data.length : 0;
+
+    if (shouldAutoSync(lastSync, transactionCount)) {
+      console.log('[Airwallex] Auto-sync triggered: empty database or stale data');
+      const syncResult = await syncTransactionsToDb(days, 'auto');
+
+      if (syncResult.success) {
+        autoSynced = true;
+        // Re-fetch transactions and last sync after auto-sync
+        [transactionsResult, lastSync] = await Promise.all([
+          getTransactionsFromDb(days),
+          getLastSync(),
+        ]);
+      }
+    }
 
     // Calculate stats from transactions
     const stats = transactionsResult.success
@@ -83,6 +103,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         lastSync,
         days,
         periodLabel,
+        autoSynced,
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
