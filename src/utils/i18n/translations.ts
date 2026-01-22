@@ -160,6 +160,10 @@ export const translations = {
     allManufacturers: 'All Manufacturers',
     filterByManufacturer: 'Filter by manufacturer',
     clearFilter: 'Clear filter',
+
+    // Real-time Updates
+    realTimeUpdatesActive: 'Real-time updates active',
+    pollingUpdates: 'Updates every 60 seconds',
   },
 
   zh: {
@@ -318,6 +322,10 @@ export const translations = {
     allManufacturers: '所有制造商',
     filterByManufacturer: '按制造商筛选',
     clearFilter: '清除筛选',
+
+    // Real-time Updates
+    realTimeUpdatesActive: '实时更新已启用',
+    pollingUpdates: '每60秒更新一次',
   }
 } as const;
 

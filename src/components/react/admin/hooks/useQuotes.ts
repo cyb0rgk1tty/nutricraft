@@ -1,11 +1,17 @@
 /**
  * TanStack Query hooks for Quote data fetching
+ *
+ * Features:
+ * - Real-time updates via SSE (Server-Sent Events) from TwentyCRM webhooks
+ * - Fallback to 60-second polling if SSE connection fails
+ * - Optimistic updates for mutations
  */
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Quote, FetchQuotesOptions, PaginatedQuotesResponse, UpdateQuoteResponse } from '../types';
 import { useQuoteStore } from '../stores/quoteStore';
+import { useDashboardSSE } from './useDashboardSSE';
 
 // Query keys factory
 export const quoteKeys = {
@@ -130,5 +136,44 @@ export function useRefreshQuotes() {
 
   return () => {
     queryClient.invalidateQueries({ queryKey: quoteKeys.lists() });
+  };
+}
+
+/**
+ * Hook for real-time quote updates via SSE
+ *
+ * Connects to the SSE endpoint and automatically refreshes quotes
+ * when webhook events are received from TwentyCRM.
+ *
+ * @returns SSE connection status and manual refresh function
+ */
+export function useQuotesSSE() {
+  const queryClient = useQueryClient();
+  const { isAuthenticated } = useQuoteStore();
+
+  // Callback to refresh quotes when SSE event received
+  const handleRefresh = useCallback(() => {
+    console.log('SSE: Refreshing quotes due to webhook event');
+    queryClient.invalidateQueries({ queryKey: quoteKeys.lists() });
+  }, [queryClient]);
+
+  // Connect to SSE when authenticated
+  const { status, isConnected, reconnectAttempts, reconnect } = useDashboardSSE({
+    enabled: isAuthenticated,
+    onRefresh: handleRefresh,
+    maxReconnectAttempts: 5,
+  });
+
+  return {
+    /** SSE connection status */
+    sseStatus: status,
+    /** Whether SSE is currently connected */
+    isSSEConnected: isConnected,
+    /** Number of reconnection attempts */
+    reconnectAttempts,
+    /** Manually reconnect to SSE */
+    reconnectSSE: reconnect,
+    /** Manually refresh quotes */
+    refreshQuotes: handleRefresh,
   };
 }

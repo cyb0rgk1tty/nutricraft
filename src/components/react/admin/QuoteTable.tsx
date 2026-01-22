@@ -50,7 +50,7 @@ import {
 import type { Quote, QuoteStatus, QuoteDocument, QuotePriority } from './types';
 import { STATUS_CONFIG, PRIORITY_CONFIG } from './types';
 import { useQuoteStore, useSelectedQuote } from './stores/quoteStore';
-import { useQuotesQuery, useUpdateQuoteMutation } from './hooks/useQuotes';
+import { useQuotesQuery, useUpdateQuoteMutation, useQuotesSSE } from './hooks/useQuotes';
 import { useLanguage } from './hooks/useLanguage';
 import { DocumentUploadModal } from './DocumentUploadModal';
 import { ManufacturerFilter } from './ManufacturerFilter';
@@ -545,6 +545,9 @@ export function QuoteTable() {
   const updateMutation = useUpdateQuoteMutation();
   const { t, getStageLabel } = useLanguage();
 
+  // SSE connection for real-time updates from TwentyCRM webhooks
+  const { isSSEConnected } = useQuotesSSE();
+
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },
   ]);
@@ -1038,8 +1041,24 @@ export function QuoteTable() {
           {/* Manufacturer Filter - only visible for admins */}
           <ManufacturerFilter />
         </div>
-        <div className="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-          <span className="font-semibold text-primary">{totalFiltered}</span> {t('quotes')}
+        <div className="flex items-center gap-3">
+          {/* Real-time connection indicator */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white border border-gray-100">
+                  <div className={`w-2 h-2 rounded-full ${isSSEConnected ? 'bg-green-500' : 'bg-gray-300'}`} />
+                  <span className="text-xs text-gray-500">{isSSEConnected ? 'Live' : 'Polling'}</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isSSEConnected ? t('realTimeUpdatesActive') || 'Real-time updates active' : t('pollingUpdates') || 'Updates every 60 seconds'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+            <span className="font-semibold text-primary">{totalFiltered}</span> {t('quotes')}
+          </div>
         </div>
       </div>
 
