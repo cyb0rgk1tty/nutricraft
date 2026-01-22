@@ -541,12 +541,14 @@ export function QuoteTable() {
     userDashboard,
   } = useQuoteStore();
 
-  const { isLoading, isError, error } = useQuotesQuery();
+  // SSE connection for real-time updates from TwentyCRM webhooks
+  // Must be called BEFORE useQuotesQuery to pass connection status
+  const { isSSEConnected } = useQuotesSSE();
+
+  // Pass SSE status to disable polling when real-time updates are active
+  const { isLoading, isError, error } = useQuotesQuery({ isSSEConnected });
   const updateMutation = useUpdateQuoteMutation();
   const { t, getStageLabel } = useLanguage();
-
-  // SSE connection for real-time updates from TwentyCRM webhooks
-  const { isSSEConnected } = useQuotesSSE();
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },

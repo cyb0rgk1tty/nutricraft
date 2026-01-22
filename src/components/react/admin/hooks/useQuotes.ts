@@ -58,7 +58,7 @@ async function updateQuote(id: string, updates: Partial<Quote>): Promise<UpdateQ
 }
 
 // Hooks
-export function useQuotesQuery(options?: Partial<FetchQuotesOptions>) {
+export function useQuotesQuery(options?: Partial<FetchQuotesOptions & { isSSEConnected?: boolean }>) {
   const { isAuthenticated, filter, sort, page, limit, setQuotes, setPagination, setUserDashboard } = useQuoteStore();
 
   const queryOptions: FetchQuotesOptions = {
@@ -76,7 +76,8 @@ export function useQuotesQuery(options?: Partial<FetchQuotesOptions>) {
     queryFn: () => fetchQuotes(queryOptions),
     enabled: isAuthenticated, // Only fetch when authenticated
     staleTime: 30 * 1000, // Consider data fresh for 30 seconds
-    refetchInterval: isAuthenticated ? 60 * 1000 : false, // Only poll when authenticated
+    // Only poll when authenticated AND SSE is NOT connected (fallback polling)
+    refetchInterval: isAuthenticated && !options?.isSSEConnected ? 60 * 1000 : false,
   });
 
   // Sync query data to store in useEffect (not during render)
