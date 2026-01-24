@@ -24,6 +24,12 @@
 import type { APIRoute } from 'astro';
 import crypto from 'crypto';
 import { logWebhookEvent, getWebhookSecret } from '../../../utils/invoiceNinja';
+import { isXeroConfigured } from '../../../utils/xero/auth';
+import { isXeroConnected, XeroClient } from '../../../utils/xero/client';
+import { isAutoSyncEnabled } from '../../../utils/sync/config';
+import { syncInvoice } from '../../../utils/sync/invoices';
+import { syncPayment } from '../../../utils/sync/payments';
+import type { InvoiceNinjaInvoice, InvoiceNinjaPayment } from '../../../utils/xero/types';
 
 /**
  * Verify webhook secret using timing-safe comparison
@@ -45,6 +51,68 @@ function verifyWebhookSecret(providedSecret: string, expectedSecret: string): bo
 
 // Event types we handle
 const SUPPORTED_EVENTS = ['create_invoice', 'create_payment'];
+
+/**
+ * Sync an entity to Xero after receiving a webhook
+ * This is called asynchronously and should not block the webhook response
+ */
+async function syncToXero(
+  eventType: string,
+  payload: unknown
+): Promise<{ success?: boolean; xeroId?: string; error?: string }> {
+  try {
+    // Check if auto-sync is enabled
+    const autoSyncEnabled = await isAutoSyncEnabled();
+    if (!autoSyncEnabled) {
+      return { success: true, error: 'Auto-sync disabled' };
+    }
+
+    // Check if Xero is connected
+    const connected = await isXeroConnected();
+    if (!connected) {
+      return { success: false, error: 'Xero not connected' };
+    }
+
+    const xeroClient = await XeroClient.create();
+    if (!xeroClient) {
+      return { success: false, error: 'Failed to create Xero client' };
+    }
+
+    // Handle different event types
+    if (eventType === 'create_invoice') {
+      // The payload contains the invoice data
+      const invoiceData = payload as { data?: InvoiceNinjaInvoice } | InvoiceNinjaInvoice;
+      const invoice = 'data' in invoiceData ? invoiceData.data : invoiceData;
+
+      if (!invoice) {
+        return { success: false, error: 'No invoice data in payload' };
+      }
+
+      const result = await syncInvoice(invoice, xeroClient);
+      return result;
+    }
+
+    if (eventType === 'create_payment') {
+      // The payload contains the payment data
+      const paymentData = payload as { data?: InvoiceNinjaPayment } | InvoiceNinjaPayment;
+      const payment = 'data' in paymentData ? paymentData.data : paymentData;
+
+      if (!payment) {
+        return { success: false, error: 'No payment data in payload' };
+      }
+
+      const result = await syncPayment(payment, xeroClient);
+      return result;
+    }
+
+    return { success: false, error: `Unknown event type: ${eventType}` };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
 
 export const POST: APIRoute = async ({ request }) => {
   const webhookSecret = getWebhookSecret();
@@ -102,6 +170,26 @@ export const POST: APIRoute = async ({ request }) => {
       console.log(`Invoice Ninja webhook: Unknown event type ${eventType} logged`);
     }
 
+    // Trigger Xero sync if configured and enabled (non-blocking)
+    let xeroSyncResult: { triggered: boolean; success?: boolean; error?: string } = {
+      triggered: false,
+    };
+
+    if (SUPPORTED_EVENTS.includes(eventType) && isXeroConfigured()) {
+      // Run Xero sync asynchronously (don't block webhook response)
+      syncToXero(eventType, payload).then((result) => {
+        if (result.error) {
+          console.error(`Xero sync error for ${eventType}:`, result.error);
+        } else if (result.success) {
+          console.log(`Xero sync success for ${eventType}: ${result.xeroId}`);
+        }
+      }).catch((err) => {
+        console.error(`Xero sync failed for ${eventType}:`, err);
+      });
+
+      xeroSyncResult = { triggered: true };
+    }
+
     // Always return 200 to acknowledge receipt
     // This prevents Invoice Ninja from retrying
     return new Response(
@@ -109,6 +197,7 @@ export const POST: APIRoute = async ({ request }) => {
         received: true,
         event: eventType,
         entityId,
+        xeroSync: xeroSyncResult,
       }),
       {
         status: 200,
