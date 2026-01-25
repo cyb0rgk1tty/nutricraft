@@ -232,6 +232,49 @@ export async function fetchInvoices(params?: {
 }
 
 /**
+ * Fetch ALL invoices with pagination
+ * Loops through all pages to get complete dataset for bulk sync
+ */
+export async function fetchAllInvoices(params?: {
+  sinceDate?: string;
+}): Promise<InvoiceNinjaResult<Invoice[]>> {
+  const allInvoices: Invoice[] = [];
+  const perPage = 100;
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const queryParams = new URLSearchParams();
+    queryParams.set('include', 'client');
+    queryParams.set('per_page', String(perPage));
+    queryParams.set('page', String(page));
+
+    // Filter by date if provided
+    if (params?.sinceDate) {
+      queryParams.set('date', `gte:${params.sinceDate}`);
+    }
+
+    const result = await apiRequest<Invoice[]>(`/invoices?${queryParams.toString()}`);
+
+    if (!result.success) {
+      return result;
+    }
+
+    const invoices = result.data || [];
+    allInvoices.push(...invoices);
+
+    // If we got fewer records than requested, we've reached the last page
+    if (invoices.length < perPage) {
+      hasMore = false;
+    } else {
+      page++;
+    }
+  }
+
+  return { success: true, data: allInvoices };
+}
+
+/**
  * Fetch all payments with optional filters
  */
 export async function fetchPayments(params?: {
@@ -244,6 +287,50 @@ export async function fetchPayments(params?: {
   queryParams.set('sort', 'date|desc');
 
   return apiRequest<Payment[]>(`/payments?${queryParams.toString()}`);
+}
+
+/**
+ * Fetch ALL payments with pagination
+ * Loops through all pages to get complete dataset for bulk sync
+ */
+export async function fetchAllPayments(params?: {
+  sinceDate?: string;
+}): Promise<InvoiceNinjaResult<Payment[]>> {
+  const allPayments: Payment[] = [];
+  const perPage = 100;
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const queryParams = new URLSearchParams();
+    queryParams.set('include', 'client,invoices');
+    queryParams.set('per_page', String(perPage));
+    queryParams.set('page', String(page));
+    queryParams.set('sort', 'date|asc'); // Sort ascending for bulk sync (oldest first)
+
+    // Filter by date if provided
+    if (params?.sinceDate) {
+      queryParams.set('date', `gte:${params.sinceDate}`);
+    }
+
+    const result = await apiRequest<Payment[]>(`/payments?${queryParams.toString()}`);
+
+    if (!result.success) {
+      return result;
+    }
+
+    const payments = result.data || [];
+    allPayments.push(...payments);
+
+    // If we got fewer records than requested, we've reached the last page
+    if (payments.length < perPage) {
+      hasMore = false;
+    } else {
+      page++;
+    }
+  }
+
+  return { success: true, data: allPayments };
 }
 
 /**

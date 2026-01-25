@@ -7,8 +7,15 @@
  * POST /api/sync/manual
  *
  * Request Body:
- * - action: 'reconcile' | 'sync_invoice' | 'sync_payment'
+ * - action: 'reconcile' | 'sync_invoice' | 'sync_payment' | 'bulk_sync'
  * - ninja_id (optional): Specific entity ID for single-entity sync
+ * - since_date (optional): For bulk_sync, only sync records after this date (YYYY-MM-DD)
+ *
+ * Actions:
+ * - reconcile: Retry all failed syncs (default)
+ * - sync_invoice: Sync a specific invoice by ninja_id
+ * - sync_payment: Sync a specific payment by ninja_id
+ * - bulk_sync: Sync all existing invoices and payments from Invoice Ninja
  *
  * Security:
  * - Requires admin authentication (via cookie/session)
@@ -23,7 +30,7 @@ import {
   getFailedPaymentSyncs,
   updateLastReconciliation,
 } from '../../../utils/sync';
-import { fetchInvoices, fetchPayments } from '../../../utils/invoiceNinja';
+import { fetchInvoices, fetchPayments, fetchAllInvoices, fetchAllPayments, INVOICE_STATUS } from '../../../utils/invoiceNinja';
 import { syncInvoice } from '../../../utils/sync/invoices';
 import { syncPayment } from '../../../utils/sync/payments';
 import type { InvoiceNinjaInvoice, InvoiceNinjaPayment } from '../../../utils/xero/types';
@@ -136,6 +143,138 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
         const syncResult = await syncPayment(payment as unknown as InvoiceNinjaPayment, xeroClient);
         results.payment = { ninjaId, ...syncResult };
+        break;
+      }
+
+      case 'bulk_sync': {
+        // Bulk sync - sync all existing invoices and payments from Invoice Ninja
+        const sinceDate = body.since_date || null;
+        const rateLimitDelayMs = 200; // Stay under Xero's 60 calls/minute limit
+
+        // Helper for rate limiting
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // Get already synced IDs to skip
+        const supabase = getSupabaseServiceClient();
+        const { data: syncedRecords } = await supabase
+          .from('xero_sync_log')
+          .select('ninja_id, entity_type')
+          .eq('status', 'synced');
+
+        const syncedInvoiceIds = new Set(
+          (syncedRecords || [])
+            .filter(r => r.entity_type === 'invoice')
+            .map(r => r.ninja_id)
+        );
+        const syncedPaymentIds = new Set(
+          (syncedRecords || [])
+            .filter(r => r.entity_type === 'payment')
+            .map(r => r.ninja_id)
+        );
+
+        // 1. Fetch all invoices with pagination
+        console.log(`[BulkSync] Fetching all invoices${sinceDate ? ` since ${sinceDate}` : ''}...`);
+        const allInvoicesResult = await fetchAllInvoices({ sinceDate });
+        if (!allInvoicesResult.success || !allInvoicesResult.data) {
+          throw new Error(`Failed to fetch invoices: ${allInvoicesResult.error}`);
+        }
+
+        const allInvoices = allInvoicesResult.data;
+        console.log(`[BulkSync] Found ${allInvoices.length} total invoices`);
+
+        // 2. Filter out drafts and already synced
+        const invoicesToSync = allInvoices.filter(inv => {
+          // Skip drafts
+          if (inv.status_id === INVOICE_STATUS.DRAFT) return false;
+          // Skip already synced
+          if (syncedInvoiceIds.has(inv.id)) return false;
+          return true;
+        });
+
+        console.log(`[BulkSync] ${invoicesToSync.length} invoices to sync (excluding ${allInvoices.length - invoicesToSync.length} drafts/synced)`);
+
+        // 3. Sync each invoice with rate limiting
+        let invoicesSynced = 0;
+        let invoicesSkipped = 0;
+        let invoicesFailed = 0;
+
+        for (const invoice of invoicesToSync) {
+          const syncResult = await syncInvoice(
+            invoice as unknown as InvoiceNinjaInvoice,
+            xeroClient
+          );
+
+          if (syncResult.success) {
+            if (syncResult.error?.includes('Skipped')) {
+              invoicesSkipped++;
+            } else {
+              invoicesSynced++;
+            }
+          } else {
+            invoicesFailed++;
+          }
+
+          // Rate limit
+          await delay(rateLimitDelayMs);
+        }
+
+        // 4. Fetch all payments with pagination
+        console.log(`[BulkSync] Fetching all payments${sinceDate ? ` since ${sinceDate}` : ''}...`);
+        const allPaymentsResult = await fetchAllPayments({ sinceDate });
+        if (!allPaymentsResult.success || !allPaymentsResult.data) {
+          throw new Error(`Failed to fetch payments: ${allPaymentsResult.error}`);
+        }
+
+        const allPayments = allPaymentsResult.data;
+        console.log(`[BulkSync] Found ${allPayments.length} total payments`);
+
+        // 5. Filter out already synced
+        const paymentsToSync = allPayments.filter(pmt => !syncedPaymentIds.has(pmt.id));
+        console.log(`[BulkSync] ${paymentsToSync.length} payments to sync (excluding ${allPayments.length - paymentsToSync.length} synced)`);
+
+        // 6. Sync each payment with rate limiting
+        let paymentsSynced = 0;
+        let paymentsSkipped = 0;
+        let paymentsFailed = 0;
+
+        for (const payment of paymentsToSync) {
+          const syncResult = await syncPayment(
+            payment as unknown as InvoiceNinjaPayment,
+            xeroClient
+          );
+
+          if (syncResult.success) {
+            if (syncResult.error?.includes('no linked invoices') || syncResult.error?.includes('Skipped')) {
+              paymentsSkipped++;
+            } else {
+              paymentsSynced++;
+            }
+          } else {
+            paymentsFailed++;
+          }
+
+          // Rate limit
+          await delay(rateLimitDelayMs);
+        }
+
+        results.bulk_sync = {
+          invoices: {
+            total: allInvoices.length,
+            synced: invoicesSynced,
+            skipped: invoicesSkipped + (allInvoices.length - invoicesToSync.length),
+            failed: invoicesFailed,
+          },
+          payments: {
+            total: allPayments.length,
+            synced: paymentsSynced,
+            skipped: paymentsSkipped + (allPayments.length - paymentsToSync.length),
+            failed: paymentsFailed,
+          },
+        };
+
+        console.log(`[BulkSync] Complete - Invoices: ${invoicesSynced} synced, ${invoicesSkipped} skipped, ${invoicesFailed} failed`);
+        console.log(`[BulkSync] Complete - Payments: ${paymentsSynced} synced, ${paymentsSkipped} skipped, ${paymentsFailed} failed`);
+
         break;
       }
 
