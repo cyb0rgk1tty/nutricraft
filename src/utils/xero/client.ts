@@ -154,6 +154,7 @@ export class XeroClient {
 
   /**
    * Find invoice by reference (Invoice Ninja invoice number)
+   * Ignores VOIDED invoices so we can create new ones after voiding
    */
   async findInvoiceByReference(reference: string): Promise<XeroInvoice | null> {
     const result = await xeroRequest<{ Invoices: XeroInvoice[] }>(
@@ -163,7 +164,9 @@ export class XeroClient {
     );
 
     if (result.success && result.data?.Invoices?.length) {
-      return result.data.Invoices[0];
+      // Filter out VOIDED invoices - we want to create new ones
+      const activeInvoice = result.data.Invoices.find(inv => inv.Status !== 'VOIDED');
+      return activeInvoice || null;
     }
     return null;
   }
