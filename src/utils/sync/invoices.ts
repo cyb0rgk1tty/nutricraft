@@ -20,6 +20,10 @@ import { INVOICE_STATUS } from '../invoiceNinja';
 
 /**
  * Map Invoice Ninja status to Xero status
+ *
+ * NOTE: We always sync as AUTHORISED (not PAID) so that payments can be
+ * applied separately. This preserves payment history in Xero.
+ * Xero will automatically mark the invoice as PAID when payments are applied.
  */
 function mapInvoiceStatus(ninjaStatusId: string): XeroInvoice['Status'] {
   switch (ninjaStatusId) {
@@ -28,11 +32,10 @@ function mapInvoiceStatus(ninjaStatusId: string): XeroInvoice['Status'] {
     case INVOICE_STATUS.SENT:
     case INVOICE_STATUS.VIEWED:
     case INVOICE_STATUS.APPROVED:
-      return 'AUTHORISED';
     case INVOICE_STATUS.PARTIAL:
-      return 'AUTHORISED';
     case INVOICE_STATUS.PAID:
-      return 'PAID';
+      // Always AUTHORISED - payments will be synced separately
+      return 'AUTHORISED';
     case INVOICE_STATUS.CANCELLED:
       return 'VOIDED';
     default:
