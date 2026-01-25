@@ -106,16 +106,42 @@ async function upsertSyncRecord(
 }
 
 /**
+ * Determine the correct Xero bank account based on payment date and currency
+ *
+ * Routing rules:
+ * - Before Dec 18, 2025: Account 080 (Wealthsimple CAD)
+ * - Dec 18, 2025+, CAD:  Account 081
+ * - Dec 18, 2025+, USD:  Account 082
+ */
+function getPaymentAccountCode(payment: InvoiceNinjaPayment): string {
+  const cutoffDate = '2025-12-18';
+  const paymentDate = payment.date;
+
+  // Before cutoff date - all go to old Wealthsimple account
+  if (paymentDate < cutoffDate) {
+    return '080';
+  }
+
+  // After cutoff - route by currency
+  // Invoice Ninja currency IDs: "1" = USD, "2" = CAD (common defaults)
+  const isUSD = payment.currency_id === '1';
+
+  return isUSD ? '082' : '081';
+}
+
+/**
  * Map Invoice Ninja payment to Xero payment format
  */
 export function mapPaymentToXero(
   payment: InvoiceNinjaPayment,
   xeroInvoiceId: string,
-  paymentAccountCode: string
+  _paymentAccountCode?: string // Deprecated - now auto-determined by date/currency
 ): XeroPayment {
+  const accountCode = getPaymentAccountCode(payment);
+
   return {
     Invoice: { InvoiceID: xeroInvoiceId },
-    Account: { Code: paymentAccountCode },
+    Account: { Code: accountCode },
     Date: payment.date,
     Amount: payment.amount,
     Reference: payment.transaction_reference || `IN-${payment.number}`,

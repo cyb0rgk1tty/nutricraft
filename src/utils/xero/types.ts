@@ -145,6 +145,7 @@ export interface InvoiceNinjaPayment {
   amount: number;
   date: string;
   transaction_reference?: string;
+  currency_id?: string; // "1" = USD, "2" = CAD (Invoice Ninja currency IDs)
   invoices?: Array<{
     invoice_id: string;
     amount: number;
