@@ -289,21 +289,33 @@ export async function fetchPayments(params?: {
   return apiRequest<Payment[]>(`/payments?${queryParams.toString()}`);
 }
 
+// Extended payment type with paymentables from Invoice Ninja API
+interface PaymentWithPaymentables extends Payment {
+  paymentables?: Array<{
+    invoice_id: string;
+    amount: number;
+  }>;
+  invoices?: Array<{
+    invoice_id: string;
+    amount: number;
+  }>;
+}
+
 /**
  * Fetch ALL payments with pagination
  * Loops through all pages to get complete dataset for bulk sync
  */
 export async function fetchAllPayments(params?: {
   sinceDate?: string;
-}): Promise<InvoiceNinjaResult<Payment[]>> {
-  const allPayments: Payment[] = [];
+}): Promise<InvoiceNinjaResult<PaymentWithPaymentables[]>> {
+  const allPayments: PaymentWithPaymentables[] = [];
   const perPage = 100;
   let page = 1;
   let hasMore = true;
 
   while (hasMore) {
     const queryParams = new URLSearchParams();
-    queryParams.set('include', 'client,invoices');
+    queryParams.set('include', 'client,paymentables');
     queryParams.set('per_page', String(perPage));
     queryParams.set('page', String(page));
     queryParams.set('sort', 'date|asc'); // Sort ascending for bulk sync (oldest first)
@@ -313,14 +325,24 @@ export async function fetchAllPayments(params?: {
       queryParams.set('date', `gte:${params.sinceDate}`);
     }
 
-    const result = await apiRequest<Payment[]>(`/payments?${queryParams.toString()}`);
+    const result = await apiRequest<PaymentWithPaymentables[]>(`/payments?${queryParams.toString()}`);
 
     if (!result.success) {
       return result;
     }
 
     const payments = result.data || [];
-    allPayments.push(...payments);
+
+    // Map paymentables to invoices format for compatibility with sync code
+    const mappedPayments = payments.map(payment => ({
+      ...payment,
+      invoices: payment.paymentables?.map(p => ({
+        invoice_id: p.invoice_id,
+        amount: p.amount,
+      })) || payment.invoices || [],
+    }));
+
+    allPayments.push(...mappedPayments);
 
     // If we got fewer records than requested, we've reached the last page
     if (payments.length < perPage) {
