@@ -149,7 +149,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       case 'bulk_sync': {
         // Bulk sync - sync all existing invoices and payments from Invoice Ninja
         const sinceDate = body.since_date || null;
-        const rateLimitDelayMs = 200; // Stay under Xero's 60 calls/minute limit
+        const rateLimitDelayMs = 2000; // 2 seconds - each sync can make 2-3 API calls, need to stay under 60/minute
 
         // Helper for rate limiting
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
