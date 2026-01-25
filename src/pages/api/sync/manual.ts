@@ -16,6 +16,7 @@
  * - sync_invoice: Sync a specific invoice by ninja_id
  * - sync_payment: Sync a specific payment by ninja_id
  * - bulk_sync: Sync all existing invoices and payments from Invoice Ninja
+ * - reset_sync: Void all synced invoices in Xero and clear sync log for fresh start
  *
  * Security:
  * - Requires admin authentication (via cookie/session)
@@ -275,6 +276,61 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         console.log(`[BulkSync] Complete - Invoices: ${invoicesSynced} synced, ${invoicesSkipped} skipped, ${invoicesFailed} failed`);
         console.log(`[BulkSync] Complete - Payments: ${paymentsSynced} synced, ${paymentsSkipped} skipped, ${paymentsFailed} failed`);
 
+        break;
+      }
+
+      case 'reset_sync': {
+        // Reset sync - void all synced invoices in Xero and clear sync log
+        // This allows a fresh re-sync with correct statuses
+        const rateLimitDelayMs = 2000;
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+        const supabase = getSupabaseServiceClient();
+
+        // Get all synced invoices with their Xero IDs
+        const { data: syncedInvoices } = await supabase
+          .from('xero_sync_log')
+          .select('ninja_id, xero_id')
+          .eq('entity_type', 'invoice')
+          .eq('status', 'synced')
+          .not('xero_id', 'is', null);
+
+        console.log(`[ResetSync] Found ${syncedInvoices?.length || 0} synced invoices to void`);
+
+        let voidedCount = 0;
+        let voidFailedCount = 0;
+
+        // Void each invoice in Xero
+        for (const record of syncedInvoices || []) {
+          if (record.xero_id) {
+            try {
+              const result = await xeroClient.voidInvoice(record.xero_id);
+              if (result.success) {
+                voidedCount++;
+                console.log(`[ResetSync] Voided invoice ${record.xero_id}`);
+              } else {
+                voidFailedCount++;
+                console.error(`[ResetSync] Failed to void ${record.xero_id}: ${result.error}`);
+              }
+            } catch (err) {
+              voidFailedCount++;
+              console.error(`[ResetSync] Error voiding ${record.xero_id}:`, err);
+            }
+            await delay(rateLimitDelayMs);
+          }
+        }
+
+        // Clear all sync records (invoices, payments, clients)
+        console.log('[ResetSync] Clearing sync log...');
+        await supabase.from('xero_sync_log').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+
+        results.reset_sync = {
+          invoicesVoided: voidedCount,
+          voidFailed: voidFailedCount,
+          syncLogCleared: true,
+        };
+
+        console.log(`[ResetSync] Complete - ${voidedCount} voided, ${voidFailedCount} failed`);
         break;
       }
 
