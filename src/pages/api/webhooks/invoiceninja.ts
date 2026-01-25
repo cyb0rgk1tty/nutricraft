@@ -10,12 +10,15 @@
  *
  * Supported Events:
  * - create_invoice - New invoice created
+ * - update_invoice - Invoice updated (syncs changes to Xero)
+ * - delete_invoice - Invoice deleted (voids in Xero)
  * - create_payment - Payment recorded
+ * - update_payment - Payment updated (logged, Xero doesn't support updates)
  *
  * Setup in Invoice Ninja:
  * 1. Go to Settings → Account Management → Webhooks
  * 2. Create webhook with target URL: https://nutricraftlabs.com/api/webhooks/invoiceninja
- * 3. Select event: create_invoice or create_payment
+ * 3. Select event type (one per webhook)
  * 4. Method: POST
  * 5. Header Key: X-Webhook-Secret
  * 6. Header Value: (same value as INVOICE_NINJA_WEBHOOK_SECRET env var)
@@ -27,7 +30,7 @@ import { logWebhookEvent, getWebhookSecret } from '../../../utils/invoiceNinja';
 import { isXeroConfigured } from '../../../utils/xero/auth';
 import { isXeroConnected, XeroClient } from '../../../utils/xero/client';
 import { isAutoSyncEnabled } from '../../../utils/sync/config';
-import { syncInvoice } from '../../../utils/sync/invoices';
+import { syncInvoice, voidInvoice } from '../../../utils/sync/invoices';
 import { syncPayment } from '../../../utils/sync/payments';
 import type { InvoiceNinjaInvoice, InvoiceNinjaPayment } from '../../../utils/xero/types';
 
@@ -50,7 +53,13 @@ function verifyWebhookSecret(providedSecret: string, expectedSecret: string): bo
 }
 
 // Event types we handle
-const SUPPORTED_EVENTS = ['create_invoice', 'create_payment'];
+const SUPPORTED_EVENTS = [
+  'create_invoice',
+  'update_invoice',
+  'delete_invoice',
+  'create_payment',
+  'update_payment',
+];
 
 /**
  * Sync an entity to Xero after receiving a webhook
@@ -79,7 +88,7 @@ async function syncToXero(
     }
 
     // Handle different event types
-    if (eventType === 'create_invoice') {
+    if (eventType === 'create_invoice' || eventType === 'update_invoice') {
       // The payload contains the invoice data
       const invoiceData = payload as { data?: InvoiceNinjaInvoice } | InvoiceNinjaInvoice;
       const invoice = 'data' in invoiceData ? invoiceData.data : invoiceData;
@@ -88,11 +97,27 @@ async function syncToXero(
         return { success: false, error: 'No invoice data in payload' };
       }
 
-      const result = await syncInvoice(invoice, xeroClient);
+      // Force update when it's an update event
+      const forceUpdate = eventType === 'update_invoice';
+      const result = await syncInvoice(invoice, xeroClient, forceUpdate);
       return result;
     }
 
-    if (eventType === 'create_payment') {
+    if (eventType === 'delete_invoice') {
+      // The payload contains the deleted invoice data
+      const invoiceData = payload as { data?: InvoiceNinjaInvoice } | InvoiceNinjaInvoice;
+      const invoice = 'data' in invoiceData ? invoiceData.data : invoiceData;
+
+      if (!invoice) {
+        return { success: false, error: 'No invoice data in payload' };
+      }
+
+      // Void the invoice in Xero
+      const result = await voidInvoice(invoice.id, invoice.number, xeroClient);
+      return result;
+    }
+
+    if (eventType === 'create_payment' || eventType === 'update_payment') {
       // The payload contains the payment data
       const paymentData = payload as { data?: InvoiceNinjaPayment } | InvoiceNinjaPayment;
       const payment = 'data' in paymentData ? paymentData.data : paymentData;
@@ -101,7 +126,9 @@ async function syncToXero(
         return { success: false, error: 'No payment data in payload' };
       }
 
-      const result = await syncPayment(payment, xeroClient);
+      // Force update when it's an update event (though Xero doesn't support payment updates)
+      const forceUpdate = eventType === 'update_payment';
+      const result = await syncPayment(payment, xeroClient, forceUpdate);
       return result;
     }
 

@@ -201,6 +201,26 @@ export class XeroClient {
   }
 
   /**
+   * Void an invoice in Xero
+   */
+  async voidInvoice(invoiceId: string): Promise<SyncResult> {
+    const result = await xeroRequest<{ Invoices: XeroInvoice[] }>(
+      `/Invoices/${invoiceId}`,
+      this.tenantId,
+      this.accessToken,
+      {
+        method: 'POST',
+        body: { Invoices: [{ InvoiceID: invoiceId, Status: 'VOIDED' }] },
+      }
+    );
+
+    if (result.success) {
+      return { success: true, xeroId: invoiceId };
+    }
+    return { success: false, error: result.error || 'Failed to void invoice' };
+  }
+
+  /**
    * Create a payment against an invoice
    */
   async createPayment(payment: XeroPayment): Promise<SyncResult> {

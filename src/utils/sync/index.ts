@@ -7,6 +7,7 @@
 export { syncClient, getXeroContactId, mapClientToContact } from './clients';
 export {
   syncInvoice,
+  voidInvoice,
   getXeroInvoiceId,
   mapInvoiceToXero,
   getFailedInvoiceSyncs,

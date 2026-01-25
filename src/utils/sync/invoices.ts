@@ -157,10 +157,14 @@ async function upsertSyncRecord(
 
 /**
  * Sync a single invoice to Xero
+ * @param invoice - Invoice Ninja invoice data
+ * @param xeroClient - Optional Xero client instance
+ * @param forceUpdate - If true, update the invoice in Xero even if already synced
  */
 export async function syncInvoice(
   invoice: InvoiceNinjaInvoice,
-  xeroClient?: XeroClient
+  xeroClient?: XeroClient,
+  forceUpdate: boolean = false
 ): Promise<SyncResult> {
   try {
     // Skip draft invoices (optional - can be configured)
@@ -171,8 +175,8 @@ export async function syncInvoice(
 
     // Check if already synced
     const existing = await getSyncRecord(invoice.id);
-    if (existing?.status === 'synced' && existing.xeroId) {
-      // Already synced - could update here if needed
+    if (existing?.status === 'synced' && existing.xeroId && !forceUpdate) {
+      // Already synced and not forcing update
       return { success: true, xeroId: existing.xeroId };
     }
 
@@ -197,15 +201,32 @@ export async function syncInvoice(
       return { success: false, error: 'Failed to sync client to Xero' };
     }
 
-    // Check if invoice already exists in Xero (by reference)
+    // Check if invoice already exists in Xero (by reference or from sync record)
     const existingXeroInvoice = await xero.findInvoiceByReference(invoice.number);
-    if (existingXeroInvoice?.InvoiceID) {
-      // Invoice exists - update sync record
-      await upsertSyncRecord(invoice.id, 'synced', existingXeroInvoice.InvoiceID);
-      return { success: true, xeroId: existingXeroInvoice.InvoiceID };
+    const existingXeroId = existingXeroInvoice?.InvoiceID || existing?.xeroId;
+
+    if (existingXeroId) {
+      if (forceUpdate) {
+        // Update existing invoice in Xero
+        const xeroInvoice = mapInvoiceToXero(invoice, xeroContactId, config);
+        const updateResult = await xero.updateInvoice(existingXeroId, xeroInvoice);
+
+        if (updateResult.success) {
+          await upsertSyncRecord(invoice.id, 'synced', existingXeroId);
+          console.log(`Updated invoice ${invoice.number} in Xero ${existingXeroId}`);
+        } else {
+          await upsertSyncRecord(invoice.id, 'failed', existingXeroId, updateResult.error);
+          console.error(`Failed to update invoice ${invoice.number}:`, updateResult.error);
+        }
+        return updateResult;
+      }
+
+      // Invoice exists but not forcing update - just update sync record
+      await upsertSyncRecord(invoice.id, 'synced', existingXeroId);
+      return { success: true, xeroId: existingXeroId };
     }
 
-    // Map and create invoice
+    // Map and create new invoice
     const xeroInvoice = mapInvoiceToXero(invoice, xeroContactId, config);
     const result = await xero.createInvoice(xeroInvoice);
 
@@ -263,4 +284,44 @@ export async function getFailedInvoiceSyncs(
   }
 
   return data;
+}
+
+/**
+ * Void an invoice in Xero when deleted in Invoice Ninja
+ */
+export async function voidInvoice(
+  invoiceId: string,
+  invoiceNumber: string,
+  xeroClient?: XeroClient
+): Promise<SyncResult> {
+  try {
+    // Check if invoice was synced
+    const existing = await getSyncRecord(invoiceId);
+    if (!existing?.xeroId) {
+      // Not synced to Xero, nothing to void
+      return { success: true, error: 'Invoice was not synced to Xero' };
+    }
+
+    // Get or create Xero client
+    const xero = xeroClient || (await XeroClient.create());
+    if (!xero) {
+      return { success: false, error: 'Xero not connected' };
+    }
+
+    // Void the invoice in Xero
+    const result = await xero.voidInvoice(existing.xeroId);
+
+    if (result.success) {
+      await upsertSyncRecord(invoiceId, 'synced', existing.xeroId);
+      console.log(`Voided invoice ${invoiceNumber} in Xero ${existing.xeroId}`);
+    } else {
+      await upsertSyncRecord(invoiceId, 'failed', existing.xeroId, result.error);
+      console.error(`Failed to void invoice ${invoiceNumber}:`, result.error);
+    }
+
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return { success: false, error: errorMessage };
+  }
 }

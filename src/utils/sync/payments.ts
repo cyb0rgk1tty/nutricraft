@@ -124,16 +124,28 @@ export function mapPaymentToXero(
 
 /**
  * Sync a single payment to Xero
+ * @param payment - Invoice Ninja payment data
+ * @param xeroClient - Optional Xero client instance
+ * @param forceUpdate - If true, delete and recreate payment (Xero doesn't support payment updates)
  */
 export async function syncPayment(
   payment: InvoiceNinjaPayment,
-  xeroClient?: XeroClient
+  xeroClient?: XeroClient,
+  forceUpdate: boolean = false
 ): Promise<SyncResult> {
   try {
     // Check if already synced
     const existing = await getSyncRecord(payment.id);
-    if (existing?.status === 'synced' && existing.xeroId) {
+    if (existing?.status === 'synced' && existing.xeroId && !forceUpdate) {
       return { success: true, xeroId: existing.xeroId };
+    }
+
+    // Note: Xero doesn't support updating payments directly.
+    // For update_payment events, we log a warning but can't modify the existing payment.
+    // The user would need to delete and recreate in Xero manually.
+    if (forceUpdate && existing?.xeroId) {
+      console.warn(`Payment ${payment.number} already synced to Xero. Xero doesn't support payment updates.`);
+      return { success: true, xeroId: existing.xeroId, error: 'Xero does not support payment updates' };
     }
 
     // Get or create Xero client
