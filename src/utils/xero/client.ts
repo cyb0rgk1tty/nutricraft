@@ -48,12 +48,20 @@ async function xeroRequest<T>(
       // Parse Xero error response if possible
       try {
         const errorJson = JSON.parse(errorText);
-        const errorMessage =
-          errorJson.Message ||
-          errorJson.message ||
+        // Xero returns validation errors in different formats depending on the endpoint
+        const validationError =
           errorJson.Elements?.[0]?.ValidationErrors?.[0]?.Message ||
-          `HTTP ${response.status}`;
-        return { success: false, error: errorMessage };
+          errorJson.ValidationErrors?.[0]?.Message ||
+          errorJson.Detail ||
+          errorJson.Message ||
+          errorJson.message;
+
+        // Log full error for debugging
+        if (errorJson.Elements?.[0]?.ValidationErrors) {
+          console.error('Xero validation errors:', JSON.stringify(errorJson.Elements[0].ValidationErrors));
+        }
+
+        return { success: false, error: validationError || `HTTP ${response.status}` };
       } catch {
         return { success: false, error: `HTTP ${response.status}: ${errorText.slice(0, 200)}` };
       }
