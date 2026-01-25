@@ -28,18 +28,15 @@ import { INVOICE_STATUS } from '../invoiceNinja';
 function mapInvoiceStatus(ninjaStatusId: string): XeroInvoice['Status'] {
   switch (ninjaStatusId) {
     case INVOICE_STATUS.DRAFT:
-      return 'DRAFT';
-    case INVOICE_STATUS.SENT:
-    case INVOICE_STATUS.VIEWED:
-    case INVOICE_STATUS.APPROVED:
-    case INVOICE_STATUS.PARTIAL:
-    case INVOICE_STATUS.PAID:
-      // Always AUTHORISED - payments will be synced separately
+      // Skip drafts - they shouldn't reach here but if they do, make AUTHORISED
+      // so payments can be applied if needed
       return 'AUTHORISED';
     case INVOICE_STATUS.CANCELLED:
       return 'VOIDED';
     default:
-      return 'DRAFT';
+      // All other statuses (SENT, VIEWED, APPROVED, PARTIAL, PAID, etc.)
+      // sync as AUTHORISED so payments can be applied
+      return 'AUTHORISED';
   }
 }
 
