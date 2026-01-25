@@ -80,7 +80,8 @@ export function mapInvoiceToXero(
     Contact: { ContactID: xeroContactId },
     Date: invoice.date,
     DueDate: invoice.due_date || invoice.date,
-    Reference: invoice.number, // Use Invoice Ninja number as reference for lookup
+    InvoiceNumber: invoice.number, // Match Invoice Ninja invoice number
+    Reference: invoice.number, // Also use as reference for lookup
     Status: mapInvoiceStatus(invoice.status_id),
     LineItems: mapLineItems(invoice, config.defaultAccountCode),
   };
