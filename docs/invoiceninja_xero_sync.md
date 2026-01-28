@@ -7,6 +7,7 @@ This document describes the real-time synchronization between Invoice Ninja and 
 The integration automatically syncs invoices, payments, and clients from Invoice Ninja to Xero. It supports:
 
 - **Real-time sync** via webhooks when invoices/payments are created, updated, or deleted
+- **Bulk sync** for initial migration of existing Invoice Ninja data
 - **Daily reconciliation** via cron job to retry any failed syncs
 - **Manual sync** via admin panel for on-demand operations
 
@@ -128,6 +129,19 @@ For each webhook, add a header:
 
 ```json
 {
+  "action": "bulk_sync",          // Sync all existing invoices and payments
+  "since_date": "2024-01-01"      // Optional: only sync after this date
+}
+```
+
+```json
+{
+  "action": "reset_sync"          // Void all synced invoices in Xero and clear sync log
+}
+```
+
+```json
+{
   "action": "sync_invoice",
   "ninja_id": "abc123"            // Sync specific invoice
 }
@@ -137,6 +151,27 @@ For each webhook, add a header:
 {
   "action": "sync_payment",
   "ninja_id": "xyz789"            // Sync specific payment
+}
+```
+
+**Bulk Sync Response**:
+
+```json
+{
+  "success": true,
+  "invoices": {
+    "total": 150,
+    "synced": 145,
+    "skipped": 3,
+    "failed": 2
+  },
+  "payments": {
+    "total": 80,
+    "synced": 78,
+    "skipped": 1,
+    "failed": 1
+  },
+  "durationMs": 45000
 }
 ```
 
@@ -240,25 +275,51 @@ Clients are synced automatically when their first invoice is synced:
 
 ### Invoice Status Mapping
 
-| Invoice Ninja Status | Xero Status |
-|---------------------|-------------|
-| Draft | DRAFT |
-| Sent | AUTHORISED |
-| Viewed | AUTHORISED |
-| Approved | AUTHORISED |
-| Partial | AUTHORISED |
-| Paid | PAID |
-| Cancelled | VOIDED |
+All invoices sync as AUTHORISED so that payments can be applied separately. This preserves payment history in Xero.
+
+| Invoice Ninja Status | Xero Status | Notes |
+|---------------------|-------------|-------|
+| Draft | AUTHORISED | Synced as AUTHORISED so payments can be applied if needed |
+| Sent | AUTHORISED | |
+| Viewed | AUTHORISED | |
+| Approved | AUTHORISED | |
+| Partial | AUTHORISED | Xero marks as PAID when payments applied |
+| Paid | AUTHORISED | Xero marks as PAID when payments applied |
+| Cancelled | VOIDED | |
+
+**Why AUTHORISED instead of PAID?** Syncing paid invoices as PAID in Xero sets their balance to $0, which prevents payment records from being created. By syncing as AUTHORISED, we can then sync the corresponding payments, and Xero will automatically mark the invoice as PAID.
 
 ### Invoice Fields
 
-| Invoice Ninja | Xero |
-|--------------|------|
-| `number` | `Reference` |
-| `date` | `Date` |
-| `due_date` | `DueDate` |
-| `line_items` | `LineItems` |
-| `client` | `Contact` |
+| Invoice Ninja | Xero | Notes |
+|--------------|------|-------|
+| `number` | `InvoiceNumber` | Matches invoice numbers between systems |
+| `number` | `Reference` | Also used for lookup/deduplication |
+| `date` | `Date` | |
+| `due_date` | `DueDate` | |
+| `line_items` | `LineItems` | |
+| `client` | `Contact` | Auto-synced when invoice is synced |
+
+### Payment Routing
+
+Payments are automatically routed to different Xero bank accounts based on date and currency:
+
+| Condition | Xero Account Code | Description |
+|-----------|------------------|-------------|
+| Before Dec 18, 2025 | `080` | Wealthsimple CAD (legacy account) |
+| Dec 18, 2025+, CAD | `081` | CAD bank account |
+| Dec 18, 2025+, USD | `082` | USD bank account |
+
+Currency is determined by the `currency_id` field in Invoice Ninja:
+- `"1"` = USD
+- `"2"` = CAD (default)
+
+### Rate Limiting
+
+Xero API has a rate limit of 60 calls per minute. The sync implements:
+
+- **Real-time sync**: No delay (single invoice/payment at a time)
+- **Bulk sync**: 2-second delay between operations (each sync can make 2-3 API calls for client + invoice/payment)
 
 ## Troubleshooting
 
@@ -305,6 +366,10 @@ ORDER BY created_at DESC;
 | "Linked invoice not synced" | Payment before invoice sync | Sync the invoice first, then payment |
 | "Failed to void invoice" | Invoice already paid in Xero | Payments must be removed in Xero first |
 | Webhook not triggering | Wrong secret or URL | Verify webhook config in Invoice Ninja |
+| HTTP 429 errors | Xero rate limit exceeded | Wait and retry; bulk sync uses 2s delay |
+| "Payments can only be made against Authorised documents" | Invoice synced with wrong status | Use `reset_sync` to void and re-sync |
+| "Payment amount exceeds amount outstanding" | Multiple payments on same invoice or amount mismatch | Add payment manually in Xero |
+| "A validation exception occurred" | Invalid account code or missing required field | Check Xero account codes exist |
 
 ### Manual Retry
 
@@ -316,6 +381,41 @@ curl -X POST https://nutricraftlabs.com/api/sync/manual \
   -H "Cookie: admin_session=YOUR_SESSION" \
   -d '{"action": "reconcile"}'
 ```
+
+### Bulk Sync (Initial Migration)
+
+To sync all existing invoices and payments from Invoice Ninja:
+
+```bash
+curl -X POST https://nutricraftlabs.com/api/sync/manual \
+  -H "Content-Type: application/json" \
+  -H "Cookie: admin_session=YOUR_SESSION" \
+  -d '{"action": "bulk_sync"}'
+```
+
+With date filter (only sync invoices after a specific date):
+
+```bash
+curl -X POST https://nutricraftlabs.com/api/sync/manual \
+  -H "Content-Type: application/json" \
+  -H "Cookie: admin_session=YOUR_SESSION" \
+  -d '{"action": "bulk_sync", "since_date": "2024-01-01"}'
+```
+
+**Note**: Bulk sync takes time due to rate limiting (2 seconds between operations). For large datasets, expect ~3 seconds per invoice/payment.
+
+### Reset Sync
+
+To void all synced invoices in Xero and clear the sync log (for re-syncing):
+
+```bash
+curl -X POST https://nutricraftlabs.com/api/sync/manual \
+  -H "Content-Type: application/json" \
+  -H "Cookie: admin_session=YOUR_SESSION" \
+  -d '{"action": "reset_sync"}'
+```
+
+**Warning**: This will void all invoices in Xero that were synced from Invoice Ninja. Use with caution.
 
 ## Security
 
@@ -350,7 +450,8 @@ All Xero-related tables have Row Level Security enabled with policies that block
 | `src/utils/xero/auth.ts` | OAuth token management |
 | `src/utils/xero/types.ts` | TypeScript type definitions |
 | `src/utils/sync/invoices.ts` | Invoice sync logic |
-| `src/utils/sync/payments.ts` | Payment sync logic |
+| `src/utils/sync/payments.ts` | Payment sync logic + date/currency routing |
 | `src/utils/sync/clients.ts` | Client/Contact sync logic |
 | `src/utils/sync/config.ts` | Sync configuration |
+| `src/utils/sync/index.ts` | Central export for sync utilities |
 | `supabase/migrations/20260124_xero_sync_tables.sql` | Database migration |
