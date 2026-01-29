@@ -5,7 +5,7 @@
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { Quote, QuoteStatus, SortConfig, FilterConfig } from '../types';
+import type { Quote, QuoteStatus, SortConfig, FilterConfig, ManufacturerDashboard } from '../types';
 
 interface QuoteState {
   // Auth
@@ -59,7 +59,7 @@ const initialState = {
   filter: {
     status: null as QuoteStatus | null,
     search: '',
-    manufacturer: null as 'DURLEVEL' | 'AUSRESON' | null,
+    manufacturer: null as ManufacturerDashboard | null,
   },
   sort: {
     field: 'createdAt' as const,
