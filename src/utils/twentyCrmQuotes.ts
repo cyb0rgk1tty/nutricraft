@@ -30,7 +30,7 @@ export const CRM_CONFIG = {
     ourCost: 'ourCost',  // Number type in CRM
     orderQuantity: 'orderQuantity',  // Float type in CRM
     description: 'description',  // Shared description field
-    dashboard: 'dashboard',  // Enum: DURLEVEL, AUSRESON
+    dashboard: 'dashboard',  // Enum: DURLEVEL, AUSRESON, EKANG
     durlevelPublicNotes: 'durlevelPublicNotes',  // Notes for Durlevel only
     ausresonPublicNotes: 'ausresonPublicNotes',  // Notes for Ausreson only
     durlevelPrice: 'durlevelPrice',  // Price for Durlevel only

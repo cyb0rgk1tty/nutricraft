@@ -126,7 +126,7 @@ export interface SortConfig {
 }
 
 // Manufacturer dashboard types
-export type ManufacturerDashboard = 'DURLEVEL' | 'AUSRESON';
+export type ManufacturerDashboard = 'DURLEVEL' | 'AUSRESON' | 'EKANG';
 
 // Filter configuration
 export interface FilterConfig {

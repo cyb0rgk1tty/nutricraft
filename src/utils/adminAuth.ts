@@ -18,7 +18,7 @@ export interface AdminUser {
   username_lower: string;
   password_hash: string;
   role: UserRole;
-  dashboard_access: string | null; // CRM dashboard filter: 'DURLEVEL', 'AUSRESON', or null for admins
+  dashboard_access: string | null; // CRM dashboard filter: 'DURLEVEL', 'AUSRESON', 'EKANG', or null for admins
   created_at: string;
   last_login: string | null;
 }

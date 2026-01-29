@@ -59,6 +59,7 @@ export function ManufacturerFilter({ className }: ManufacturerFilterProps) {
           <SelectItem value="all">{t('allManufacturers')}</SelectItem>
           <SelectItem value="DURLEVEL">Durlevel</SelectItem>
           <SelectItem value="AUSRESON">Ausreson</SelectItem>
+          <SelectItem value="EKANG">Ekang</SelectItem>
         </SelectContent>
       </Select>
       {isFiltered && (
