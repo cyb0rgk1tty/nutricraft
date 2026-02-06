@@ -1,0 +1,163 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import ScrollAnimation from "../../../components/ScrollAnimation.astro";
+import ProductCard from "../../../components/ProductCard.astro";
+import { brandedCategories, brandedProducts } from "../../../data/branded-products.js";
+
+// Electrolytes page temporarily disabled
+return Astro.redirect('/products');
+---
+
+<BaseLayout
+  title="Electrolyte Drink Mixes | White Label Hydration Products | Nutricraft Labs"
+  description="Three ready-to-brand electrolyte drink mix formulations, each in four flavors. White label or private label with 1,000-unit MOQ. Launch your hydration brand today."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-mint-50 to-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <ScrollAnimation animation="fade-up">
+          <nav class="mb-4">
+            <ol class="flex items-center justify-center space-x-2 text-sm text-dark-500">
+              <li><a href="/products" class="hover:text-mint-600">Products</a></li>
+              <li>/</li>
+              <li class="text-dark-900 font-medium">{category.name}</li>
+            </ol>
+          </nav>
+          <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
+            {category.name}
+          </h1>
+          <p class="text-xl text-dark-600 max-w-3xl mx-auto">
+            {category.description}
+          </p>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {categoryProducts.map((product, index) => (
+          <ScrollAnimation animation="fade-up" delay={index * 150}>
+            <ProductCard
+              name={product.name}
+              slug={product.slug}
+              categorySlug={product.categorySlug}
+              description={product.description}
+              flavors={product.flavors}
+              image={product.image}
+              priceRange={product.priceRange}
+            />
+          </ScrollAnimation>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Flavor Info -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl font-bold text-dark-900 mb-6 text-center">
+          Four Refreshing Flavors
+        </h2>
+        <p class="text-xl text-dark-600 max-w-3xl mx-auto text-center mb-12">
+          All three formulations are available in the same four flavor profiles. White label customers get these flavors as-is; private label customers can customize or create entirely new flavor profiles.
+        </p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {['Citrus Burst', 'Berry Blast', 'Tropical Punch', 'Watermelon Chill'].map((flavor) => (
+            <div class="bg-white rounded-xl p-6 text-center shadow-md">
+              <p class="text-lg font-semibold text-dark-900">{flavor}</p>
+            </div>
+          ))}
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- WL/PL Options -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl font-bold text-dark-900 mb-12 text-center">
+          Branding Options
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12">
+          <div class="bg-gray-50 rounded-2xl p-8">
+            <h3 class="text-2xl font-semibold text-dark-900 mb-4">White Label</h3>
+            <ul class="space-y-3 text-dark-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Stock formulation with your label and branding
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Fastest time to market
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                1,000-unit MOQ
+              </li>
+            </ul>
+            <p class="text-sm text-mint-700 font-medium mt-6">Starting at $8,000 - $12,000</p>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-8">
+            <h3 class="text-2xl font-semibold text-dark-900 mb-4">Private Label</h3>
+            <ul class="space-y-3 text-dark-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Customize ingredients, dosages, and flavors
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Unique formulation exclusive to your brand
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-mint-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Custom packaging design
+              </li>
+            </ul>
+            <p class="text-sm text-mint-700 font-medium mt-6">Starting at $15,000 - $25,000</p>
+          </div>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 bg-gradient-to-b from-white to-mint-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation animation="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-6">
+          Ready to Launch Your Electrolyte Brand?
+        </h2>
+        <p class="text-xl text-dark-600 mb-8">
+          Get samples, pricing details, and a custom proposal for your hydration product line.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+          >
+            Get Started
+          </a>
+          <button
+            data-cal-link="Nutricraftlabs"
+            data-cal-config='{"theme":"light"}'
+            class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+          >
+            Schedule Consultation
+          </button>
+        </div>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

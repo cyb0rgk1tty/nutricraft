@@ -88,6 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
     const projectStage = data.get('project-stage')?.toString() || '';
     const message = data.get('message')?.toString() || '';
     const honeypot = data.get('website')?.toString() || '';
+    const manufactureRegion = data.get('manufacture-region')?.toString() || '';
 
     // Honeypot spam check - if filled, it's a bot
     if (honeypot) {
@@ -143,6 +144,7 @@ export const POST: APIRoute = async ({ request }) => {
       <p><strong>Phone:</strong> ${phone ? escapeHtml(phone) : 'Not provided'}</p>
       <p><strong>Company:</strong> ${company ? escapeHtml(company) : 'Not provided'}</p>
       <p><strong>Target Market:</strong> ${targetMarket ? escapeHtml(targetMarket) : 'Not provided'}</p>
+      <p><strong>Manufacture Region:</strong> ${manufactureRegion ? escapeHtml(manufactureRegion) : 'Not provided'}</p>
       <p><strong>Order Quantity:</strong> ${orderQuantity ? escapeHtml(orderQuantity) : 'Not provided'}</p>
       <p><strong>Budget:</strong> ${budget ? escapeHtml(budget) : 'Not provided'}</p>
       <p><strong>Timeline:</strong> ${timeline ? escapeHtml(timeline) : 'Not provided'}</p>
@@ -160,6 +162,7 @@ Email: ${email}
 Phone: ${phone || 'Not provided'}
 Company: ${company || 'Not provided'}
 Target Market: ${targetMarket || 'Not provided'}
+Manufacture Region: ${manufactureRegion || 'Not provided'}
 Order Quantity: ${orderQuantity || 'Not provided'}
 Budget: ${budget || 'Not provided'}
 Timeline: ${timeline || 'Not provided'}
@@ -190,6 +193,7 @@ ${message}
         phoneCountryCode,
         company,
         targetMarket,
+        manufactureRegion,
         orderQuantity,
         budget,
         timeline,

@@ -1,0 +1,75 @@
+---
+interface Props {
+  name: string;
+  slug: string;
+  categorySlug: string;
+  description: string;
+  flavors: string[];
+  image: string;
+  priceRange: string;
+}
+
+const { name, slug, categorySlug, description, flavors, image, priceRange } = Astro.props;
+---
+
+<a
+  href={`/products/${categorySlug}/${slug}`}
+  class="group relative bg-gray-50 rounded-xl hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1 overflow-hidden"
+>
+  <!-- Image -->
+  <div class="relative w-full h-56 overflow-hidden bg-gradient-to-br from-mint-100 to-mint-200">
+    {image && !image.includes('placeholder') ? (
+      <picture>
+        <source srcset={image} type="image/webp" />
+        <source srcset={image.replace('.webp', '.jpg')} type="image/jpeg" />
+        <img
+          src={image.replace('.webp', '.jpg')}
+          alt={name}
+          class="w-full h-full object-cover"
+          loading="lazy"
+          width="800"
+          height="600"
+        />
+      </picture>
+    ) : (
+      <div class="w-full h-full flex items-center justify-center">
+        <svg class="w-20 h-20 text-mint-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path>
+        </svg>
+      </div>
+    )}
+  </div>
+
+  <!-- Content -->
+  <div class="p-8 flex flex-col flex-grow">
+    <h3 class="text-2xl font-semibold text-dark-900 mb-3 group-hover:text-mint-600 transition-colors duration-300">
+      {name}
+    </h3>
+    <p class="text-dark-600 mb-4 flex-grow line-clamp-3">
+      {description}
+    </p>
+
+    <!-- Flavors -->
+    <div class="mb-4">
+      <p class="text-sm font-semibold text-dark-700 mb-2">Available flavors:</p>
+      <div class="flex flex-wrap gap-2">
+        {flavors.slice(0, 4).map((flavor) => (
+          <span class="text-xs bg-white text-gray-700 px-3 py-1 rounded-full border border-gray-200">
+            {flavor}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Price -->
+    <p class="text-sm text-mint-700 font-medium mb-4">{priceRange}</p>
+
+    <!-- CTA -->
+    <div class="flex items-center text-mint-600 font-medium group-hover:text-mint-700 mt-auto">
+      <span>View details</span>
+      <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+      </svg>
+    </div>
+  </div>
+</a>

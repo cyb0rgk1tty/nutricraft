@@ -51,7 +51,13 @@ export default defineConfig({
       'https://nutricraftlabs.com/california-supplement-manufacturing',
       'https://nutricraftlabs.com/texas-supplement-manufacturing',
       'https://nutricraftlabs.com/florida-supplement-manufacturing',
-      'https://nutricraftlabs.com/new-york-supplement-manufacturing'
+      'https://nutricraftlabs.com/new-york-supplement-manufacturing',
+      // Products
+      'https://nutricraftlabs.com/products',
+      'https://nutricraftlabs.com/products/electrolytes',
+      'https://nutricraftlabs.com/products/electrolytes/hydration-plus',
+      'https://nutricraftlabs.com/products/electrolytes/endurance-fuel',
+      'https://nutricraftlabs.com/products/electrolytes/recovery-restore'
       // Blog posts and tag pages auto-discovered via getStaticPaths()
     ]
   }), robotsTxt({

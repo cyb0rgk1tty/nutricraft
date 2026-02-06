@@ -8,6 +8,7 @@ import CatalogHero from '../components/catalog/CatalogHero.astro';
 import FloatingFilterButton from '../components/catalog/FloatingFilterButton.astro';
 import FilterDrawer from '../components/catalog/FilterDrawer.astro';
 import CategorySection from '../components/catalog/CategorySection.astro';
+import PackagingOptions from '../components/catalog/PackagingOptions.astro';
 
 // Check authentication via HTTP-only cookie (server-side)
 const isAuthenticated = Astro.cookies.get('catalog_auth')?.value === 'authenticated';
@@ -62,6 +63,9 @@ if (isAuthenticated) {
               isFirst={index === 0}
             />
           ))}
+
+          <!-- Packaging Options Section -->
+          <PackagingOptions />
 
           <!-- Custom Formula CTA -->
           <section class="mt-16 mb-8 bg-gradient-to-r from-primary to-emerald-600 rounded-2xl p-8 md:p-12 text-white text-center">
