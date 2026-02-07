@@ -142,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
     const lockoutResult = await checkAccountLockout(username);
 
     if (lockoutResult.locked) {
-      // Log locked account attempt
+      // Log locked account attempt (server-side detail preserved for debugging)
       logAuditAction(request, null, 'LOGIN_FAILED', {
         details: {
           username: username.trim(),
@@ -153,17 +153,17 @@ export const POST: APIRoute = async ({ request }) => {
 
       await recordLoginAttempt(ipAddress, username, false);
 
+      // Use generic error message to prevent username enumeration
       return new Response(
         JSON.stringify({
           success: false,
-          error: lockoutResult.message,
+          error: 'Invalid username or password.',
           retryAfter: lockoutResult.retryAfterSeconds,
-          locked: true,
           captchaRequired: isCaptchaEnabled(),
           captchaSiteKey: getTurnstileSiteKey(),
         }),
         {
-          status: 423, // Locked
+          status: 401,
           headers: {
             'Content-Type': 'application/json',
             'Retry-After': String(lockoutResult.retryAfterSeconds || 300),
@@ -192,13 +192,8 @@ export const POST: APIRoute = async ({ request }) => {
         },
       });
 
-      // Construct error message
-      let errorMessage = 'Invalid username or password.';
-      if (updatedLockout.locked) {
-        errorMessage = updatedLockout.message || 'Account has been locked due to too many failed attempts.';
-      } else if (updatedLockout.remainingAttempts !== undefined && updatedLockout.remainingAttempts <= 3) {
-        errorMessage += ` ${updatedLockout.remainingAttempts} attempt${updatedLockout.remainingAttempts === 1 ? '' : 's'} remaining before lockout.`;
-      }
+      // Use generic error message to prevent username enumeration
+      const errorMessage = 'Invalid username or password.';
 
       // Check if CAPTCHA will be required on next attempt
       const updatedFailedAttempts = recentFailedAttempts + 1;
@@ -208,14 +203,11 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({
           success: false,
           error: errorMessage,
-          remainingAttempts: updatedLockout.remainingAttempts,
-          locked: updatedLockout.locked,
-          retryAfter: updatedLockout.retryAfterSeconds,
           captchaRequired: willRequireCaptcha,
           captchaSiteKey: willRequireCaptcha ? getTurnstileSiteKey() : null,
         }),
         {
-          status: updatedLockout.locked ? 423 : 401,
+          status: 401,
           headers: {
             'Content-Type': 'application/json',
             ...(updatedLockout.retryAfterSeconds && { 'Retry-After': String(updatedLockout.retryAfterSeconds) }),

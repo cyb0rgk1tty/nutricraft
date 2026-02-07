@@ -113,8 +113,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Email validation (matches newsletter endpoint's stricter pattern)
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     if (!emailRegex.test(email)) {
       return new Response(JSON.stringify({
         success: false,

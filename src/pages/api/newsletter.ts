@@ -4,8 +4,47 @@ import type { APIRoute } from 'astro';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 
+// In-memory rate limiting for newsletter subscriptions
+const newsletterAttempts = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const MAX_SUBSCRIPTIONS_PER_HOUR = 5;
+
+function getClientIP(request: Request): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    request.headers.get('x-real-ip')?.trim() ||
+    request.headers.get('cf-connecting-ip')?.trim() ||
+    'unknown'
+  );
+}
+
+function checkNewsletterRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = newsletterAttempts.get(ip);
+
+  if (!record || now > record.resetAt) {
+    newsletterAttempts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  record.count++;
+  return record.count <= MAX_SUBSCRIPTIONS_PER_HOUR;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Rate limit check
+    const clientIP = getClientIP(request);
+    if (!checkNewsletterRateLimit(clientIP)) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Too many subscription attempts. Please try again later.'
+      }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // Parse JSON body
     const { email, source = 'footer' } = await request.json();
 

@@ -27,16 +27,28 @@ function sanitizeCsvValue(value: string): string {
 /**
  * Newsletter subscribers export endpoint
  *
- * Usage: GET /api/newsletter-export?token=YOUR_EXPORT_TOKEN
+ * Usage: GET /api/newsletter-export
+ *   Headers: Authorization: Bearer YOUR_EXPORT_TOKEN
+ *   (Also supports legacy ?token= query parameter for backwards compatibility)
  *
  * SECURITY: Export token is REQUIRED - endpoint will fail if not configured
  * Returns: CSV file with all newsletter subscribers from Google Sheets
  */
 export const GET: APIRoute = async ({ request }) => {
   try {
-    // Get token from URL query parameters
-    const url = new URL(request.url);
-    const providedToken = url.searchParams.get('token');
+    // Prefer Authorization header (more secure - not logged in URLs or referrer headers)
+    const authHeader = request.headers.get('Authorization');
+    let providedToken: string | null = null;
+
+    if (authHeader?.startsWith('Bearer ')) {
+      providedToken = authHeader.slice(7).trim();
+    }
+
+    // Fallback to query parameter for backwards compatibility
+    if (!providedToken) {
+      const url = new URL(request.url);
+      providedToken = url.searchParams.get('token');
+    }
 
     // Check if export token is configured
     const exportToken = process.env.NEWSLETTER_EXPORT_TOKEN || import.meta.env.NEWSLETTER_EXPORT_TOKEN;

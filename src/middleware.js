@@ -7,11 +7,15 @@ export async function onRequest({ request, url }, next) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   
   // Content Security Policy
+  // Note: 'unsafe-inline' is required for GTM inline scripts and Astro's inline <script> tags.
+  // 'unsafe-eval' has been removed to strengthen XSS protections. If GTM custom HTML tags break,
+  // consider migrating to nonce-based CSP or re-adding 'unsafe-eval' with documentation.
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com https://googleads.g.doubleclick.net https://*.googleadservices.com https://*.googlesyndication.com https://www.redditstatic.com https://alb.reddit.com https://cdn.jsdelivr.net",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://chat.tangleapps.vip https://app.cal.com https://googleads.g.doubleclick.net https://*.googleadservices.com https://*.googlesyndication.com https://www.redditstatic.com https://alb.reddit.com https://cdn.jsdelivr.net",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://cdn.jsdelivr.net",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",

@@ -175,10 +175,12 @@ export async function findCompanyByName(companyName: string): Promise<string | n
       }
     `;
 
+    // Escape SQL LIKE wildcards in user input to prevent filter injection
+    const sanitizedName = companyName.replace(/[%_\\]/g, '\\$&');
     const variables = {
       filter: {
         name: {
-          ilike: `%${companyName}%`,
+          ilike: `%${sanitizedName}%`,
         },
       },
     };

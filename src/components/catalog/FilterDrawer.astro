@@ -392,6 +392,18 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
 </script>
 
 <script>
+  // HTML escaping utility to prevent XSS in DOM injections
+  function escapeHtml(text: string): string {
+    const map: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m]);
+  }
+
   // Declare window property for TypeScript
   declare global {
     interface Window {
@@ -470,8 +482,8 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
 
     selectedIngredientsContainer.innerHTML = ingredients.map(ing => `
       <span class="ingredient-chip">
-        ${ing}
-        <button type="button" data-ingredient="${ing}" aria-label="Remove ${ing}">
+        ${escapeHtml(ing)}
+        <button type="button" data-ingredient="${escapeHtml(ing)}" aria-label="Remove ${escapeHtml(ing)}">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -525,13 +537,13 @@ const { categories, dosageForms, totalProducts, uniqueIngredients = [] } = Astro
 
     activeSuggestionIndex = -1;
     ingredientSuggestions.innerHTML = matches.map((ing, idx) => {
-      // Highlight matching portion
+      // Highlight matching portion (with XSS-safe escaping)
       const lowerIng = ing.toLowerCase();
       const matchStart = lowerIng.indexOf(lowerQuery);
-      const before = ing.slice(0, matchStart);
-      const match = ing.slice(matchStart, matchStart + query.length);
-      const after = ing.slice(matchStart + query.length);
-      return `<div class="suggestion-item" data-index="${idx}" data-ingredient="${ing}">${before}<span class="match">${match}</span>${after}</div>`;
+      const before = escapeHtml(ing.slice(0, matchStart));
+      const match = escapeHtml(ing.slice(matchStart, matchStart + query.length));
+      const after = escapeHtml(ing.slice(matchStart + query.length));
+      return `<div class="suggestion-item" data-index="${idx}" data-ingredient="${escapeHtml(ing)}">${before}<span class="match">${match}</span>${after}</div>`;
     }).join('');
 
     ingredientSuggestions.classList.remove('hidden');

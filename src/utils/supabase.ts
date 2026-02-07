@@ -10,7 +10,6 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 // Environment variables (set in .env and Vercel dashboard)
 const supabaseUrl = import.meta.env.SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY;
-const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_KEY;
 
 // Validate required environment variables
 if (!supabaseUrl) {
@@ -199,13 +198,15 @@ export function getSupabaseClient(): SupabaseClient<Database> {
 /**
  * Get the service role Supabase client (for admin operations)
  * Bypasses RLS - use only on server side
+ * Service key is read lazily inside this function to avoid module-level exposure
  */
 export function getSupabaseServiceClient(): SupabaseClient<Database> {
-  if (!supabaseServiceKey) {
-    throw new Error('Missing SUPABASE_SERVICE_KEY environment variable');
-  }
-
   if (!serviceClient) {
+    const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_KEY;
+    if (!supabaseServiceKey) {
+      throw new Error('Missing SUPABASE_SERVICE_KEY environment variable');
+    }
+
     serviceClient = createClient<Database>(supabaseUrl, supabaseServiceKey, {
       auth: {
         persistSession: false,
