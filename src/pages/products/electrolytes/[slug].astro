@@ -3,14 +3,20 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Header from "../../../components/Header.astro";
 import Footer from "../../../components/Footer.astro";
 import ScrollAnimation from "../../../components/ScrollAnimation.astro";
+import SupplementFacts from "../../../components/SupplementFacts.astro";
 import { brandedProducts, brandedCategories } from "../../../data/branded-products.js";
 
-// Electrolytes product pages temporarily disabled
-return Astro.redirect('/products');
+const { slug } = Astro.params;
+const product = brandedProducts.find(p => p.slug === slug && p.categorySlug === 'electrolytes');
+const category = brandedCategories.find(c => c.slug === 'electrolytes');
+
+if (!product) {
+  return Astro.redirect('/products/electrolytes');
+}
 ---
 
 <BaseLayout
-  title={`${product.name} Electrolyte Drink Mix | White Label | Nutricraft Labs`}
+  title={`${product.name} | White Label Electrolyte Drink Mix | Nutricraft Labs`}
   description={product.description}
 >
   <Header />
@@ -29,119 +35,86 @@ return Astro.redirect('/products');
           </ol>
         </nav>
 
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <!-- Product Image -->
-          {product.image && !product.image.includes('placeholder') ? (
-            <picture>
-              <source srcset={product.image} type="image/webp" />
-              <source srcset={product.image.replace('.webp', '.jpg')} type="image/jpeg" />
-              <img
-                src={product.image.replace('.webp', '.jpg')}
-                alt={product.name}
-                class="rounded-2xl h-80 w-full object-cover"
-                width="800"
-                height="600"
-              />
-            </picture>
-          ) : (
-            <div class="bg-gradient-to-br from-mint-100 to-mint-200 rounded-2xl h-80 flex items-center justify-center">
-              <svg class="w-24 h-24 text-mint-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-2.47 2.47a2.25 2.25 0 01-1.591.659H9.061a2.25 2.25 0 01-1.591-.659L5 14.5m14 0V17a2.25 2.25 0 01-2.25 2.25H7.25A2.25 2.25 0 015 17v-2.5"></path>
-              </svg>
-            </div>
+        <div class="text-center max-w-3xl mx-auto">
+          <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-3">
+            {product.name}
+          </h1>
+          {product.tag && (
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-mint-100 text-mint-800 mb-4">
+              {product.tag}
+            </span>
           )}
-
-          <!-- Product info -->
-          <div>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
-              {product.name}
-            </h1>
-            <p class="text-xl text-dark-600 mb-6">
-              {product.description}
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a
-                href="/contact"
-                class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
-              >
-                Request Samples
-              </a>
-              <button
-                data-cal-link="Nutricraftlabs"
-                data-cal-config='{"theme":"light"}'
-                class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
-              >
-                Schedule Call
-              </button>
-            </div>
+          <p class="text-xl text-dark-600 mb-8">
+            {product.description}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/contact"
+              class="inline-flex items-center justify-center px-8 py-4 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors duration-300"
+            >
+              Request Samples
+            </a>
+            <button
+              data-cal-link="Nutricraftlabs"
+              data-cal-config='{"theme":"light"}'
+              class="inline-flex items-center justify-center px-8 py-4 bg-white text-mint-600 font-semibold rounded-lg border-2 border-mint-600 hover:bg-mint-50 transition-colors duration-300"
+            >
+              Schedule Call
+            </button>
           </div>
         </div>
       </ScrollAnimation>
     </div>
   </section>
 
-  <!-- Key Ingredients -->
+  <!-- Flavors with Supplement Facts -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollAnimation animation="fade-up">
-        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">Key Ingredients</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto">
-          {product.keyIngredients.map((ingredient) => (
-            <div class="bg-gray-50 rounded-xl px-6 py-4 text-center">
-              <p class="font-semibold text-dark-900">{ingredient}</p>
-            </div>
-          ))}
-        </div>
-      </ScrollAnimation>
-    </div>
-  </section>
-
-  <!-- Flavors -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
-        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">Available Flavors</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {product.flavors.map((flavor) => (
-            <div class="bg-white rounded-xl p-6 text-center shadow-md border border-gray-100">
-              <p class="text-lg font-semibold text-dark-900">{flavor}</p>
-            </div>
-          ))}
-        </div>
-        <p class="text-center text-dark-500 mt-6 text-sm">
-          Private label customers can customize flavors or create new profiles.
+        <h2 class="text-3xl font-bold text-dark-900 mb-4 text-center">Available Flavors</h2>
+        <p class="text-lg text-dark-600 text-center mb-12 max-w-2xl mx-auto">
+          Each flavor features the same core electrolyte formula. Private label customers can customize flavors or create new profiles.
         </p>
       </ScrollAnimation>
-    </div>
-  </section>
 
-  <!-- Product Details -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ScrollAnimation animation="fade-up">
-        <h2 class="text-3xl font-bold text-dark-900 mb-8 text-center">Product Details</h2>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          <div class="bg-gray-50 rounded-xl p-6 text-center">
-            <p class="text-sm text-dark-500 mb-1">Serving Size</p>
-            <p class="text-lg font-semibold text-dark-900">{product.servingSize}</p>
-          </div>
-          <div class="bg-gray-50 rounded-xl p-6 text-center">
-            <p class="text-sm text-dark-500 mb-1">Minimum Order</p>
-            <p class="text-lg font-semibold text-dark-900">{product.moq}</p>
-          </div>
-          <div class="bg-gray-50 rounded-xl p-6 text-center">
-            <p class="text-sm text-dark-500 mb-1">Lead Time</p>
-            <p class="text-lg font-semibold text-dark-900">{product.leadTime}</p>
-          </div>
-          <div class="bg-gray-50 rounded-xl p-6 text-center">
-            <p class="text-sm text-dark-500 mb-1">Price Range</p>
-            <p class="text-lg font-semibold text-dark-900">{product.priceRange}</p>
-          </div>
-        </div>
-        <p class="text-center text-dark-500 mt-6 text-sm">
-          Pricing varies based on order quantity, packaging, and customization level.
-        </p>
-      </ScrollAnimation>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {product.flavors.map((flavor, index) => (
+          <ScrollAnimation animation="fade-up" delay={index * 150}>
+            <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden h-full flex flex-col">
+              <div class="p-6 flex flex-col flex-grow">
+                <!-- Flavor Name -->
+                <div class="mb-4">
+                  <span
+                    class:list={[
+                      "inline-flex items-center px-3 py-1 rounded-full text-sm font-bold text-white",
+                      { "bg-mint-600": !flavor.color }
+                    ]}
+                    style={flavor.color ? `background-color: ${flavor.color}` : ""}
+                  >
+                    {flavor.name}
+                  </span>
+                </div>
+                <!-- Supplement Facts Table -->
+                <div class="flex justify-center mb-6">
+                  <SupplementFacts
+                    servingSize={flavor.servingSize}
+                    servingWeight={flavor.servingWeight}
+                    nutrition={flavor.nutrition}
+                    supplementedWith={flavor.supplementedWith}
+                    supplementalIngredients={flavor.supplementalIngredients}
+                  />
+                </div>
+
+                <!-- Ingredients -->
+                <div class="mt-auto">
+                  <p class="text-sm font-bold text-dark-800 mb-1">Ingredients:</p>
+                  <p class="text-xs text-dark-600 leading-relaxed">{flavor.ingredients}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -153,17 +126,15 @@ return Astro.redirect('/products');
         <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
           <div class="bg-white rounded-2xl p-8 shadow-lg">
             <h3 class="text-2xl font-semibold text-dark-900 mb-4">White Label</h3>
-            <p class="text-dark-600 mb-4">
+            <p class="text-dark-600">
               Use this exact formulation with your brand name, logo, and label design. Ready to go with minimal lead time.
             </p>
-            <p class="text-sm text-mint-700 font-medium">Starting at $8,000 - $12,000</p>
           </div>
           <div class="bg-white rounded-2xl p-8 shadow-lg">
             <h3 class="text-2xl font-semibold text-dark-900 mb-4">Private Label</h3>
-            <p class="text-dark-600 mb-4">
+            <p class="text-dark-600">
               Modify ingredients, adjust dosages, change flavors, or redesign the packaging. Make it fully your own.
             </p>
-            <p class="text-sm text-mint-700 font-medium">Starting at $15,000 - $25,000</p>
           </div>
         </div>
       </ScrollAnimation>

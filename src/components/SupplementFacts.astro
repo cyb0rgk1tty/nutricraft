@@ -1,0 +1,216 @@
+---
+interface SupplementalEntry {
+  name: string;
+  amount: number;
+  unit: string;
+  dvPercent?: number;
+}
+
+interface Props {
+  servingSize: string;
+  servingWeight: string;
+  nutrition: {
+    calories: number;
+    fat: number;
+    saturatedFat: number;
+    transFat: number;
+    carbohydrate: number;
+    fibre: number;
+    sugars: number;
+    protein: number;
+    cholesterol: number;
+    sodium: number;
+    iron: number;
+    potassium?: number;
+    calcium?: number;
+  };
+  supplementedWith?: {
+    potassium: number;
+    magnesium: number;
+    calcium: number;
+  };
+  supplementalIngredients?: SupplementalEntry[];
+}
+
+const { servingSize, servingWeight, nutrition, supplementedWith, supplementalIngredients } = Astro.props;
+
+// Canadian Daily Values
+const DV: Record<string, number> = {
+  fat: 75,
+  saturatedFat: 20,
+  carbohydrate: 300,
+  fibre: 28,
+  sugars: 100,
+  sodium: 2300,
+  iron: 18,
+  potassium: 4700,
+  magnesium: 420,
+  calcium: 1300,
+};
+
+function pct(amount: number, key: string): string {
+  const dv = DV[key];
+  if (!dv) return '';
+  return `${Math.round((amount / dv) * 100)}%`;
+}
+---
+
+<div class="border-2 border-black bg-white p-3 text-[13px] leading-tight font-sans max-w-xs w-full">
+  <!-- Title -->
+  <h4 class="text-lg font-black text-center mb-0.5">Supplemented Food Facts</h4>
+  <p class="text-[11px] text-center text-gray-600 mb-1">Info-aliment suppl&eacute;ment&eacute;</p>
+  <div class="border-b-[6px] border-black mb-1"></div>
+
+  <!-- Serving Size -->
+  <p class="text-[12px] mb-1">
+    Per {servingSize} ({servingWeight}) / par 1 sachet ({servingWeight})
+  </p>
+  <div class="border-b-[3px] border-black mb-1"></div>
+
+  <!-- % DV Header -->
+  <div class="flex justify-end text-[11px] font-bold mb-0.5">% Daily Value*</div>
+  <div class="border-b border-black mb-0.5"></div>
+
+  <!-- Calories -->
+  <div class="flex justify-between py-0.5">
+    <span class="font-bold">Calories</span>
+    <span class="font-bold">{nutrition.calories}</span>
+  </div>
+  <div class="border-b-[3px] border-black"></div>
+
+  <!-- Fat -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Fat</strong> {nutrition.fat} g</span>
+    <span class="font-bold">{pct(nutrition.fat, 'fat')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Saturated Fat -->
+  <div class="flex justify-between py-0.5 pl-4">
+    <span>Saturated {nutrition.saturatedFat} g</span>
+    <span class="font-bold">{pct(nutrition.saturatedFat, 'saturatedFat')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Trans Fat -->
+  <div class="flex justify-between py-0.5 pl-4">
+    <span>+ Trans {nutrition.transFat} g</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Carbohydrate -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Carbohydrate</strong> {nutrition.carbohydrate} g</span>
+    <span class="font-bold">{pct(nutrition.carbohydrate, 'carbohydrate')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Fibre -->
+  <div class="flex justify-between py-0.5 pl-4">
+    <span>Fibre {nutrition.fibre} g</span>
+    <span class="font-bold">{pct(nutrition.fibre, 'fibre')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Sugars -->
+  <div class="flex justify-between py-0.5 pl-4">
+    <span>Sugars {nutrition.sugars} g</span>
+    <span class="font-bold">{pct(nutrition.sugars, 'sugars')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Protein -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Protein</strong> {nutrition.protein} g</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Cholesterol -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Cholesterol</strong> {nutrition.cholesterol} mg</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Sodium -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Sodium</strong> {nutrition.sodium} mg</span>
+    <span class="font-bold">{pct(nutrition.sodium, 'sodium')}</span>
+  </div>
+  <div class="border-b border-gray-300"></div>
+
+  <!-- Potassium (core nutrient, shown when provided in nutrition) -->
+  {nutrition.potassium != null && (
+    <>
+      <div class="flex justify-between py-0.5">
+        <span><strong>Potassium</strong> {nutrition.potassium} mg</span>
+        <span class="font-bold">{pct(nutrition.potassium, 'potassium')}</span>
+      </div>
+      <div class="border-b border-gray-300"></div>
+    </>
+  )}
+
+  <!-- Calcium (core nutrient, shown when provided in nutrition) -->
+  {nutrition.calcium != null && (
+    <>
+      <div class="flex justify-between py-0.5">
+        <span><strong>Calcium</strong> {nutrition.calcium} mg</span>
+        <span class="font-bold">{pct(nutrition.calcium, 'calcium')}</span>
+      </div>
+      <div class="border-b border-gray-300"></div>
+    </>
+  )}
+
+  <!-- Iron -->
+  <div class="flex justify-between py-0.5">
+    <span><strong>Iron</strong> {nutrition.iron} mg</span>
+    <span class="font-bold">{pct(nutrition.iron, 'iron')}</span>
+  </div>
+  <div class="border-b-[3px] border-black"></div>
+
+  <!-- DV Footnote -->
+  <p class="text-[10px] text-gray-600 py-1">
+    *5% or less is a little, 15% or more is a lot
+  </p>
+  <div class="border-b-[3px] border-black"></div>
+
+  <!-- Supplemented With (fixed format for electrolyte products) -->
+  {supplementedWith && (
+    <div class="py-1">
+      <p class="font-bold text-[12px] mb-1">Supplemented with:</p>
+
+      <div class="flex justify-between py-0.5">
+        <span>Potassium {supplementedWith.potassium} mg</span>
+        <span class="font-bold">{pct(supplementedWith.potassium, 'potassium')}</span>
+      </div>
+      <div class="border-b border-gray-300"></div>
+
+      <div class="flex justify-between py-0.5">
+        <span>Magnesium {supplementedWith.magnesium} mg</span>
+        <span class="font-bold">{pct(supplementedWith.magnesium, 'magnesium')}</span>
+      </div>
+      <div class="border-b border-gray-300"></div>
+
+      <div class="flex justify-between py-0.5">
+        <span>Calcium {supplementedWith.calcium} mg</span>
+        <span class="font-bold">{pct(supplementedWith.calcium, 'calcium')}</span>
+      </div>
+    </div>
+  )}
+
+  <!-- Supplemented With (flexible format for energy/vitamin products) -->
+  {supplementalIngredients && supplementalIngredients.length > 0 && (
+    <div class="py-1">
+      <p class="font-bold text-[12px] mb-1">Supplemented with:</p>
+
+      {supplementalIngredients.map((si) => (
+        <>
+          <div class="flex justify-between py-0.5">
+            <span>{si.name} {si.amount} {si.unit}</span>
+            {si.dvPercent != null && <span class="font-bold">{si.dvPercent}%</span>}
+          </div>
+          <div class="border-b border-gray-300"></div>
+        </>
+      ))}
+    </div>
+  )}
+</div>
