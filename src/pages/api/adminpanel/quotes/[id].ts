@@ -59,7 +59,8 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       if (userDashboard === 'DURLEVEL') {
         allowedFields.push('durlevelPublicNotes', 'durlevelPrice');
         // Block access to other manufacturer's fields
-        if ('ausresonPublicNotes' in updates || 'ausresonPrice' in updates) {
+        if ('ausresonPublicNotes' in updates || 'ausresonPrice' in updates ||
+            'ekangPublicNotes' in updates || 'ekangPrice' in updates) {
           return new Response(
             JSON.stringify({ success: false, error: 'Cannot modify other manufacturer fields' }),
             { status: 403, headers: { 'Content-Type': 'application/json' } }
@@ -68,7 +69,18 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       } else if (userDashboard === 'AUSRESON') {
         allowedFields.push('ausresonPublicNotes', 'ausresonPrice');
         // Block access to other manufacturer's fields
-        if ('durlevelPublicNotes' in updates || 'durlevelPrice' in updates) {
+        if ('durlevelPublicNotes' in updates || 'durlevelPrice' in updates ||
+            'ekangPublicNotes' in updates || 'ekangPrice' in updates) {
+          return new Response(
+            JSON.stringify({ success: false, error: 'Cannot modify other manufacturer fields' }),
+            { status: 403, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+      } else if (userDashboard === 'EKANG') {
+        allowedFields.push('ekangPublicNotes', 'ekangPrice');
+        // Block access to other manufacturer's fields
+        if ('durlevelPublicNotes' in updates || 'durlevelPrice' in updates ||
+            'ausresonPublicNotes' in updates || 'ausresonPrice' in updates) {
           return new Response(
             JSON.stringify({ success: false, error: 'Cannot modify other manufacturer fields' }),
             { status: 403, headers: { 'Content-Type': 'application/json' } }

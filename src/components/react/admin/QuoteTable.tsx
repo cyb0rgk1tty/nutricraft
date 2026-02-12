@@ -107,7 +107,7 @@ function EditableCell({
 }: {
   value: number | string | undefined | null;
   quoteId: string;
-  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes' | 'durlevelPrice' | 'ausresonPrice' | 'tracking';
+  field: 'ourCost' | 'orderQuantity' | 'publicNotes' | 'description' | 'durlevelPublicNotes' | 'ausresonPublicNotes' | 'ekangPublicNotes' | 'durlevelPrice' | 'ausresonPrice' | 'ekangPrice' | 'tracking';
   type?: 'number' | 'text';
   prefix?: string;
   placeholder?: string;
@@ -177,7 +177,7 @@ function EditableCell({
     if (value === undefined || value === null || value === '') return placeholder;
     if (type === 'number') {
       const numValue = typeof value === 'string' ? parseFloat(value) : value;
-      if (field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice') {
+      if (field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice' || field === 'ekangPrice') {
         return new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: 'USD',
@@ -202,7 +202,7 @@ function EditableCell({
           onBlur={handleSave}
           onKeyDown={handleKeyDown}
           className={`h-7 text-sm px-2 ${type === 'text' ? 'w-40' : 'w-20'}`}
-          step={field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice' ? '0.01' : '1'}
+          step={field === 'ourCost' || field === 'durlevelPrice' || field === 'ausresonPrice' || field === 'ekangPrice' ? '0.01' : '1'}
           min={type === 'number' ? '0' : undefined}
         />
         {isSaving && <Loader2 className="w-3 h-3 animate-spin text-primary" />}
@@ -686,8 +686,9 @@ export function QuoteTable() {
           // Return the appropriate price based on user's dashboard
           if (userDashboard === 'DURLEVEL') return row.durlevelPrice;
           if (userDashboard === 'AUSRESON') return row.ausresonPrice;
-          // Admins see durlevelPrice by default (or could be combined view)
-          return row.durlevelPrice ?? row.ausresonPrice;
+          if (userDashboard === 'EKANG') return row.ekangPrice;
+          // Admins see the price for the assigned manufacturer
+          return row.durlevelPrice ?? row.ausresonPrice ?? row.ekangPrice;
         },
         header: ({ column }) => {
           return (
@@ -731,6 +732,18 @@ export function QuoteTable() {
               />
             );
           }
+          if (userDashboard === 'EKANG') {
+            return (
+              <EditableCell
+                value={row.original.ekangPrice}
+                quoteId={row.original.id}
+                field="ekangPrice"
+                type="number"
+                clickToEditText={t('clickToEdit')}
+                onUpdate={handleInlineUpdate}
+              />
+            );
+          }
           // Admin view - show price based on product's dashboard assignment
           const productDashboard = row.original.dashboard?.toUpperCase();
 
@@ -763,6 +776,25 @@ export function QuoteTable() {
                     value={row.original.ausresonPrice}
                     quoteId={row.original.id}
                     field="ausresonPrice"
+                    type="number"
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              </div>
+            );
+          }
+
+          // If product is assigned to EKANG, only show Ekang price
+          if (productDashboard === 'EKANG') {
+            return (
+              <div className="text-sm">
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400 text-xs w-2">E</span>
+                  <EditableCell
+                    value={row.original.ekangPrice}
+                    quoteId={row.original.id}
+                    field="ekangPrice"
                     type="number"
                     clickToEditText={t('clickToEdit')}
                     onUpdate={handleInlineUpdate}
@@ -892,6 +924,7 @@ export function QuoteTable() {
           // Determine which notes field to show based on user's dashboard access
           const notesField = userDashboard === 'DURLEVEL' ? 'durlevelPublicNotes'
             : userDashboard === 'AUSRESON' ? 'ausresonPublicNotes'
+            : userDashboard === 'EKANG' ? 'ekangPublicNotes'
             : null; // Admins see a summary
 
           if (!notesField) {
@@ -925,6 +958,24 @@ export function QuoteTable() {
                     value={row.original.ausresonPublicNotes}
                     quoteId={row.original.id}
                     field="ausresonPublicNotes"
+                    type="text"
+                    placeholder={t('addNotesPlaceholder')}
+                    clickToEditText={t('clickToEdit')}
+                    onUpdate={handleInlineUpdate}
+                  />
+                </div>
+              );
+            }
+
+            // If product is assigned to EKANG, only show Ekang notes
+            if (productDashboard === 'EKANG') {
+              return (
+                <div className="flex items-start gap-1">
+                  <span className="font-medium text-gray-500 text-xs shrink-0">E:</span>
+                  <EditableCell
+                    value={row.original.ekangPublicNotes}
+                    quoteId={row.original.id}
+                    field="ekangPublicNotes"
                     type="text"
                     placeholder={t('addNotesPlaceholder')}
                     clickToEditText={t('clickToEdit')}

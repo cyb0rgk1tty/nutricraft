@@ -45,8 +45,10 @@ const quoteFormSchema = z.object({
   description: z.string().optional(),
   durlevelPublicNotes: z.string().optional(),
   ausresonPublicNotes: z.string().optional(),
+  ekangPublicNotes: z.string().optional(),
   durlevelPrice: z.number().min(0).optional().nullable(),
   ausresonPrice: z.number().min(0).optional().nullable(),
+  ekangPrice: z.number().min(0).optional().nullable(),
   tracking: z.string().optional(),
 });
 
@@ -219,8 +221,10 @@ export function QuoteDetailPanel() {
       description: '',
       durlevelPublicNotes: '',
       ausresonPublicNotes: '',
+      ekangPublicNotes: '',
       durlevelPrice: null,
       ausresonPrice: null,
+      ekangPrice: null,
       tracking: '',
     },
   });
@@ -233,8 +237,10 @@ export function QuoteDetailPanel() {
         description: selectedQuote.description ?? '',
         durlevelPublicNotes: selectedQuote.durlevelPublicNotes ?? '',
         ausresonPublicNotes: selectedQuote.ausresonPublicNotes ?? '',
+        ekangPublicNotes: selectedQuote.ekangPublicNotes ?? '',
         durlevelPrice: selectedQuote.durlevelPrice ?? null,
         ausresonPrice: selectedQuote.ausresonPrice ?? null,
+        ekangPrice: selectedQuote.ekangPrice ?? null,
         tracking: selectedQuote.tracking ?? '',
       });
     }
@@ -546,6 +552,32 @@ export function QuoteDetailPanel() {
                           </div>
                         </div>
                       )}
+
+                      {/* Ekang Price - visible to Ekang users and admins (only if product is assigned to Ekang) */}
+                      {(userDashboard === 'EKANG' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'EKANG')) && (
+                        <div className="space-y-2">
+                          <Label htmlFor="ekangPrice">
+                            {userDashboard === null ? 'Ekang Price' : t('price')}
+                          </Label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                              $
+                            </span>
+                            <Input
+                              id="ekangPrice"
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              placeholder="0.00"
+                              className="pl-7"
+                              {...form.register('ekangPrice', {
+                                valueAsNumber: true,
+                                onBlur: (e) => handleAutoSave('ekangPrice', e.target.valueAsNumber || null),
+                              })}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Order Quantity */}
@@ -634,6 +666,23 @@ export function QuoteDetailPanel() {
                         onBlur: (e) => handleAutoSave('ausresonPublicNotes', e.target.value),
                       })}
                       disabled={userDashboard !== null && userDashboard !== 'AUSRESON'}
+                    />
+                  </div>
+                )}
+
+                {/* Ekang notes - visible to EKANG users and admins (only if product is assigned to Ekang) */}
+                {(userDashboard === 'EKANG' || (userDashboard === null && selectedQuote?.dashboard?.toUpperCase() === 'EKANG')) && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                      {userDashboard === null ? 'Ekang Notes' : t('manufacturerNotes')}
+                    </h3>
+                    <Textarea
+                      placeholder={t('addNotesPlaceholder')}
+                      rows={3}
+                      {...form.register('ekangPublicNotes', {
+                        onBlur: (e) => handleAutoSave('ekangPublicNotes', e.target.value),
+                      })}
+                      disabled={userDashboard !== null && userDashboard !== 'EKANG'}
                     />
                   </div>
                 )}

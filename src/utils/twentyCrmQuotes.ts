@@ -35,6 +35,8 @@ export const CRM_CONFIG = {
     ausresonPublicNotes: 'ausresonPublicNotes',  // Notes for Ausreson only
     durlevelPrice: 'durlevelPrice',  // Price for Durlevel only
     ausresonPrice: 'ausresonPrice',  // Price for Ausreson only
+    ekangPublicNotes: 'ekangPublicNotes',  // Notes for Ekang only
+    ekangPrice: 'ekangPrice',  // Price for Ekang only
     tracking: 'tracking',  // Tracking info for Samples and Full Batch stages
   } as Record<string, string>,
 
@@ -83,6 +85,8 @@ export interface Quote {
   ausresonPublicNotes?: string;  // Notes visible only to Ausreson
   durlevelPrice?: number;  // Price visible only to Durlevel
   ausresonPrice?: number;  // Price visible only to Ausreson
+  ekangPublicNotes?: string;  // Notes visible only to Ekang
+  ekangPrice?: number;  // Price visible only to Ekang
   tracking?: string;  // Tracking info for Samples and Full Batch stages
 }
 
@@ -252,6 +256,14 @@ function mapQuoteToCrm(quote: Partial<Quote>): Record<string, any> {
     crmData[fieldMappings.ausresonPrice] = quote.ausresonPrice;
   }
 
+  if (quote.ekangPublicNotes !== undefined) {
+    crmData[fieldMappings.ekangPublicNotes] = quote.ekangPublicNotes;
+  }
+
+  if (quote.ekangPrice !== undefined) {
+    crmData[fieldMappings.ekangPrice] = quote.ekangPrice;
+  }
+
   if (quote.tracking !== undefined) {
     crmData[fieldMappings.tracking] = quote.tracking;
   }
@@ -389,6 +401,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
               ausresonPublicNotes
               durlevelPrice
               ausresonPrice
+              ekangPublicNotes
+              ekangPrice
               tracking
             }
           }
@@ -443,6 +457,8 @@ export async function fetchQuotesFromCRM(): Promise<FetchQuotesResponse> {
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
         durlevelPrice: product.durlevelPrice || undefined,
         ausresonPrice: product.ausresonPrice || undefined,
+        ekangPublicNotes: product.ekangPublicNotes || undefined,
+        ekangPrice: product.ekangPrice || undefined,
         tracking: product.tracking || undefined,
         rawData: product,
       };
@@ -546,6 +562,8 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
               ausresonPublicNotes
               durlevelPrice
               ausresonPrice
+              ekangPublicNotes
+              ekangPrice
               tracking
             }
             cursor
@@ -609,6 +627,8 @@ export async function fetchQuotesPaginated(options: FetchQuotesOptions = {}): Pr
         ausresonPublicNotes: product.ausresonPublicNotes || undefined,
         durlevelPrice: product.durlevelPrice || undefined,
         ausresonPrice: product.ausresonPrice || undefined,
+        ekangPublicNotes: product.ekangPublicNotes || undefined,
+        ekangPrice: product.ekangPrice || undefined,
         tracking: product.tracking || undefined,
         rawData: product,
       };
@@ -729,6 +749,8 @@ export async function updateQuoteInCRM(
           ausresonPublicNotes
           durlevelPrice
           ausresonPrice
+          ekangPublicNotes
+          ekangPrice
           tracking
         }
       }
@@ -775,6 +797,8 @@ export async function updateQuoteInCRM(
         ausresonPublicNotes: updatedProduct.ausresonPublicNotes,
         durlevelPrice: updatedProduct.durlevelPrice || undefined,
         ausresonPrice: updatedProduct.ausresonPrice || undefined,
+        ekangPublicNotes: updatedProduct.ekangPublicNotes,
+        ekangPrice: updatedProduct.ekangPrice || undefined,
         tracking: updatedProduct.tracking || undefined,
       },
     };
