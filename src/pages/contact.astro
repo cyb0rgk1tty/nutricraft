@@ -291,7 +291,7 @@ import Footer from "../components/Footer.astro";
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mt-6">
-          <div class="relative" x-data="{ open: false, selected: [] }">
+          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-50': open }">
             <label
               id="target-market-label"
               for="target-market"
@@ -327,7 +327,7 @@ import Footer from "../components/Footer.astro";
               x-transition
               role="group"
               aria-labelledby="target-market-label"
-              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
+              class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
                 <label class="flex items-center space-x-3 hover:bg-mint-50 p-2 rounded cursor-pointer">
@@ -401,7 +401,7 @@ import Footer from "../components/Footer.astro";
             </select>
           </div>
 
-          <div class="relative" x-data="{ open: false, selected: [] }">
+          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-50': open }">
             <label
               id="manufacture-region-label"
               for="manufacture-region"
@@ -437,7 +437,7 @@ import Footer from "../components/Footer.astro";
               x-transition
               role="group"
               aria-labelledby="manufacture-region-label"
-              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
+              class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
                 <label class="flex items-center space-x-3 hover:bg-mint-50 p-2 rounded cursor-pointer">
