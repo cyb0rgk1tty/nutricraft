@@ -116,7 +116,7 @@ export const GET: APIRoute = async ({ request }) => {
     // Allow admins to filter by manufacturer (only if they don't have a fixed dashboard_access)
     if (!dashboardFilter && manufacturerParam) {
       // Validate manufacturer param
-      if (manufacturerParam === 'DURLEVEL' || manufacturerParam === 'AUSRESON' || manufacturerParam === 'EKANG') {
+      if (manufacturerParam === 'DURLEVEL' || manufacturerParam === 'AUSRESON' || manufacturerParam === 'EKANG' || manufacturerParam === 'RICHTEK') {
         dashboardFilter = manufacturerParam;
       }
     }

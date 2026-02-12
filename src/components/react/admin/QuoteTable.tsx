@@ -804,6 +804,11 @@ export function QuoteTable() {
             );
           }
 
+          // Richtek has no dedicated price field
+          if (productDashboard === 'RICHTEK') {
+            return <span className="text-sm text-muted-foreground">-</span>;
+          }
+
           // Fallback: show both if no dashboard assignment (shouldn't happen)
           return (
             <div className="text-sm space-y-0.5">
@@ -983,6 +988,11 @@ export function QuoteTable() {
                   />
                 </div>
               );
+            }
+
+            // Richtek has no dedicated notes field
+            if (productDashboard === 'RICHTEK') {
+              return <span className="text-sm text-muted-foreground">-</span>;
             }
 
             // Fallback: show both if no dashboard assignment (shouldn't happen)
