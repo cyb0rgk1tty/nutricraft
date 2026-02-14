@@ -110,6 +110,7 @@ export const PATCH: APIRoute = async ({ params, request }) => {
     logAuditAction(request, authResult.user, 'QUOTE_UPDATED', {
       quoteId: id,
       details: {
+        quoteName: result.quote?.name || null,
         fields: Object.keys(updates),
         updates: updates,
       },

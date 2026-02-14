@@ -60,6 +60,9 @@ export const POST: APIRoute = async ({ params, request }) => {
     // Log the sync action
     logAuditAction(request, authResult.user, 'QUOTE_SYNCED', {
       quoteId: id,
+      details: {
+        quoteName: result.quote?.name || null,
+      },
     });
 
     return new Response(

@@ -175,7 +175,7 @@ const description = 'View audit logs for the manufacturer dashboard';
                     <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Timestamp</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quote ID</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quote</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">IP Address</th>
                   </tr>
@@ -270,6 +270,7 @@ const description = 'View audit logs for the manufacturer dashboard';
 
     const parts: string[] = [];
     for (const [key, value] of Object.entries(details)) {
+      if (key === 'quoteName') continue;
       if (key === 'fields' && Array.isArray(value)) {
         parts.push(`Fields: ${value.join(', ')}`);
       } else if (key === 'filename') {
@@ -329,7 +330,9 @@ const description = 'View audit logs for the manufacturer dashboard';
 
     const action = log.action as string;
     const quoteId = log.quote_id as string | null;
-    const detailsText = formatDetails(log.details as Record<string, unknown>);
+    const details = log.details as Record<string, unknown> | null;
+    const quoteName = details?.quoteName as string | null;
+    const detailsText = formatDetails(details);
 
     // Timestamp
     tr.appendChild(createCell(formatTimestamp(log.timestamp as string), 'text-gray-900 whitespace-nowrap'));
@@ -339,9 +342,8 @@ const description = 'View audit logs for the manufacturer dashboard';
 
     // Action badge
     tr.appendChild(createActionCell(action));
-
-    // Quote ID
-    tr.appendChild(createCell(quoteId ? quoteId.slice(0, 8) + '...' : '-', 'text-gray-600 font-mono'));
+    const quoteDisplay = quoteName || (quoteId ? quoteId.slice(0, 8) + '...' : '-');
+    tr.appendChild(createCell(quoteDisplay, quoteName ? 'text-gray-600' : 'text-gray-600 font-mono'));
 
     // Details
     const detailsCell = createCell(detailsText, 'text-gray-600 max-w-xs truncate');
