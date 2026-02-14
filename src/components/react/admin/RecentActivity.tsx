@@ -97,6 +97,13 @@ function getActivityDescription(activity: AuditLog): string {
     case 'LOGOUT':
       return `${activity.username} logged out`;
     case 'QUOTE_UPDATED':
+      const changes = details?.changes as { field: string; from: unknown; to: unknown }[] | undefined;
+      if (changes?.length) {
+        const summary = changes
+          .map(c => `${c.field}: ${c.from ?? '(empty)'} \u2192 ${c.to ?? '(empty)'}`)
+          .join(', ');
+        return `${activity.username} updated ${summary}`;
+      }
       const fields = details?.fields as string[] | undefined;
       if (fields?.length) {
         return `${activity.username} updated ${fields.join(', ')}`;

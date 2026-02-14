@@ -812,6 +812,85 @@ export async function updateQuoteInCRM(
 }
 
 /**
+ * Fetches a single product by ID from Twenty CRM
+ */
+export async function fetchQuoteById(quoteId: string): Promise<UpdateQuoteResponse> {
+  try {
+    const config = getCrmConfig();
+    if (!config) {
+      return { success: false, error: 'Missing CRM configuration' };
+    }
+
+    const query = `
+      query FetchProductById($id: UUID!) {
+        product(id: $id) {
+          id
+          name
+          stages
+          priority
+          createdAt
+          updatedAt
+          ourCost
+          orderQuantity
+          description
+          dashboard
+          durlevelPublicNotes
+          ausresonPublicNotes
+          durlevelPrice
+          ausresonPrice
+          ekangPublicNotes
+          ekangPrice
+          tracking
+        }
+      }
+    `;
+
+    const result = await graphqlRequest(config, query, { id: quoteId });
+
+    if (result.errors) {
+      console.error('Twenty CRM: Error fetching product by ID:', result.errors);
+      return { success: false, error: result.errors[0]?.message || 'GraphQL error' };
+    }
+
+    const product = result.data?.product;
+    if (!product) {
+      return { success: false, error: 'Product not found' };
+    }
+
+    const stageValue = Array.isArray(product.stages) ? product.stages[0] : product.stages;
+
+    return {
+      success: true,
+      quote: {
+        id: product.id,
+        name: product.name || '',
+        status: stageValue?.toLowerCase() || 'new',
+        priority: product.priority?.toLowerCase() || null,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        ourCost: product.ourCost,
+        orderQuantity: product.orderQuantity,
+        description: product.description,
+        dashboard: product.dashboard,
+        durlevelPublicNotes: product.durlevelPublicNotes,
+        ausresonPublicNotes: product.ausresonPublicNotes,
+        durlevelPrice: product.durlevelPrice || undefined,
+        ausresonPrice: product.ausresonPrice || undefined,
+        ekangPublicNotes: product.ekangPublicNotes,
+        ekangPrice: product.ekangPrice || undefined,
+        tracking: product.tracking || undefined,
+      },
+    };
+  } catch (error) {
+    console.error('Twenty CRM: Unexpected error fetching product by ID:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
  * Syncs a quote to Twenty CRM (full sync including all fields)
  */
 export async function syncQuoteToCRM(quote: Quote): Promise<UpdateQuoteResponse> {

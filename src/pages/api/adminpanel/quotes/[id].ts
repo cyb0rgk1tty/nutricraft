@@ -5,7 +5,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { updateQuoteInCRM } from '../../../../utils/twentyCrmQuotes';
+import { updateQuoteInCRM, fetchQuoteById } from '../../../../utils/twentyCrmQuotes';
 import { verifySession } from '../../../../utils/adminAuth';
 import { logAuditAction } from '../../../../utils/auditLog';
 import { logAndSanitize } from '../../../../utils/errorSanitizer';
@@ -90,6 +90,9 @@ export const PATCH: APIRoute = async ({ params, request }) => {
     }
     // Admins (userDashboard === null) can update all fields
 
+    // Fetch current quote state before updating (for audit trail)
+    const oldQuoteResult = await fetchQuoteById(id);
+
     // Update in CRM
     const result = await updateQuoteInCRM(id, updates);
 
@@ -106,13 +109,28 @@ export const PATCH: APIRoute = async ({ params, request }) => {
       );
     }
 
-    // Log the update action
+    // Build changes array comparing old vs new values
+    const updatedFields = Object.keys(updates);
+    const changes: { field: string; from: unknown; to: unknown }[] = [];
+
+    if (oldQuoteResult.success && oldQuoteResult.quote) {
+      const oldQuote = oldQuoteResult.quote as Record<string, unknown>;
+      for (const field of updatedFields) {
+        changes.push({
+          field,
+          from: oldQuote[field] ?? null,
+          to: updates[field] ?? null,
+        });
+      }
+    }
+
+    // Log the update action with old/new values
     logAuditAction(request, authResult.user, 'QUOTE_UPDATED', {
       quoteId: id,
       details: {
         quoteName: result.quote?.name || null,
-        fields: Object.keys(updates),
-        updates: updates,
+        fields: updatedFields,
+        ...(changes.length > 0 ? { changes } : { updates }),
       },
     });
 
