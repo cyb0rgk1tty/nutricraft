@@ -8,6 +8,7 @@ import type { APIRoute } from 'astro';
 import { getSupabaseServiceClient } from '../../../utils/supabase';
 import { verifySession } from '../../../utils/adminAuth';
 import { hasPermission } from '../../../utils/rbac';
+import { fetchQuotesFromCRM } from '../../../utils/twentyCrmQuotes';
 
 export const GET: APIRoute = async ({ request }) => {
   try {
@@ -94,10 +95,40 @@ export const GET: APIRoute = async ({ request }) => {
     // Calculate pagination info
     const totalPages = count ? Math.ceil(count / limit) : 0;
 
+    // Enrich logs with quote names from CRM
+    const logs = data || [];
+    const quoteIdsWithoutName = new Set<string>();
+    for (const log of logs) {
+      if (log.quote_id && !log.details?.quoteName) {
+        quoteIdsWithoutName.add(log.quote_id);
+      }
+    }
+
+    if (quoteIdsWithoutName.size > 0) {
+      try {
+        const crmResult = await fetchQuotesFromCRM();
+        if (crmResult.success && crmResult.quotes.length > 0) {
+          const nameMap = new Map<string, string>();
+          for (const quote of crmResult.quotes) {
+            if (quote.id && quote.name) {
+              nameMap.set(quote.id, quote.name);
+            }
+          }
+          for (const log of logs) {
+            if (log.quote_id && !log.details?.quoteName && nameMap.has(log.quote_id)) {
+              log.details = { ...log.details, quoteName: nameMap.get(log.quote_id) };
+            }
+          }
+        }
+      } catch {
+        // Non-blocking: if CRM lookup fails, logs still show truncated IDs
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
-        logs: data || [],
+        logs,
         pagination: {
           page,
           limit,
