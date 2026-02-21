@@ -47,7 +47,7 @@ export const GET: APIRoute = async ({ request }) => {
     // Fetch all users (excluding password_hash)
     const { data: users, error } = await supabase
       .from('admin_users')
-      .select('id, username, role, created_at, last_login')
+      .select('id, username, role, dashboard_access, created_at, last_login')
       .order('created_at', { ascending: true });
 
     if (error) {
@@ -98,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Parse request body
     const body = await request.json();
-    const { username, password, role } = body;
+    const { username, password, role, dashboard_access } = body;
 
     // Validate username
     if (!username || typeof username !== 'string') {
@@ -154,6 +154,22 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    // Validate dashboard_access for manufacturer role
+    const validDashboardValues = ['DURLEVEL', 'AUSRESON', 'EKANG', 'RICHTEK'];
+    if (role === 'manufacturer') {
+      if (!dashboard_access || !validDashboardValues.includes(dashboard_access)) {
+        return new Response(
+          JSON.stringify({ success: false, error: `Manufacturer role requires dashboard_access. Must be one of: ${validDashboardValues.join(', ')}` }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+    } else if (dashboard_access) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'dashboard_access can only be set for manufacturer role' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabase = getSupabaseServiceClient();
 
     // Check if username already exists
@@ -181,8 +197,9 @@ export const POST: APIRoute = async ({ request }) => {
         username_lower: trimmedUsername.toLowerCase(),
         password_hash: passwordHash,
         role: role as UserRole,
+        ...(dashboard_access ? { dashboard_access } : {}),
       })
-      .select('id, username, role, created_at')
+      .select('id, username, role, dashboard_access, created_at')
       .single();
 
     if (createError) {
