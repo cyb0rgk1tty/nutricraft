@@ -291,7 +291,7 @@ import Footer from "../components/Footer.astro";
         </div>
 
         <div class="grid md:grid-cols-2 gap-6 mt-6">
-          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-50': open }">
+          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-[60]': open }">
             <label
               id="target-market-label"
               for="target-market"
@@ -327,7 +327,7 @@ import Footer from "../components/Footer.astro";
               x-transition
               role="group"
               aria-labelledby="target-market-label"
-              class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
+              class="absolute z-[60] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
                 <label class="flex items-center space-x-3 hover:bg-mint-50 p-2 rounded cursor-pointer">
@@ -401,7 +401,7 @@ import Footer from "../components/Footer.astro";
             </select>
           </div>
 
-          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-50': open }">
+          <div class="relative" x-data="{ open: false, selected: [] }" :class="{ 'z-[60]': open }">
             <label
               id="manufacture-region-label"
               for="manufacture-region"
@@ -437,7 +437,7 @@ import Footer from "../components/Footer.astro";
               x-transition
               role="group"
               aria-labelledby="manufacture-region-label"
-              class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
+              class="absolute z-[60] w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg"
             >
               <div class="p-3 space-y-2">
                 <label class="flex items-center space-x-3 hover:bg-mint-50 p-2 rounded cursor-pointer">
@@ -690,6 +690,7 @@ import Footer from "../components/Footer.astro";
     .iti__country-list {
       border-radius: 0.5rem !important;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+      z-index: 60 !important;
     }
 
     .iti__selected-country:hover,
@@ -714,6 +715,13 @@ import Footer from "../components/Footer.astro";
 
     .spinner {
       animation: spin 1s linear infinite;
+    }
+
+    /* Prevent Chatwoot bubble from overlapping form elements on mobile */
+    @media (max-width: 768px) {
+      .woot-widget-bubble, .woot--bubble-holder {
+        z-index: 40 !important;
+      }
     }
   </style>
 
@@ -805,8 +813,10 @@ import Footer from "../components/Footer.astro";
         errorMessage.textContent = message;
         errorContainer.classList.remove('hidden');
 
-        // Scroll to error message
-        errorContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Scroll to error message, accounting for sticky header
+        const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+        const errorTop = errorContainer.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: errorTop - headerHeight - 16, behavior: 'smooth' });
       }
     }
 
@@ -819,7 +829,7 @@ import Footer from "../components/Footer.astro";
     }
 
     // Contact Form Conversion Tracking for GTM
-    function gtag_report_conversion(url) {
+    function trackContactFormConversion(url) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "contact_form_submission",
@@ -836,14 +846,39 @@ import Footer from "../components/Footer.astro";
       return false;
     }
 
+    // Escape HTML entities to prevent XSS in dynamically rendered content
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, (m) => map[m]);
+    }
+
     // Form submission handling
+    let isSubmitting = false;
     const contactForm = document.getElementById("contact-form");
     if (contactForm) {
       contactForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
+        // Prevent double submission
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         // Hide any previous error messages
         hideFormError();
+
+        // Validate multi-select hidden inputs (browsers don't validate hidden inputs)
+        const targetMarketValue = document.getElementById('target-market')?.value;
+        const manufactureRegionValue = document.getElementById('manufacture-region')?.value;
+        if (!targetMarketValue) {
+          showFormError('Please select at least one target market.');
+          isSubmitting = false;
+          return;
+        }
+        if (!manufactureRegionValue) {
+          showFormError('Please select at least one acceptable manufacture region.');
+          isSubmitting = false;
+          return;
+        }
 
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalHtml = submitBtn.innerHTML;
@@ -868,6 +903,7 @@ import Footer from "../components/Footer.astro";
               showFormError("Please enter a valid phone number for your selected country.");
               submitBtn.innerHTML = originalHtml;
               submitBtn.disabled = false;
+              isSubmitting = false;
               phoneInput.focus();
               return;
             }
@@ -890,8 +926,8 @@ import Footer from "../components/Footer.astro";
 
           if (result.success) {
             // Track conversion
-            if (typeof gtag_report_conversion === "function") {
-              gtag_report_conversion();
+            if (typeof trackContactFormConversion === "function") {
+              trackContactFormConversion();
             }
 
             // Show success message
@@ -903,7 +939,7 @@ import Footer from "../components/Footer.astro";
                   </svg>
                 </div>
                 <h3 class="text-2xl font-semibold text-dark-900 mb-2">Thank You!</h3>
-                <p class="text-dark-600">${result.message}</p>
+                <p class="text-dark-600">${escapeHtml(result.message)}</p>
               </div>
             `;
           } else {
@@ -911,12 +947,14 @@ import Footer from "../components/Footer.astro";
             showFormError(result.error || "Something went wrong. Please try again.");
             submitBtn.innerHTML = originalHtml;
             submitBtn.disabled = false;
+            isSubmitting = false;
           }
         } catch (error) {
           console.error("Form submission error:", error);
           showFormError("Failed to send message. Please try again later.");
           submitBtn.innerHTML = originalHtml;
           submitBtn.disabled = false;
+          isSubmitting = false;
         }
       });
     }

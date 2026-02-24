@@ -71,8 +71,46 @@ function capitalizeWord(word: string): string {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
+// In-memory rate limiting for contact form submissions
+const contactAttempts = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const MAX_SUBMISSIONS_PER_HOUR = 5;
+
+function getClientIP(request: Request): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    request.headers.get('x-real-ip')?.trim() ||
+    request.headers.get('cf-connecting-ip')?.trim() ||
+    'unknown'
+  );
+}
+
+function checkContactRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = contactAttempts.get(ip);
+
+  if (!record || now > record.resetAt) {
+    contactAttempts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  record.count++;
+  return record.count <= MAX_SUBMISSIONS_PER_HOUR;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Rate limit check
+    const clientIP = getClientIP(request);
+    if (!checkContactRateLimit(clientIP)) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Too many submission attempts. Please try again later.'
+      }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     // Parse form data
     const data = await request.formData();
     const name = capitalizeName(data.get('name')?.toString() || '');
@@ -103,7 +141,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Basic validation
-    if (!name || !email || !projectType || !projectStage || !message) {
+    if (!name || !email || !projectType || !projectStage || !message ||
+        !targetMarket || !orderQuantity || !budget || !timeline || !manufactureRegion) {
       return new Response(JSON.stringify({
         success: false,
         error: 'Please fill in all required fields'
