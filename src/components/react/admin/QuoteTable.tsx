@@ -246,6 +246,7 @@ function DocumentLightbox({
   onClose: () => void;
   onNavigate: (index: number) => void;
 }) {
+  const { t } = useLanguage();
   const currentDoc = documents[currentIndex];
   const isImage = currentDoc?.fileType?.startsWith('image/');
   const isPdf = currentDoc?.fileType === 'application/pdf';
